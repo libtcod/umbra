@@ -1,0 +1,7 @@
+#include "libtcod.hpp"
+#include "version.hpp"
+#include "umbra/engine.hpp"
+#include "umbra/module.hpp"
+#include "umbra/error.hpp"
+#include "umbra/config.hpp"
+#include "mod/credits.hpp"
