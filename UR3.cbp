@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="UR3" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug WIN">
+				<Option output="UR" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj\" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+				<Linker>
+					<Add library="..\libtcod-1.4.2\lib\libtcod-mingw.a" />
+				</Linker>
+			</Target>
+			<Target title="Release WIN">
+				<Option output="UR" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj\" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+					<Add library="..\libtcod-1.4.2\lib\libtcod-mingw.a" />
+				</Linker>
+			</Target>
+			<Target title="Debug LINUX">
+				<Option output="UR" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj\" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+				<Linker>
+					<Add option="-lefence" />
+					<Add option="-Wl,-rpath,lib" />
+					<Add library="lib\libtcod.so" />
+					<Add library="lib\libtcod++.so" />
+				</Linker>
+			</Target>
+			<Target title="Release LINUX">
+				<Option output="UR" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj\" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+					<Add option="-Wl,-rpath,lib" />
+					<Add library="lib\libtcod.so" />
+					<Add library="lib\libtcod++.so" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-fexceptions" />
+			<Add directory="..\libtcod-1.4.2\include" />
+			<Add directory="src" />
+		</Compiler>
+		<Unit filename="src\main.cpp" />
+		<Unit filename="src\main.hpp" />
+		<Unit filename="src\mod\credits.cpp" />
+		<Unit filename="src\mod\credits.hpp" />
+		<Unit filename="src\umbra\config.cpp" />
+		<Unit filename="src\umbra\config.hpp" />
+		<Unit filename="src\umbra\engine.cpp" />
+		<Unit filename="src\umbra\engine.hpp" />
+		<Unit filename="src\umbra\error.cpp" />
+		<Unit filename="src\umbra\error.hpp" />
+		<Unit filename="src\umbra\module.cpp" />
+		<Unit filename="src\umbra\module.hpp" />
+		<Unit filename="src\version.hpp" />
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+			<lib_finder disable_auto="1" />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
