@@ -1,0 +1,10 @@
+/*
+ * UMBRA CONFIGURATION FILE
+ */
+ 
+config {    
+  xSize = 80
+  ySize = 60
+  fontSize = 10
+  fullScreen = false
+} 
