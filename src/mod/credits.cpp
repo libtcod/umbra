@@ -28,12 +28,22 @@
 #include "main.hpp"
 #include <stdio.h>
 
-Credits::Credits (void) {
-    sprintf (credits, "Hello world!");
+Credits::Credits (int fback) {
+    sprintf (credits, "Hello world!\nPress SPACE to end module...");
+    active = true;
+    setFallback(fback);
+}
+
+bool Credits::update (void) {
+    return active;
 }
 
 bool Credits::render (void) {
     TCODConsole::root->setForegroundColor(TCODColor::white);
     TCODConsole::root->printLeft(0,0,TCOD_BKGND_NONE,"%s",credits);
     return false;
+}
+
+void Credits::localKeybindings (TCOD_key_t key) {
+    if (key.vk == TCODK_SPACE) active = false;
 }
