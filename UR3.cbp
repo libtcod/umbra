@@ -15,7 +15,7 @@
 					<Add option="-g" />
 				</Compiler>
 				<Linker>
-					<Add library="../libtcod-1.4.2/lib/libtcod-mingw.a" />
+					<Add library="../libtcod-1.4.3/lib/libtcod-mingw.a" />
 				</Linker>
 			</Target>
 			<Target title="Release WIN">
@@ -28,7 +28,7 @@
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
-					<Add library="../libtcod-1.4.2/lib/libtcod-mingw.a" />
+					<Add library="../libtcod-1.4.3/lib/libtcod-mingw.a" />
 				</Linker>
 			</Target>
 			<Target title="Debug LINUX">
@@ -42,8 +42,8 @@
 				<Linker>
 					<Add option="-lefence" />
 					<Add option="-Wl,-rpath,lib" />
-					<Add library="lib/libtcod.so" />
-					<Add library="lib/libtcod++.so" />
+					<Add library="lib/libtcod_debug.so" />
+					<Add library="lib/libtcodxx_debug.so" />
 				</Linker>
 			</Target>
 			<Target title="Release LINUX">
@@ -58,14 +58,14 @@
 					<Add option="-s" />
 					<Add option="-Wl,-rpath,lib" />
 					<Add library="lib/libtcod.so" />
-					<Add library="lib/libtcod++.so" />
+					<Add library="lib/libtcodxx.so" />
 				</Linker>
 			</Target>
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
-			<Add directory="../libtcod-1.4.2/include" />
+			<Add directory="../libtcod-1.4.3/include" />
 			<Add directory="src" />
 		</Compiler>
 		<Unit filename="src/main.cpp" />
