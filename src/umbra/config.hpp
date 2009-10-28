@@ -30,7 +30,8 @@
 
 class UmbraConfig {
     public:
-    static void load (void);
+    static void load (void); //load config from file
+    static void save (void); //save config to file
 
     static int xSize;
     static int ySize;

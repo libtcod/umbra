@@ -35,8 +35,6 @@ UmbraEngine::UmbraEngine (void) {
 
 //add a module to the modules list
 void UmbraEngine::registerModule (UmbraModule * module) {
-    //static int count = 0;
-    //modules.insert(std::pair <int, UmbraModule*> (count++, module));
     modules.push(module);
 }
 
@@ -70,6 +68,7 @@ int UmbraEngine::run (void) {
         globalKeybindings(key);
         TCODConsole::root->flush();
     }
+    UmbraConfig::save();
     return 0;
 }
 

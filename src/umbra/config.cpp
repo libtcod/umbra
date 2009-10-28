@@ -68,3 +68,22 @@ void UmbraConfig::load (void) {
 
     loaded = true;
 }
+
+void UmbraConfig::save (void) {
+    FILE * out;
+    out = fopen("data/cfg/config.txt","w");
+
+    fprintf(out,"/*\n"
+                " * UMBRA CONFIGURATION FILE\n"
+                " */\n"
+                "\n"
+                "config {\n"
+                "  xSize = %d\n"
+                "  ySize = %d\n"
+                "  fontSize = %d\n"
+                "  fullScreen = %s\n"
+                "}\n",
+                xSize, ySize, fontSize, (fullScreen?"true":"false"));
+
+    fclose(out);
+}
