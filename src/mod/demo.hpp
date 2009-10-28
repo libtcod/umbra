@@ -39,6 +39,10 @@ class Demo : public UmbraModule {
 
 
     private:
+        TCODNoise * noise;
+        TCODRandom * random;
+        TCODImage * img;
+        float offset;
         bool active;
         char credits[32];
 };

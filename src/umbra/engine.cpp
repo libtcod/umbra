@@ -30,6 +30,7 @@
 
 //constructor
 UmbraEngine::UmbraEngine (void) {
+    UmbraConfig::load();
     currentModule = 0;
 }
 
@@ -39,8 +40,6 @@ void UmbraEngine::registerModule (UmbraModule * module) {
 }
 
 bool UmbraEngine::initialise (void) {
-    //load configuration variables
-    UmbraConfig::load();
     //check files existence
     if (!UmbraError::fileExists(UmbraConfig::fontFile->c_str())) {
         UmbraError::add("Terminal font image file %s is bad or missing.",UmbraConfig::fontFile->c_str());
