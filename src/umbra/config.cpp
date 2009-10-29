@@ -53,7 +53,7 @@ void UmbraConfig::load (void) {
     }
 
     //run the parser
-    parser.run("data/cfg/config.txt",NULL);
+    parser.run("data/cfg/umbra.txt",NULL);
 
     //assign parsed values to class variables
     xSize = parser.getIntProperty("config.xSize");

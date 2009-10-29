@@ -30,22 +30,29 @@ class UmbraModule {
     public:
         UmbraModule (void); //constructor
         virtual ~UmbraModule (void) {} //destructor
+
+        virtual void initialize(); // allocate resources. called only once
         virtual void render (void) { } //render the module on the root console
         virtual bool update (void) { return true; } //update the module's logic
         virtual void keyboard (TCOD_key_t &key) { return; } //module-specific keyboard
-        virtual void mouse (TCOD_mouse_t mouse) { return; } //module-specific mouse
+        virtual void mouse (TCOD_mouse_t ms) { return; } //module-specific mouse
         //setters
         void setFallback (int fback); //set default fallback module's index
         void setFade (int in, int out); //set fade lengths in milliseconds
-        void setPause (bool pause);
         //getters
         int getFallback (void);
         int getFadeIn (void);
         int getFadeOut (void);
-        bool isPaused (void);
+        inline bool isPaused (void) { return paused; }
+        virtual void setActive (bool active);
+        inline bool isActive (void) { return active; }
+        virtual void setPause (bool paused);
+        void deinitialize (void);
 
 
     private:
+        bool initialized;
+        bool active;
         bool paused;
         int fallback; //fallback module's index
         int fadeIn;

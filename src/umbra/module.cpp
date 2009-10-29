@@ -27,11 +27,8 @@
 
 #include "umbra.hpp"
 
-UmbraModule::UmbraModule (void) {
-    fallback = -1;
-    fadeIn = 0;
-    fadeOut = 0;
-    paused = false;
+UmbraModule::UmbraModule (void) : initialized(false),active(false),paused(false),
+    fallback(-1),fadeIn(0),fadeOut(0) {
 }
 
 void UmbraModule::setFallback (int fback) {
@@ -41,10 +38,6 @@ void UmbraModule::setFallback (int fback) {
 void UmbraModule::setFade (int in, int out) {
     fadeIn = in;
     fadeOut = out;
-}
-
-void UmbraModule::setPause (bool pause) {
-    paused = pause;
 }
 
 int UmbraModule::getFallback (void) {
@@ -59,6 +52,21 @@ int UmbraModule::getFadeOut (void) {
     return fadeOut;
 }
 
-bool UmbraModule::isPaused (void) {
-    return paused;
+void UmbraModule::initialize () {
+    initialized = true;
+}
+
+void UmbraModule::deinitialize () {
+    initialized = false;
+}
+
+void UmbraModule::setActive (bool active) {
+    if (active && ! initialized ) {
+        initialize();
+    }
+    this->active=active;
+}
+
+void UmbraModule::setPause (bool paused) {
+    this->paused=paused;
 }

@@ -35,8 +35,34 @@ UmbraEngine::UmbraEngine (void) {
 }
 
 //add a module to the modules list
-void UmbraEngine::registerModule (UmbraModule * module) {
+int UmbraEngine::registerModule (UmbraModule * module, int fallback) {
+    module->setFallback(fallback);
     modules.push(module);
+    return modules.size()-1;
+}
+
+void UmbraEngine::activateModule( int moduleId ) {
+    if ( moduleId < 0 || moduleId >= modules.size() ) {
+        UmbraError::add("Try to activate invalid module id %d.",moduleId);
+        return;
+    }
+    UmbraModule *module = modules.get(moduleId);
+    if (module != NULL && ! module->isActive()) {
+        module->setActive(true);
+        activeModules.push(module);
+    }
+}
+
+void UmbraEngine::deactivateModule( int moduleId ) {
+    if ( moduleId < 0 || moduleId >= modules.size() ) {
+        UmbraError::add("Try to deactivate invalid module id %d.",moduleId);
+        return;
+    }
+    UmbraModule *module = modules.get(moduleId);
+    if (module != NULL && module->isActive()) {
+        activeModules.remove(module);
+        module->setActive(false);
+    }
 }
 
 bool UmbraEngine::initialise (void) {
@@ -56,6 +82,8 @@ bool UmbraEngine::initialise (void) {
 int UmbraEngine::run (void) {
     TCOD_key_t key;
     TCOD_mouse_t mouse;
+    static TCODList<UmbraModule *> toActivate;
+
     if (modules.size() == 0) {
         UmbraError::add("No modules registered!");
         exit(1);
@@ -63,20 +91,40 @@ int UmbraEngine::run (void) {
 
     module = modules.get(0);
     while(!TCODConsole::isWindowClosed()) {
-        if (module->isPaused() || module->update()) module->render();
-        else {
-            int fallback = module->getFallback();
-            if (fallback == -1) break;
-            else if (fallback >= modules.size()) {
-                UmbraError::add("Fallback indicated a nonexistent module index number (%d)!",fallback);
-                exit(1);
-            }
-            else module = modules.get(fallback);
-        }
+        // update all active modules
         key = TCODConsole::checkForKeypress(true);
         mouse = TCODMouse::getStatus();
-        if (!globalKeybindings(key)) module->keyboard(key);
-        module->mouse(mouse);
+        globalKeybindings(key);
+        for (UmbraModule ** mod = activeModules.begin(); mod != activeModules.end(); mod++) {
+            if (!(*mod)->isPaused()) {
+                // handle input
+                (*mod)->keyboard(key);
+                (*mod)->mouse(mouse);
+                if (!(*mod)->update()) {
+                    UmbraModule *module=*mod;
+                    int fallback=module->getFallback();
+                    // deactivate module
+                    mod = activeModules.remove(mod);
+                    module->setActive(false);
+                    if ( fallback != -1 ) {
+                        // register fallback for activation
+                        UmbraModule *fallbackModule = modules.get(fallback);
+                        if ( fallbackModule != NULL && !fallbackModule->isActive() ) toActivate.push(fallbackModule);
+                    }
+                }
+            }
+        }
+        // render active modules
+        for (UmbraModule ** mod = activeModules.begin(); mod != activeModules.end(); mod++) {
+            (*mod)->render();
+        }
+        // activate new modules
+        for (UmbraModule ** mod = toActivate.begin(); mod != toActivate.end(); mod++) {
+            (*mod)->setActive(true);
+            activeModules.push(*mod);
+        }
+        toActivate.clear();
+        if ( activeModules.size() == 0 ) break; // exit game
         TCODConsole::root->flush();
     }
 
@@ -84,7 +132,7 @@ int UmbraEngine::run (void) {
     return 0;
 }
 
-bool UmbraEngine::globalKeybindings (TCOD_key_t key) {
+void UmbraEngine::globalKeybindings (TCOD_key_t &key) {
     bool returnValue = true;
 
     switch (key.vk) {
@@ -108,7 +156,10 @@ bool UmbraEngine::globalKeybindings (TCOD_key_t key) {
             break;
     }
 
-    return returnValue;
+    if (returnValue) {
+        // "erase" key event
+        memset(&key,0,sizeof(TCOD_key_t));
+    }
 }
 
 void UmbraEngine::reinitialise (void) {

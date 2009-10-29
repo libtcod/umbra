@@ -30,14 +30,13 @@
 
 class Credits : public UmbraModule {
     public:
-        Credits (int fback);
+        Credits ();
         bool update (void);
         void render (void);
         void keyboard (TCOD_key_t &key);
 
 
     private:
-        bool active;
         char credits[64];
 };
 

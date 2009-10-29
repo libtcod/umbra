@@ -31,17 +31,18 @@ class UmbraModule;
 class UmbraEngine {
     public:
         UmbraEngine (void); //constructor
-        ~UmbraEngine (void); //destructor
 
         bool initialise (void); //initialises the engine
         int run (void); //runs the engine
-        void registerModule (UmbraModule * module); //add a module to the modules list
-
+        int registerModule (UmbraModule * module, int fallback=-1); //add a module to the modules list. returns id
+        void activateModule( int moduleId );
+        void deactivateModule( int moduleId );
     private:
-        bool globalKeybindings (TCOD_key_t key);
+        void globalKeybindings (TCOD_key_t &key);
         void reinitialise (void);
 
         int currentModule; //actual module number
         UmbraModule * module; //currently running module
         TCODList <UmbraModule*> modules;
+        TCODList <UmbraModule*> activeModules;
 };

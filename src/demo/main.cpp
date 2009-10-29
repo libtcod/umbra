@@ -27,13 +27,16 @@
 
 #include "main.hpp"
 
+enum { MOD_CREDITS, MOD_DEMO };
+
 int main()
 {
     //create the engine
     UmbraEngine * engine = new UmbraEngine();
     //declare modules
-    engine->registerModule(new Credits(1));
+    engine->registerModule(new Credits(),MOD_DEMO);
     engine->registerModule(new Demo());
+    engine->activateModule(MOD_CREDITS);
     //initialise and run the engine
     if (engine->initialise()) return engine->run();
     else return 1;

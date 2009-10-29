@@ -28,14 +28,12 @@
 #include "main.hpp"
 #include <stdio.h>
 
-Credits::Credits (int fback) {
+Credits::Credits () {
     sprintf (credits, "Hello world!\nPress SPACE to end module...");
-    active = true;
-    setFallback(fback);
 }
 
 bool Credits::update (void) {
-    return active;
+    return isActive();
 }
 
 void Credits::render (void) {
@@ -44,5 +42,5 @@ void Credits::render (void) {
 }
 
 void Credits::keyboard (TCOD_key_t &key) {
-    if (key.vk == TCODK_SPACE) active = false;
+    if (key.vk == TCODK_SPACE) setActive ( false );
 }

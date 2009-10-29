@@ -30,7 +30,6 @@
 
 Demo::Demo (void) {
     sprintf (credits, "Goodbye world!");
-    active = true;
     random = TCODRandom::getInstance();
     noise = new TCODNoise(3,random);
     img = new TCODImage(UmbraConfig::xSize*2,UmbraConfig::ySize);
@@ -49,7 +48,7 @@ bool Demo::update (void) {
         img->putPixel(i,j,TCODColor(val,val,val));
     }
     offset += 0.05f;
-    return active;
+    return isActive();
 }
 
 void Demo::render (void) {
@@ -61,7 +60,6 @@ void Demo::render (void) {
 }
 
 void Demo::keyboard (TCOD_key_t &key) {
-    if (key.vk == TCODK_SPACE) active = false;
-    if (key.vk == TCODK_PAUSE) setPause(!isPaused());
+    if (key.vk == TCODK_SPACE) setActive ( false );
 }
 
