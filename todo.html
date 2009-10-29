@@ -521,7 +521,7 @@ Also see [[AdvancedOptions]]</pre>
 <pre>[[GettingStarted]]
 [[DefaultTiddlers]]</pre>
 </div>
-<div title="Module life cycle" modifier="jice" created="200910291736" modified="200910292046" tags="discuss" changecount="5">
+<div title="Module life cycle" modifier="jice" created="200910291736" modified="200910292337" tags="done" changecount="6">
 <pre>- registered module is uninitialized (no resource used except the Module object)
 - at first activation, it is initialized (allocate data, load pictures, sounds, ...), then activated
 ;delay on loading a module. I'd initialise most of the data in the constructor, and call Module::initialise() only to init dynamic stuff
@@ -579,7 +579,7 @@ I pass the k by reference in case a module want to stop the event propagation to
 
 ;you ask for it, you have it :D</pre>
 </div>
-<div title="Multiple active modules" modifier="jice" created="200910291734" modified="200910292044" tags="discuss" changecount="2">
+<div title="Multiple active modules" modifier="jice" created="200910291734" modified="200910292336" tags="done" changecount="3">
 <pre>Currently, Umbra only update/renders a single module. Instead, loops through the active modules list.
 =&gt; activate all modules in toActivate list
 =&gt; update all active modules
