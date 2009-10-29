@@ -1,6 +1,8 @@
 ================================================================================
 Umbra TODO List
 ================================================================================
+TO DISCUSS
+================================================================================
 Mouse support
 - shall we add a new localMouseBinding to the module or merge everything in
 the update function as I suggested ?
@@ -10,6 +12,15 @@ bool update( float elapsed, TCOD_key_t k, TCOD_mouse_t mouse )
   I'm against adding it to the update(). If the engine calls it itself, the dev
   won't have to keep track of what neds to be placed in update(). Same goes for
   keyboard.
+	Fair enough. What about :
+	class Module {
+		bool update();
+		void keyboard(TCOD_key_t &k);
+		void mouse(TCOD_mouse_t mouse);
+	}
+	I pass the k by reference in case a module want to stop the event
+	propagation to other modules (for example by replacing TCOD_key_t.vk with
+	TCODK_NONE). Is it ok for you ?
 
 ================================================================================
 Project structure
@@ -20,6 +31,8 @@ to the umbra directory - YES
 use umbra
   - you want to place all class implementations in a single cpp file? Maybe at a
   later stage then, when the engine is closer to ready?
+    simply move the #include "umbra/XXX" from main.hpp to umbra.hpp
+    then have only #include "umbra/umbra.hpp" in main.hpp
 
 ================================================================================
 Multiple active modules support
@@ -32,7 +45,7 @@ the active modules list.
 => then renders all active modules
 => if no more active module, exit game
 
-seems OK. Need to discuss it via chat.
+	seems OK. Need to discuss it via chat.
 
 ================================================================================
 Module life cycle
@@ -73,6 +86,8 @@ does what?
 My thinking:
 Engine::activate -> adds to the active list, possibly calls Module::activate
 Module::activate -> sets Module::active flag. Is it at all necessary?
+	Yes it's a bit overkill but it's handy to be able to know if a module is 
+	active without having to scan the whole active list. 
 
 ================================================================================
 
