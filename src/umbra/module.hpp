@@ -39,12 +39,16 @@ class UmbraModule {
         //setters
         void setFallback (int fback); //set default fallback module's index
         void setFade (int in, int out); //set fade lengths in milliseconds
+        void setPause (bool pause);
         //getters
         int getFallback (void);
         int getFadeIn (void);
         int getFadeOut (void);
+        bool isPaused (void);
+
 
     private:
+        bool paused;
         int fallback; //fallback module's index
         int fadeIn;
         int fadeOut;

@@ -31,6 +31,7 @@ UmbraModule::UmbraModule (void) {
     fallback = -1;
     fadeIn = 0;
     fadeOut = 0;
+    paused = false;
 }
 
 void UmbraModule::setFallback (int fback) {
@@ -40,6 +41,10 @@ void UmbraModule::setFallback (int fback) {
 void UmbraModule::setFade (int in, int out) {
     fadeIn = in;
     fadeOut = out;
+}
+
+void UmbraModule::setPause (bool pause) {
+    paused = pause;
 }
 
 int UmbraModule::getFallback (void) {
@@ -52,4 +57,8 @@ int UmbraModule::getFadeIn (void) {
 
 int UmbraModule::getFadeOut (void) {
     return fadeOut;
+}
+
+bool UmbraModule::isPaused (void) {
+    return paused;
 }

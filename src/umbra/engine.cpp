@@ -62,7 +62,7 @@ int UmbraEngine::run (void) {
 
     module = modules.get(0);
     while(!TCODConsole::isWindowClosed()) {
-        if (module->update()) module->render();
+        if (module->isPaused() || module->update()) module->render();
         else {
             int fallback = module->getFallback();
             if (fallback == -1) break;

@@ -63,5 +63,6 @@ bool Demo::render (void) {
 
 void Demo::localKeybindings (TCOD_key_t key) {
     if (key.vk == TCODK_SPACE) active = false;
+    if (key.vk == TCODK_PAUSE) setPause(!isPaused());
 }
 
