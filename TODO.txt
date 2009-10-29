@@ -1,0 +1,25 @@
+================================================================================
+Umbra TODO List
+================================================================================
+Mouse support
+- shall we add a new localMouseBinding to the module or merge everything in
+the update function as I suggested ?
+bool update( float elapsed, TCOD_key_t k, TCOD_mouse_t mouse )
+
+================================================================================
+Project structure
+- rename 'mod' directory to 'demo'
+- main.cpp and main.hpp should be moved to the 'demo' directory
+- there should be a umbra/umbra.hpp so that we only have to include it to
+use umbra
+
+================================================================================
+Multiple active modules support
+Currently, Umbra only update/renders a single module. Instead, loops through
+the active modules list.
+=> activate all modules in toActivate list
+=> update all active modules
+   if a module exits, add its fallback to a 'toActivate' list 
+   (don't activate it in current frame)
+=> then renders all active modules
+=> if no more active module, exit game
