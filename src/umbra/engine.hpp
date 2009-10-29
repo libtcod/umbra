@@ -39,6 +39,7 @@ class UmbraEngine {
 
     private:
         bool globalKeybindings (TCOD_key_t key);
+        void reinitialise (void);
 
         int currentModule; //actual module number
         UmbraModule * module; //currently running module

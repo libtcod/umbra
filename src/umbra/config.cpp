@@ -61,10 +61,7 @@ void UmbraConfig::load (void) {
     fontSize = parser.getIntProperty("config.fontSize");
     fullScreen = parser.getBoolProperty("config.fullScreen");
 
-    //create terminal font file name
-    char fName[128];
-    sprintf(fName,"data/img/font%dx%d.png",fontSize,fontSize);
-    fontFile->assign(fName);
+    generateTerminalName();
 
     loaded = true;
 }
@@ -86,4 +83,25 @@ void UmbraConfig::save (void) {
                 xSize, ySize, fontSize, (fullScreen?"true":"false"));
 
     fclose(out);
+}
+
+void UmbraConfig::generateTerminalName (void) {
+    char fName[128];
+    sprintf(fName,"data/img/font%dx%d.png",fontSize,fontSize);
+    fontFile->assign(fName);
+}
+
+bool UmbraConfig::adjustFontSize (int adjust) {
+    int a = (adjust == 0 ? 0 : (adjust < 0 ? (-1) : 1)); //probably for going forth or back through a filenames list or something... TODO...
+
+    //the following primitive code is only a test - change later, when it's clear how we want the font switcher to work!
+    static int sizeID;
+    if (fontSize == 8) sizeID = 0;
+    if (fontSize == 10) sizeID = 1;
+    if (fontSize == 12) sizeID = 2;
+    static int sizes[3] = { 8, 10, 12 };
+    bool change = false;
+    if ((a == 1 && sizeID < 2) || (a == -1 && sizeID > 0)) { fontSize = sizes[sizeID+a]; sizeID += a; change = true; }
+    if (change) generateTerminalName();
+    return change;
 }

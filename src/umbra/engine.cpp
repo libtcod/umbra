@@ -46,7 +46,7 @@ bool UmbraEngine::initialise (void) {
         return false;
     }
     //initialise console
-    TCODConsole::setCustomFont(UmbraConfig::fontFile->c_str(),TCOD_FONT_LAYOUT_TCOD|TCOD_FONT_TYPE_GRAYSCALE,32,16);
+    TCODConsole::setCustomFont(UmbraConfig::fontFile->c_str(),TCOD_FONT_LAYOUT_TCOD|TCOD_FONT_TYPE_GRAYSCALE,32,8);
     TCODConsole::initRoot(UmbraConfig::xSize,UmbraConfig::ySize,UMBRA_TITLE" "UMBRA_VERSION" ("UMBRA_STATUS")", UmbraConfig::fullScreen);
     TCODSystem::setFps(25);
     TCODMouse::showCursor(true);
@@ -97,10 +97,25 @@ bool UmbraEngine::globalKeybindings (TCOD_key_t key) {
         case TCODK_F4:
             if (key.ralt || key.lalt) exit(0);
             break;
+        case TCODK_PAGEUP:
+            if (UmbraConfig::adjustFontSize(1)) reinitialise();
+            break;
+        case TCODK_PAGEDOWN:
+            if (UmbraConfig::adjustFontSize(-1)) reinitialise();
+            break;
         default:
             returnValue = false;
             break;
     }
 
     return returnValue;
+}
+
+void UmbraEngine::reinitialise (void) {
+    delete TCODConsole::root;
+    TCODConsole::root = NULL;
+    if (!initialise()) {
+        UmbraError::add("Could not reinitialise the root console.");
+        exit(1);
+    }
 }

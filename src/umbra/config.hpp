@@ -29,6 +29,8 @@ class UmbraConfig {
     public:
     static void load (void); //load config from file
     static void save (void); //save config to file
+    static void generateTerminalName (void); //generate terminal font file name
+    static bool adjustFontSize (int adjust); //change font size
 
     static int xSize;
     static int ySize;
