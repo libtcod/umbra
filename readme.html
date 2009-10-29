@@ -562,16 +562,17 @@ Finally, the engine is initialised and run:
 :if (engine-&gt;init()) return engine-&gt;run();
 :else return 1;</pre>
 </div>
-<div title="UmbraModule" modifier="Mingos" created="200910241828" modified="200910251959" changecount="17">
-<pre>UmbraModule is a single &quot;chunk&quot; of your game, with its own renderer and keybindings. It might be the main menu, the character creation screen, the overworld view, the trading screen or whatever you think needs a separate view.
+<div title="UmbraModule" modifier="jice" created="200910241828" modified="200910292120" changecount="18">
+<pre>UmbraModule is a single &quot;chunk&quot; of your game, with its own renderer and keybindings. It might be the main menu, the character creation screen, the overworld view, the trading screen or whatever you think needs a separate view. 
 
 Modules need to be constructed in a very specific way in order to be used in Umbra. Failure to do so will result in compilation errors. All the obligatory methods need to be declared in the module in order for it to work. UmbraEngine will call them each game tick. Other methods are optional.
 
 ;Obligatory methods:
+;Optional methods:
 :[[render]] - renders the current frame on the root console
 :[[update]] - handles the module's logic
-;Optional methods:
-:[[localKeybindings]] - processes module-specific keyboard input
+:[[keyboard]] - processes module-specific keyboard input
+:[[mouse]] - processes module-specific mouse input
 :[[setFade]] - set fade lengths</pre>
 </div>
 <div title="Using Umbra" modifier="Mingos" created="200910241814" modified="200910272013" changecount="2">
