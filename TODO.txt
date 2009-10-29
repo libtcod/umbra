@@ -9,7 +9,8 @@ bool update( float elapsed, TCOD_key_t k, TCOD_mouse_t mouse )
 ================================================================================
 Project structure
 - rename 'mod' directory to 'demo'
-- main.cpp and main.hpp should be moved to the 'demo' directory
+- main.cpp and main.hpp should be moved to the 'demo' directory, version.hpp
+to the umbra directory 
 - there should be a umbra/umbra.hpp so that we only have to include it to
 use umbra
 
@@ -23,3 +24,30 @@ the active modules list.
    (don't activate it in current frame)
 => then renders all active modules
 => if no more active module, exit game
+
+================================================================================
+Module life cycle
+- registered module is uninitialized (no resource used except the Module object)
+- at first activation, it is initialized (allocate data, load pictures, sounds, 
+...), then activated
+- at any time it can be paused (renders but doesn't update) and resumed
+- when its update function returns false, it's deactivated
+Suggestion :
+class Module {
+	bool initialized;
+	bool active;
+	bool paused;
+	void init();
+	void activate();
+	void deactivate();
+	void pause();
+	void resume();
+}
+class Engine {
+	TCODList<Module> modules; // all registered modules
+	TCODList<Module> actives;
+	void activate(int moduleId);
+	void deactivate(int moduleId);
+	void pause(int moduleId);
+	void resume(int moduleId);
+}
