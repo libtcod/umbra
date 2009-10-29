@@ -25,44 +25,6 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#include "main.hpp"
-#include <stdio.h>
-
-Demo::Demo (void) {
-    sprintf (credits, "Goodbye world!");
-    active = true;
-    random = TCODRandom::getInstance();
-    noise = new TCODNoise(3,random);
-    img = new TCODImage(UmbraConfig::xSize*2,UmbraConfig::ySize);
-    offset = 0.0f;
-}
-
-bool Demo::update (void) {
-    int i, j;
-    int xres = UmbraConfig::xSize*2;
-    for (i = 0; i < xres; i++) for (j = 0; j < UmbraConfig::ySize; j++) {
-        float f[3];
-        f[0] = 8.0f * i / xres;
-        f[1] = 8.0f * j / UmbraConfig::ySize;
-        f[2] = offset;
-        uint8 val = (uint8)((noise->getFbmSimplex(f,4.0f)+1.0f) * 64.0f);
-        img->putPixel(i,j,TCODColor(val,val,val));
-    }
-    offset += 0.05f;
-    return active;
-}
-
-bool Demo::render (void) {
-    TCODConsole::root->setBackgroundColor(TCODColor::black);
-    TCODConsole::root->clear();
-    TCODConsole::root->setForegroundColor(TCODColor::red);
-    TCODConsole::root->printLeft(0,0,TCOD_BKGND_NONE,"%s",credits);
-    img->blit2x(TCODConsole::root,0,UmbraConfig::ySize/4);
-    return false;
-}
-
-void Demo::localKeybindings (TCOD_key_t key) {
-    if (key.vk == TCODK_SPACE) active = false;
-    if (key.vk == TCODK_PAUSE) setPause(!isPaused());
-}
-
+#include "../umbra/umbra.hpp"
+#include "credits.hpp"
+#include "demo.hpp"

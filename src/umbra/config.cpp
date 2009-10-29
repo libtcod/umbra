@@ -25,7 +25,7 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#include "main.hpp"
+#include "umbra.hpp"
 #include <stdio.h>
 
 TCODParser UmbraConfig::parser;

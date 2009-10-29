@@ -25,26 +25,6 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef MODULE_DEMO_HPP
-#define MODULE_DEMO_HPP
-
-#include "umbra/module.hpp"
-
-class Demo : public UmbraModule {
-    public:
-        Demo (void);
-        bool update (void);
-        bool render (void);
-        void localKeybindings (TCOD_key_t key);
-
-
-    private:
-        TCODNoise * noise;
-        TCODRandom * random;
-        TCODImage * img;
-        float offset;
-        bool active;
-        char credits[32];
-};
-
-#endif
+#define UMBRA_TITLE "Umbra Engine"
+#define UMBRA_VERSION "9.10"
+#define UMBRA_STATUS "Development"

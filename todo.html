@@ -521,7 +521,7 @@ Also see [[AdvancedOptions]]</pre>
 <pre>[[GettingStarted]]
 [[DefaultTiddlers]]</pre>
 </div>
-<div title="Module life cycle" modifier="Mingos" created="200910291736" modified="200910291739" tags="code discuss" changecount="3">
+<div title="Module life cycle" modifier="jice" created="200910291736" modified="200910292046" tags="discuss" changecount="5">
 <pre>- registered module is uninitialized (no resource used except the Module object)
 - at first activation, it is initialized (allocate data, load pictures, sounds, ...), then activated
 ;delay on loading a module. I'd initialise most of the data in the constructor, and call Module::initialise() only to init dynamic stuff
@@ -561,7 +561,7 @@ Yes it's a bit overkill but it's handy to be able to know if a module is active 
 
 ;module-&gt;isActive()... OK...</pre>
 </div>
-<div title="Mouse support" modifier="Mingos" created="200910291729" modified="200910291729" tags="code discuss" changecount="5">
+<div title="Mouse support" modifier="jice" created="200910291729" modified="200910292102" tags="done" changecount="7">
 <pre>shall we add a new localMouseBinding to the module or merge everything in the update function as I suggested ?
 bool update( float elapsed, TCOD_key_t k, TCOD_mouse_t mouse )
 
@@ -579,7 +579,7 @@ I pass the k by reference in case a module want to stop the event propagation to
 
 ;you ask for it, you have it :D</pre>
 </div>
-<div title="Multiple active modules" modifier="Mingos" created="200910291734" tags="code discuss" changecount="1">
+<div title="Multiple active modules" modifier="jice" created="200910291734" modified="200910292044" tags="discuss" changecount="2">
 <pre>Currently, Umbra only update/renders a single module. Instead, loops through the active modules list.
 =&gt; activate all modules in toActivate list
 =&gt; update all active modules
@@ -589,7 +589,7 @@ if a module exits, add its fallback to a 'toActivate' list  (don't activate it i
 
 ;seems OK. Need to discuss it via chat.</pre>
 </div>
-<div title="Project structure" modifier="Mingos" created="200910291732" tags="project" changecount="1">
+<div title="Project structure" modifier="jice" created="200910291732" modified="200910292102" tags="done" changecount="5">
 <pre>- rename 'mod' directory to 'demo'
 - main.cpp and main.hpp should be moved to the 'demo' directory, version.hpp to the umbra directory
 - there should be a umbra/umbra.hpp so that we only have to include it to use umbra
@@ -608,6 +608,9 @@ simply move the #include &quot;umbra/XXX&quot; from main.hpp to umbra.hpp then h
 </div>
 <div title="SiteTitle" modifier="Mingos" created="200910291725" changecount="1">
 <pre>Umbra DickyWiki</pre>
+</div>
+<div title="to code" modifier="jice" created="200910292046" changecount="1">
+<pre>Type the text for 'code'</pre>
 </div>
 </div>
 <!--POST-STOREAREA-->

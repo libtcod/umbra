@@ -25,22 +25,24 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef MODULE_CREDITS_HPP
-#define MODULE_CREDITS_HPP
+#ifndef MODULE_DEMO_HPP
+#define MODULE_DEMO_HPP
 
-#include "umbra/module.hpp"
-
-class Credits : public UmbraModule {
+class Demo : public UmbraModule {
     public:
-        Credits (int fback);
+        Demo (void);
         bool update (void);
-        bool render (void);
-        void localKeybindings (TCOD_key_t key);
+        void render (void);
+        void keyboard (TCOD_key_t &key);
 
 
     private:
+        TCODNoise * noise;
+        TCODRandom * random;
+        TCODImage * img;
+        float offset;
         bool active;
-        char credits[64];
+        char credits[32];
 };
 
 #endif

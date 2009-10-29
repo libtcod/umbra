@@ -25,7 +25,7 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#include "main.hpp"
+#include "umbra.hpp"
 #include <stdio.h>
 
 //constructor
@@ -55,6 +55,7 @@ bool UmbraEngine::initialise (void) {
 
 int UmbraEngine::run (void) {
     TCOD_key_t key;
+    TCOD_mouse_t mouse;
     if (modules.size() == 0) {
         UmbraError::add("No modules registered!");
         exit(1);
@@ -73,7 +74,9 @@ int UmbraEngine::run (void) {
             else module = modules.get(fallback);
         }
         key = TCODConsole::checkForKeypress(true);
-        if (!globalKeybindings(key)) module->localKeybindings(key);
+        mouse = TCODMouse::getStatus();
+        if (!globalKeybindings(key)) module->keyboard(key);
+        module->mouse(mouse);
         TCODConsole::root->flush();
     }
 

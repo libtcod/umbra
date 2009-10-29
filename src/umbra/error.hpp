@@ -25,9 +25,6 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef UMBRA_ERROR_HPP
-#define UMBRA_ERROR_HPP
-
 #include <iostream>
 
 class UmbraError {
@@ -39,5 +36,3 @@ class UmbraError {
     static void add (const char * errStr, ...); //adds an error to the list
     static bool fileExists (const char * filename, ...); //confirms the existence of a file
 };
-
-#endif

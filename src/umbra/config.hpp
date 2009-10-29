@@ -25,9 +25,6 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef UMBRA_CONFIG_HPP
-#define UMBRA_CONFIG_HPP
-
 class UmbraConfig {
     public:
     static void load (void); //load config from file
@@ -42,5 +39,3 @@ class UmbraConfig {
     private:
     static TCODParser parser;
 };
-
-#endif

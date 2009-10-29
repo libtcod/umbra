@@ -1,6 +1,6 @@
 /*
 * Umbra
-* Copyright (c) 2009 Dominik Marczuk
+* Copyright (c) 2009 Dominik Marczuk, Jice
 * All rights reserved.
 *
 * Redistribution and use in source and binary forms, with or without
@@ -10,13 +10,13 @@
 *     * Redistributions in binary form must reproduce the above copyright
 *       notice, this list of conditions and the following disclaimer in the
 *       documentation and/or other materials provided with the distribution.
-*     * The name of Dominik Marczuk may not be used to endorse or promote products
+*     * The names of Dominik Marczuk or Jice may not be used to endorse or promote products
 *       derived from this software without specific prior written permission.
 *
-* THIS SOFTWARE IS PROVIDED BY DOMINIK MARCZUK ``AS IS'' AND ANY
+* THIS SOFTWARE IS PROVIDED BY DOMINIK MARCZUK & JICE ``AS IS'' AND ANY
 * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
 * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-* DISCLAIMED. IN NO EVENT SHALL DOMINIK MARCZUK BE LIABLE FOR ANY
+* DISCLAIMED. IN NO EVENT SHALL DOMINIK MARCZUK OR JICE BE LIABLE FOR ANY
 * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
 * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
 * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
@@ -28,22 +28,40 @@
 #include "main.hpp"
 #include <stdio.h>
 
-Credits::Credits (int fback) {
-    sprintf (credits, "Hello world!\nPress SPACE to end module...");
+Demo::Demo (void) {
+    sprintf (credits, "Goodbye world!");
     active = true;
-    setFallback(fback);
+    random = TCODRandom::getInstance();
+    noise = new TCODNoise(3,random);
+    img = new TCODImage(UmbraConfig::xSize*2,UmbraConfig::ySize);
+    offset = 0.0f;
 }
 
-bool Credits::update (void) {
+bool Demo::update (void) {
+    int i, j;
+    int xres = UmbraConfig::xSize*2;
+    for (i = 0; i < xres; i++) for (j = 0; j < UmbraConfig::ySize; j++) {
+        float f[3];
+        f[0] = 8.0f * i / xres;
+        f[1] = 8.0f * j / UmbraConfig::ySize;
+        f[2] = offset;
+        uint8 val = (uint8)((noise->getFbmSimplex(f,4.0f)+1.0f) * 64.0f);
+        img->putPixel(i,j,TCODColor(val,val,val));
+    }
+    offset += 0.05f;
     return active;
 }
 
-bool Credits::render (void) {
-    TCODConsole::root->setForegroundColor(TCODColor::white);
+void Demo::render (void) {
+    TCODConsole::root->setBackgroundColor(TCODColor::black);
+    TCODConsole::root->clear();
+    TCODConsole::root->setForegroundColor(TCODColor::red);
     TCODConsole::root->printLeft(0,0,TCOD_BKGND_NONE,"%s",credits);
-    return false;
+    img->blit2x(TCODConsole::root,0,UmbraConfig::ySize/4);
 }
 
-void Credits::localKeybindings (TCOD_key_t key) {
+void Demo::keyboard (TCOD_key_t &key) {
     if (key.vk == TCODK_SPACE) active = false;
+    if (key.vk == TCODK_PAUSE) setPause(!isPaused());
 }
+

@@ -68,12 +68,12 @@
 			<Add directory="..\libtcod-1.4.3\include" />
 			<Add directory="src" />
 		</Compiler>
-		<Unit filename="src\main.cpp" />
-		<Unit filename="src\main.hpp" />
-		<Unit filename="src\mod\credits.cpp" />
-		<Unit filename="src\mod\credits.hpp" />
-		<Unit filename="src\mod\demo.cpp" />
-		<Unit filename="src\mod\demo.hpp" />
+		<Unit filename="src\demo\credits.cpp" />
+		<Unit filename="src\demo\credits.hpp" />
+		<Unit filename="src\demo\demo.cpp" />
+		<Unit filename="src\demo\demo.hpp" />
+		<Unit filename="src\demo\main.cpp" />
+		<Unit filename="src\demo\main.hpp" />
 		<Unit filename="src\umbra\config.cpp" />
 		<Unit filename="src\umbra\config.hpp" />
 		<Unit filename="src\umbra\engine.cpp" />
@@ -82,7 +82,8 @@
 		<Unit filename="src\umbra\error.hpp" />
 		<Unit filename="src\umbra\module.cpp" />
 		<Unit filename="src\umbra\module.hpp" />
-		<Unit filename="src\version.hpp" />
+		<Unit filename="src\umbra\umbra.hpp" />
+		<Unit filename="src\umbra\version.hpp" />
 		<Extensions>
 			<code_completion />
 			<envvars />

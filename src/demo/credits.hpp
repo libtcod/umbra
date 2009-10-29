@@ -25,11 +25,20 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#include "libtcod.hpp"
-#include "version.hpp"
-#include "umbra/engine.hpp"
-#include "umbra/module.hpp"
-#include "umbra/error.hpp"
-#include "umbra/config.hpp"
-#include "mod/credits.hpp"
-#include "mod/demo.hpp"
+#ifndef MODULE_CREDITS_HPP
+#define MODULE_CREDITS_HPP
+
+class Credits : public UmbraModule {
+    public:
+        Credits (int fback);
+        bool update (void);
+        void render (void);
+        void keyboard (TCOD_key_t &key);
+
+
+    private:
+        bool active;
+        char credits[64];
+};
+
+#endif

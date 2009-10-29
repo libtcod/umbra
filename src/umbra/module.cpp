@@ -25,7 +25,7 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#include "main.hpp"
+#include "umbra.hpp"
 
 UmbraModule::UmbraModule (void) {
     fallback = -1;

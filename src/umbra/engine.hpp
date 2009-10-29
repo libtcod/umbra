@@ -25,9 +25,6 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef UMBRA_ENGINE_HPP
-#define UMBRA_ENGINE_HPP
-
 class UmbraModule;
 
 //the main engine
@@ -47,5 +44,3 @@ class UmbraEngine {
         UmbraModule * module; //currently running module
         TCODList <UmbraModule*> modules;
 };
-
-#endif
