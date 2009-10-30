@@ -511,9 +511,8 @@ Also see [[AdvancedOptions]]</pre>
 </div>
 <!--POST-SHADOWAREA-->
 <div id="storeArea">
-<div title="DefaultTiddlers" modifier="Mingos" created="200910291727" modified="200910301656" changecount="11">
+<div title="DefaultTiddlers" modifier="jice" created="200910291727" modified="200910301731" changecount="12">
 <pre>[[Font detection]]
-[[config variables]]
 [[Real time keyboard management]]
 [[toDeactivate in Engine::run]]
 [[function names]]</pre>
@@ -623,7 +622,7 @@ simply move the #include &quot;umbra/XXX&quot; from main.hpp to umbra.hpp then h
 ;OK
 ;As we've talked via gtalk, Umbra will become a library as well.</pre>
 </div>
-<div title="Real time keyboard management" modifier="Mingos" created="200910300756" modified="200910301634" tags="discuss" changecount="5">
+<div title="Real time keyboard management" modifier="jice" created="200910300756" modified="200910301732" tags="discuss" changecount="6">
 <pre>In the cave, I need the checkForKeypress to be called with TCOD_KEY_PRESSED|TCOD_KEY_RELEASED parameters. 
 For turn by turn games, you don't need it so we must figure a way to tell the engine how it must call checkForKeypress. Some game even might want waitForKeypress...
 
@@ -631,7 +630,7 @@ Suggestion :
 
 enum UmbraKeyboardMode { UMBRA_KEYBOARD_WAIT, UMBRA_KEYBOARD_WAIT_NOFLUSH, UMBRA_KEYBOARD_RELEASED, UMBRA_KEYBOARD_PRESSED, UMBRA_KEYBOARD_PRESSED_RELEASED };
 
-public Engine::setKeyboardMode( UmbraKeyboardMode mode);
+public void Engine::setKeyboardMode( UmbraKeyboardMode mode);
 
 default mode : UMBRA_KEYBOARD_RELEASE (this is the default for libtcod checkForKeypress)
 
@@ -642,7 +641,10 @@ UMBRA_KEYBOARD_RELEASED : the engine calls checktForKeypress(TCOD_KEY_RELEASED)
 UMBRA_KEYBOARD_PRESSED : the engine calls checktForKeypress(TCOD_KEY_PRESSED)
 UMBRA_KEYBOARD_PRESSED_RELEASED : the engine calls checktForKeypress(TCOD_KEY_PRESSED | TCOD_KEY_RELEASED)
 
-;a public function that returns TCOD_key_t?</pre>
+;a public function that returns TCOD_key_t?
+
+no, that switch a flag inside the engine so that it call a different libtcod key function in the main game loop.
+For example in the cave, I have the title screen and most intro screens that require only TCOD_KEY_RELEASED. But the main game screen needs to get both press and release events. The modules could switch the engine mode (in their setActive function) by calling this function.</pre>
 </div>
 <div title="SiteSubtitle" modifier="Mingos" created="200910291725" changecount="1">
 <pre>TODO and discussion</pre>
@@ -656,20 +658,24 @@ rename xSize ySize to consoleWidth consoleHeight ? (more explanatory)
 
 ;changed to rootWidth and rootHeight</pre>
 </div>
-<div title="function names" modifier="Mingos" created="200910301647" tags="discuss" changecount="1">
+<div title="function names" modifier="jice" created="200910301647" modified="200910301734" tags="code" changecount="3">
 <pre>We have functions in both British and American english: Engine::initialise and Module::initialize.
 It's an aesthetic thing, probably, but is an API inconsistency.
-What do we do? Allow both or use either of the two?</pre>
+What do we do? Allow both or use either of the two?
+
+;you're right we should stick to british. feel free to fix them when you find some. I can barely distinguish both but I'll try to do it too...</pre>
 </div>
 <div title="to code" modifier="jice" created="200910292046" changecount="1">
 <pre>Type the text for 'code'</pre>
 </div>
-<div title="toDeactivate in Engine::run" modifier="Mingos" created="200910301645" modified="200910301714" tags="discuss" changecount="2">
+<div title="toDeactivate in Engine::run" modifier="jice" created="200910301645" modified="200910301735" tags="discuss" changecount="4">
 <pre>I'd add a conditional expression:
 if (toDeactivate.size() &gt; 0) { ... }
 Otherwise the for loop and the toDeactivate.clear() are used every single frame. Might save a CPU cycle or two.
 
-Same goes for Engine::toActivate.</pre>
+Same goes for Engine::toActivate.
+
+;That's more code and you won't never see the difference (a few instructions per frame)</pre>
 </div>
 </div>
 <!--POST-STOREAREA-->
