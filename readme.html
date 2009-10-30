@@ -548,32 +548,47 @@ http://umbrarumregnum.110mb.com/</pre>
 <div title="SiteTitle" modifier="Mingos" created="200910241741" modified="200910241742" changecount="2">
 <pre>Umbra Engine</pre>
 </div>
-<div title="UmbraEngine" modifier="Mingos" created="200910241822" modified="200910252000" changecount="30">
+<div title="UmbraEngine" modifier="jice" created="200910241822" modified="200910302109" changecount="32">
 <pre>The class UmbraEngine contains the heart of Umbra. A pointer to an instance of UmbraEngine needs to be created in order for Umbra to become alive:
 
-:UmbraEngine * engine = new UmbraEngine();
+:UmbraEngine engine;
 
-Then, modules are declared. The modules are assigned unique id numbers. The first registered module has id=0, the second one has id=1 and so on. Make sure you can refer to those modules in some way, for instance, by creating an enumeration with unique names.
+Then, modules are declared. The modules are assigned unique id numbers. The first registered module has id=0, the second one has id=1 and so on. Make sure you can refer to those modules in some way, for instance, by creating an enumeration with unique names. The registerModule function also returns the registered module id.
 
-:engine-&gt;registerModule(new Credits());
+:engine.registerModule(new Credits());
+
+You can also register a module with a fallback module that will be automatically activated when the current module will be deactivated (when its update function returns false) :
+
+:int mainMenuId = engine.registerModule(new MainMenu());
+:engine.registerModule(new Credits(), mainMenuId);
+
+Then you have to activate at least one module, the game starting screen.
+
+:engine.activateModule(mainMenuId);
 
 Finally, the engine is initialised and run:
 
-:if (engine-&gt;init()) return engine-&gt;run();
-:else return 1;</pre>
+:if (engine.init()) return engine-&gt;run();
+:else return 1;
+
+The init function actually creates the game window. The run function contains the main game loops, which exits when all modules are deactivated.</pre>
 </div>
-<div title="UmbraModule" modifier="jice" created="200910241828" modified="200910292120" changecount="18">
+<div title="UmbraModule" modifier="jice" created="200910241828" modified="200910302109" changecount="20">
 <pre>UmbraModule is a single &quot;chunk&quot; of your game, with its own renderer and keybindings. It might be the main menu, the character creation screen, the overworld view, the trading screen or whatever you think needs a separate view. 
 
 Modules need to be constructed in a very specific way in order to be used in Umbra. Failure to do so will result in compilation errors. All the obligatory methods need to be declared in the module in order for it to work. UmbraEngine will call them each game tick. Other methods are optional.
 
 ;Obligatory methods:
 ;Optional methods:
+:[[initialise]] - load date, resources, allocate memory
+:[[setActive]] - things you want to do when the module is activated or deactivated
+:[[setPause]] - things you want to do when the module is paused or resumed. A paused module still renders, but does not updates anymore. It can only be reactivated by another module.
 :[[render]] - renders the current frame on the root console
-:[[update]] - handles the module's logic
 :[[keyboard]] - processes module-specific keyboard input
 :[[mouse]] - processes module-specific mouse input
-:[[setFade]] - set fade lengths</pre>
+:[[update]] - handles the module's logic
+:[[setFade]] - set fade lengths
+</pre>
 </div>
 <div title="Using Umbra" modifier="Mingos" created="200910241814" modified="200910272013" changecount="2">
 <pre>Umbra Engine is not a library, but rather a source code foundation intended to be used as a base for game development. This means that you won't have to link your project to another library nor will have to place additional dynamic libraries in your project's working directory.
