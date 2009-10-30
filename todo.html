@@ -515,6 +515,21 @@ Also see [[AdvancedOptions]]</pre>
 <pre>[[config variables]]
 [[Real time keyboard management]]</pre>
 </div>
+<div title="Font detection" modifier="jice" created="200910301332" tags="discuss" changecount="1">
+<pre>General thoughts about fonts in libtcod :
+* setCustomFont requires the font grid size (NHC = number of horizontal characters x NVC = number of vertical character), not the char size in pixels. The later can be deduced from the first (and vice versa). The initial reason was that all the fonts for a game have the same NHC/NVC while the char size may change. Providing NHC/NVC to setCustomFont make it possible for a user (the game developer or even a player) to change the font without recompiling the game.
+
+Registering fonts in Umbra means having a list of fonts with an arbitrary size property (that is not necessary the char size in pixels which has no meaning for non square fonts). The size is only used to sort the fonts correctly so that you can switch them in the right order.
+
+We can safely assume that the developper will either use custom font names or use the Umbra default names and not mix them. So here is my suggestion :
+
+* add a custom font registration function. Fonts are registered from the smallest to the biggest
+  Engine::registerFont(int nbHorizChar, int nbVerticChar, const char *fontFileName, int tcodFlag)
+
+* look for font&lt;x&gt;x&lt;y&gt;_&lt;flag&gt;.png files in data/img and auto-register them Example : font8x8_TCOD.png,  font8x8_ASCII_INCOL.png...
+  This means Umbra has to recompute the NHC/NVC by load the TCODImage and deducing them from the image size. We can't deduce the grid size from the flag (Umbrarum Regnum itself uses a TCOD layout with more than 1024 characters... ;) )
+ </pre>
+</div>
 <div title="MainMenu" modifier="Mingos" created="200910291741" changecount="1">
 <pre>[[GettingStarted]]
 [[DefaultTiddlers]]</pre>
@@ -601,13 +616,17 @@ simply move the #include &quot;umbra/XXX&quot; from main.hpp to umbra.hpp then h
 ;OK
 ;As we've talked via gtalk, Umbra will become a library as well.</pre>
 </div>
-<div title="Real time keyboard management" modifier="YourName" created="200910300756" modified="200910301148" tags="discuss" changecount="2">
+<div title="Real time keyboard management" modifier="jice" created="200910300756" modified="200910301247" tags="discuss" changecount="4">
 <pre>In the cave, I need the checkForKeypress to be called with TCOD_KEY_PRESSED|TCOD_KEY_RELEASED parameters. 
 For turn by turn games, you don't need it so we must figure a way to tell the engine how it must call checkForKeypress. Some game even might want waitForKeypress...
 
 Suggestion :
+
 enum UmbraKeyboardMode { UMBRA_KEYBOARD_WAIT, UMBRA_KEYBOARD_WAIT_NOFLUSH, UMBRA_KEYBOARD_RELEASED, UMBRA_KEYBOARD_PRESSED, UMBRA_KEYBOARD_PRESSED_RELEASED };
+
 public Engine::setKeyboardMode( UmbraKeyboardMode mode);
+
+default mode : UMBRA_KEYBOARD_RELEASE (this is the default for libtcod checkForKeypress)
 
 Each module can freely call this function. 
 UMBRA_KEYBOARD_WAIT : the engine calls waitForKeypress(true)
