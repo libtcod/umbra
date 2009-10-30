@@ -34,7 +34,7 @@ class UmbraEngine {
 
         bool initialise (void); //initialises the engine
         int run (void); //runs the engine
-        int registerModule (UmbraModule * module, int fallback=-1); //add a module to the modules list. returns id
+        int registerModule (UmbraModule * module, int fallback = (-1)); //add a module to the modules list. returns id
         void activateModule( int moduleId );
         void deactivateModule( int moduleId );
     private:

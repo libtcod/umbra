@@ -32,8 +32,8 @@ class UmbraConfig {
     static void generateTerminalName (void); //generate terminal font file name
     static bool adjustFontSize (int adjust); //change font size
 
-    static int xSize;
-    static int ySize;
+    static int rootWidth;
+    static int rootHeight;
     static int fontSize;
     static bool fullScreen;
     static std::string * fontFile;

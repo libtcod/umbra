@@ -511,11 +511,14 @@ Also see [[AdvancedOptions]]</pre>
 </div>
 <!--POST-SHADOWAREA-->
 <div id="storeArea">
-<div title="DefaultTiddlers" modifier="jice" created="200910291727" modified="200910300756" changecount="7">
-<pre>[[config variables]]
-[[Real time keyboard management]]</pre>
+<div title="DefaultTiddlers" modifier="Mingos" created="200910291727" modified="200910301656" changecount="11">
+<pre>[[Font detection]]
+[[config variables]]
+[[Real time keyboard management]]
+[[toDeactivate in Engine::run]]
+[[function names]]</pre>
 </div>
-<div title="Font detection" modifier="jice" created="200910301332" tags="discuss" changecount="1">
+<div title="Font detection" modifier="Mingos" created="200910301332" modified="200910301711" tags="code" changecount="2">
 <pre>General thoughts about fonts in libtcod :
 * setCustomFont requires the font grid size (NHC = number of horizontal characters x NVC = number of vertical character), not the char size in pixels. The later can be deduced from the first (and vice versa). The initial reason was that all the fonts for a game have the same NHC/NVC while the char size may change. Providing NHC/NVC to setCustomFont make it possible for a user (the game developer or even a player) to change the font without recompiling the game.
 
@@ -528,7 +531,11 @@ We can safely assume that the developper will either use custom font names or us
 
 * look for font&lt;x&gt;x&lt;y&gt;_&lt;flag&gt;.png files in data/img and auto-register them Example : font8x8_TCOD.png,  font8x8_ASCII_INCOL.png...
   This means Umbra has to recompute the NHC/NVC by load the TCODImage and deducing them from the image size. We can't deduce the grid size from the flag (Umbrarum Regnum itself uses a TCOD layout with more than 1024 characters... ;) )
- </pre>
+
+;Here is what I had in mind:
+;register pairs of variables: font size in pixels (the game would only use square fonts) and file name.
+;upon pressing PGDN/PGUP, run the font switcher: the key pressed determines search direction +1 or -1. Sizes are scanned starting from the current one in the given direction until a valid one is found or a ceiling is hit. If no font is found, nothing happens, if a new font is found, it's used.
+;Your idea seems to be more versatile.</pre>
 </div>
 <div title="MainMenu" modifier="Mingos" created="200910291741" changecount="1">
 <pre>[[GettingStarted]]
@@ -616,7 +623,7 @@ simply move the #include &quot;umbra/XXX&quot; from main.hpp to umbra.hpp then h
 ;OK
 ;As we've talked via gtalk, Umbra will become a library as well.</pre>
 </div>
-<div title="Real time keyboard management" modifier="jice" created="200910300756" modified="200910301247" tags="discuss" changecount="4">
+<div title="Real time keyboard management" modifier="Mingos" created="200910300756" modified="200910301634" tags="discuss" changecount="5">
 <pre>In the cave, I need the checkForKeypress to be called with TCOD_KEY_PRESSED|TCOD_KEY_RELEASED parameters. 
 For turn by turn games, you don't need it so we must figure a way to tell the engine how it must call checkForKeypress. Some game even might want waitForKeypress...
 
@@ -634,7 +641,8 @@ UMBRA_KEYBOARD_WAIT_NOFLUSH : the engine calls waitForKeypress(false)
 UMBRA_KEYBOARD_RELEASED : the engine calls checktForKeypress(TCOD_KEY_RELEASED)
 UMBRA_KEYBOARD_PRESSED : the engine calls checktForKeypress(TCOD_KEY_PRESSED)
 UMBRA_KEYBOARD_PRESSED_RELEASED : the engine calls checktForKeypress(TCOD_KEY_PRESSED | TCOD_KEY_RELEASED)
-</pre>
+
+;a public function that returns TCOD_key_t?</pre>
 </div>
 <div title="SiteSubtitle" modifier="Mingos" created="200910291725" changecount="1">
 <pre>TODO and discussion</pre>
@@ -642,12 +650,26 @@ UMBRA_KEYBOARD_PRESSED_RELEASED : the engine calls checktForKeypress(TCOD_KEY_PR
 <div title="SiteTitle" modifier="Mingos" created="200910291725" changecount="1">
 <pre>Umbra DickyWiki</pre>
 </div>
-<div title="config variables" modifier="jice" created="200910300731" tags="discuss" changecount="1">
+<div title="config variables" modifier="Mingos" created="200910300731" modified="200910301626" tags="done" changecount="3">
 <pre>Suggestion :
-rename xSize ySize to consoleWidth consoleHeight ? (more explanatory)</pre>
+rename xSize ySize to consoleWidth consoleHeight ? (more explanatory)
+
+;changed to rootWidth and rootHeight</pre>
+</div>
+<div title="function names" modifier="Mingos" created="200910301647" tags="discuss" changecount="1">
+<pre>We have functions in both British and American english: Engine::initialise and Module::initialize.
+It's an aesthetic thing, probably, but is an API inconsistency.
+What do we do? Allow both or use either of the two?</pre>
 </div>
 <div title="to code" modifier="jice" created="200910292046" changecount="1">
 <pre>Type the text for 'code'</pre>
+</div>
+<div title="toDeactivate in Engine::run" modifier="Mingos" created="200910301645" modified="200910301714" tags="discuss" changecount="2">
+<pre>I'd add a conditional expression:
+if (toDeactivate.size() &gt; 0) { ... }
+Otherwise the for loop and the toDeactivate.clear() are used every single frame. Might save a CPU cycle or two.
+
+Same goes for Engine::toActivate.</pre>
 </div>
 </div>
 <!--POST-STOREAREA-->

@@ -71,7 +71,7 @@ bool UmbraEngine::initialise (void) {
     }
     //initialise console
     TCODConsole::setCustomFont(UmbraConfig::fontFile->c_str(),TCOD_FONT_LAYOUT_TCOD|TCOD_FONT_TYPE_GRAYSCALE,32,8);
-    TCODConsole::initRoot(UmbraConfig::xSize,UmbraConfig::ySize,UMBRA_TITLE" "UMBRA_VERSION" ("UMBRA_STATUS")", UmbraConfig::fullScreen);
+    TCODConsole::initRoot(UmbraConfig::rootWidth,UmbraConfig::rootHeight,UMBRA_TITLE" "UMBRA_VERSION" ("UMBRA_STATUS")", UmbraConfig::fullScreen);
     TCODSystem::setFps(25);
     TCODMouse::showCursor(true);
     return true;

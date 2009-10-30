@@ -28,8 +28,8 @@
 #include "umbra.hpp"
 #include <stdio.h>
 
-int UmbraConfig::xSize;
-int UmbraConfig::ySize;
+int UmbraConfig::rootWidth;
+int UmbraConfig::rootHeight;
 int UmbraConfig::fontSize;
 bool UmbraConfig::fullScreen;
 std::string * UmbraConfig::fontFile = new std::string;
@@ -41,8 +41,8 @@ void UmbraConfig::load (void) {
 
     //register configuration variables
     TCODParserStruct * config = parser.newStructure("config");
-        config->addProperty("xSize",TCOD_TYPE_INT,true);
-        config->addProperty("ySize",TCOD_TYPE_INT,true);
+        config->addProperty("rootWidth",TCOD_TYPE_INT,true);
+        config->addProperty("rootHeight",TCOD_TYPE_INT,true);
         config->addProperty("fontSize",TCOD_TYPE_INT,true);
         config->addProperty("fullScreen",TCOD_TYPE_BOOL,true);
 
@@ -56,8 +56,8 @@ void UmbraConfig::load (void) {
     parser.run("data/cfg/umbra.txt",NULL);
 
     //assign parsed values to class variables
-    xSize = parser.getIntProperty("config.xSize");
-    ySize = parser.getIntProperty("config.ySize");
+    rootWidth = parser.getIntProperty("config.rootWidth");
+    rootHeight = parser.getIntProperty("config.rootHeight");
     fontSize = parser.getIntProperty("config.fontSize");
     fullScreen = parser.getBoolProperty("config.fullScreen");
 
@@ -75,12 +75,12 @@ void UmbraConfig::save (void) {
                 " */\n"
                 "\n"
                 "config {\n"
-                "  xSize = %d\n"
-                "  ySize = %d\n"
+                "  rootWidth = %d\n"
+                "  rootHeight = %d\n"
                 "  fontSize = %d\n"
                 "  fullScreen = %s\n"
                 "}\n",
-                xSize, ySize, fontSize, (fullScreen?"true":"false"));
+                rootWidth, rootHeight, fontSize, (fullScreen?"true":"false"));
 
     fclose(out);
 }
