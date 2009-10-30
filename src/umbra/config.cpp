@@ -68,7 +68,7 @@ void UmbraConfig::load (void) {
 
 void UmbraConfig::save (void) {
     FILE * out;
-    out = fopen("data/cfg/config.txt","w");
+    out = fopen("data/cfg/umbra.txt","w");
 
     fprintf(out,"/*\n"
                 " * UMBRA CONFIGURATION FILE\n"

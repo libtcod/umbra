@@ -31,7 +31,6 @@
 //constructor
 UmbraEngine::UmbraEngine (void) {
     UmbraConfig::load();
-    currentModule = 0;
 }
 
 //add a module to the modules list
@@ -48,8 +47,7 @@ void UmbraEngine::activateModule( int moduleId ) {
     }
     UmbraModule *module = modules.get(moduleId);
     if (module != NULL && ! module->isActive()) {
-        module->setActive(true);
-        activeModules.push(module);
+        toActivate.push(module);
     }
 }
 
@@ -60,7 +58,7 @@ void UmbraEngine::deactivateModule( int moduleId ) {
     }
     UmbraModule *module = modules.get(moduleId);
     if (module != NULL && module->isActive()) {
-        activeModules.remove(module);
+        toDeactivate.push(module);
         module->setActive(false);
     }
 }
@@ -82,15 +80,26 @@ bool UmbraEngine::initialise (void) {
 int UmbraEngine::run (void) {
     TCOD_key_t key;
     TCOD_mouse_t mouse;
-    static TCODList<UmbraModule *> toActivate;
 
     if (modules.size() == 0) {
         UmbraError::add("No modules registered!");
         exit(1);
     }
 
-    module = modules.get(0);
     while(!TCODConsole::isWindowClosed()) {
+        // deactivate modules
+        for (UmbraModule ** mod = toDeactivate.begin(); mod != toDeactivate.end(); mod++) {
+            (*mod)->setActive(false);
+            activeModules.remove(*mod);
+        }
+        toDeactivate.clear();
+        // activate new modules
+        for (UmbraModule ** mod = toActivate.begin(); mod != toActivate.end(); mod++) {
+            (*mod)->setActive(true);
+            activeModules.push(*mod);
+        }
+        toActivate.clear();
+        if ( activeModules.size() == 0 ) break; // exit game
         // update all active modules
         key = TCODConsole::checkForKeypress(true);
         mouse = TCODMouse::getStatus();
@@ -118,13 +127,6 @@ int UmbraEngine::run (void) {
         for (UmbraModule ** mod = activeModules.begin(); mod != activeModules.end(); mod++) {
             (*mod)->render();
         }
-        // activate new modules
-        for (UmbraModule ** mod = toActivate.begin(); mod != toActivate.end(); mod++) {
-            (*mod)->setActive(true);
-            activeModules.push(*mod);
-        }
-        toActivate.clear();
-        if ( activeModules.size() == 0 ) break; // exit game
         TCODConsole::root->flush();
     }
 

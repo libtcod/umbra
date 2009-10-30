@@ -41,8 +41,8 @@ class UmbraEngine {
         void globalKeybindings (TCOD_key_t &key);
         void reinitialise (void);
 
-        int currentModule; //actual module number
-        UmbraModule * module; //currently running module
-        TCODList <UmbraModule*> modules;
-        TCODList <UmbraModule*> activeModules;
+        TCODList <UmbraModule*> modules; // list of all registered modules
+        TCODList <UmbraModule*> activeModules; // currently active modules
+        TCODList <UmbraModule*> toActivate; // modules to activate next frame
+        TCODList <UmbraModule*> toDeactivate; // modules to deactivate next frame
 };
