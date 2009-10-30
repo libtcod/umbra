@@ -601,9 +601,20 @@ simply move the #include &quot;umbra/XXX&quot; from main.hpp to umbra.hpp then h
 ;OK
 ;As we've talked via gtalk, Umbra will become a library as well.</pre>
 </div>
-<div title="Real time keyboard management" modifier="jice" created="200910300756" tags="discuss" changecount="1">
+<div title="Real time keyboard management" modifier="YourName" created="200910300756" modified="200910301148" tags="discuss" changecount="2">
 <pre>In the cave, I need the checkForKeypress to be called with TCOD_KEY_PRESSED|TCOD_KEY_RELEASED parameters. 
 For turn by turn games, you don't need it so we must figure a way to tell the engine how it must call checkForKeypress. Some game even might want waitForKeypress...
+
+Suggestion :
+enum UmbraKeyboardMode { UMBRA_KEYBOARD_WAIT, UMBRA_KEYBOARD_WAIT_NOFLUSH, UMBRA_KEYBOARD_RELEASED, UMBRA_KEYBOARD_PRESSED, UMBRA_KEYBOARD_PRESSED_RELEASED };
+public Engine::setKeyboardMode( UmbraKeyboardMode mode);
+
+Each module can freely call this function. 
+UMBRA_KEYBOARD_WAIT : the engine calls waitForKeypress(true)
+UMBRA_KEYBOARD_WAIT_NOFLUSH : the engine calls waitForKeypress(false)
+UMBRA_KEYBOARD_RELEASED : the engine calls checktForKeypress(TCOD_KEY_RELEASED)
+UMBRA_KEYBOARD_PRESSED : the engine calls checktForKeypress(TCOD_KEY_PRESSED)
+UMBRA_KEYBOARD_PRESSED_RELEASED : the engine calls checktForKeypress(TCOD_KEY_PRESSED | TCOD_KEY_RELEASED)
 </pre>
 </div>
 <div title="SiteSubtitle" modifier="Mingos" created="200910291725" changecount="1">
