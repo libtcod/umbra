@@ -28,7 +28,6 @@
 #include "umbra.hpp"
 #include <stdio.h>
 
-TCODParser UmbraConfig::parser;
 int UmbraConfig::xSize;
 int UmbraConfig::ySize;
 int UmbraConfig::fontSize;
@@ -38,6 +37,7 @@ std::string * UmbraConfig::fontFile = new std::string;
 void UmbraConfig::load (void) {
     static bool loaded = false;
     if (loaded) return;
+    TCODParser parser;
 
     //register configuration variables
     TCODParserStruct * config = parser.newStructure("config");
@@ -47,8 +47,8 @@ void UmbraConfig::load (void) {
         config->addProperty("fullScreen",TCOD_TYPE_BOOL,true);
 
     //check if the config file exists
-    if (!UmbraError::fileExists("data/cfg/config.txt")) {
-        UmbraError::add("Configuration file data/cfg/config.txt is bad or missing.");
+    if (!UmbraError::fileExists("data/cfg/umbra.txt")) {
+        UmbraError::add("Configuration file data/cfg/umbra.txt is bad or missing.");
         exit(1); //replace by loading defaults or automatic default config file generator
     }
 

@@ -38,6 +38,4 @@ class UmbraConfig {
     static bool fullScreen;
     static std::string * fontFile;
 
-    private:
-    static TCODParser parser;
 };
