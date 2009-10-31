@@ -126,10 +126,10 @@ int UmbraEngine::run (void) {
                 key = TCODConsole::waitForKeypress( false ) ;
                 break;
             case UMBRA_KEYBOARD_PRESSED :
-                key = TCODConsole::waitForKeypress( TCOD_KEY_PRESSED ) ;
+                key = TCODConsole::checkForKeypress( TCOD_KEY_PRESSED ) ;
                 break;
             case UMBRA_KEYBOARD_PRESSED_RELEASED :
-                key = TCODConsole::waitForKeypress( TCOD_KEY_PRESSED | TCOD_KEY_RELEASED ) ;
+                key = TCODConsole::checkForKeypress( TCOD_KEY_PRESSED | TCOD_KEY_RELEASED ) ;
                 break;
             case UMBRA_KEYBOARD_RELEASED :
             default :
