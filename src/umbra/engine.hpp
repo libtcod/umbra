@@ -27,12 +27,21 @@
 
 class UmbraModule;
 
+enum UmbraKeyboardMode {
+    UMBRA_KEYBOARD_WAIT,
+    UMBRA_KEYBOARD_WAIT_NOFLUSH,
+    UMBRA_KEYBOARD_RELEASED,
+    UMBRA_KEYBOARD_PRESSED,
+    UMBRA_KEYBOARD_PRESSED_RELEASED };
+
 //the main engine
 class UmbraEngine {
     public:
         UmbraEngine (void); //constructor
         ~UmbraEngine (void);
         bool initialise (void); //initialises the engine
+        inline void setKeyboardMode( UmbraKeyboardMode mode ) { keyboardMode = mode; }
+        inline UmbraKeyboardMode getKeyboardMode( void ) { return keyboardMode ; }
         int run (void); //runs the engine
         int registerModule (UmbraModule * module, int fallback = (-1)); //add a module to the modules list. returns id
         void registerFont (int rows, int columns, const char * filename, int flags = TCOD_FONT_LAYOUT_TCOD);
@@ -48,4 +57,5 @@ class UmbraEngine {
         TCODList <UmbraModule*> activeModules; // currently active modules
         TCODList <UmbraModule*> toActivate; // modules to activate next frame
         TCODList <UmbraModule*> toDeactivate; // modules to deactivate next frame
+        UmbraKeyboardMode keyboardMode;
 };

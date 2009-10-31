@@ -29,7 +29,7 @@
 #include <stdio.h>
 
 //constructor
-UmbraEngine::UmbraEngine (void) {
+UmbraEngine::UmbraEngine (void) : keyboardMode( UMBRA_KEYBOARD_RELEASED ) {
     UmbraConfig::load();
     paused = false;
 }
@@ -118,7 +118,24 @@ int UmbraEngine::run (void) {
         toActivate.clear();
         if (activeModules.size() == 0) break; // exit game
         // update all active modules
-        key = TCODConsole::checkForKeypress(true);
+        switch ( keyboardMode ) {
+            case UMBRA_KEYBOARD_WAIT :
+                key = TCODConsole::waitForKeypress( true ) ;
+                break;
+            case UMBRA_KEYBOARD_WAIT_NOFLUSH :
+                key = TCODConsole::waitForKeypress( false ) ;
+                break;
+            case UMBRA_KEYBOARD_PRESSED :
+                key = TCODConsole::waitForKeypress( TCOD_KEY_PRESSED ) ;
+                break;
+            case UMBRA_KEYBOARD_PRESSED_RELEASED :
+                key = TCODConsole::waitForKeypress( TCOD_KEY_PRESSED | TCOD_KEY_RELEASED ) ;
+                break;
+            case UMBRA_KEYBOARD_RELEASED :
+            default :
+                key = TCODConsole::checkForKeypress( TCOD_KEY_RELEASED ) ;
+                break;
+        }
         mouse = TCODMouse::getStatus();
         keyboard(key);
         for (UmbraModule ** mod = activeModules.begin(); mod != activeModules.end(); mod++) {
