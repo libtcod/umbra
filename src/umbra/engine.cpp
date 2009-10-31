@@ -31,6 +31,7 @@
 //constructor
 UmbraEngine::UmbraEngine (void) {
     UmbraConfig::load();
+    paused = false;
 }
 
 //add a module to the modules list
@@ -95,6 +96,14 @@ int UmbraEngine::run (void) {
     }
 
     while(!TCODConsole::isWindowClosed()) {
+        //execute only when paused
+        if (paused) {
+            key = TCODConsole::checkForKeypress(true);
+            keyboard(key);
+            TCODConsole::root->flush();
+            continue; //don't update or render anything anew
+        }
+
         // deactivate modules
         for (UmbraModule ** mod = toDeactivate.begin(); mod != toDeactivate.end(); mod++) {
             (*mod)->setActive(false);
@@ -160,6 +169,9 @@ void UmbraEngine::keyboard (TCOD_key_t &key) {
             break;
         case TCODK_PAGEDOWN:
             if (UmbraConfig::activateFont(-1)) reinitialise();
+            break;
+        case TCODK_PAUSE:
+            paused = !paused;
             break;
         default:
             returnValue = false;

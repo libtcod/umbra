@@ -511,8 +511,9 @@ Also see [[AdvancedOptions]]</pre>
 </div>
 <!--POST-SHADOWAREA-->
 <div id="storeArea">
-<div title="DefaultTiddlers" modifier="jice" created="200910291727" modified="200910312130" changecount="15">
-<pre>[[No implicit config filename]]
+<div title="DefaultTiddlers" modifier="Mingos" created="200910291727" modified="200910312230" changecount="16">
+<pre>[[pause]]
+[[No implicit config filename]]
 [[default keybindings]]
 [[task assignment]]
 [[Font detection]]
@@ -611,14 +612,16 @@ if a module exits, add its fallback to a 'toActivate' list  (don't activate it i
 
 ;seems OK. Need to discuss it via chat.</pre>
 </div>
-<div title="No implicit config filename" modifier="jice" created="200910312130" tags="discuss" changecount="1">
+<div title="No implicit config filename" modifier="Mingos" created="200910312130" modified="200910312152" tags="discuss" changecount="3">
 <pre>Currently you need a lot of stuff for Umbra to work properly. This will cause issues for the guy who doesn't read the documentation.
 What about having
 
 UmbraEngine::UmbraEngine( const char *configFileName = &quot;data/cfg/umbra.txt&quot;)
 
 =&gt; the current demo code still works
-=&gt; the guy knows where the file should be and he can put it elsewhere</pre>
+=&gt; the guy knows where the file should be and he can put it elsewhere
+
+;I don't get it. What's it for?</pre>
 </div>
 <div title="Project structure" modifier="jice" created="200910291732" modified="200910292102" tags="done" changecount="5">
 <pre>- rename 'mod' directory to 'demo'
@@ -634,7 +637,7 @@ simply move the #include &quot;umbra/XXX&quot; from main.hpp to umbra.hpp then h
 ;OK
 ;As we've talked via gtalk, Umbra will become a library as well.</pre>
 </div>
-<div title="Real time keyboard management" modifier="jice" created="200910300756" modified="200910301732" tags="discuss" changecount="6">
+<div title="Real time keyboard management" modifier="Mingos" created="200910300756" modified="200910312202" tags="code Jice" changecount="7">
 <pre>In the cave, I need the checkForKeypress to be called with TCOD_KEY_PRESSED|TCOD_KEY_RELEASED parameters. 
 For turn by turn games, you don't need it so we must figure a way to tell the engine how it must call checkForKeypress. Some game even might want waitForKeypress...
 
@@ -656,7 +659,9 @@ UMBRA_KEYBOARD_PRESSED_RELEASED : the engine calls checktForKeypress(TCOD_KEY_PR
 ;a public function that returns TCOD_key_t?
 
 no, that switch a flag inside the engine so that it call a different libtcod key function in the main game loop.
-For example in the cave, I have the title screen and most intro screens that require only TCOD_KEY_RELEASED. But the main game screen needs to get both press and release events. The modules could switch the engine mode (in their setActive function) by calling this function.</pre>
+For example in the cave, I have the title screen and most intro screens that require only TCOD_KEY_RELEASED. But the main game screen needs to get both press and release events. The modules could switch the engine mode (in their setActive function) by calling this function.
+
+;OK, just train me in its workings l8er :D</pre>
 </div>
 <div title="SiteSubtitle" modifier="Mingos" created="200910291725" changecount="1">
 <pre>TODO and discussion</pre>
@@ -670,7 +675,7 @@ rename xSize ySize to consoleWidth consoleHeight ? (more explanatory)
 
 ;changed to rootWidth and rootHeight</pre>
 </div>
-<div title="default keybindings" modifier="jice" created="200910311323" modified="200910312127" tags="code unassigned" changecount="9">
+<div title="default keybindings" modifier="Mingos" created="200910311323" modified="200910312156" tags="discuss" changecount="10">
 <pre>At the moment, keybindings are fixed, ie, alt+f4 closes the app, pgup uses the previous font, pgdn uses the next font, prtscr saves a screenshot, alt+enter toggles fullscreen.
 
 My idea is to allow the developer to control these. Note that, for instance, ADOM uses pgup/pgdn to scroll inventory and help screens up and down, so a hypothetical remake would better have a different keybindings.
@@ -691,7 +696,15 @@ So, what do you think about this:
 :...
 :}
 
-;ok, but the current bindings should be the default, so that you use this function only if you want non standard bindings. Also sending 0 in all fields should disable the binding (in case some freak doesn't want to be able to take screenshots or something ...)</pre>
+;ok, but the current bindings should be the default, so that you use this function only if you want non standard bindings. Also sending 0 in all fields should disable the binding (in case some freak doesn't want to be able to take screenshots or something ...)
+
+Reverted to discuss.
+There are multiple keybindings for a single function, eg. quit might be triggered by:
+lalt+f4
+ralt+f4
+lctrl+q
+rctrl+q (not on my keyboard tho, I don't have a rctrl)
+If this hypothetical freak also wants to disable quitting, he'll have to disable all 4 keybindings (and won't be able to add a new keybinding either). Maybe we should rethink this idea a little bit?</pre>
 </div>
 <div title="function names" modifier="jice" created="200910301647" modified="200910312123" tags="code Mingos" changecount="4">
 <pre>We have functions in both British and American english: Engine::initialise and Module::initialize.
@@ -699,6 +712,11 @@ It's an aesthetic thing, probably, but is an API inconsistency.
 What do we do? Allow both or use either of the two?
 
 ;you're right we should stick to british. feel free to fix them when you find some. I can barely distinguish both but I'll try to do it too...</pre>
+</div>
+<div title="pause" modifier="Mingos" created="200910312236" tags="discuss" changecount="1">
+<pre>I added a very simple pause feature in the engine. It stops the execution of pretty much everything, although it keeps reacting to global keys. The question is: will it be useful at all, taking into account that some functions will depend on the elapsed time?
+
+If you think it's crap, remove it. I added it out of boredom.</pre>
 </div>
 <div title="task assignment" modifier="jice" created="200910310116" modified="200910312123" tags="done" changecount="2">
 <pre>I suggest that when we tag a discussion as 'code', we should also assign the resolved topic to someone. How about we add our names along with the 'code' tag and treat a sole 'code' as an unassigned pending task?

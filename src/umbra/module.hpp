@@ -31,8 +31,8 @@ class UmbraModule {
         UmbraModule (void); //constructor
         virtual ~UmbraModule (void) {} //destructor
 
-        virtual void initialize(); // allocate resources. called only once
-        virtual void render (void) { } //render the module on the root console
+        virtual void initialise (void); // allocate resources. called only once
+        virtual void render (void) { return; } //render the module on the root console
         virtual bool update (void) { return true; } //update the module's logic
         virtual void keyboard (TCOD_key_t &key) { return; } //module-specific keyboard
         virtual void mouse (TCOD_mouse_t ms) { return; } //module-specific mouse
@@ -47,11 +47,11 @@ class UmbraModule {
         virtual void setActive (bool active);
         inline bool isActive (void) { return active; }
         virtual void setPause (bool paused);
-        void deinitialize (void);
+        void deinitialise (void);
 
 
     private:
-        bool initialized;
+        bool initialised;
         bool active;
         bool paused;
         int fallback; //fallback module's index

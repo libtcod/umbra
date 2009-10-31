@@ -42,6 +42,7 @@ class UmbraEngine {
     private:
         void keyboard (TCOD_key_t &key);
         void reinitialise (void);
+        bool paused;
 
         TCODList <UmbraModule*> modules; // list of all registered modules
         TCODList <UmbraModule*> activeModules; // currently active modules

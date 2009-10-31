@@ -36,10 +36,10 @@ class UmbraFont {
         ~UmbraFont (void);
         void initialise (int r, int c, const char * fn, int f = TCOD_FONT_LAYOUT_TCOD); //initialise manually
         void initialise (int s, const char * fn, int f); //initialise from font file
-        const char * filename (void);
-        int rows (void);
-        int columns (void);
-        int flags (void);
+        inline const char * filename (void) { return _filename.c_str(); }
+        inline int rows (void) { return _rows; }
+        inline int columns (void) { return _columns; }
+        inline int flags (void) {return _flags; }
 
     private:
         std::string _filename;

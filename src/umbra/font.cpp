@@ -53,19 +53,3 @@ void UmbraFont::initialise (int s, const char * fn, int f) {
     _filename = fn;
     delete img;
 }
-
-const char * UmbraFont::filename (void) {
-    return _filename.c_str();
-}
-
-int UmbraFont::rows (void) {
-    return _rows;
-}
-
-int UmbraFont::columns (void) {
-    return _columns;
-}
-
-int UmbraFont::flags (void) {
-    return _flags;
-}
