@@ -511,15 +511,16 @@ Also see [[AdvancedOptions]]</pre>
 </div>
 <!--POST-SHADOWAREA-->
 <div id="storeArea">
-<div title="DefaultTiddlers" modifier="Mingos" created="200910291727" modified="200910311309" changecount="14">
-<pre>[[default keybindings]]
+<div title="DefaultTiddlers" modifier="jice" created="200910291727" modified="200910312130" changecount="15">
+<pre>[[No implicit config filename]]
+[[default keybindings]]
 [[task assignment]]
 [[Font detection]]
 [[Real time keyboard management]]
 [[toDeactivate in Engine::run]]
 [[function names]]</pre>
 </div>
-<div title="Font detection" modifier="Mingos" created="200910301332" modified="200910301711" tags="code" changecount="2">
+<div title="Font detection" modifier="jice" created="200910301332" modified="200910312123" tags="code Mingos" changecount="3">
 <pre>General thoughts about fonts in libtcod :
 * setCustomFont requires the font grid size (NHC = number of horizontal characters x NVC = number of vertical character), not the char size in pixels. The later can be deduced from the first (and vice versa). The initial reason was that all the fonts for a game have the same NHC/NVC while the char size may change. Providing NHC/NVC to setCustomFont make it possible for a user (the game developer or even a player) to change the font without recompiling the game.
 
@@ -610,6 +611,15 @@ if a module exits, add its fallback to a 'toActivate' list  (don't activate it i
 
 ;seems OK. Need to discuss it via chat.</pre>
 </div>
+<div title="No implicit config filename" modifier="jice" created="200910312130" tags="discuss" changecount="1">
+<pre>Currently you need a lot of stuff for Umbra to work properly. This will cause issues for the guy who doesn't read the documentation.
+What about having
+
+UmbraEngine::UmbraEngine( const char *configFileName = &quot;data/cfg/umbra.txt&quot;)
+
+=&gt; the current demo code still works
+=&gt; the guy knows where the file should be and he can put it elsewhere</pre>
+</div>
 <div title="Project structure" modifier="jice" created="200910291732" modified="200910292102" tags="done" changecount="5">
 <pre>- rename 'mod' directory to 'demo'
 - main.cpp and main.hpp should be moved to the 'demo' directory, version.hpp to the umbra directory
@@ -660,7 +670,7 @@ rename xSize ySize to consoleWidth consoleHeight ? (more explanatory)
 
 ;changed to rootWidth and rootHeight</pre>
 </div>
-<div title="default keybindings" modifier="Mingos" created="200910311323" modified="200910311334" tags="discuss" changecount="4">
+<div title="default keybindings" modifier="jice" created="200910311323" modified="200910312127" tags="code unassigned" changecount="9">
 <pre>At the moment, keybindings are fixed, ie, alt+f4 closes the app, pgup uses the previous font, pgdn uses the next font, prtscr saves a screenshot, alt+enter toggles fullscreen.
 
 My idea is to allow the developer to control these. Note that, for instance, ADOM uses pgup/pgdn to scroll inventory and help screens up and down, so a hypothetical remake would better have a different keybindings.
@@ -679,18 +689,22 @@ So, what do you think about this:
 :switch (key) {
 :case keys[UMBRA_TOGGLE_FULLSCREEN]:
 :...
-:}</pre>
+:}
+
+;ok, but the current bindings should be the default, so that you use this function only if you want non standard bindings. Also sending 0 in all fields should disable the binding (in case some freak doesn't want to be able to take screenshots or something ...)</pre>
 </div>
-<div title="function names" modifier="jice" created="200910301647" modified="200910301734" tags="code" changecount="3">
+<div title="function names" modifier="jice" created="200910301647" modified="200910312123" tags="code Mingos" changecount="4">
 <pre>We have functions in both British and American english: Engine::initialise and Module::initialize.
 It's an aesthetic thing, probably, but is an API inconsistency.
 What do we do? Allow both or use either of the two?
 
 ;you're right we should stick to british. feel free to fix them when you find some. I can barely distinguish both but I'll try to do it too...</pre>
 </div>
-<div title="task assignment" modifier="Mingos" created="200910310116" tags="discuss" changecount="1">
+<div title="task assignment" modifier="jice" created="200910310116" modified="200910312123" tags="done" changecount="2">
 <pre>I suggest that when we tag a discussion as 'code', we should also assign the resolved topic to someone. How about we add our names along with the 'code' tag and treat a sole 'code' as an unassigned pending task?
-Just in case: font registering is mine :)</pre>
+Just in case: font registering is mine :)
+
+; ok</pre>
 </div>
 <div title="to code" modifier="jice" created="200910292046" changecount="1">
 <pre>Type the text for 'code'</pre>
