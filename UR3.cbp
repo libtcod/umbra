@@ -80,6 +80,8 @@
 		<Unit filename="src\umbra\engine.hpp" />
 		<Unit filename="src\umbra\error.cpp" />
 		<Unit filename="src\umbra\error.hpp" />
+		<Unit filename="src\umbra\font.cpp" />
+		<Unit filename="src\umbra\font.hpp" />
 		<Unit filename="src\umbra\module.cpp" />
 		<Unit filename="src\umbra\module.hpp" />
 		<Unit filename="src\umbra\umbra.hpp" />

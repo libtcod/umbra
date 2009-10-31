@@ -33,6 +33,7 @@ int UmbraConfig::rootHeight;
 int UmbraConfig::fontSize;
 bool UmbraConfig::fullScreen;
 std::string * UmbraConfig::fontFile = new std::string;
+TCODList <UmbraFont *> UmbraConfig::fonts;
 
 void UmbraConfig::load (void) {
     static bool loaded = false;
@@ -104,4 +105,8 @@ bool UmbraConfig::adjustFontSize (int adjust) {
     if ((a == 1 && sizeID < 2) || (a == -1 && sizeID > 0)) { fontSize = sizes[sizeID+a]; sizeID += a; change = true; }
     if (change) generateTerminalName();
     return change;
+}
+
+void UmbraConfig::registerFont (UmbraFont * _font) {
+    fonts.push(_font);
 }

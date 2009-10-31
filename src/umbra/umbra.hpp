@@ -32,6 +32,7 @@
 #include "engine.hpp"
 #include "module.hpp"
 #include "error.hpp"
+#include "font.hpp"
 #include "config.hpp"
 
 #endif

@@ -511,8 +511,10 @@ Also see [[AdvancedOptions]]</pre>
 </div>
 <!--POST-SHADOWAREA-->
 <div id="storeArea">
-<div title="DefaultTiddlers" modifier="jice" created="200910291727" modified="200910301731" changecount="12">
-<pre>[[Font detection]]
+<div title="DefaultTiddlers" modifier="Mingos" created="200910291727" modified="200910311309" changecount="14">
+<pre>[[default keybindings]]
+[[task assignment]]
+[[Font detection]]
 [[Real time keyboard management]]
 [[toDeactivate in Engine::run]]
 [[function names]]</pre>
@@ -658,6 +660,27 @@ rename xSize ySize to consoleWidth consoleHeight ? (more explanatory)
 
 ;changed to rootWidth and rootHeight</pre>
 </div>
+<div title="default keybindings" modifier="Mingos" created="200910311323" modified="200910311334" tags="discuss" changecount="4">
+<pre>At the moment, keybindings are fixed, ie, alt+f4 closes the app, pgup uses the previous font, pgdn uses the next font, prtscr saves a screenshot, alt+enter toggles fullscreen.
+
+My idea is to allow the developer to control these. Note that, for instance, ADOM uses pgup/pgdn to scroll inventory and help screens up and down, so a hypothetical remake would better have a different keybindings.
+
+So, what do you think about this:
+1. Have an enum of possible keybindings:
+:enum Engine::keys { UMBRA_TOGGLE_FULLSCREEN, UMBRA_SCREENSHOT, ... , UMBRA_KEYS_MAX };
+2. Have an array of key structs, one for each keybinding (with default values)
+:TCOD_key_t Engine::keybindings[UMBRA_KEYS_MAX];
+3. Give the dev a possibility of changing the default values
+:void Engine::changeKeybinding (Engine::keys key, TCOD_keycode_t vk = TCODK_NONE, char c = 0, unsigned lalt = false, unsigned lctrl = false, unsigned ralt = false, unsigned rctrl = false, unsigned shift = false) {
+:keybindings[key].vk = vk;
+:...
+:}
+4. and make Engine::keyboard(TCOD_key_t) use keys from the array:
+:switch (key) {
+:case keys[UMBRA_TOGGLE_FULLSCREEN]:
+:...
+:}</pre>
+</div>
 <div title="function names" modifier="jice" created="200910301647" modified="200910301734" tags="code" changecount="3">
 <pre>We have functions in both British and American english: Engine::initialise and Module::initialize.
 It's an aesthetic thing, probably, but is an API inconsistency.
@@ -665,17 +688,23 @@ What do we do? Allow both or use either of the two?
 
 ;you're right we should stick to british. feel free to fix them when you find some. I can barely distinguish both but I'll try to do it too...</pre>
 </div>
+<div title="task assignment" modifier="Mingos" created="200910310116" tags="discuss" changecount="1">
+<pre>I suggest that when we tag a discussion as 'code', we should also assign the resolved topic to someone. How about we add our names along with the 'code' tag and treat a sole 'code' as an unassigned pending task?
+Just in case: font registering is mine :)</pre>
+</div>
 <div title="to code" modifier="jice" created="200910292046" changecount="1">
 <pre>Type the text for 'code'</pre>
 </div>
-<div title="toDeactivate in Engine::run" modifier="jice" created="200910301645" modified="200910301735" tags="discuss" changecount="4">
+<div title="toDeactivate in Engine::run" modifier="Mingos" created="200910301645" modified="200910310119" tags="rejected" changecount="5">
 <pre>I'd add a conditional expression:
 if (toDeactivate.size() &gt; 0) { ... }
 Otherwise the for loop and the toDeactivate.clear() are used every single frame. Might save a CPU cycle or two.
 
 Same goes for Engine::toActivate.
 
-;That's more code and you won't never see the difference (a few instructions per frame)</pre>
+;That's more code and you won't never see the difference (a few instructions per frame)
+
+Call me a perfectionist...</pre>
 </div>
 </div>
 <!--POST-STOREAREA-->

@@ -40,6 +40,17 @@ int UmbraEngine::registerModule (UmbraModule * module, int fallback) {
     return modules.size()-1;
 }
 
+//register a font
+void UmbraEngine::registerFont (int rows, int columns, const char * filename, int flags) {
+    if (!UmbraError::fileExists(filename)) {
+        UmbraError::add("Tried to register a font file that does not exist: %s.",filename);
+        return;
+    }
+    UmbraFont * file = new UmbraFont; //don't delete this later
+    file->initialise(rows,columns,filename,flags);
+    UmbraConfig::registerFont(file);
+}
+
 void UmbraEngine::activateModule( int moduleId ) {
     if ( moduleId < 0 || moduleId >= modules.size() ) {
         UmbraError::add("Try to activate invalid module id %d.",moduleId);
@@ -99,11 +110,11 @@ int UmbraEngine::run (void) {
             activeModules.push(*mod);
         }
         toActivate.clear();
-        if ( activeModules.size() == 0 ) break; // exit game
+        if (activeModules.size() == 0) break; // exit game
         // update all active modules
         key = TCODConsole::checkForKeypress(true);
         mouse = TCODMouse::getStatus();
-        globalKeybindings(key);
+        keyboard(key);
         for (UmbraModule ** mod = activeModules.begin(); mod != activeModules.end(); mod++) {
             if (!(*mod)->isPaused()) {
                 // handle input
@@ -115,10 +126,10 @@ int UmbraEngine::run (void) {
                     // deactivate module
                     mod = activeModules.remove(mod);
                     module->setActive(false);
-                    if ( fallback != -1 ) {
+                    if (fallback != -1) {
                         // register fallback for activation
                         UmbraModule *fallbackModule = modules.get(fallback);
-                        if ( fallbackModule != NULL && !fallbackModule->isActive() ) toActivate.push(fallbackModule);
+                        if (fallbackModule != NULL && !fallbackModule->isActive()) toActivate.push(fallbackModule);
                     }
                 }
             }
@@ -134,7 +145,7 @@ int UmbraEngine::run (void) {
     return 0;
 }
 
-void UmbraEngine::globalKeybindings (TCOD_key_t &key) {
+void UmbraEngine::keyboard (TCOD_key_t &key) {
     bool returnValue = true;
 
     switch (key.vk) {

@@ -31,14 +31,16 @@ class UmbraModule;
 class UmbraEngine {
     public:
         UmbraEngine (void); //constructor
-
+        ~UmbraEngine (void);
         bool initialise (void); //initialises the engine
         int run (void); //runs the engine
         int registerModule (UmbraModule * module, int fallback = (-1)); //add a module to the modules list. returns id
-        void activateModule( int moduleId );
-        void deactivateModule( int moduleId );
+        void registerFont (int rows, int columns, const char * filename, int flags = TCOD_FONT_LAYOUT_TCOD);
+        void registerFonts (void);
+        void activateModule (int moduleId);
+        void deactivateModule (int moduleId);
     private:
-        void globalKeybindings (TCOD_key_t &key);
+        void keyboard (TCOD_key_t &key);
         void reinitialise (void);
 
         TCODList <UmbraModule*> modules; // list of all registered modules
