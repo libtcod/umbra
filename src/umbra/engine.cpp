@@ -112,8 +112,10 @@ int UmbraEngine::run (void) {
         toDeactivate.clear();
         // activate new modules
         for (UmbraModule ** mod = toActivate.begin(); mod != toActivate.end(); mod++) {
-            (*mod)->setActive(true);
-            activeModules.push(*mod);
+            if (! (*mod)->isActive() ) {
+                (*mod)->setActive(true);
+                activeModules.push(*mod);
+            }
         }
         toActivate.clear();
         if (activeModules.size() == 0) break; // exit game
@@ -174,6 +176,7 @@ void UmbraEngine::keyboard (TCOD_key_t &key) {
     switch (key.vk) {
         case TCODK_ENTER:
             if (key.lalt || key.ralt) TCODConsole::setFullscreen(!TCODConsole::isFullscreen());
+            else returnValue = false;
             break;
         case TCODK_PRINTSCREEN:
             TCODSystem::saveScreenshot(NULL);
