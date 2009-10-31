@@ -30,10 +30,11 @@
 
 int UmbraConfig::rootWidth;
 int UmbraConfig::rootHeight;
-int UmbraConfig::fontSize;
+int UmbraConfig::fontID;
 bool UmbraConfig::fullScreen;
-std::string * UmbraConfig::fontFile = new std::string;
 TCODList <UmbraFont *> UmbraConfig::fonts;
+UmbraFont * UmbraConfig::font = NULL;
+
 
 void UmbraConfig::load (void) {
     static bool loaded = false;
@@ -44,7 +45,7 @@ void UmbraConfig::load (void) {
     TCODParserStruct * config = parser.newStructure("config");
         config->addProperty("rootWidth",TCOD_TYPE_INT,true);
         config->addProperty("rootHeight",TCOD_TYPE_INT,true);
-        config->addProperty("fontSize",TCOD_TYPE_INT,true);
+        config->addProperty("fontID",TCOD_TYPE_INT,true);
         config->addProperty("fullScreen",TCOD_TYPE_BOOL,true);
 
     //check if the config file exists
@@ -59,10 +60,8 @@ void UmbraConfig::load (void) {
     //assign parsed values to class variables
     rootWidth = parser.getIntProperty("config.rootWidth");
     rootHeight = parser.getIntProperty("config.rootHeight");
-    fontSize = parser.getIntProperty("config.fontSize");
+    fontID = parser.getIntProperty("config.fontID");
     fullScreen = parser.getBoolProperty("config.fullScreen");
-
-    generateTerminalName();
 
     loaded = true;
 }
@@ -78,35 +77,32 @@ void UmbraConfig::save (void) {
                 "config {\n"
                 "  rootWidth = %d\n"
                 "  rootHeight = %d\n"
-                "  fontSize = %d\n"
+                "  fontID = %d\n"
                 "  fullScreen = %s\n"
                 "}\n",
-                rootWidth, rootHeight, fontSize, (fullScreen?"true":"false"));
+                rootWidth, rootHeight, fontID, (fullScreen?"true":"false"));
 
     fclose(out);
-}
-
-void UmbraConfig::generateTerminalName (void) {
-    char fName[128];
-    sprintf(fName,"data/img/font%dx%d.png",fontSize,fontSize);
-    fontFile->assign(fName);
-}
-
-bool UmbraConfig::adjustFontSize (int adjust) {
-    int a = (adjust == 0 ? 0 : (adjust < 0 ? (-1) : 1)); //probably for going forth or back through a filenames list or something... TODO...
-
-    //the following primitive code is only a test - change later, when it's clear how we want the font switcher to work!
-    static int sizeID;
-    if (fontSize == 8) sizeID = 0;
-    if (fontSize == 10) sizeID = 1;
-    if (fontSize == 12) sizeID = 2;
-    static int sizes[3] = { 8, 10, 12 };
-    bool change = false;
-    if ((a == 1 && sizeID < 2) || (a == -1 && sizeID > 0)) { fontSize = sizes[sizeID+a]; sizeID += a; change = true; }
-    if (change) generateTerminalName();
-    return change;
 }
 
 void UmbraConfig::registerFont (UmbraFont * _font) {
     fonts.push(_font);
 }
+
+bool UmbraConfig::activateFont (int shift) {
+    int s = CLAMP(-1,1,shift);
+    //check if there are any registered fonts
+    if (fonts.size() == 0) {
+        UmbraError::add("Tried to activate a font without having registered any.");
+        return false;
+    }
+    //check if the requested ID isn't out of range
+    if (fontID+s < 0 || fontID+s >= fonts.size()) return false;
+    //check if the font needs changing at all
+    if (font != NULL && s == 0) return false;
+    //register the font
+    font = fonts.get(fontID+s);
+    fontID += s;
+    return true;
+}
+

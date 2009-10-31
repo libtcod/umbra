@@ -75,13 +75,10 @@ void UmbraEngine::deactivateModule( int moduleId ) {
 }
 
 bool UmbraEngine::initialise (void) {
-    //check files existence
-    if (!UmbraError::fileExists(UmbraConfig::fontFile->c_str())) {
-        UmbraError::add("Terminal font image file %s is bad or missing.",UmbraConfig::fontFile->c_str());
-        return false;
-    }
+    //activate the base font
+    UmbraConfig::activateFont();
     //initialise console
-    TCODConsole::setCustomFont(UmbraConfig::fontFile->c_str(),TCOD_FONT_LAYOUT_TCOD|TCOD_FONT_TYPE_GRAYSCALE,32,8);
+    TCODConsole::setCustomFont(UmbraConfig::font->filename(),UmbraConfig::font->flags(),UmbraConfig::font->rows(),UmbraConfig::font->columns());
     TCODConsole::initRoot(UmbraConfig::rootWidth,UmbraConfig::rootHeight,UMBRA_TITLE" "UMBRA_VERSION" ("UMBRA_STATUS")", UmbraConfig::fullScreen);
     TCODSystem::setFps(25);
     TCODMouse::showCursor(true);
@@ -159,10 +156,10 @@ void UmbraEngine::keyboard (TCOD_key_t &key) {
             if (key.ralt || key.lalt) exit(0);
             break;
         case TCODK_PAGEUP:
-            if (UmbraConfig::adjustFontSize(1)) reinitialise();
+            if (UmbraConfig::activateFont(1)) reinitialise();
             break;
         case TCODK_PAGEDOWN:
-            if (UmbraConfig::adjustFontSize(-1)) reinitialise();
+            if (UmbraConfig::activateFont(-1)) reinitialise();
             break;
         default:
             returnValue = false;

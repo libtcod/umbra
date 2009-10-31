@@ -5,6 +5,6 @@
 config {
   rootWidth = 80
   rootHeight = 60
-  fontSize = 10
+  fontID = 1
   fullScreen = false
 }

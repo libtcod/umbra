@@ -29,18 +29,16 @@ class UmbraConfig {
     public:
         static void load (void); //load config from file
         static void save (void); //save config to file
-        static void generateTerminalName (void); //generate terminal font file name
-        static bool adjustFontSize (int adjust); //change font size
         static void registerFont (UmbraFont * _font);
+        static bool activateFont (int shift = 0);
 
         static int rootWidth;
         static int rootHeight;
-        static int fontSize;
         static bool fullScreen;
-        static std::string * fontFile;
 
         static UmbraFont * font;
 
     private:
+        static int fontID;
         static TCODList <UmbraFont *> fonts;
 };

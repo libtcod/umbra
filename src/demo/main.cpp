@@ -33,6 +33,10 @@ int main()
 {
     //create the engine
     UmbraEngine * engine = new UmbraEngine();
+    //register fonts
+    engine->registerFont(32,8,"data/img/font8x8.png",TCOD_FONT_LAYOUT_TCOD|TCOD_FONT_TYPE_GRAYSCALE);
+    engine->registerFont(32,8,"data/img/font10x10.png",TCOD_FONT_LAYOUT_TCOD|TCOD_FONT_TYPE_GRAYSCALE);
+    engine->registerFont(32,8,"data/img/font12x12.png",TCOD_FONT_LAYOUT_TCOD|TCOD_FONT_TYPE_GRAYSCALE);
     //declare modules
     engine->registerModule(new Credits(),MOD_DEMO);
     engine->registerModule(new Demo());
