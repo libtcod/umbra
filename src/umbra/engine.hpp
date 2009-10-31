@@ -38,7 +38,6 @@ enum UmbraKeyboardMode {
 class UmbraEngine {
     public:
         UmbraEngine (void); //constructor
-        ~UmbraEngine (void);
         bool initialise (void); //initialises the engine
         inline void setKeyboardMode( UmbraKeyboardMode mode ) { keyboardMode = mode; }
         inline UmbraKeyboardMode getKeyboardMode( void ) { return keyboardMode ; }
