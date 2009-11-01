@@ -25,6 +25,8 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
+#include <iostream>
+
 class UmbraModule;
 
 enum UmbraKeyboardMode {
@@ -39,8 +41,9 @@ class UmbraEngine {
     public:
         UmbraEngine (void); //constructor
         bool initialise (void); //initialises the engine
-        inline void setKeyboardMode( UmbraKeyboardMode mode ) { keyboardMode = mode; }
-        inline UmbraKeyboardMode getKeyboardMode( void ) { return keyboardMode ; }
+        void setWindowTitle (const char * title, ...);
+        inline void setKeyboardMode (UmbraKeyboardMode mode) { keyboardMode = mode; }
+        inline UmbraKeyboardMode getKeyboardMode (void) { return keyboardMode ; }
         int run (void); //runs the engine
         int registerModule (UmbraModule * module, int fallback = (-1)); //add a module to the modules list. returns id
         void registerFont (int rows, int columns, const char * filename, int flags = TCOD_FONT_LAYOUT_TCOD);
@@ -48,6 +51,7 @@ class UmbraEngine {
         void activateModule (int moduleId);
         void deactivateModule (int moduleId);
     private:
+        std::string windowTitle;
         void keyboard (TCOD_key_t &key);
         void reinitialise (void);
         bool paused;

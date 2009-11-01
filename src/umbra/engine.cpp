@@ -27,11 +27,22 @@
 
 #include "umbra.hpp"
 #include <stdio.h>
+#include <stdarg.h>
 
 //constructor
 UmbraEngine::UmbraEngine (void) : keyboardMode( UMBRA_KEYBOARD_RELEASED ) {
     UmbraConfig::load();
     paused = false;
+    setWindowTitle("%s ver. %s (%s)", UMBRA_TITLE, UMBRA_VERSION, UMBRA_STATUS);
+}
+
+void UmbraEngine::setWindowTitle (const char * title, ...) {
+    char f[512];
+    va_list ap;
+    va_start(ap,title);
+    vsprintf(f,title,ap);
+    va_end(ap);
+    windowTitle = (const char *)f;
 }
 
 //add a module to the modules list
@@ -80,7 +91,7 @@ bool UmbraEngine::initialise (void) {
     UmbraConfig::activateFont();
     //initialise console
     TCODConsole::setCustomFont(UmbraConfig::font->filename(),UmbraConfig::font->flags(),UmbraConfig::font->rows(),UmbraConfig::font->columns());
-    TCODConsole::initRoot(UmbraConfig::rootWidth,UmbraConfig::rootHeight,UMBRA_TITLE" "UMBRA_VERSION" ("UMBRA_STATUS")", UmbraConfig::fullScreen);
+    TCODConsole::initRoot(UmbraConfig::rootWidth,UmbraConfig::rootHeight,windowTitle.c_str(), UmbraConfig::fullScreen);
     TCODSystem::setFps(25);
     TCODMouse::showCursor(true);
     return true;

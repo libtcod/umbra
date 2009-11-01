@@ -33,6 +33,8 @@ int main()
 {
     //create the engine
     UmbraEngine * engine = new UmbraEngine();
+    //set window title
+    engine->setWindowTitle("Umbra demo");
     //register fonts
     engine->registerFont(32,8,"data/img/font8x8.png",TCOD_FONT_LAYOUT_TCOD|TCOD_FONT_TYPE_GRAYSCALE);
     engine->registerFont(32,8,"data/img/font10x10.png",TCOD_FONT_LAYOUT_TCOD|TCOD_FONT_TYPE_GRAYSCALE);
