@@ -511,8 +511,9 @@ Also see [[AdvancedOptions]]</pre>
 </div>
 <!--POST-SHADOWAREA-->
 <div id="storeArea">
-<div title="DefaultTiddlers" modifier="jice" created="200910291727" modified="200910312315" changecount="17">
-<pre>[[pause]]
+<div title="DefaultTiddlers" modifier="Mingos" created="200910291727" modified="200911010255" changecount="18">
+<pre>[[custom global keybindings]]
+[[pause]]
 [[No implicit config filename]]
 [[default keybindings]]
 [[Font detection]]
@@ -610,7 +611,7 @@ if a module exits, add its fallback to a 'toActivate' list  (don't activate it i
 
 ;seems OK. Need to discuss it via chat.</pre>
 </div>
-<div title="No implicit config filename" modifier="jice" created="200910312130" modified="200910312311" tags="discuss" changecount="4">
+<div title="No implicit config filename" modifier="Mingos" created="200910312130" modified="200911010304" tags="code unassigned" changecount="5">
 <pre>Currently you need a lot of stuff for Umbra to work properly. This will cause issues for the guy who doesn't read the documentation.
 What about having
 
@@ -682,7 +683,16 @@ rename xSize ySize to consoleWidth consoleHeight ? (more explanatory)
 
 ;changed to rootWidth and rootHeight</pre>
 </div>
-<div title="default keybindings" modifier="jice" created="200910311323" modified="200910312313" tags="discuss" changecount="11">
+<div title="custom global keybindings" modifier="Mingos" created="200911010258" modified="200911010303" changecount="2">
+<pre>I've just had an idea for making custom global keybindings. For instance, a hypothetical freak might want the ESCAPE launch a code:
+:if $module is not activated then activate $module
+It's entirely custom and we can't foresee it nor give naive support for it.
+
+What we CAN do is leave a couple more extra keybindings, inactive per default, but assignable by the dev (like UMBRA_KEYBINDING_CUSTOM#)
+
+We might then leave a couple of functions for the dev to implement (or override, depending on how and where we put them). This way, custom code could also be launched.</pre>
+</div>
+<div title="default keybindings" modifier="Mingos" created="200910311323" modified="200911010253" tags="done" changecount="12">
 <pre>At the moment, keybindings are fixed, ie, alt+f4 closes the app, pgup uses the previous font, pgdn uses the next font, prtscr saves a screenshot, alt+enter toggles fullscreen.
 
 My idea is to allow the developer to control these. Note that, for instance, ADOM uses pgup/pgdn to scroll inventory and help screens up and down, so a hypothetical remake would better have a different keybindings.

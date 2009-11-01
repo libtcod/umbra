@@ -29,12 +29,31 @@
 
 class UmbraModule;
 
+typedef struct {
+    TCOD_keycode_t vk;
+    char c;
+    bool alt;
+    bool ctrl;
+    bool shift;
+} UmbraKey_t;
+
 enum UmbraKeyboardMode {
     UMBRA_KEYBOARD_WAIT,
     UMBRA_KEYBOARD_WAIT_NOFLUSH,
     UMBRA_KEYBOARD_RELEASED,
     UMBRA_KEYBOARD_PRESSED,
-    UMBRA_KEYBOARD_PRESSED_RELEASED };
+    UMBRA_KEYBOARD_PRESSED_RELEASED
+};
+
+enum UmbraKeybinding {
+    UMBRA_KEYBINDING_QUIT,
+    UMBRA_KEYBINDING_FULLSCREEN,
+    UMBRA_KEYBINDING_SCREENSHOT,
+    UMBRA_KEYBINDING_FONT_UP,
+    UMBRA_KEYBINDING_FONT_DOWN,
+    UMBRA_KEYBINDING_PAUSE,
+    UMBRA_KEYBINDING_MAX
+};
 
 //the main engine
 class UmbraEngine {
@@ -50,11 +69,13 @@ class UmbraEngine {
         void registerFonts (void);
         void activateModule (int moduleId);
         void deactivateModule (int moduleId);
+        void setKeybinding (UmbraKeybinding kb, TCOD_keycode_t vk = TCODK_NONE, char c = 0, bool alt = false, bool ctrl = false, bool shift = false);
     private:
         std::string windowTitle;
         void keyboard (TCOD_key_t &key);
         void reinitialise (void);
         bool paused;
+        UmbraKey_t keybindings[UMBRA_KEYBINDING_MAX];
 
         TCODList <UmbraModule*> modules; // list of all registered modules
         TCODList <UmbraModule*> activeModules; // currently active modules

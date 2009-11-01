@@ -49,12 +49,12 @@ void UmbraModule::setActive (bool active) {
         initialise();
     }
     this->active = active;
-    if ( active ) activate();
+    if (active) activate();
     else deactivate();
 }
 
 void UmbraModule::setPause (bool paused) {
     this->paused=paused;
-    if ( paused ) pause();
+    if (paused) pause();
     else resume();
 }

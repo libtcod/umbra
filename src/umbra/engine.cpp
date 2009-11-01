@@ -34,6 +34,13 @@ UmbraEngine::UmbraEngine (void) : keyboardMode( UMBRA_KEYBOARD_RELEASED ) {
     UmbraConfig::load();
     paused = false;
     setWindowTitle("%s ver. %s (%s)", UMBRA_TITLE, UMBRA_VERSION, UMBRA_STATUS);
+    //default keybindings
+    setKeybinding(UMBRA_KEYBINDING_QUIT,TCODK_F4,0,true,false,false);
+    setKeybinding(UMBRA_KEYBINDING_FULLSCREEN,TCODK_ENTER,0,true,false,false);
+    setKeybinding(UMBRA_KEYBINDING_FONT_UP,TCODK_PAGEUP,0,false,false,false);
+    setKeybinding(UMBRA_KEYBINDING_FONT_DOWN,TCODK_PAGEDOWN,0,false,false,false);
+    setKeybinding(UMBRA_KEYBINDING_SCREENSHOT,TCODK_PRINTSCREEN,0,false,false,false);
+    setKeybinding(UMBRA_KEYBINDING_PAUSE,TCODK_PAUSE,0,false,false,false);
 }
 
 void UmbraEngine::setWindowTitle (const char * title, ...) {
@@ -61,6 +68,14 @@ void UmbraEngine::registerFont (int rows, int columns, const char * filename, in
     UmbraFont * file = new UmbraFont; //don't delete this later
     file->initialise(rows,columns,filename,flags);
     UmbraConfig::registerFont(file);
+}
+
+void UmbraEngine::setKeybinding (UmbraKeybinding kb, TCOD_keycode_t vk, char c, bool alt, bool ctrl, bool shift) {
+    keybindings[kb].vk = vk;
+    keybindings[kb].c = c;
+    keybindings[kb].alt = alt;
+    keybindings[kb].ctrl = ctrl;
+    keybindings[kb].shift = shift;
 }
 
 void UmbraEngine::activateModule( int moduleId ) {
@@ -182,34 +197,21 @@ int UmbraEngine::run (void) {
 }
 
 void UmbraEngine::keyboard (TCOD_key_t &key) {
-    bool returnValue = true;
+    if (key.vk == TCODK_NONE) return;
 
-    switch (key.vk) {
-        case TCODK_ENTER:
-            if (key.lalt || key.ralt) TCODConsole::setFullscreen(!TCODConsole::isFullscreen());
-            else returnValue = false;
-            break;
-        case TCODK_PRINTSCREEN:
-            TCODSystem::saveScreenshot(NULL);
-            break;
-        case TCODK_F4:
-            if (key.ralt || key.lalt) exit(0);
-            break;
-        case TCODK_PAGEUP:
-            if (UmbraConfig::activateFont(1)) reinitialise();
-            break;
-        case TCODK_PAGEDOWN:
-            if (UmbraConfig::activateFont(-1)) reinitialise();
-            break;
-        case TCODK_PAUSE:
-            paused = !paused;
-            break;
-        default:
-            returnValue = false;
-            break;
-    }
+    UmbraKey_t k = { key.vk, key.c, key.ralt|key.lalt, key.rctrl|key.lctrl, key.shift };
 
-    if (returnValue) {
+    bool val = true;
+
+    if (memcmp(&keybindings[UMBRA_KEYBINDING_QUIT],&k,sizeof(k)) == 0) { UmbraConfig::save(); exit(0); }
+    else if (memcmp(&keybindings[UMBRA_KEYBINDING_PAUSE],&k,sizeof(k)) == 0) { paused = !paused; }
+    else if (memcmp(&keybindings[UMBRA_KEYBINDING_FONT_UP],&k,sizeof(k)) == 0) { if (UmbraConfig::activateFont(1)) reinitialise(); }
+    else if (memcmp(&keybindings[UMBRA_KEYBINDING_FONT_DOWN],&k,sizeof(k)) == 0) { if (UmbraConfig::activateFont(-1)) reinitialise(); }
+    else if (memcmp(&keybindings[UMBRA_KEYBINDING_SCREENSHOT],&k,sizeof(k)) == 0) { TCODSystem::saveScreenshot(NULL); }
+    else if (memcmp(&keybindings[UMBRA_KEYBINDING_FULLSCREEN],&k,sizeof(k)) == 0) { TCODConsole::setFullscreen(!TCODConsole::isFullscreen()); }
+    else val = false;
+
+    if (val) {
         // "erase" key event
         memset(&key,0,sizeof(TCOD_key_t));
     }

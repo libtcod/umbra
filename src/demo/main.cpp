@@ -43,6 +43,8 @@ int main()
     engine.registerModule(new Credits(),MOD_DEMO);
     engine.registerModule(new Demo());
     engine.activateModule(MOD_CREDITS);
+    //set a custom keybinding
+    engine.setKeybinding(UMBRA_KEYBINDING_QUIT,TCODK_CHAR,'q',false,true,false);
     //initialise and run the engine
     if (engine.initialise()) return engine.run();
     else return 1;
