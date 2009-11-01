@@ -32,8 +32,8 @@
 UmbraEngine * UmbraEngine::engineInstance = NULL;
 
 //constructor
-UmbraEngine::UmbraEngine (void) : keyboardMode( UMBRA_KEYBOARD_RELEASED ) {
-    UmbraConfig::load();
+UmbraEngine::UmbraEngine (const char *fileName) : keyboardMode( UMBRA_KEYBOARD_RELEASED ) {
+    UmbraConfig::load(fileName);
     paused = false;
     setWindowTitle("%s ver. %s (%s)", UMBRA_TITLE, UMBRA_VERSION, UMBRA_STATUS);
     engineInstance = this;

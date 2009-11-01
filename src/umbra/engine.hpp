@@ -59,7 +59,7 @@ enum UmbraKeybinding {
 //the main engine
 class UmbraEngine {
     public:
-        UmbraEngine (void); //constructor
+        UmbraEngine (const char *fileName="data/cfg/umbra.txt"); //constructor
         bool initialise (void); //initialises the engine
         void setWindowTitle (const char * title, ...);
         inline void setKeyboardMode (UmbraKeyboardMode mode) { keyboardMode = mode; }
