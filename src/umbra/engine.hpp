@@ -59,7 +59,7 @@ enum UmbraKeybinding {
 //the main engine
 class UmbraEngine {
     public:
-        UmbraEngine ( const char *configFileName = "data/cfg/umbra.txt" ); //constructor
+        UmbraEngine (void); //constructor
         bool initialise (void); //initialises the engine
         void setWindowTitle (const char * title, ...);
         inline void setKeyboardMode (UmbraKeyboardMode mode) { keyboardMode = mode; }
@@ -70,8 +70,11 @@ class UmbraEngine {
         void registerFonts (void);
         void activateModule (int moduleId);
         void deactivateModule (int moduleId);
+        void deactivateAll (void);
         void setKeybinding (UmbraKeybinding kb, TCOD_keycode_t vk = TCODK_NONE, char c = 0, bool alt = false, bool ctrl = false, bool shift = false);
+        inline static UmbraEngine * getInstance (void) { return engineInstance; }
     private:
+        static UmbraEngine * engineInstance;
         std::string windowTitle;
         void keyboard (TCOD_key_t &key);
         void reinitialise (void);

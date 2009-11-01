@@ -32,6 +32,8 @@ class UmbraModule {
         virtual ~UmbraModule (void) {} //destructor
 
         virtual void initialise (void); // allocate resources. called only once
+        void deinitialise (void);
+
         virtual void render (void) { return; } //render the module on the root console
         virtual bool update (void) { return true; } //update the module's logic
         virtual void keyboard (TCOD_key_t &key) { return; } //module-specific keyboard
@@ -48,6 +50,8 @@ class UmbraModule {
         inline void setFallback (int fback) { fallback = fback; } //set default fallback module's index
         void setFadeIn (int lengthInMilli, TCODColor col = TCODColor::black); //set fade lengths in milliseconds
         void setFadeOut (int lengthInMilli, TCODColor col = TCODColor::black); //set fade lengths in milliseconds
+        void setActive (bool active);
+        void setPause (bool paused);
         //getters
         inline int getFallback (void) { return fallback; }
         inline int getFadeInLength (void) { return fadeInLength; }
@@ -55,10 +59,8 @@ class UmbraModule {
         inline TCODColor getFadeInColor (void) { return fadeInColor; }
         inline TCODColor getFadeOutColor (void) { return fadeOutColor; }
         inline bool isPaused (void) { return paused; }
-        void setActive (bool active);
         inline bool isActive (void) { return active; }
-        void setPause (bool paused);
-        void deinitialise (void);
+        inline UmbraEngine * getEngine (void) { return UmbraEngine::getInstance(); }
 
 
     private:

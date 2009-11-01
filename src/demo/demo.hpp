@@ -35,7 +35,6 @@ class Demo : public UmbraModule {
         void render (void);
         void keyboard (TCOD_key_t &key);
 
-
     private:
         TCODNoise * noise;
         TCODRandom * random;

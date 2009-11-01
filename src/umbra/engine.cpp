@@ -29,11 +29,14 @@
 #include <stdio.h>
 #include <stdarg.h>
 
+UmbraEngine * UmbraEngine::engineInstance = NULL;
+
 //constructor
-UmbraEngine::UmbraEngine ( const char *configFileName ) : keyboardMode( UMBRA_KEYBOARD_RELEASED ) {
-    UmbraConfig::load(configFileName);
+UmbraEngine::UmbraEngine (void) : keyboardMode( UMBRA_KEYBOARD_RELEASED ) {
+    UmbraConfig::load();
     paused = false;
     setWindowTitle("%s ver. %s (%s)", UMBRA_TITLE, UMBRA_VERSION, UMBRA_STATUS);
+    engineInstance = this;
     //default keybindings
     setKeybinding(UMBRA_KEYBINDING_QUIT,TCODK_F4,0,true,false,false);
     setKeybinding(UMBRA_KEYBINDING_FULLSCREEN,TCODK_ENTER,'\r',true,false,false);
@@ -78,7 +81,7 @@ void UmbraEngine::setKeybinding (UmbraKeybinding kb, TCOD_keycode_t vk, char c, 
     keybindings[kb].shift = shift;
 }
 
-void UmbraEngine::activateModule( int moduleId ) {
+void UmbraEngine::activateModule (int moduleId) {
     if ( moduleId < 0 || moduleId >= modules.size() ) {
         UmbraError::add("Try to activate invalid module id %d.",moduleId);
         return;
@@ -89,7 +92,7 @@ void UmbraEngine::activateModule( int moduleId ) {
     }
 }
 
-void UmbraEngine::deactivateModule( int moduleId ) {
+void UmbraEngine::deactivateModule (int moduleId) {
     if ( moduleId < 0 || moduleId >= modules.size() ) {
         UmbraError::add("Try to deactivate invalid module id %d.",moduleId);
         return;
@@ -98,6 +101,13 @@ void UmbraEngine::deactivateModule( int moduleId ) {
     if (module != NULL && module->isActive()) {
         toDeactivate.push(module);
         module->setActive(false);
+    }
+}
+
+void UmbraEngine::deactivateAll (void) {
+    for (UmbraModule ** mod = activeModules.begin(); mod != activeModules.end(); mod++) {
+        toDeactivate.push((*mod));
+        (*mod)->setActive(false);
     }
 }
 

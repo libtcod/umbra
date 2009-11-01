@@ -27,7 +27,7 @@
 
 #include "main.hpp"
 
-enum { MOD_CREDITS, MOD_DEMO };
+enum { MOD_CREDITS, MOD_DEMO, MOD_SPEED };
 
 int main()
 {
@@ -42,6 +42,8 @@ int main()
     //declare modules
     engine.registerModule(new Credits(),MOD_DEMO);
     engine.registerModule(new Demo());
+    engine.registerModule(new Speed());
+    //activate modules
     engine.activateModule(MOD_CREDITS);
     //set a custom keybinding
     engine.setKeybinding(UMBRA_KEYBINDING_QUIT,TCODK_CHAR,'q',false,true,false);

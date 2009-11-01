@@ -28,3 +28,4 @@
 #include "../umbra/umbra.hpp"
 #include "credits.hpp"
 #include "demo.hpp"
+#include "speed.hpp"
