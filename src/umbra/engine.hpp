@@ -29,13 +29,14 @@
 
 class UmbraModule;
 
-typedef struct {
+struct UmbraKey {
     TCOD_keycode_t vk;
     char c;
     bool alt;
     bool ctrl;
     bool shift;
-} UmbraKey_t;
+    inline bool operator == ( const UmbraKey &k1 ) { return memcmp (this, &k1, sizeof(UmbraKey)) == 0; }
+};
 
 enum UmbraKeyboardMode {
     UMBRA_KEYBOARD_WAIT,
@@ -75,7 +76,7 @@ class UmbraEngine {
         void keyboard (TCOD_key_t &key);
         void reinitialise (void);
         bool paused;
-        UmbraKey_t keybindings[UMBRA_KEYBINDING_MAX];
+        UmbraKey keybindings[UMBRA_KEYBINDING_MAX];
 
         TCODList <UmbraModule*> modules; // list of all registered modules
         TCODList <UmbraModule*> activeModules; // currently active modules

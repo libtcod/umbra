@@ -36,7 +36,7 @@ UmbraEngine::UmbraEngine (void) : keyboardMode( UMBRA_KEYBOARD_RELEASED ) {
     setWindowTitle("%s ver. %s (%s)", UMBRA_TITLE, UMBRA_VERSION, UMBRA_STATUS);
     //default keybindings
     setKeybinding(UMBRA_KEYBINDING_QUIT,TCODK_F4,0,true,false,false);
-    setKeybinding(UMBRA_KEYBINDING_FULLSCREEN,TCODK_ENTER,0,true,false,false);
+    setKeybinding(UMBRA_KEYBINDING_FULLSCREEN,TCODK_ENTER,'\r',true,false,false);
     setKeybinding(UMBRA_KEYBINDING_FONT_UP,TCODK_PAGEUP,0,false,false,false);
     setKeybinding(UMBRA_KEYBINDING_FONT_DOWN,TCODK_PAGEDOWN,0,false,false,false);
     setKeybinding(UMBRA_KEYBINDING_SCREENSHOT,TCODK_PRINTSCREEN,0,false,false,false);
@@ -199,16 +199,16 @@ int UmbraEngine::run (void) {
 void UmbraEngine::keyboard (TCOD_key_t &key) {
     if (key.vk == TCODK_NONE) return;
 
-    UmbraKey_t k = { key.vk, key.c, key.ralt|key.lalt, key.rctrl|key.lctrl, key.shift };
+    UmbraKey k = { key.vk, key.c, key.ralt|key.lalt, key.rctrl|key.lctrl, key.shift };
 
     bool val = true;
 
-    if (memcmp(&keybindings[UMBRA_KEYBINDING_QUIT],&k,sizeof(k)) == 0) { UmbraConfig::save(); exit(0); }
-    else if (memcmp(&keybindings[UMBRA_KEYBINDING_PAUSE],&k,sizeof(k)) == 0) { paused = !paused; }
-    else if (memcmp(&keybindings[UMBRA_KEYBINDING_FONT_UP],&k,sizeof(k)) == 0) { if (UmbraConfig::activateFont(1)) reinitialise(); }
-    else if (memcmp(&keybindings[UMBRA_KEYBINDING_FONT_DOWN],&k,sizeof(k)) == 0) { if (UmbraConfig::activateFont(-1)) reinitialise(); }
-    else if (memcmp(&keybindings[UMBRA_KEYBINDING_SCREENSHOT],&k,sizeof(k)) == 0) { TCODSystem::saveScreenshot(NULL); }
-    else if (memcmp(&keybindings[UMBRA_KEYBINDING_FULLSCREEN],&k,sizeof(k)) == 0) { TCODConsole::setFullscreen(!TCODConsole::isFullscreen()); }
+    if (keybindings[UMBRA_KEYBINDING_QUIT] == k) { UmbraConfig::save(); exit(0); }
+    else if (keybindings[UMBRA_KEYBINDING_PAUSE] == k) { paused = !paused; }
+    else if (keybindings[UMBRA_KEYBINDING_FONT_UP] == k) { if (UmbraConfig::activateFont(1)) reinitialise(); }
+    else if (keybindings[UMBRA_KEYBINDING_FONT_DOWN] == k) { if (UmbraConfig::activateFont(-1)) reinitialise(); }
+    else if (keybindings[UMBRA_KEYBINDING_SCREENSHOT] == k) { TCODSystem::saveScreenshot(NULL); }
+    else if (keybindings[UMBRA_KEYBINDING_FULLSCREEN] == k) { TCODConsole::setFullscreen(!TCODConsole::isFullscreen()); }
     else val = false;
 
     if (val) {
