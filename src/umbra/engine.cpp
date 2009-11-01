@@ -124,7 +124,7 @@ int UmbraEngine::run (void) {
     while(!TCODConsole::isWindowClosed()) {
         //execute only when paused
         if (paused) {
-            key = TCODConsole::checkForKeypress(true);
+            key = TCODConsole::checkForKeypress(TCOD_KEY_RELEASED);
             keyboard(key);
             TCODConsole::root->flush();
             continue; //don't update or render anything anew
