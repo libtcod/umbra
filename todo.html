@@ -511,14 +511,28 @@ Also see [[AdvancedOptions]]</pre>
 </div>
 <!--POST-SHADOWAREA-->
 <div id="storeArea">
-<div title="DefaultTiddlers" modifier="Mingos" created="200910291727" modified="200911010255" changecount="18">
-<pre>[[custom global keybindings]]
-[[pause]]
+<div title="DefaultTiddlers" modifier="jice" created="200910291727" modified="200911011856" changecount="20">
+<pre>[[Faders]]
+[[custom global keybindings]]
 [[No implicit config filename]]
-[[default keybindings]]
 [[Font detection]]
-[[Real time keyboard management]]
 [[function names]]</pre>
+</div>
+<div title="Faders" modifier="jice" created="200911011856" tags="discuss" changecount="1">
+<pre>Here is a proposition for screen fading handling.
+A fader takes two offscreen consoles and a fade rate (0.0 = fading not started, 1.0 = fading ended). It renders the result on the root console
+:class UmbraFader {
+:        virtual void render( TCODConsole *fadingOutScreen, TCODConsole *fadingInScreen, float fadeRate ) = 0;
+:}
+Umbra provides default faders :
+* UmbraColorFader : fade to or from a color
+* UmbraDissolveFader : using the console blitting function with alpha value deduced from fadeRate.
+Each module can define it's fading-in and fading-out fader. 
+:void UmbraModule::setInFader ( UmbraFader * fader );
+:void UmbraModule::setOutFader ( UmbraFader * fader );
+For this to work, the engine must have access to offscreen consoles containing the modules. That means the modules render function receives a console on which to render :
+:void UmbraModule::render( TCODConsole *con );
+This is a early design and has lots of flaws. To be improved...</pre>
 </div>
 <div title="Font detection" modifier="jice" created="200910301332" modified="200910312123" tags="code Mingos" changecount="3">
 <pre>General thoughts about fonts in libtcod :
@@ -683,14 +697,24 @@ rename xSize ySize to consoleWidth consoleHeight ? (more explanatory)
 
 ;changed to rootWidth and rootHeight</pre>
 </div>
-<div title="custom global keybindings" modifier="Mingos" created="200911010258" modified="200911010303" changecount="2">
+<div title="custom global keybindings" modifier="jice" created="200911010258" modified="200911011845" tags="discuss" changecount="3">
 <pre>I've just had an idea for making custom global keybindings. For instance, a hypothetical freak might want the ESCAPE launch a code:
 :if $module is not activated then activate $module
 It's entirely custom and we can't foresee it nor give naive support for it.
 
 What we CAN do is leave a couple more extra keybindings, inactive per default, but assignable by the dev (like UMBRA_KEYBINDING_CUSTOM#)
 
-We might then leave a couple of functions for the dev to implement (or override, depending on how and where we put them). This way, custom code could also be launched.</pre>
+We might then leave a couple of functions for the dev to implement (or override, depending on how and where we put them). This way, custom code could also be launched.
+
+; ok so we might change the engine API for that :
+        class UmbraKeyListener() {
+            public:
+                virtual void keyboard(TCOD_key_t &amp;key) = 0;
+        };
+        void setDefaultGlobalKeybinding (UmbraKeybinding kb, TCOD_keycode_t vk = TCODK_NONE, char c = 0, bool alt = false, bool ctrl = false, bool shift = false);
+        void setCustomGlobalKeybinding (UmbraKeyListener listener, TCOD_keycode_t vk = TCODK_NONE, char c = 0, bool alt = false, bool ctrl = false, bool shift = false);
+; this way, UmbraModule inherits UmbraKeyListener. We might do the same for mouse
+</pre>
 </div>
 <div title="default keybindings" modifier="Mingos" created="200910311323" modified="200911010253" tags="done" changecount="12">
 <pre>At the moment, keybindings are fixed, ie, alt+f4 closes the app, pgup uses the previous font, pgdn uses the next font, prtscr saves a screenshot, alt+enter toggles fullscreen.
