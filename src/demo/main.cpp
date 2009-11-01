@@ -32,18 +32,18 @@ enum { MOD_CREDITS, MOD_DEMO };
 int main()
 {
     //create the engine
-    UmbraEngine * engine = new UmbraEngine();
+    UmbraEngine engine;
     //set window title
-    engine->setWindowTitle("Umbra demo");
+    engine.setWindowTitle("Umbra demo");
     //register fonts
-    engine->registerFont(32,8,"data/img/font8x8.png",TCOD_FONT_LAYOUT_TCOD|TCOD_FONT_TYPE_GRAYSCALE);
-    engine->registerFont(32,8,"data/img/font10x10.png",TCOD_FONT_LAYOUT_TCOD|TCOD_FONT_TYPE_GRAYSCALE);
-    engine->registerFont(32,8,"data/img/font12x12.png",TCOD_FONT_LAYOUT_TCOD|TCOD_FONT_TYPE_GRAYSCALE);
+    engine.registerFont(32,8,"data/img/font8x8.png",TCOD_FONT_LAYOUT_TCOD|TCOD_FONT_TYPE_GRAYSCALE);
+    engine.registerFont(32,8,"data/img/font10x10.png",TCOD_FONT_LAYOUT_TCOD|TCOD_FONT_TYPE_GRAYSCALE);
+    engine.registerFont(32,8,"data/img/font12x12.png",TCOD_FONT_LAYOUT_TCOD|TCOD_FONT_TYPE_GRAYSCALE);
     //declare modules
-    engine->registerModule(new Credits(),MOD_DEMO);
-    engine->registerModule(new Demo());
-    engine->activateModule(MOD_CREDITS);
+    engine.registerModule(new Credits(),MOD_DEMO);
+    engine.registerModule(new Demo());
+    engine.activateModule(MOD_CREDITS);
     //initialise and run the engine
-    if (engine->initialise()) return engine->run();
+    if (engine.initialise()) return engine.run();
     else return 1;
 }
