@@ -511,14 +511,13 @@ Also see [[AdvancedOptions]]</pre>
 </div>
 <!--POST-SHADOWAREA-->
 <div id="storeArea">
-<div title="DefaultTiddlers" modifier="jice" created="200910291727" modified="200911011856" changecount="20">
+<div title="DefaultTiddlers" modifier="jice" created="200910291727" modified="200911011939" changecount="21">
 <pre>[[Faders]]
 [[custom global keybindings]]
-[[No implicit config filename]]
 [[Font detection]]
 [[function names]]</pre>
 </div>
-<div title="Faders" modifier="Mingos" created="200911011856" modified="200911011919" tags="discuss" changecount="2">
+<div title="Faders" modifier="jice" created="200911011856" modified="200911011934" tags="discuss" changecount="3">
 <pre>Here is a proposition for screen fading handling.
 A fader takes two offscreen consoles and a fade rate (0.0 = fading not started, 1.0 = fading ended). It renders the result on the root console
 :class UmbraFader {
@@ -534,7 +533,12 @@ For this to work, the engine must have access to offscreen consoles containing t
 :void UmbraModule::render( TCODConsole *con );
 This is a early design and has lots of flaws. To be improved...
 
-;This all looks good an all, but my main concern is how fading will be handled for modules that are or aren't updated. The main map shouldn't be updated while fading (even though it actualli is in Pyro, hehe), but some background noise might want to be updated even if the module is fading. I've no idea how to handle it.</pre>
+;This all looks good an all, but my main concern is how fading will be handled for modules that are or aren't updated. The main map shouldn't be updated while fading (even though it actualli is in Pyro, hehe), but some background noise might want to be updated even if the module is fading. I've no idea how to handle it.
+
+Indeed, in pyro, I want full update even during fading. Some other guys might want the module to freeze during fading or have partial update. During fading, the engine still calls the module's update function but the module can disable some stuff (like world updating) when it's in fading state. It's up to the module coder to handle this. 
+The tricky part is how the engine know where it must render the module. With the color fader, you can render both on root console because the fader only change libtcod fading parameters. With the dissolve, the first should be rendered on root, the second on an offscreen which is blitting on root. I don't think there would be a need for 2 offscreens consoles though. MAybe the fader must have a bool requiresOffscreenConsole to tell the engine what to do
+
+</pre>
 </div>
 <div title="Font detection" modifier="jice" created="200910301332" modified="200910312123" tags="code Mingos" changecount="3">
 <pre>General thoughts about fonts in libtcod :
@@ -699,7 +703,7 @@ rename xSize ySize to consoleWidth consoleHeight ? (more explanatory)
 
 ;changed to rootWidth and rootHeight</pre>
 </div>
-<div title="custom global keybindings" modifier="Mingos" created="200911010258" modified="200911011923" tags="discuss" changecount="4">
+<div title="custom global keybindings" modifier="jice" created="200911010258" modified="200911011938" tags="discuss" changecount="6">
 <pre>I've just had an idea for making custom global keybindings. For instance, a hypothetical freak might want the ESCAPE launch a code:
 :if $module is not activated then activate $module
 It's entirely custom and we can't foresee it nor give naive support for it.
@@ -717,7 +721,15 @@ We might then leave a couple of functions for the dev to implement (or override,
         void setCustomGlobalKeybinding (UmbraKeyListener listener, TCOD_keycode_t vk = TCODK_NONE, char c = 0, bool alt = false, bool ctrl = false, bool shift = false);
 ; this way, UmbraModule inherits UmbraKeyListener. We might do the same for mouse
 
-I don't understand. The listener contains, basically, a virtual method that's already in a module, ready to be overridden. How do you intend to inject this into the engine's global keys method?</pre>
+I don't understand. The listener contains, basically, a virtual method that's already in a module, ready to be overridden. How do you intend to inject this into the engine's global keys method?
+
+;Global key handling routine should not be in modules. You can do something like that :
+: class MyCustomGlobalKeyListener : public UmbraKeyListener {
+: public :
+: void keyboard( TCOD_key_t &amp; key ) { ... do something ... }
+:};
+: engine.setCustomGlobalKeybinding(new MyCustomGlobalKeyListener(), TCODK_END ); 
+;our custom code is called when End key is pressed anywhere in the game</pre>
 </div>
 <div title="default keybindings" modifier="Mingos" created="200910311323" modified="200911010253" tags="done" changecount="12">
 <pre>At the moment, keybindings are fixed, ie, alt+f4 closes the app, pgup uses the previous font, pgdn uses the next font, prtscr saves a screenshot, alt+enter toggles fullscreen.
