@@ -46,11 +46,14 @@ class UmbraModule {
 
         //setters
         inline void setFallback (int fback) { fallback = fback; } //set default fallback module's index
-        void setFade (int in, int out); //set fade lengths in milliseconds
+        void setFadeIn (int lengthInMilli, TCODColor col = TCODColor::black); //set fade lengths in milliseconds
+        void setFadeOut (int lengthInMilli, TCODColor col = TCODColor::black); //set fade lengths in milliseconds
         //getters
         inline int getFallback (void) { return fallback; }
-        inline int getFadeIn (void) { return fadeIn; }
-        inline int getFadeOut (void) { return fadeOut; }
+        inline int getFadeInLength (void) { return fadeInLength; }
+        inline int getFadeOutLength (void) { return fadeOutLength; }
+        inline TCODColor getFadeInColor (void) { return fadeInColor; }
+        inline TCODColor getFadeOutColor (void) { return fadeOutColor; }
         inline bool isPaused (void) { return paused; }
         void setActive (bool active);
         inline bool isActive (void) { return active; }
@@ -63,6 +66,8 @@ class UmbraModule {
         bool active;
         bool paused;
         int fallback; //fallback module's index
-        int fadeIn;
-        int fadeOut;
+        int fadeInLength;
+        TCODColor fadeInColor;
+        int fadeOutLength;
+        TCODColor fadeOutColor;
 };

@@ -28,12 +28,17 @@
 #include "umbra.hpp"
 
 UmbraModule::UmbraModule (void) : initialised(false),active(false),paused(false),
-    fallback(-1),fadeIn(0),fadeOut(0) {
+    fallback(-1),fadeInLength(0),fadeOutLength(0) {
 }
 
-void UmbraModule::setFade (int in, int out) {
-    fadeIn = in;
-    fadeOut = out;
+void UmbraModule::setFadeIn (int lengthInMilli, TCODColor col) {
+    fadeInLength = lengthInMilli;
+    fadeInColor = col;
+}
+
+void UmbraModule::setFadeOut (int lengthInMilli, TCODColor col) {
+    fadeOutLength = lengthInMilli;
+    fadeOutColor = col;
 }
 
 void UmbraModule::initialise (void) {
