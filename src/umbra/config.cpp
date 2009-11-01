@@ -34,13 +34,14 @@ int UmbraConfig::fontID;
 bool UmbraConfig::fullScreen;
 TCODList <UmbraFont *> UmbraConfig::fonts;
 UmbraFont * UmbraConfig::font = NULL;
+char * UmbraConfig::fileName = NULL;
 
-
-void UmbraConfig::load (void) {
+void UmbraConfig::load (const char *fileName) {
     static bool loaded = false;
-    if (loaded) return;
+    if (loaded && strcmp(UmbraConfig::fileName, fileName) == 0 ) return;
     TCODParser parser;
 
+    UmbraConfig::fileName = strdup(fileName);
     //register configuration variables
     TCODParserStruct * config = parser.newStructure("config");
         config->addProperty("rootWidth",TCOD_TYPE_INT,true);
@@ -49,13 +50,13 @@ void UmbraConfig::load (void) {
         config->addProperty("fullScreen",TCOD_TYPE_BOOL,true);
 
     //check if the config file exists
-    if (!UmbraError::fileExists("data/cfg/umbra.txt")) {
-        UmbraError::add("Configuration file data/cfg/umbra.txt is bad or missing.");
+    if (!UmbraError::fileExists(fileName)) {
+        UmbraError::add("Configuration file %s is bad or missing.", fileName );
         exit(1); //replace by loading defaults or automatic default config file generator
     }
 
     //run the parser
-    parser.run("data/cfg/umbra.txt",NULL);
+    parser.run(fileName,NULL);
 
     //assign parsed values to class variables
     rootWidth = parser.getIntProperty("config.rootWidth");
@@ -68,7 +69,7 @@ void UmbraConfig::load (void) {
 
 void UmbraConfig::save (void) {
     FILE * out;
-    out = fopen("data/cfg/umbra.txt","w");
+    out = fopen(fileName,"w");
 
     fprintf(out,"/*\n"
                 " * UMBRA CONFIGURATION FILE\n"

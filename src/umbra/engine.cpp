@@ -30,8 +30,8 @@
 #include <stdarg.h>
 
 //constructor
-UmbraEngine::UmbraEngine (void) : keyboardMode( UMBRA_KEYBOARD_RELEASED ) {
-    UmbraConfig::load();
+UmbraEngine::UmbraEngine ( const char *configFileName ) : keyboardMode( UMBRA_KEYBOARD_RELEASED ) {
+    UmbraConfig::load(configFileName);
     paused = false;
     setWindowTitle("%s ver. %s (%s)", UMBRA_TITLE, UMBRA_VERSION, UMBRA_STATUS);
     //default keybindings

@@ -27,7 +27,7 @@
 
 class UmbraConfig {
     public:
-        static void load (void); //load config from file
+        static void load (const char *fileName); //load config from file
         static void save (void); //save config to file
         static void registerFont (UmbraFont * _font);
         static bool activateFont (int shift = 0);
@@ -39,6 +39,7 @@ class UmbraConfig {
         static UmbraFont * font;
 
     private:
+        static char * fileName;
         static int fontID;
         static TCODList <UmbraFont *> fonts;
 };
