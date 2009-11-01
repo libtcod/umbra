@@ -518,7 +518,7 @@ Also see [[AdvancedOptions]]</pre>
 [[Font detection]]
 [[function names]]</pre>
 </div>
-<div title="Faders" modifier="jice" created="200911011856" tags="discuss" changecount="1">
+<div title="Faders" modifier="Mingos" created="200911011856" modified="200911011919" tags="discuss" changecount="2">
 <pre>Here is a proposition for screen fading handling.
 A fader takes two offscreen consoles and a fade rate (0.0 = fading not started, 1.0 = fading ended). It renders the result on the root console
 :class UmbraFader {
@@ -532,7 +532,9 @@ Each module can define it's fading-in and fading-out fader.
 :void UmbraModule::setOutFader ( UmbraFader * fader );
 For this to work, the engine must have access to offscreen consoles containing the modules. That means the modules render function receives a console on which to render :
 :void UmbraModule::render( TCODConsole *con );
-This is a early design and has lots of flaws. To be improved...</pre>
+This is a early design and has lots of flaws. To be improved...
+
+;This all looks good an all, but my main concern is how fading will be handled for modules that are or aren't updated. The main map shouldn't be updated while fading (even though it actualli is in Pyro, hehe), but some background noise might want to be updated even if the module is fading. I've no idea how to handle it.</pre>
 </div>
 <div title="Font detection" modifier="jice" created="200910301332" modified="200910312123" tags="code Mingos" changecount="3">
 <pre>General thoughts about fonts in libtcod :
@@ -697,7 +699,7 @@ rename xSize ySize to consoleWidth consoleHeight ? (more explanatory)
 
 ;changed to rootWidth and rootHeight</pre>
 </div>
-<div title="custom global keybindings" modifier="jice" created="200911010258" modified="200911011845" tags="discuss" changecount="3">
+<div title="custom global keybindings" modifier="Mingos" created="200911010258" modified="200911011923" tags="discuss" changecount="4">
 <pre>I've just had an idea for making custom global keybindings. For instance, a hypothetical freak might want the ESCAPE launch a code:
 :if $module is not activated then activate $module
 It's entirely custom and we can't foresee it nor give naive support for it.
@@ -714,7 +716,8 @@ We might then leave a couple of functions for the dev to implement (or override,
         void setDefaultGlobalKeybinding (UmbraKeybinding kb, TCOD_keycode_t vk = TCODK_NONE, char c = 0, bool alt = false, bool ctrl = false, bool shift = false);
         void setCustomGlobalKeybinding (UmbraKeyListener listener, TCOD_keycode_t vk = TCODK_NONE, char c = 0, bool alt = false, bool ctrl = false, bool shift = false);
 ; this way, UmbraModule inherits UmbraKeyListener. We might do the same for mouse
-</pre>
+
+I don't understand. The listener contains, basically, a virtual method that's already in a module, ready to be overridden. How do you intend to inject this into the engine's global keys method?</pre>
 </div>
 <div title="default keybindings" modifier="Mingos" created="200910311323" modified="200911010253" tags="done" changecount="12">
 <pre>At the moment, keybindings are fixed, ie, alt+f4 closes the app, pgup uses the previous font, pgdn uses the next font, prtscr saves a screenshot, alt+enter toggles fullscreen.
