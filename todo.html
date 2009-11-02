@@ -511,14 +511,13 @@ Also see [[AdvancedOptions]]</pre>
 </div>
 <!--POST-SHADOWAREA-->
 <div id="storeArea">
-<div title="DefaultTiddlers" modifier="Mingos" created="200910291727" modified="200911012157" changecount="22">
+<div title="DefaultTiddlers" modifier="jice" created="200910291727" modified="200911020115" changecount="23">
 <pre>[[internal modules]]
 [[Faders]]
 [[custom global keybindings]]
-[[Font detection]]
-[[function names]]</pre>
+[[Font detection]]</pre>
 </div>
-<div title="Faders" modifier="Mingos" created="200911011856" modified="200911012157" tags="discuss" changecount="4">
+<div title="Faders" modifier="jice" created="200911011856" modified="200911020120" tags="discuss" changecount="5">
 <pre>Here is a proposition for screen fading handling.
 A fader takes two offscreen consoles and a fade rate (0.0 = fading not started, 1.0 = fading ended). It renders the result on the root console
 :class UmbraFader {
@@ -539,7 +538,18 @@ This is a early design and has lots of flaws. To be improved...
 Indeed, in pyro, I want full update even during fading. Some other guys might want the module to freeze during fading or have partial update. During fading, the engine still calls the module's update function but the module can disable some stuff (like world updating) when it's in fading state. It's up to the module coder to handle this. 
 The tricky part is how the engine know where it must render the module. With the color fader, you can render both on root console because the fader only change libtcod fading parameters. With the dissolve, the first should be rendered on root, the second on an offscreen which is blitting on root. I don't think there would be a need for 2 offscreens consoles though. MAybe the fader must have a bool requiresOffscreenConsole to tell the engine what to do
 
-;Well, maybe the module should have a bool isFading var? A method might be written to control what is done when fading. You'd just call Module::setFadeBehaviour (whatever) to tell the module to either stop updating or not when fading, otherwise the module would just use the default behaviour (probably render without updating).</pre>
+;Well, maybe the module should have a bool isFading var? A method might be written to control what is done when fading. You'd just call Module::setFadeBehaviour (whatever) to tell the module to either stop updating or not when fading, otherwise the module would just use the default behaviour (probably render without updating).
+
+What about replacing
+: bool active;
+: bool paused;
+: bool fading;
+by
+: enum UmbraModuleStatus { UMBRA_INACTIVE, UMBRA_FADING_IN, UMBRA_ACTIVE, UMBRA_PAUSED, UMBRA_FADING_OUT };
+and
+:void UmbraModule::setUpdateWhenFading( bool val );
+
+</pre>
 </div>
 <div title="Font detection" modifier="jice" created="200910301332" modified="200910312123" tags="code Mingos" changecount="3">
 <pre>General thoughts about fonts in libtcod :
@@ -704,7 +714,7 @@ rename xSize ySize to consoleWidth consoleHeight ? (more explanatory)
 
 ;changed to rootWidth and rootHeight</pre>
 </div>
-<div title="custom global keybindings" modifier="Mingos" created="200911010258" modified="200911012150" tags="discuss" changecount="7">
+<div title="custom global keybindings" modifier="jice" created="200911010258" modified="200911020112" tags="discuss" changecount="8">
 <pre>I've just had an idea for making custom global keybindings. For instance, a hypothetical freak might want the ESCAPE launch a code:
 :if $module is not activated then activate $module
 It's entirely custom and we can't foresee it nor give naive support for it.
@@ -732,7 +742,9 @@ I don't understand. The listener contains, basically, a virtual method that's al
 : engine.setCustomGlobalKeybinding(new MyCustomGlobalKeyListener(), TCODK_END ); 
 ;our custom code is called when End key is pressed anywhere in the game
 
-If it shouldn't be in the module, then why would the module inherit it? It's supposed to be global, not module-specific.</pre>
+If it shouldn't be in the module, then why would the module inherit it? It's supposed to be global, not module-specific.
+
+; ok let's forget the UmbraModule inheritage. Is the rest ok for you?</pre>
 </div>
 <div title="default keybindings" modifier="Mingos" created="200910311323" modified="200911010253" tags="done" changecount="12">
 <pre>At the moment, keybindings are fixed, ie, alt+f4 closes the app, pgup uses the previous font, pgdn uses the next font, prtscr saves a screenshot, alt+enter toggles fullscreen.
@@ -770,19 +782,24 @@ If this hypothetical freak also wants to disable quitting, he'll have to disable
 :void Engine::changeKeybinding (Engine::keys key, TCOD_keycode_t vk = TCODK_NONE, char c = 0, unsigned alt = false, unsigned ctrl = false, unsigned shift = false) 
 </pre>
 </div>
-<div title="function names" modifier="jice" created="200910301647" modified="200910312123" tags="code Mingos" changecount="4">
+<div title="function names" modifier="jice" created="200910301647" modified="200911020115" tags="done" changecount="5">
 <pre>We have functions in both British and American english: Engine::initialise and Module::initialize.
 It's an aesthetic thing, probably, but is an API inconsistency.
 What do we do? Allow both or use either of the two?
 
 ;you're right we should stick to british. feel free to fix them when you find some. I can barely distinguish both but I'll try to do it too...</pre>
 </div>
-<div title="internal modules" modifier="Mingos" created="200911012201" changecount="1">
+<div title="internal modules" modifier="jice" created="200911012201" modified="200911020113" tags="discuss" changecount="3">
 <pre>Some modules might be available per default. One of them is the speed-o-meter for benchmarking purposes.
 
 Since adding them just like any other module would be inconvenient for the dev (the IDs aren't dependant on the registration sewuence), we should think of a way of adding internal modules that won't conflict with user modules.
 
-My suggestion is to create an entirely separate interface unavailable to the dev. The internal modules wouldn't be added to the user's modules list, but to their own list, and would be executed AFTER the user modules, to always remain on top. This will ensure the speed-o-meter will keep working properly and being visible on top even when additional modules are activated while it's on.</pre>
+My suggestion is to create an entirely separate interface unavailable to the dev. The internal modules wouldn't be added to the user's modules list, but to their own list, and would be executed AFTER the user modules, to always remain on top. This will ensure the speed-o-meter will keep working properly and being visible on top even when additional modules are activated while it's on.
+
+; seems perfect to me. With a enum and specifics activation/deactivation functions, then ?
+:enum UmbraInternalModuleId { UMBRA_SPEEDOMETER, .. };
+: void UmbraEngine::activateInternalModule( UmbraInternalModuleId id );
+: void UmbraEngine::deactivateInternalModule( UmbraInternalModuleId id );</pre>
 </div>
 <div title="pause" modifier="jice" created="200910312236" modified="200910312312" tags="done" changecount="2">
 <pre>I added a very simple pause feature in the engine. It stops the execution of pretty much everything, although it keeps reacting to global keys. The question is: will it be useful at all, taking into account that some functions will depend on the elapsed time?
