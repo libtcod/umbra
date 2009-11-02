@@ -789,7 +789,7 @@ What do we do? Allow both or use either of the two?
 
 ;you're right we should stick to british. feel free to fix them when you find some. I can barely distinguish both but I'll try to do it too...</pre>
 </div>
-<div title="internal modules" modifier="jice" created="200911012201" modified="200911020113" tags="discuss" changecount="3">
+<div title="internal modules" modifier="Mingos" created="200911012201" modified="200911021609" tags="code Mingos" changecount="5">
 <pre>Some modules might be available per default. One of them is the speed-o-meter for benchmarking purposes.
 
 Since adding them just like any other module would be inconvenient for the dev (the IDs aren't dependant on the registration sewuence), we should think of a way of adding internal modules that won't conflict with user modules.
@@ -799,7 +799,9 @@ My suggestion is to create an entirely separate interface unavailable to the dev
 ; seems perfect to me. With a enum and specifics activation/deactivation functions, then ?
 :enum UmbraInternalModuleId { UMBRA_SPEEDOMETER, .. };
 : void UmbraEngine::activateInternalModule( UmbraInternalModuleId id );
-: void UmbraEngine::deactivateInternalModule( UmbraInternalModuleId id );</pre>
+: void UmbraEngine::deactivateInternalModule( UmbraInternalModuleId id );
+
+Yes, all private :). I'll take care of this after lunch.</pre>
 </div>
 <div title="pause" modifier="jice" created="200910312236" modified="200910312312" tags="done" changecount="2">
 <pre>I added a very simple pause feature in the engine. It stops the execution of pretty much everything, although it keeps reacting to global keys. The question is: will it be useful at all, taking into account that some functions will depend on the elapsed time?
