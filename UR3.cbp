@@ -8,19 +8,19 @@
 		<Build>
 			<Target title="Debug WIN">
 				<Option output="UR" prefix_auto="1" extension_auto="1" />
-				<Option object_output="obj\" />
+				<Option object_output="obj/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-g" />
 				</Compiler>
 				<Linker>
-					<Add library="..\libtcod-1.4.3\lib\libtcod-mingw-debug.a" />
+					<Add library="../libtcod-1.4.3/lib/libtcod-mingw-debug.a" />
 				</Linker>
 			</Target>
 			<Target title="Release WIN">
 				<Option output="UR" prefix_auto="1" extension_auto="1" />
-				<Option object_output="obj\" />
+				<Option object_output="obj/" />
 				<Option type="0" />
 				<Option compiler="gcc" />
 				<Compiler>
@@ -28,12 +28,12 @@
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
-					<Add library="..\libtcod-1.4.3\lib\libtcod-mingw.a" />
+					<Add library="../libtcod-1.4.3/lib/libtcod-mingw.a" />
 				</Linker>
 			</Target>
 			<Target title="Debug LINUX">
 				<Option output="UR" prefix_auto="1" extension_auto="1" />
-				<Option object_output="obj\" />
+				<Option object_output="obj/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
@@ -42,13 +42,13 @@
 				<Linker>
 					<Add option="-lefence" />
 					<Add option="-Wl,-rpath,lib" />
-					<Add library="lib\libtcod_debug.so" />
-					<Add library="lib\libtcodxx_debug.so" />
+					<Add library="lib/libtcod_debug.so" />
+					<Add library="lib/libtcodxx_debug.so" />
 				</Linker>
 			</Target>
 			<Target title="Release LINUX">
 				<Option output="UR" prefix_auto="1" extension_auto="1" />
-				<Option object_output="obj\" />
+				<Option object_output="obj/" />
 				<Option type="0" />
 				<Option compiler="gcc" />
 				<Compiler>
@@ -57,37 +57,39 @@
 				<Linker>
 					<Add option="-s" />
 					<Add option="-Wl,-rpath,lib" />
-					<Add library="lib\libtcod.so" />
-					<Add library="lib\libtcodxx.so" />
+					<Add library="lib/libtcod.so" />
+					<Add library="lib/libtcodxx.so" />
 				</Linker>
 			</Target>
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
-			<Add directory="..\libtcod-1.4.3\include" />
+			<Add directory="../libtcod-1.4.3/include" />
 			<Add directory="src" />
 		</Compiler>
-		<Unit filename="src\demo\credits.cpp" />
-		<Unit filename="src\demo\credits.hpp" />
-		<Unit filename="src\demo\demo.cpp" />
-		<Unit filename="src\demo\demo.hpp" />
-		<Unit filename="src\demo\main.cpp" />
-		<Unit filename="src\demo\main.hpp" />
-		<Unit filename="src\demo\speed.cpp" />
-		<Unit filename="src\demo\speed.hpp" />
-		<Unit filename="src\umbra\config.cpp" />
-		<Unit filename="src\umbra\config.hpp" />
-		<Unit filename="src\umbra\engine.cpp" />
-		<Unit filename="src\umbra\engine.hpp" />
-		<Unit filename="src\umbra\error.cpp" />
-		<Unit filename="src\umbra\error.hpp" />
-		<Unit filename="src\umbra\font.cpp" />
-		<Unit filename="src\umbra\font.hpp" />
-		<Unit filename="src\umbra\module.cpp" />
-		<Unit filename="src\umbra\module.hpp" />
-		<Unit filename="src\umbra\umbra.hpp" />
-		<Unit filename="src\umbra\version.hpp" />
+		<Unit filename="src/demo/credits.cpp" />
+		<Unit filename="src/demo/credits.hpp" />
+		<Unit filename="src/demo/demo.cpp" />
+		<Unit filename="src/demo/demo.hpp" />
+		<Unit filename="src/demo/main.cpp" />
+		<Unit filename="src/demo/main.hpp" />
+		<Unit filename="src/demo/speed.cpp" />
+		<Unit filename="src/demo/speed.hpp" />
+		<Unit filename="src/umbra/config.cpp" />
+		<Unit filename="src/umbra/config.hpp" />
+		<Unit filename="src/umbra/engine.cpp" />
+		<Unit filename="src/umbra/engine.hpp" />
+		<Unit filename="src/umbra/error.cpp" />
+		<Unit filename="src/umbra/error.hpp" />
+		<Unit filename="src/umbra/font.cpp" />
+		<Unit filename="src/umbra/font.hpp" />
+		<Unit filename="src/umbra/imod_speed.cpp" />
+		<Unit filename="src/umbra/imod_speed.hpp" />
+		<Unit filename="src/umbra/module.cpp" />
+		<Unit filename="src/umbra/module.hpp" />
+		<Unit filename="src/umbra/umbra.hpp" />
+		<Unit filename="src/umbra/version.hpp" />
 		<Extensions>
 			<code_completion />
 			<envvars />

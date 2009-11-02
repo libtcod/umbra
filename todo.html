@@ -517,7 +517,7 @@ Also see [[AdvancedOptions]]</pre>
 [[custom global keybindings]]
 [[Font detection]]</pre>
 </div>
-<div title="Faders" modifier="jice" created="200911011856" modified="200911020120" tags="discuss" changecount="5">
+<div title="Faders" modifier="Mingos" created="200911011856" modified="200911021730" tags="code unassigned" changecount="7">
 <pre>Here is a proposition for screen fading handling.
 A fader takes two offscreen consoles and a fade rate (0.0 = fading not started, 1.0 = fading ended). It renders the result on the root console
 :class UmbraFader {
@@ -549,6 +549,7 @@ by
 and
 :void UmbraModule::setUpdateWhenFading( bool val );
 
+;Yeah, this seems sensible.
 </pre>
 </div>
 <div title="Font detection" modifier="jice" created="200910301332" modified="200910312123" tags="code Mingos" changecount="3">
@@ -714,7 +715,7 @@ rename xSize ySize to consoleWidth consoleHeight ? (more explanatory)
 
 ;changed to rootWidth and rootHeight</pre>
 </div>
-<div title="custom global keybindings" modifier="jice" created="200911010258" modified="200911020112" tags="discuss" changecount="8">
+<div title="custom global keybindings" modifier="Mingos" created="200911010258" modified="200911021732" tags="discuss" changecount="9">
 <pre>I've just had an idea for making custom global keybindings. For instance, a hypothetical freak might want the ESCAPE launch a code:
 :if $module is not activated then activate $module
 It's entirely custom and we can't foresee it nor give naive support for it.
@@ -744,7 +745,9 @@ I don't understand. The listener contains, basically, a virtual method that's al
 
 If it shouldn't be in the module, then why would the module inherit it? It's supposed to be global, not module-specific.
 
-; ok let's forget the UmbraModule inheritage. Is the rest ok for you?</pre>
+; ok let's forget the UmbraModule inheritage. Is the rest ok for you?
+
+Not really, as I still don't understand it fer shit.</pre>
 </div>
 <div title="default keybindings" modifier="Mingos" created="200910311323" modified="200911010253" tags="done" changecount="12">
 <pre>At the moment, keybindings are fixed, ie, alt+f4 closes the app, pgup uses the previous font, pgdn uses the next font, prtscr saves a screenshot, alt+enter toggles fullscreen.
@@ -789,7 +792,7 @@ What do we do? Allow both or use either of the two?
 
 ;you're right we should stick to british. feel free to fix them when you find some. I can barely distinguish both but I'll try to do it too...</pre>
 </div>
-<div title="internal modules" modifier="Mingos" created="200911012201" modified="200911021609" tags="code Mingos" changecount="5">
+<div title="internal modules" modifier="Mingos" created="200911012201" modified="200911022125" tags="done" changecount="6">
 <pre>Some modules might be available per default. One of them is the speed-o-meter for benchmarking purposes.
 
 Since adding them just like any other module would be inconvenient for the dev (the IDs aren't dependant on the registration sewuence), we should think of a way of adding internal modules that won't conflict with user modules.

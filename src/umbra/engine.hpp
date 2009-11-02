@@ -53,6 +53,7 @@ enum UmbraKeybinding {
     UMBRA_KEYBINDING_FONT_UP,
     UMBRA_KEYBINDING_FONT_DOWN,
     UMBRA_KEYBINDING_PAUSE,
+    UMBRA_KEYBINDING_SPEEDOMETER,
     UMBRA_KEYBINDING_MAX
 };
 
@@ -92,4 +93,9 @@ class UmbraEngine {
         TCODList <UmbraModule*> toActivate; // modules to activate next frame
         TCODList <UmbraModule*> toDeactivate; // modules to deactivate next frame
         UmbraKeyboardMode keyboardMode;
+
+        //the internal modules stuff
+        enum UmbraInternalModuleID { UMBRA_INTERNAL_SPEEDOMETER, UMBRA_INTERNAL_MAX };
+        UmbraModule * internalModules[UMBRA_INTERNAL_MAX];
+        void registerInternalModule (UmbraInternalModuleID id, UmbraModule * module);
 };

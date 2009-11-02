@@ -39,4 +39,3 @@ void Speed::render (void) {
     speed->printCenter(15,3,TCOD_BKGND_NONE,"frames per second: %3d",TCODSystem::getFps());
     TCODConsole::blit(speed,0,0,30,6,TCODConsole::root,(UmbraConfig::rootWidth/2)-15,(UmbraConfig::rootHeight/2)-3,1.0f,0.5f);
 }
-

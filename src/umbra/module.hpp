@@ -39,13 +39,6 @@ class UmbraModule {
         virtual void keyboard (TCOD_key_t &key) { return; } //module-specific keyboard
         virtual void mouse (TCOD_mouse_t ms) { return; } //module-specific mouse
 
-        // for activation/deactivation custom code
-        virtual void activate() {}
-        virtual void deactivate() {}
-        // for pause/resume custom code
-        virtual void pause() {}
-        virtual void resume() {}
-
         //setters
         inline void setFallback (int fback) { fallback = fback; } //set default fallback module's index
         void setFadeIn (int lengthInMilli, TCODColor col = TCODColor::black); //set fade lengths in milliseconds
@@ -62,6 +55,13 @@ class UmbraModule {
         inline bool isActive (void) { return active; }
         inline UmbraEngine * getEngine (void) { return UmbraEngine::getInstance(); }
 
+    protected:
+        // for activation/deactivation custom code
+        virtual void activate() {}
+        virtual void deactivate() {}
+        // for pause/resume custom code
+        virtual void pause() {}
+        virtual void resume() {}
 
     private:
         bool initialised;

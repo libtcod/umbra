@@ -44,6 +44,9 @@ UmbraEngine::UmbraEngine (const char *fileName) : keyboardMode( UMBRA_KEYBOARD_R
     setKeybinding(UMBRA_KEYBINDING_FONT_DOWN,TCODK_PAGEDOWN,0,false,false,false);
     setKeybinding(UMBRA_KEYBINDING_SCREENSHOT,TCODK_PRINTSCREEN,0,false,false,false);
     setKeybinding(UMBRA_KEYBINDING_PAUSE,TCODK_PAUSE,0,false,false,false);
+    setKeybinding(UMBRA_KEYBINDING_SPEEDOMETER,TCODK_F5,0,false,false,false);
+    //register internal modules
+    registerInternalModule(UMBRA_INTERNAL_SPEEDOMETER,new UmbraModSpeed());
 }
 
 void UmbraEngine::setWindowTitle (const char * title, ...) {
@@ -199,6 +202,13 @@ int UmbraEngine::run (void) {
         for (UmbraModule ** mod = activeModules.begin(); mod != activeModules.end(); mod++) {
             (*mod)->render();
         }
+        //run internal modules
+        for (int id = 0; id < UMBRA_INTERNAL_MAX; id++) {
+            if (internalModules[id]->isActive()) {
+                if (internalModules[id]->update()) internalModules[id]->render();
+            }
+        }
+        //flush the screen
         TCODConsole::root->flush();
     }
 
@@ -219,6 +229,7 @@ void UmbraEngine::keyboard (TCOD_key_t &key) {
     else if (keybindings[UMBRA_KEYBINDING_FONT_DOWN] == k) { if (UmbraConfig::activateFont(-1)) reinitialise(); }
     else if (keybindings[UMBRA_KEYBINDING_SCREENSHOT] == k) { TCODSystem::saveScreenshot(NULL); }
     else if (keybindings[UMBRA_KEYBINDING_FULLSCREEN] == k) { TCODConsole::setFullscreen(!TCODConsole::isFullscreen()); }
+    else if (keybindings[UMBRA_KEYBINDING_SPEEDOMETER] == k) { internalModules[UMBRA_INTERNAL_SPEEDOMETER]->setActive(!internalModules[UMBRA_INTERNAL_SPEEDOMETER]->isActive()); }
     else val = false;
 
     if (val) {
@@ -234,4 +245,8 @@ void UmbraEngine::reinitialise (void) {
         UmbraError::add("Could not reinitialise the root console.");
         exit(1);
     }
+}
+
+void UmbraEngine::registerInternalModule (UmbraInternalModuleID id, UmbraModule * module) {
+    internalModules[id] = module;
 }

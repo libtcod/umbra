@@ -35,4 +35,6 @@
 #include "engine.hpp"
 #include "module.hpp"
 
+#include "imod_speed.hpp"
+
 #endif
