@@ -42,7 +42,6 @@ int main()
     //declare modules
     engine.registerModule(new Credits(),MOD_DEMO);
     engine.registerModule(new Demo());
-    engine.registerModule(new Speed());
     //activate modules
     engine.activateModule(MOD_CREDITS);
     //set a custom keybinding

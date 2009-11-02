@@ -74,8 +74,6 @@
 		<Unit filename="src/demo/demo.hpp" />
 		<Unit filename="src/demo/main.cpp" />
 		<Unit filename="src/demo/main.hpp" />
-		<Unit filename="src/demo/speed.cpp" />
-		<Unit filename="src/demo/speed.hpp" />
 		<Unit filename="src/umbra/config.cpp" />
 		<Unit filename="src/umbra/config.hpp" />
 		<Unit filename="src/umbra/engine.cpp" />
