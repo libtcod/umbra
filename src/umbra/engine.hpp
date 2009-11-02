@@ -60,18 +60,24 @@ enum UmbraKeybinding {
 class UmbraEngine {
     public:
         UmbraEngine (const char *fileName="data/cfg/umbra.txt"); //constructor
-        bool initialise (void); //initialises the engine
-        void setWindowTitle (const char * title, ...);
-        inline void setKeyboardMode (UmbraKeyboardMode mode) { keyboardMode = mode; }
-        inline UmbraKeyboardMode getKeyboardMode (void) { return keyboardMode ; }
-        int run (void); //runs the engine
+
         int registerModule (UmbraModule * module, int fallback = (-1)); //add a module to the modules list. returns id
         void registerFont (int rows, int columns, const char * filename, int flags = TCOD_FONT_LAYOUT_TCOD);
         void registerFonts (void);
+        bool initialise (void); //initialises the engine
+
+        void setWindowTitle (const char * title, ...);
+        inline void setKeyboardMode (UmbraKeyboardMode mode) { keyboardMode = mode; }
+        void setKeybinding (UmbraKeybinding kb, TCOD_keycode_t vk = TCODK_NONE, char c = 0, bool alt = false, bool ctrl = false, bool shift = false);
+
+        int run (void); //runs the engine
         void activateModule (int moduleId);
         void deactivateModule (int moduleId);
         void deactivateAll (void);
-        void setKeybinding (UmbraKeybinding kb, TCOD_keycode_t vk = TCODK_NONE, char c = 0, bool alt = false, bool ctrl = false, bool shift = false);
+
+        inline int getCurrentFontId() { return UmbraConfig::getFontID(); }
+        inline UmbraKeyboardMode getKeyboardMode (void) { return keyboardMode ; }
+		inline UmbraModule *getModule(int moduleId) { return (moduleId < 0 || moduleId >= modules.size() ? NULL : modules.get(moduleId)); }
         inline static UmbraEngine * getInstance (void) { return engineInstance; }
     private:
         static UmbraEngine * engineInstance;

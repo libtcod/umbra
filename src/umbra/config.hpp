@@ -37,7 +37,7 @@ class UmbraConfig {
         static bool fullScreen;
 
         static UmbraFont * font;
-
+        static inline int getFontID() { return fontID; }
     private:
         static char * fileName;
         static int fontID;

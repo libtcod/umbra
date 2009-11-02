@@ -29,10 +29,10 @@
 
 #include "libtcod.hpp"
 #include "version.hpp"
-#include "engine.hpp"
-#include "module.hpp"
 #include "error.hpp"
 #include "font.hpp"
 #include "config.hpp"
+#include "engine.hpp"
+#include "module.hpp"
 
 #endif
