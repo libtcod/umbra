@@ -172,6 +172,10 @@ void UmbraEngine::deactivateModule (int moduleId) {
         return;
     }
     UmbraModule *module = modules.get(moduleId);
+    deactivateModule(module);
+}
+
+void UmbraEngine::deactivateModule(UmbraModule *module) {
     if (module != NULL && module->isActive()) {
         toDeactivate.push(module);
         module->setActive(false);

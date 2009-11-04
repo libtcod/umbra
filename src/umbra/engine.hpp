@@ -74,8 +74,7 @@ class UmbraEngine {
         void activateModule (int moduleId);
         void deactivateModule (int moduleId);
         void deactivateAll (void);
-        //inline void activateModule (UmbraModule * mod) { toActivate.push(mod); }
-        inline void deactivateModule (UmbraModule * mod) { toDeactivate.push(mod); }
+        void deactivateModule (UmbraModule * mod);
 
         inline int getCurrentFontId() { return UmbraConfig::getFontID(); }
         inline UmbraKeyboardMode getKeyboardMode (void) { return keyboardMode ; }

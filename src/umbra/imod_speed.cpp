@@ -63,7 +63,7 @@ void UmbraModSpeed::mouse (TCOD_mouse_t &ms) {
 		}
 		//close button is pressed
 		else if (closeButton.is(mousex,mousey)) {
-		    setActive(false);
+		    getEngine()->deactivateModule(this);
 		}
 	}
 }
@@ -82,6 +82,10 @@ void UmbraModSpeed::render (void) {
 		speed->printFrame(0,0,30,6,true,"Speed-o-meter");
 		speed->printCenter(15,2,TCOD_BKGND_NONE,"last frame: %3d ms",(int)(TCODSystem::getLastFrameLength()*1000));
 		speed->printCenter(15,3,TCOD_BKGND_NONE,"frames per second: %3d",TCODSystem::getFps());
+		if ( dragZone.mouseHover ) {
+            speed->setBackgroundColor(TCODColor::lightRed);
+		    speed->rect(7,0,15,1,false,TCOD_BKGND_SET);
+		}
 	}
 	speed->setBackgroundColor(TCODColor::black);
 	// draw minimize button
