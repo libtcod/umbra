@@ -25,20 +25,31 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-class UmbraModSpeed : public UmbraWidget {
-    public:
-        UmbraModSpeed (void);
-        bool update (void);
-        void render (void);
-		void mouse (TCOD_mouse_t &ms);
-		// in case a user wants it minimized from start
-		inline void setMinimized(bool val) { isMinimized=val; }
-	protected :
-        void activate (void);
-        void deactivate (void);
-    private:
-        TCODConsole * speed;
-        int fps;
-		bool isMinimized;
-};
+#include "umbra.hpp"
+
+UmbraWidget::UmbraWidget( void ) : mousex(-1),mousey(-1),
+	canDrag(false),isDragging(false) {
+}
+
+void UmbraWidget::mouse(TCOD_mouse_t &ms) {
+	if ( !isDragging && !rect.isInside(ms.cx,ms.cy) ) return;
+
+	mousex=ms.cx-rect.x;
+	mousey=ms.cy-rect.y;
+	if ( ms.lbutton && canDrag && ! isDragging && dragZone.isInside(mousex,mousey) ) {
+		isDragging = true;
+		dragx = mousex;
+		dragy = mousey; // position where the widget is drag
+		ms.lbutton=false; // erase event
+	} else if ( isDragging && ! ms.lbutton ) {
+		isDragging = false;
+		ms.lbutton_pressed=false; // erase event
+	} else if ( isDragging ) {
+		ms.lbutton=false; // erase event
+		rect.x = CLAMP(0,UmbraConfig::rootWidth-rect.w, ms.cx-dragx);
+		rect.y = CLAMP(0,UmbraConfig::rootHeight-rect.h,ms.cy-dragy);
+		mousex=dragx;mousey=dragy;
+		ms.cx=ms.cy=ms.x=ms.y=ms.dx=ms.dy=ms.dcx=ms.dcy=0; // erase mouse move event
+	}
+}
 

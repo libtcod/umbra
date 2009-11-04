@@ -25,20 +25,26 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-class UmbraModSpeed : public UmbraWidget {
-    public:
-        UmbraModSpeed (void);
-        bool update (void);
-        void render (void);
-		void mouse (TCOD_mouse_t &ms);
-		// in case a user wants it minimized from start
-		inline void setMinimized(bool val) { isMinimized=val; }
-	protected :
-        void activate (void);
-        void deactivate (void);
-    private:
-        TCODConsole * speed;
-        int fps;
-		bool isMinimized;
+struct UmbraRect {
+	int x,y,w,h;
+	UmbraRect(): x(0),y(0),w(0),h(0) {}
+	UmbraRect(int x,int y, int w, int h ): x(x),y(y),w(w),h(h) {}
+	inline void setPos(int x, int y) { this->x=x;this->y=y; }
+	inline void setSize(int w, int h) { this->w=w;this->h=h; }
+	inline void set(int x, int y, int w, int h) { setPos(x,y); setSize(w,h); }
+	inline bool isInside(int px, int py) { return px >=x && px < x+w && py >=y && py < y+h; }
+};
+
+
+class UmbraWidget : public UmbraModule {
+public :
+	UmbraWidget( void );
+	void mouse (TCOD_mouse_t &ms);
+protected :
+	UmbraRect rect; // part of the screen where the widget is
+	UmbraRect dragZone; // part of the widget we can click to drag it
+	int mousex,mousey;
+	int dragx,dragy;
+	bool canDrag, isDragging;
 };
 

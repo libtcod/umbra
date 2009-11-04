@@ -35,10 +35,10 @@ class UmbraModule {
 
         virtual void initialise (void); // allocate resources. called only once
 
-        virtual void render (void) { return; } //render the module on the root console
+        virtual void render (void) { } //render the module on the root console
         virtual bool update (void) { return true; } //update the module's logic
-        virtual void keyboard (TCOD_key_t &key) { return; } //module-specific keyboard
-        virtual void mouse (TCOD_mouse_t ms) { return; } //module-specific mouse
+        virtual void keyboard (TCOD_key_t &key) { } //module-specific keyboard
+        virtual void mouse (TCOD_mouse_t &ms) { } //module-specific mouse
 
         //setters
         inline void setFallback (int fback) { fallback = fback; } //set default fallback module's index
@@ -46,6 +46,7 @@ class UmbraModule {
         void setFadeOut (int lengthInMilli, TCODColor col = TCODColor::black); //set fade lengths in milliseconds
         void setActive (bool active);
         void setPause (bool paused);
+		
         //getters
         inline int getFallback (void) { return fallback; }
         inline int getFadeInLength (void) { return fadeInLength; }
@@ -55,6 +56,7 @@ class UmbraModule {
         inline bool isPaused (void) { return status == UMBRA_PAUSED; }
         inline bool isActive (void) { return status > UMBRA_INACTIVE; }
         inline UmbraEngine * getEngine (void) { return UmbraEngine::getInstance(); }
+		inline int getPriority() { return priority; }
 
     protected:
         // for activation/deactivation custom code
@@ -63,7 +65,7 @@ class UmbraModule {
         // for pause/resume custom code
         virtual void pause() {}
         virtual void resume() {}
-
+		int priority; // update order (inverse of render order)
     private:
         UmbraModuleStatus status;
         int fallback; //fallback module's index

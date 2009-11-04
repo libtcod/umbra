@@ -93,6 +93,7 @@ class UmbraEngine {
         TCODList <UmbraModule*> toDeactivate; // modules to deactivate next frame
         UmbraKeyboardMode keyboardMode;
 
+		void activateModule( UmbraModule *mod );
         // font autodetection if no font is registered
         void registerFonts (void);
 

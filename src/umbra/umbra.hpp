@@ -34,6 +34,7 @@
 #include "config.hpp"
 #include "engine.hpp"
 #include "module.hpp"
+#include "widget.hpp"
 
 #include "imod_speed.hpp"
 
