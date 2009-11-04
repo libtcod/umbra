@@ -74,11 +74,14 @@ class UmbraEngine {
         void activateModule (int moduleId);
         void deactivateModule (int moduleId);
         void deactivateAll (void);
+        //inline void activateModule (UmbraModule * mod) { toActivate.push(mod); }
+        inline void deactivateModule (UmbraModule * mod) { toDeactivate.push(mod); }
 
         inline int getCurrentFontId() { return UmbraConfig::getFontID(); }
         inline UmbraKeyboardMode getKeyboardMode (void) { return keyboardMode ; }
 		inline UmbraModule *getModule(int moduleId) { return (moduleId < 0 || moduleId >= modules.size() ? NULL : modules.get(moduleId)); }
         inline static UmbraEngine * getInstance (void) { return engineInstance; }
+
     private:
         static UmbraEngine * engineInstance;
         std::string windowTitle;

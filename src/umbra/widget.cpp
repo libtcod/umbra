@@ -32,10 +32,15 @@ UmbraWidget::UmbraWidget( void ) : mousex(-1),mousey(-1),
 }
 
 void UmbraWidget::mouse(TCOD_mouse_t &ms) {
-	if ( !isDragging && !rect.isInside(ms.cx,ms.cy) ) return;
+	//if ( !isDragging && !rect.isInside(ms.cx,ms.cy) ) return;
 
+	//set mouse positions
 	mousex=ms.cx-rect.x;
 	mousey=ms.cy-rect.y;
+	//check if the mouse is hovering over a button
+	minimiseButton.mouseHover = minimiseButton.is(mousex,mousey);
+	closeButton.mouseHover = closeButton.is(mousex,mousey);
+	//deal with dragging
 	if ( ms.lbutton && canDrag && ! isDragging && dragZone.isInside(mousex,mousey) ) {
 		isDragging = true;
 		dragx = mousex;

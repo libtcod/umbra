@@ -25,26 +25,42 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-struct UmbraRect {
-	int x,y,w,h;
-	UmbraRect(): x(0),y(0),w(0),h(0) {}
-	UmbraRect(int x,int y, int w, int h ): x(x),y(y),w(w),h(h) {}
-	inline void setPos(int x, int y) { this->x=x;this->y=y; }
-	inline void setSize(int w, int h) { this->w=w;this->h=h; }
-	inline void set(int x, int y, int w, int h) { setPos(x,y); setSize(w,h); }
-	inline bool isInside(int px, int py) { return px >=x && px < x+w && py >=y && py < y+h; }
+class UmbraRect {
+	public:
+        int x,y,w,h;
+        bool mouseHover;
+        UmbraRect (void): x(0),y(0),w(0),h(0),mouseHover(false) {}
+        UmbraRect (int x, int y, int w, int h): x(x),y(y),w(w),h(h),mouseHover(false) {}
+        inline void setPos (int x, int y) { this->x=x; this->y=y; }
+        inline void setSize (int w, int h) { this->w=w;this->h=h; }
+        inline void set (int x, int y, int w, int h) { setPos(x,y); setSize(w,h); }
+        inline bool isInside (int px, int py) { return px >= x && px < x+w && py >= y && py < y+h; }
+        //inline bool isInsideAbs (int px, int py, int cx, int cy) { return px >= x+cx && px < x+w+cx && py >= y+cy && y < y+h+cy; }
+};
+
+class UmbraPoint {
+    public:
+        int x, y;
+        bool mouseHover;
+        UmbraPoint (void): x(0),y(0),mouseHover(false) {}
+        UmbraPoint (int x, int y): x(x),y(y),mouseHover(false) {}
+        inline void set (int x, int y) { this->x=x; this->y=y; }
+        inline bool is (int px, int py) { return px == x && py == y; }
+        //inline bool isAbs (int px, int py, int cx, int cy) { return px == x+cx && py == y+cy; }
 };
 
 
 class UmbraWidget : public UmbraModule {
-public :
-	UmbraWidget( void );
-	void mouse (TCOD_mouse_t &ms);
-protected :
-	UmbraRect rect; // part of the screen where the widget is
-	UmbraRect dragZone; // part of the widget we can click to drag it
-	int mousex,mousey;
-	int dragx,dragy;
-	bool canDrag, isDragging;
+    public :
+        UmbraWidget (void);
+        void mouse (TCOD_mouse_t &ms);
+    protected :
+        UmbraRect rect; // part of the screen where the widget is
+        UmbraRect dragZone; // part of the widget we can click to drag it
+        UmbraPoint minimiseButton; //minimise button coordinates
+        UmbraPoint closeButton; //close button coordinates
+        int mousex,mousey;
+        int dragx,dragy;
+        bool canDrag, isDragging;
 };
 

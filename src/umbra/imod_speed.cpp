@@ -27,32 +27,43 @@
 
 #include "umbra.hpp"
 
-UmbraModSpeed::UmbraModSpeed (void) : isMinimized(false) {
+UmbraModSpeed::UmbraModSpeed (void) : isMinimised(false) {
     speed = new TCODConsole(30,6);
     rect.set((UmbraConfig::rootWidth/2)-15,(UmbraConfig::rootHeight/2)-3,30,6);
 	canDrag = true;
 	// the title bar is drag-sensible
-	dragZone.x=0;
-	dragZone.y=0;
-	dragZone.w=28;
-	dragZone.h=1;
+	dragZone.set(0,0,27,1);
+    //the buttons:
+    minimiseButton.set(27,0);
+    closeButton.set(28,0);
 	priority=0; // higher prio for internal modules
 }
 
 void UmbraModSpeed::mouse (TCOD_mouse_t &ms) {
 	UmbraWidget::mouse(ms);
-	if ( ms.lbutton_pressed && mousex == rect.w- (isMinimized ? 1 : 2) && mousey == 0 ) {
+	if (ms.lbutton_pressed) {
 		ms.lbutton_pressed=false; // erase event
-		isMinimized = !isMinimized;
-		if (isMinimized) {
-			rect.setSize(8,1);
-			dragZone.w = 7;
-		} else {
-			rect.setSize(30,6);
-			dragZone.w = 28;
-			// when the widget maximizes, it might cross the screen borders
-			rect.x=MIN(UmbraConfig::rootWidth-rect.w,rect.x);
-			rect.y=MIN(UmbraConfig::rootHeight-rect.h,rect.y);
+		//minimise button is pressed
+		if (minimiseButton.is(mousex,mousey)) {
+            isMinimised = !isMinimised;
+            if (isMinimised) {
+                rect.setSize(9,1);
+                minimiseButton.set(7,0);
+                closeButton.set(8,0);
+                dragZone.w = 7;
+            } else {
+                rect.setSize(30,6);
+                minimiseButton.set(27,0);
+                closeButton.set(28,0);
+                dragZone.w = 27;
+                // when the widget maximizes, it might cross the screen borders
+                rect.x=MIN(UmbraConfig::rootWidth-rect.w,rect.x);
+                rect.y=MIN(UmbraConfig::rootHeight-rect.h,rect.y);
+            }
+		}
+		//close button is pressed
+		else if (closeButton.is(mousex,mousey)) {
+		    setActive(false);
 		}
 	}
 }
@@ -64,23 +75,25 @@ bool UmbraModSpeed::update (void) {
 void UmbraModSpeed::render (void) {
     speed->setBackgroundColor(TCODColor::black);
     speed->setForegroundColor(TCODColor::white);
-	if ( isMinimized ) {
-		speed->printLeft(0,0,TCOD_BKGND_NONE,"%4dfps ",TCODSystem::getFps());
+	if ( isMinimised ) {
+		speed->printLeft(0,0,TCOD_BKGND_SET,"%4dfps ",TCODSystem::getFps());
 		TCODConsole::blit(speed,0,0,8,1,TCODConsole::root,rect.x,rect.y,1.0f,0.5f);
 	} else {
 		speed->printFrame(0,0,30,6,true,"Speed-o-meter");
 		speed->printCenter(15,2,TCOD_BKGND_NONE,"last frame: %3d ms",(int)(TCODSystem::getLastFrameLength()*1000));
 		speed->printCenter(15,3,TCOD_BKGND_NONE,"frames per second: %3d",TCODSystem::getFps());
-		TCODConsole::blit(speed,0,0,rect.w,rect.h,TCODConsole::root,rect.x,rect.y,1.0f,0.5f);
 	}
+	speed->setBackgroundColor(TCODColor::black);
 	// draw minimize button
-	if ( mousex == rect.w-(isMinimized ? 1 : 2) && mousey ==0 ) {
-		// button is active
-	    TCODConsole::root->setForegroundColor(TCODColor::white);
-	} else {
-	    TCODConsole::root->setForegroundColor(TCODColor::lightGrey);
-	}
-	TCODConsole::root->putChar(rect.x+rect.w-(isMinimized ? 1 : 2),rect.y, isMinimized ? TCOD_CHAR_ARROW2_S : TCOD_CHAR_ARROW2_N, TCOD_BKGND_NONE);
+	if (minimiseButton.mouseHover) speed->setForegroundColor(TCODColor::white); //button is active
+	else speed->setForegroundColor(TCODColor::lightGrey); //button is not active
+	speed->putChar(minimiseButton.x,minimiseButton.y, isMinimised ? '+' : '-', TCOD_BKGND_SET);
+	//draw close button
+	if (closeButton.mouseHover) speed->setForegroundColor(TCODColor::red); //button is active
+	else speed->setForegroundColor(TCODColor::lightGrey); //button is not active
+	speed->putChar(closeButton.x,closeButton.y, 'X', TCOD_BKGND_SET);
+	//blit the console
+	TCODConsole::blit(speed,0,0,rect.w,rect.h,TCODConsole::root,rect.x,rect.y,1.0f,0.5f);
 }
 
 void UmbraModSpeed::activate (void) {
