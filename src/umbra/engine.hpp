@@ -71,10 +71,13 @@ class UmbraEngine {
         void setKeybinding (UmbraKeybinding kb, TCOD_keycode_t vk = TCODK_NONE, char c = 0, bool alt = false, bool ctrl = false, bool shift = false);
 
         int run (void); //runs the engine
+        // register a module for activation next frame, either by id or reference
         void activateModule (int moduleId);
+        void activateModule (UmbraModule *mod);
+        // register a module for deactivation next frame either by id or reference
         void deactivateModule (int moduleId);
-        void deactivateAll (void);
         void deactivateModule (UmbraModule * mod);
+        void deactivateAll (void);
 
         inline int getCurrentFontId() { return UmbraConfig::getFontID(); }
         inline UmbraKeyboardMode getKeyboardMode (void) { return keyboardMode ; }
@@ -95,7 +98,8 @@ class UmbraEngine {
         TCODList <UmbraModule*> toDeactivate; // modules to deactivate next frame
         UmbraKeyboardMode keyboardMode;
 
-		void activateModule( UmbraModule *mod );
+        // actually put the module in active list
+		void doActivateModule( UmbraModule *mod );
         // font autodetection if no font is registered
         void registerFonts (void);
 

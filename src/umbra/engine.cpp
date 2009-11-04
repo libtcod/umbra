@@ -143,20 +143,25 @@ void UmbraEngine::setKeybinding (UmbraKeybinding kb, TCOD_keycode_t vk, char c, 
     keybindings[kb].shift = shift;
 }
 
-// the public function registering the module for activation next frame
+// public function registering the module for activation next frame, by id
 void UmbraEngine::activateModule (int moduleId) {
     if ( moduleId < 0 || moduleId >= modules.size() ) {
         UmbraError::add("Try to activate invalid module id %d.",moduleId);
         return;
     }
     UmbraModule *module = modules.get(moduleId);
+    activateModule(module);
+}
+
+// public function registering the module for activation next frame, by reference
+void UmbraEngine::activateModule(UmbraModule *module) {
     if (module != NULL && ! module->isActive()) {
         toActivate.push(module);
     }
 }
 
-// the internal function actually activating a module
-void UmbraEngine::activateModule( UmbraModule *mod ) {
+// the internal function actually putting a module in active list
+void UmbraEngine::doActivateModule( UmbraModule *mod ) {
     if (! mod->isActive() ) {
         mod->setActive(true);
 		// insert the module at the right pos, sorted by priority
@@ -166,6 +171,7 @@ void UmbraEngine::activateModule( UmbraModule *mod ) {
     }
 }
 
+// register the module for deactivation by id
 void UmbraEngine::deactivateModule (int moduleId) {
     if ( moduleId < 0 || moduleId >= modules.size() ) {
         UmbraError::add("Try to deactivate invalid module id %d.",moduleId);
@@ -175,6 +181,7 @@ void UmbraEngine::deactivateModule (int moduleId) {
     deactivateModule(module);
 }
 
+// register the module for deactivation by reference
 void UmbraEngine::deactivateModule(UmbraModule *module) {
     if (module != NULL && module->isActive()) {
         toDeactivate.push(module);
@@ -184,8 +191,7 @@ void UmbraEngine::deactivateModule(UmbraModule *module) {
 
 void UmbraEngine::deactivateAll (void) {
     for (UmbraModule ** mod = activeModules.begin(); mod != activeModules.end(); mod++) {
-        toDeactivate.push((*mod));
-        (*mod)->setActive(false);
+        deactivateModule((*mod));
     }
 }
 
@@ -228,7 +234,7 @@ int UmbraEngine::run (void) {
         toDeactivate.clear();
         // activate new modules
         for (UmbraModule ** mod = toActivate.begin(); mod != toActivate.end(); mod++) {
-			activateModule(*mod);
+			doActivateModule(*mod);
         }
         toActivate.clear();
         if (activeModules.size() == 0) break; // exit game
@@ -263,8 +269,8 @@ int UmbraEngine::run (void) {
 	                UmbraModule *module=*mod;
 	                int fallback=module->getFallback();
 	                // deactivate module
-	                mod = activeModules.remove(mod);
 	                module->setActive(false);
+	                mod = activeModules.remove(mod);
 	                if (fallback != -1) {
 	                    // register fallback for activation
 	                    UmbraModule *fallbackModule = modules.get(fallback);
