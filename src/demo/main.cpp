@@ -36,9 +36,11 @@ int main()
     //set window title
     engine.setWindowTitle("Umbra demo");
     //register fonts
+    /*
     engine.registerFont(32,8,"data/img/font8x8.png",TCOD_FONT_LAYOUT_TCOD|TCOD_FONT_TYPE_GRAYSCALE);
     engine.registerFont(32,8,"data/img/font10x10.png",TCOD_FONT_LAYOUT_TCOD|TCOD_FONT_TYPE_GRAYSCALE);
     engine.registerFont(32,8,"data/img/font12x12.png",TCOD_FONT_LAYOUT_TCOD|TCOD_FONT_TYPE_GRAYSCALE);
+    */
     //declare modules
     engine.registerModule(new Credits(),MOD_DEMO);
     engine.registerModule(new Demo());
@@ -46,6 +48,8 @@ int main()
     engine.activateModule(MOD_CREDITS);
     //set a custom keybinding
     engine.setKeybinding(UMBRA_KEYBINDING_QUIT,TCODK_CHAR,'q',false,true,false);
+    // activate some internal module
+    engine.setKeybinding(UMBRA_KEYBINDING_SPEEDOMETER,TCODK_F5,0,false,false,false);
     //initialise and run the engine
     if (engine.initialise()) return engine.run();
     else return 1;

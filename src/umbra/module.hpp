@@ -25,6 +25,8 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
+enum UmbraModuleStatus { UMBRA_UNINITIALIZED, UMBRA_INACTIVE, UMBRA_FADING_IN, UMBRA_ACTIVE, UMBRA_PAUSED, UMBRA_FADING_OUT };
+
 //all screens or views, such as credits, main menu, map view, etc. have to inherit this
 class UmbraModule {
     public:
@@ -32,7 +34,6 @@ class UmbraModule {
         virtual ~UmbraModule (void) {} //destructor
 
         virtual void initialise (void); // allocate resources. called only once
-        void deinitialise (void);
 
         virtual void render (void) { return; } //render the module on the root console
         virtual bool update (void) { return true; } //update the module's logic
@@ -51,8 +52,8 @@ class UmbraModule {
         inline int getFadeOutLength (void) { return fadeOutLength; }
         inline TCODColor getFadeInColor (void) { return fadeInColor; }
         inline TCODColor getFadeOutColor (void) { return fadeOutColor; }
-        inline bool isPaused (void) { return paused; }
-        inline bool isActive (void) { return active; }
+        inline bool isPaused (void) { return status == UMBRA_PAUSED; }
+        inline bool isActive (void) { return status > UMBRA_INACTIVE; }
         inline UmbraEngine * getEngine (void) { return UmbraEngine::getInstance(); }
 
     protected:
@@ -64,9 +65,7 @@ class UmbraModule {
         virtual void resume() {}
 
     private:
-        bool initialised;
-        bool active;
-        bool paused;
+        UmbraModuleStatus status;
         int fallback; //fallback module's index
         int fadeInLength;
         TCODColor fadeInColor;

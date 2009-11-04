@@ -64,7 +64,6 @@ class UmbraEngine {
 
         int registerModule (UmbraModule * module, int fallback = (-1)); //add a module to the modules list. returns id
         void registerFont (int rows, int columns, const char * filename, int flags = TCOD_FONT_LAYOUT_TCOD);
-        void registerFonts (void);
         bool initialise (void); //initialises the engine
 
         void setWindowTitle (const char * title, ...);
@@ -93,6 +92,9 @@ class UmbraEngine {
         TCODList <UmbraModule*> toActivate; // modules to activate next frame
         TCODList <UmbraModule*> toDeactivate; // modules to deactivate next frame
         UmbraKeyboardMode keyboardMode;
+
+        // font autodetection if no font is registered
+        void registerFonts (void);
 
         //the internal modules stuff
         enum UmbraInternalModuleID { UMBRA_INTERNAL_SPEEDOMETER, UMBRA_INTERNAL_MAX };

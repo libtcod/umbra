@@ -44,7 +44,8 @@ UmbraEngine::UmbraEngine (const char *fileName) : keyboardMode( UMBRA_KEYBOARD_R
     setKeybinding(UMBRA_KEYBINDING_FONT_DOWN,TCODK_PAGEDOWN,0,false,false,false);
     setKeybinding(UMBRA_KEYBINDING_SCREENSHOT,TCODK_PRINTSCREEN,0,false,false,false);
     setKeybinding(UMBRA_KEYBINDING_PAUSE,TCODK_PAUSE,0,false,false,false);
-    setKeybinding(UMBRA_KEYBINDING_SPEEDOMETER,TCODK_F5,0,false,false,false);
+    // internal modules keybindings. All deactivated by default
+    setKeybinding(UMBRA_KEYBINDING_SPEEDOMETER,TCODK_NONE,0,false,false,false);
     //register internal modules
     registerInternalModule(UMBRA_INTERNAL_SPEEDOMETER,new UmbraModSpeed());
 }
@@ -74,6 +75,64 @@ void UmbraEngine::registerFont (int rows, int columns, const char * filename, in
     UmbraFont * file = new UmbraFont; //don't delete this later
     file->initialise(rows,columns,filename,flags);
     UmbraConfig::registerFont(file);
+}
+
+// temporary internal font storage structure
+struct TmpFontData {
+    int rows;
+    int columns;
+    char name[512];
+    int flags;
+    int size;
+};
+#define MAX_FONTS 16
+void UmbraEngine::registerFonts( void ) {
+    // if fonts registered by the user, do nothing
+    if ( UmbraConfig::getNbFonts() > 0 ) return;
+    TmpFontData dat[MAX_FONTS];
+    TCODList<TmpFontData *> fontDataList;
+    // look for font*png in font directory
+    TCODList<const char *> dir=TCODSystem::getDirectoryContent(UmbraConfig::getFontDir(),"font*.png");
+    if ( dir.size() > 0 ) {
+        int fontNum=0;
+        for (const char **fontName = dir.begin(); fontName != dir.end() && fontNum < MAX_FONTS; fontName++) {
+            int charWidth;
+            int charHeight;
+            char layout[32]="";
+            if ( sscanf(*fontName,"font%dx%d%s",&charWidth,&charHeight,layout) >= 2 ) {
+                if ( charWidth > 0 && charHeight > 0 ) {
+                    int fontFlag = TCOD_FONT_TYPE_GREYSCALE;
+                    if ( layout[0] == '_' ) {
+                        // parse font layout
+                        if ( strncasecmp(layout,"_TCOD.",6) == 0 ) fontFlag|=TCOD_FONT_LAYOUT_TCOD;
+                        else if ( strncasecmp(layout,"_INCOL.",7) == 0 ) fontFlag|=TCOD_FONT_LAYOUT_ASCII_INCOL;
+                        else if ( strncasecmp(layout,"_INROW.",7) == 0 ) fontFlag|=TCOD_FONT_LAYOUT_ASCII_INROW;
+                    } else {
+                        // default is TCOD |GREYSCALE
+                        fontFlag|=TCOD_FONT_LAYOUT_TCOD;
+                    }
+                    // compute font grid size from image size & char size
+                    int w,h;
+                    sprintf(dat[fontNum].name,"%s/%s",UmbraConfig::getFontDir(),*fontName);
+                    TCODImage tmp(dat[fontNum].name);
+                    tmp.getSize(&w,&h);
+                    dat[fontNum].size = charWidth*charHeight;
+                    dat[fontNum].rows=h/charHeight;
+                    dat[fontNum].columns=w/charWidth;
+                    dat[fontNum].flags=fontFlag;
+                    // sort this font by size
+                    int idx=0;
+                    while ( idx < fontDataList.size() && fontDataList.get(idx)->size < dat[fontNum].size ) idx ++;
+                    fontDataList.insertBefore(&dat[fontNum],idx);
+                    fontNum++;
+                }
+            }
+        }
+        for (TmpFontData **dat=fontDataList.begin(); dat != fontDataList.end(); dat ++) {
+            // register the fonts from smallest to biggest
+            registerFont((*dat)->rows,(*dat)->columns,(*dat)->name,(*dat)->flags);
+        }
+    }
 }
 
 void UmbraEngine::setKeybinding (UmbraKeybinding kb, TCOD_keycode_t vk, char c, bool alt, bool ctrl, bool shift) {
@@ -115,10 +174,12 @@ void UmbraEngine::deactivateAll (void) {
 }
 
 bool UmbraEngine::initialise (void) {
+    // autodetect fonts if needed
+    registerFonts();
     //activate the base font
     UmbraConfig::activateFont();
     //initialise console
-    TCODConsole::setCustomFont(UmbraConfig::font->filename(),UmbraConfig::font->flags(),UmbraConfig::font->rows(),UmbraConfig::font->columns());
+    TCODConsole::setCustomFont(UmbraConfig::font->filename(),UmbraConfig::font->flags(),UmbraConfig::font->columns(),UmbraConfig::font->rows());
     TCODConsole::initRoot(UmbraConfig::rootWidth,UmbraConfig::rootHeight,windowTitle.c_str(), UmbraConfig::fullScreen);
     TCODSystem::setFps(25);
     TCODMouse::showCursor(true);
@@ -229,7 +290,7 @@ void UmbraEngine::keyboard (TCOD_key_t &key) {
     else if (keybindings[UMBRA_KEYBINDING_FONT_DOWN] == k) { if (UmbraConfig::activateFont(-1)) reinitialise(); }
     else if (keybindings[UMBRA_KEYBINDING_SCREENSHOT] == k) { TCODSystem::saveScreenshot(NULL); }
     else if (keybindings[UMBRA_KEYBINDING_FULLSCREEN] == k) { TCODConsole::setFullscreen(!TCODConsole::isFullscreen()); }
-    else if (keybindings[UMBRA_KEYBINDING_SPEEDOMETER] == k) { internalModules[UMBRA_INTERNAL_SPEEDOMETER]->setActive(!internalModules[UMBRA_INTERNAL_SPEEDOMETER]->isActive()); }
+    else if (keybindings[UMBRA_KEYBINDING_SPEEDOMETER] == k) {internalModules[UMBRA_INTERNAL_SPEEDOMETER]->setActive(!internalModules[UMBRA_INTERNAL_SPEEDOMETER]->isActive()); }
     else val = false;
 
     if (val) {

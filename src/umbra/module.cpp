@@ -27,7 +27,7 @@
 
 #include "umbra.hpp"
 
-UmbraModule::UmbraModule (void) : initialised(false),active(false),paused(false),
+UmbraModule::UmbraModule (void) : status(UMBRA_UNINITIALIZED),
     fallback(-1),fadeInLength(0),fadeOutLength(0) {
 }
 
@@ -42,24 +42,23 @@ void UmbraModule::setFadeOut (int lengthInMilli, TCODColor col) {
 }
 
 void UmbraModule::initialise (void) {
-    initialised = true;
-}
-
-void UmbraModule::deinitialise (void) {
-    initialised = false;
+    status=UMBRA_INACTIVE;
 }
 
 void UmbraModule::setActive (bool active) {
-    if (active && !initialised ) {
+    if (active && status == UMBRA_UNINITIALIZED ) {
         initialise();
     }
-    this->active = active;
+    status = (active ? UMBRA_ACTIVE : UMBRA_INACTIVE);
     if (active) activate();
     else deactivate();
 }
 
 void UmbraModule::setPause (bool paused) {
-    this->paused=paused;
+    if (status == UMBRA_UNINITIALIZED ) {
+        initialise();
+    }
+    status=UMBRA_PAUSED;
     if (paused) pause();
     else resume();
 }

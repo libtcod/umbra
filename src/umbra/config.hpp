@@ -38,8 +38,11 @@ class UmbraConfig {
 
         static UmbraFont * font;
         static inline int getFontID() { return fontID; }
+        static inline int getNbFonts() { return fonts.size(); }
+        static inline const char *getFontDir() {return fontDir;}
     private:
-        static char * fileName;
+        static const char * fileName;
+        static const char * fontDir;
         static int fontID;
         static TCODList <UmbraFont *> fonts;
 };

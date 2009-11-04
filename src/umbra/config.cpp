@@ -34,7 +34,8 @@ int UmbraConfig::fontID;
 bool UmbraConfig::fullScreen;
 TCODList <UmbraFont *> UmbraConfig::fonts;
 UmbraFont * UmbraConfig::font = NULL;
-char * UmbraConfig::fileName = NULL;
+const char * UmbraConfig::fileName = NULL;
+const char * UmbraConfig::fontDir = NULL;
 
 void UmbraConfig::load (const char *fileName) {
     static bool loaded = false;
@@ -48,6 +49,8 @@ void UmbraConfig::load (const char *fileName) {
         config->addProperty("rootHeight",TCOD_TYPE_INT,true);
         config->addProperty("fontID",TCOD_TYPE_INT,true);
         config->addProperty("fullScreen",TCOD_TYPE_BOOL,true);
+        // optional custom font directory
+        config->addProperty("fontDir",TCOD_TYPE_STRING,false);
 
     //check if the config file exists
     if (!UmbraError::fileExists(fileName)) {
@@ -63,6 +66,13 @@ void UmbraConfig::load (const char *fileName) {
     rootHeight = parser.getIntProperty("config.rootHeight");
     fontID = parser.getIntProperty("config.fontID");
     fullScreen = parser.getBoolProperty("config.fullScreen");
+    fontDir = parser.getStringProperty("config.fontDir");
+    if ( fontDir != NULL ) {
+        fontDir = strdup(fontDir);
+    } else {
+        // default value
+        fontDir = "data/img";
+    }
 
     loaded = true;
 }
@@ -94,7 +104,7 @@ bool UmbraConfig::activateFont (int shift) {
     int s = CLAMP(-1,1,shift);
     //check if there are any registered fonts
     if (fonts.size() == 0) {
-        UmbraError::add("Tried to activate a font without having registered any.");
+        // can happen if a user uses the default terminal.png without registering any font
         return false;
     }
     //check if the requested ID isn't out of range

@@ -511,13 +511,12 @@ Also see [[AdvancedOptions]]</pre>
 </div>
 <!--POST-SHADOWAREA-->
 <div id="storeArea">
-<div title="DefaultTiddlers" modifier="jice" created="200910291727" modified="200911020115" changecount="23">
-<pre>[[internal modules]]
-[[Faders]]
+<div title="DefaultTiddlers" modifier="jice" created="200910291727" modified="200911040002" changecount="24">
+<pre>[[Faders]]
 [[custom global keybindings]]
 [[Font detection]]</pre>
 </div>
-<div title="Faders" modifier="Mingos" created="200911011856" modified="200911021730" tags="code unassigned" changecount="7">
+<div title="Faders" modifier="jice" created="200911011856" modified="200911040011" tags="code Jice" changecount="9">
 <pre>Here is a proposition for screen fading handling.
 A fader takes two offscreen consoles and a fade rate (0.0 = fading not started, 1.0 = fading ended). It renders the result on the root console
 :class UmbraFader {
@@ -550,9 +549,10 @@ and
 :void UmbraModule::setUpdateWhenFading( bool val );
 
 ;Yeah, this seems sensible.
-</pre>
+
+Ok, already did the UmbraModuleStatus stuff. Faders still to be done.</pre>
 </div>
-<div title="Font detection" modifier="jice" created="200910301332" modified="200910312123" tags="code Mingos" changecount="3">
+<div title="Font detection" modifier="jice" created="200910301332" modified="200911040105" tags="done" changecount="4">
 <pre>General thoughts about fonts in libtcod :
 * setCustomFont requires the font grid size (NHC = number of horizontal characters x NVC = number of vertical character), not the char size in pixels. The later can be deduced from the first (and vice versa). The initial reason was that all the fonts for a game have the same NHC/NVC while the char size may change. Providing NHC/NVC to setCustomFont make it possible for a user (the game developer or even a player) to change the font without recompiling the game.
 
@@ -569,7 +569,10 @@ We can safely assume that the developper will either use custom font names or us
 ;Here is what I had in mind:
 ;register pairs of variables: font size in pixels (the game would only use square fonts) and file name.
 ;upon pressing PGDN/PGUP, run the font switcher: the key pressed determines search direction +1 or -1. Sizes are scanned starting from the current one in the given direction until a valid one is found or a ceiling is hit. If no font is found, nothing happens, if a new font is found, it's used.
-;Your idea seems to be more versatile.</pre>
+;Your idea seems to be more versatile.
+
+Font detection stuff done. I added another feats :
+if font name is only font&lt;x&gt;x&lt;y&gt;.png, TCOD layout is assumed. Thus, the current demo fonts works out of the box.</pre>
 </div>
 <div title="MainMenu" modifier="Mingos" created="200910291741" changecount="1">
 <pre>[[GettingStarted]]
@@ -715,7 +718,7 @@ rename xSize ySize to consoleWidth consoleHeight ? (more explanatory)
 
 ;changed to rootWidth and rootHeight</pre>
 </div>
-<div title="custom global keybindings" modifier="Mingos" created="200911010258" modified="200911021732" tags="discuss" changecount="9">
+<div title="custom global keybindings" modifier="jice" created="200911010258" modified="200911040015" tags="discuss" changecount="10">
 <pre>I've just had an idea for making custom global keybindings. For instance, a hypothetical freak might want the ESCAPE launch a code:
 :if $module is not activated then activate $module
 It's entirely custom and we can't foresee it nor give naive support for it.
@@ -747,7 +750,17 @@ If it shouldn't be in the module, then why would the module inherit it? It's sup
 
 ; ok let's forget the UmbraModule inheritage. Is the rest ok for you?
 
-Not really, as I still don't understand it fer shit.</pre>
+Not really, as I still don't understand it fer shit.
+
+; on a second thought, the user can already do global keybindings with Umbra. he simply has to create a module that is always activated and simply executes some code on some keypress :
+: class GlobalKeyModule : public UmbraModule {
+: void keyboard(TCOD_key_t k) {
+:   ... do global keybindings here
+: }
+: };
+:engine.activateModule( engine.registerModule(new GlobalKeyModule()) ) ;
+; done!
+; now is there really a need for something else ? </pre>
 </div>
 <div title="default keybindings" modifier="Mingos" created="200910311323" modified="200911010253" tags="done" changecount="12">
 <pre>At the moment, keybindings are fixed, ie, alt+f4 closes the app, pgup uses the previous font, pgdn uses the next font, prtscr saves a screenshot, alt+enter toggles fullscreen.

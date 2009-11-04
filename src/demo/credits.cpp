@@ -37,6 +37,7 @@ bool Credits::update (void) {
 }
 
 void Credits::render (void) {
+    TCODConsole::root->clear();
     TCODConsole::root->setForegroundColor(TCODColor::white);
     TCODConsole::root->printLeft(0,0,TCOD_BKGND_NONE,"%s",credits);
 }
