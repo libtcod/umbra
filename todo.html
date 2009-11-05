@@ -511,10 +511,10 @@ Also see [[AdvancedOptions]]</pre>
 </div>
 <!--POST-SHADOWAREA-->
 <div id="storeArea">
-<div title="DefaultTiddlers" modifier="jice" created="200910291727" modified="200911040002" changecount="24">
-<pre>[[Faders]]
-[[custom global keybindings]]
-[[Font detection]]</pre>
+<div title="DefaultTiddlers" modifier="jice" created="200910291727" modified="200911051051" changecount="25">
+<pre>[[Internal modules]]
+[[Faders]]
+[[custom global keybindings]]</pre>
 </div>
 <div title="Faders" modifier="jice" created="200911011856" modified="200911040011" tags="code Jice" changecount="9">
 <pre>Here is a proposition for screen fading handling.
@@ -573,6 +573,22 @@ We can safely assume that the developper will either use custom font names or us
 
 Font detection stuff done. I added another feats :
 if font name is only font&lt;x&gt;x&lt;y&gt;.png, TCOD layout is assumed. Thus, the current demo fonts works out of the box.</pre>
+</div>
+<div title="Internal modules" modifier="jice" created="200911051103" tags="discuss" changecount="1">
+<pre>Currently, we can only activate an internal module through a global keybinding.
+We need something more versatile. I'd want to be able to do anything with the speedometer, like having a button in my game that opens it at a specific place in a specific state when clicked.
+From the user point of view, the simpler would be to handle internal modules like any other module :
+:UmbraEngine::activateModule( UMBRA_INTERNAL_SPEEDOMETER );
+maybe the activateModule( int moduleId ) function should return the module reference :
+: UmbraModSpeed * speed = UmbraEngine::activateModule( UMBRA_INTERNAL_SPEEDOMETER );
+: speed-&gt;move (0,0);
+: speed-&gt;setMinimised(true);
+
+For this to work, we need internal module ids not to collide with the user modules' ones. One solution is to use negative ids for internal modules :
+: enum UmbraInternalModuleID { UMBRA_INTERNAL_SPEEDOMETER=-1, UMBRA_ZORK_MODULE=-2, UMBRA_INTERNAL_MAX=2 };
+
+This way, the activateModule function can detect if the moduleId is a user one (get the module from the main modules list) or an internal one (use the internal array).
+</pre>
 </div>
 <div title="MainMenu" modifier="Mingos" created="200910291741" changecount="1">
 <pre>[[GettingStarted]]
@@ -718,7 +734,7 @@ rename xSize ySize to consoleWidth consoleHeight ? (more explanatory)
 
 ;changed to rootWidth and rootHeight</pre>
 </div>
-<div title="custom global keybindings" modifier="jice" created="200911010258" modified="200911040015" tags="discuss" changecount="10">
+<div title="custom global keybindings" modifier="jice" created="200911010258" modified="200911051108" tags="discuss" changecount="12">
 <pre>I've just had an idea for making custom global keybindings. For instance, a hypothetical freak might want the ESCAPE launch a code:
 :if $module is not activated then activate $module
 It's entirely custom and we can't foresee it nor give naive support for it.
@@ -760,7 +776,13 @@ Not really, as I still don't understand it fer shit.
 : };
 :engine.activateModule( engine.registerModule(new GlobalKeyModule()) ) ;
 ; done!
-; now is there really a need for something else ? </pre>
+; now is there really a need for something else ? 
+
+; on third thought (!), this sucks as the module need to be deactivated for the game to exit...
+; damn... Ok, go for the fixed list of UMBRA_KEYBINDING_CUSTOM# 
+; so this would be something like :
+: engine.setCustomGlobalKeybinding( UmbraKeybinding customCode, UmbraKeyListener listener )
+; right ?</pre>
 </div>
 <div title="default keybindings" modifier="Mingos" created="200910311323" modified="200911010253" tags="done" changecount="12">
 <pre>At the moment, keybindings are fixed, ie, alt+f4 closes the app, pgup uses the previous font, pgdn uses the next font, prtscr saves a screenshot, alt+enter toggles fullscreen.
