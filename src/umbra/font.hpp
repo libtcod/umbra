@@ -25,9 +25,6 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef UMBRA_FONT_HPP
-#define UMBRA_FONT_HPP
-
 #include <iostream>
 
 class UmbraFont {
@@ -47,5 +44,3 @@ class UmbraFont {
         int _columns;
         int _flags;
 };
-
-#endif

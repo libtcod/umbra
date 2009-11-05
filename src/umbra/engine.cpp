@@ -32,22 +32,25 @@
 UmbraEngine * UmbraEngine::engineInstance = NULL;
 
 //constructor
-UmbraEngine::UmbraEngine (const char *fileName) : keyboardMode( UMBRA_KEYBOARD_RELEASED ) {
+UmbraEngine::UmbraEngine (const char *fileName, bool registerDefaultCallbacks, bool registerAdditionalCallbacks) : keyboardMode( UMBRA_KEYBOARD_RELEASED ) {
     UmbraConfig::load(fileName);
     paused = false;
     setWindowTitle("%s ver. %s (%s)", UMBRA_TITLE, UMBRA_VERSION, UMBRA_STATUS);
     engineInstance = this;
-    //default keybindings
-    setKeybinding(UMBRA_KEYBINDING_QUIT,TCODK_F4,0,true,false,false);
-    setKeybinding(UMBRA_KEYBINDING_FULLSCREEN,TCODK_ENTER,'\r',true,false,false);
-    setKeybinding(UMBRA_KEYBINDING_FONT_UP,TCODK_PAGEUP,0,false,false,false);
-    setKeybinding(UMBRA_KEYBINDING_FONT_DOWN,TCODK_PAGEDOWN,0,false,false,false);
-    setKeybinding(UMBRA_KEYBINDING_SCREENSHOT,TCODK_PRINTSCREEN,0,false,false,false);
-    setKeybinding(UMBRA_KEYBINDING_PAUSE,TCODK_PAUSE,0,false,false,false);
-    // internal modules keybindings. All deactivated by default
-    setKeybinding(UMBRA_KEYBINDING_SPEEDOMETER,TCODK_NONE,0,false,false,false);
     //register internal modules
     registerInternalModule(UMBRA_INTERNAL_SPEEDOMETER,new UmbraModSpeed());
+    //register default callbacks
+    if (registerDefaultCallbacks) {
+        registerCallback(new UmbraCallbackQuit());
+        registerCallback(new UmbraCallbackFullscreen());
+        registerCallback(new UmbraCallbackScreenshot());
+        registerCallback(new UmbraCallbackFontUp());
+        registerCallback(new UmbraCallbackFontDown());
+        registerCallback(new UmbraCallbackPause());
+    }
+    if (registerAdditionalCallbacks) {
+        registerCallback(new UmbraCallbackSpeedometer());
+    }
 }
 
 void UmbraEngine::setWindowTitle (const char * title, ...) {
@@ -133,14 +136,6 @@ void UmbraEngine::registerFonts( void ) {
             registerFont((*dat)->rows,(*dat)->columns,(*dat)->name,(*dat)->flags);
         }
     }
-}
-
-void UmbraEngine::setKeybinding (UmbraKeybinding kb, TCOD_keycode_t vk, char c, bool alt, bool ctrl, bool shift) {
-    keybindings[kb].vk = vk;
-    keybindings[kb].c = c;
-    keybindings[kb].alt = alt;
-    keybindings[kb].ctrl = ctrl;
-    keybindings[kb].shift = shift;
 }
 
 // public function registering the module for activation next frame, by id
@@ -297,22 +292,11 @@ void UmbraEngine::keyboard (TCOD_key_t &key) {
 
     UmbraKey k(key.vk, key.c, key.ralt|key.lalt, key.rctrl|key.lctrl, key.shift);
 
-    bool val = true;
+    bool val = false;
 
-    if (keybindings[UMBRA_KEYBINDING_QUIT] == k) { UmbraConfig::save(); exit(0); }
-    else if (keybindings[UMBRA_KEYBINDING_PAUSE] == k) { paused = !paused; }
-    else if (keybindings[UMBRA_KEYBINDING_FONT_UP] == k) { if (UmbraConfig::activateFont(1)) reinitialise(); }
-    else if (keybindings[UMBRA_KEYBINDING_FONT_DOWN] == k) { if (UmbraConfig::activateFont(-1)) reinitialise(); }
-    else if (keybindings[UMBRA_KEYBINDING_SCREENSHOT] == k) { TCODSystem::saveScreenshot(NULL); }
-    else if (keybindings[UMBRA_KEYBINDING_FULLSCREEN] == k) { TCODConsole::setFullscreen(!TCODConsole::isFullscreen()); }
-    else if (keybindings[UMBRA_KEYBINDING_SPEEDOMETER] == k) {
-		bool active=internalModules[UMBRA_INTERNAL_SPEEDOMETER]->isActive();
-		if ( active )
-			toDeactivate.push(internalModules[UMBRA_INTERNAL_SPEEDOMETER]);
-		else
-			toActivate.push(internalModules[UMBRA_INTERNAL_SPEEDOMETER]);
-	}
-    else val = false;
+    for (UmbraCallback ** cbk = callbacks.begin(); cbk != callbacks.end(); cbk++) {
+        if ((*cbk)->evaluate(k)) val = true;
+    }
 
     if (val) {
         // "erase" key event

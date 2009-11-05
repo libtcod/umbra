@@ -31,16 +31,19 @@ class UmbraModule;
 
 class UmbraKey {
     friend class UmbraEngine;
+    friend class UmbraCallback;
     public:
         UmbraKey (void): vk(TCODK_NONE),c(0),alt(false),ctrl(false),shift(false) {}
         UmbraKey (TCOD_keycode_t vk, char c, bool alt, bool ctrl, bool shift): vk(vk),c(c),alt(alt),ctrl(ctrl),shift(shift) {}
+        inline void assign (TCOD_keycode_t vk, char c, bool alt, bool ctrl, bool shift) { this->vk=vk; this->c=c; this->alt=alt; this->ctrl=ctrl; this->shift=shift; }
+        inline void assign (UmbraKey k1) { vk=k1.vk; c=k1.c; alt=k1.alt; ctrl=k1.ctrl; shift=k1.shift; }
+        inline bool operator == (const UmbraKey &k1) { return memcmp (this, &k1, sizeof(UmbraKey)) == 0; }
     private:
         TCOD_keycode_t vk;
         char c;
         bool alt;
         bool ctrl;
         bool shift;
-        inline bool operator == ( const UmbraKey &k1 ) { return memcmp (this, &k1, sizeof(UmbraKey)) == 0; }
 };
 
 enum UmbraKeyboardMode {
@@ -64,18 +67,22 @@ enum UmbraKeybinding {
 
 //the main engine
 class UmbraEngine {
+    friend class UmbraCallbackSpeedometer;
     public:
-        UmbraEngine (const char *fileName="data/cfg/umbra.txt"); //constructor
+        UmbraEngine     (const char *fileName = "data/cfg/umbra.txt",
+                        bool registerDefaultCallbacks = true,
+                        bool registerAdditionalCallbacks = false); //constructor
 
         int registerModule (UmbraModule * module, int fallback = (-1)); //add a module to the modules list. returns id
         void registerFont (int rows, int columns, const char * filename, int flags = TCOD_FONT_LAYOUT_TCOD);
         bool initialise (void); //initialises the engine
+        void reinitialise (void);
+        int run (void); //runs the engine
 
         void setWindowTitle (const char * title, ...);
         inline void setKeyboardMode (UmbraKeyboardMode mode) { keyboardMode = mode; }
-        void setKeybinding (UmbraKeybinding kb, TCOD_keycode_t vk = TCODK_NONE, char c = 0, bool alt = false, bool ctrl = false, bool shift = false);
-
-        int run (void); //runs the engine
+        inline void setPaused (bool pause) { paused = pause; }
+        inline void registerCallback (UmbraCallback * cbk) {callbacks.push(cbk); }
 
         // register a module for activation next frame, either by id or reference
         void activateModule (int moduleId);
@@ -86,24 +93,26 @@ class UmbraEngine {
         //deactivate all modules (the program will end normally)
         void deactivateAll (void);
 
+        inline bool getPaused (void) { return paused; }
         inline int getCurrentFontID() { return UmbraConfig::getFontID(); }
         inline UmbraKeyboardMode getKeyboardMode (void) { return keyboardMode ; }
-		inline UmbraModule *getModule(int moduleId) { return (moduleId < 0 || moduleId >= modules.size() ? NULL : modules.get(moduleId)); }
+		inline UmbraModule * getModule (int moduleId) { return (moduleId < 0 || moduleId >= modules.size() ? NULL : modules.get(moduleId)); }
         inline static UmbraEngine * getInstance (void) { return engineInstance; }
 
     private:
         static UmbraEngine * engineInstance;
         std::string windowTitle;
         void keyboard (TCOD_key_t &key);
-        void reinitialise (void);
         bool paused;
-        UmbraKey keybindings[UMBRA_KEYBINDING_MAX];
 
         TCODList <UmbraModule*> modules; // list of all registered modules
         TCODList <UmbraModule*> activeModules; // currently active modules
         TCODList <UmbraModule*> toActivate; // modules to activate next frame
         TCODList <UmbraModule*> toDeactivate; // modules to deactivate next frame
         UmbraKeyboardMode keyboardMode;
+
+        //the keybinding callbacks
+        TCODList <UmbraCallback *> callbacks;
 
         // actually put the module in active list
 		void doActivateModule( UmbraModule *mod );

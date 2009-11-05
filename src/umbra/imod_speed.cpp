@@ -69,7 +69,8 @@ void UmbraModSpeed::mouse (TCOD_mouse_t &ms) {
 }
 
 bool UmbraModSpeed::update (void) {
-    return true;
+    if (getStatus() == UMBRA_ACTIVE) return true;
+    else return false;
 }
 
 void UmbraModSpeed::render (void) {

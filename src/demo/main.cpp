@@ -32,7 +32,7 @@ enum { MOD_CREDITS, MOD_DEMO, MOD_SPEED };
 int main()
 {
     //create the engine
-    UmbraEngine engine;
+    UmbraEngine engine("data/cfg/umbra.txt",true,true);
     //set window title
     engine.setWindowTitle("Umbra demo");
     //register fonts
@@ -46,10 +46,6 @@ int main()
     engine.registerModule(new Demo());
     //activate modules
     engine.activateModule(MOD_CREDITS);
-    //set a custom keybinding
-    engine.setKeybinding(UMBRA_KEYBINDING_QUIT,TCODK_CHAR,'q',false,true,false);
-    // activate some internal module
-    engine.setKeybinding(UMBRA_KEYBINDING_SPEEDOMETER,TCODK_F5,0,false,false,false);
     //initialise and run the engine
     if (engine.initialise()) return engine.run();
     else return 1;

@@ -33,6 +33,7 @@
 #include "font.hpp"
 #include "config.hpp"
 #include "engine.hpp"
+#include "callback.hpp"
 #include "module.hpp"
 #include "widget.hpp"
 

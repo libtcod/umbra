@@ -46,7 +46,7 @@ class UmbraModule {
         void setFadeOut (int lengthInMilli, TCODColor col = TCODColor::black); //set fade lengths in milliseconds
         void setActive (bool active);
         void setPause (bool paused);
-		
+
         //getters
         inline int getFallback (void) { return fallback; }
         inline int getFadeInLength (void) { return fadeInLength; }
@@ -57,6 +57,7 @@ class UmbraModule {
         inline bool isActive (void) { return status > UMBRA_INACTIVE; }
         inline UmbraEngine * getEngine (void) { return UmbraEngine::getInstance(); }
 		inline int getPriority() { return priority; }
+		inline UmbraModuleStatus getStatus (void) { return status; }
 
     protected:
         // for activation/deactivation custom code
