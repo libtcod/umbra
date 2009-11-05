@@ -29,13 +29,18 @@
 
 class UmbraModule;
 
-struct UmbraKey {
-    TCOD_keycode_t vk;
-    char c;
-    bool alt;
-    bool ctrl;
-    bool shift;
-    inline bool operator == ( const UmbraKey &k1 ) { return memcmp (this, &k1, sizeof(UmbraKey)) == 0; }
+class UmbraKey {
+    friend class UmbraEngine;
+    public:
+        UmbraKey (void): vk(TCODK_NONE),c(0),alt(false),ctrl(false),shift(false) {}
+        UmbraKey (TCOD_keycode_t vk, char c, bool alt, bool ctrl, bool shift): vk(vk),c(c),alt(alt),ctrl(ctrl),shift(shift) {}
+    private:
+        TCOD_keycode_t vk;
+        char c;
+        bool alt;
+        bool ctrl;
+        bool shift;
+        inline bool operator == ( const UmbraKey &k1 ) { return memcmp (this, &k1, sizeof(UmbraKey)) == 0; }
 };
 
 enum UmbraKeyboardMode {
@@ -71,15 +76,17 @@ class UmbraEngine {
         void setKeybinding (UmbraKeybinding kb, TCOD_keycode_t vk = TCODK_NONE, char c = 0, bool alt = false, bool ctrl = false, bool shift = false);
 
         int run (void); //runs the engine
+
         // register a module for activation next frame, either by id or reference
         void activateModule (int moduleId);
         void activateModule (UmbraModule *mod);
         // register a module for deactivation next frame either by id or reference
         void deactivateModule (int moduleId);
         void deactivateModule (UmbraModule * mod);
+        //deactivate all modules (the program will end normally)
         void deactivateAll (void);
 
-        inline int getCurrentFontId() { return UmbraConfig::getFontID(); }
+        inline int getCurrentFontID() { return UmbraConfig::getFontID(); }
         inline UmbraKeyboardMode getKeyboardMode (void) { return keyboardMode ; }
 		inline UmbraModule *getModule(int moduleId) { return (moduleId < 0 || moduleId >= modules.size() ? NULL : modules.get(moduleId)); }
         inline static UmbraEngine * getInstance (void) { return engineInstance; }
