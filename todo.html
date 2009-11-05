@@ -730,7 +730,7 @@ For example in the cave, I have the title screen and most intro screens that req
 <div title="SiteTitle" modifier="Mingos" created="200910291725" changecount="1">
 <pre>Umbra DickyWiki</pre>
 </div>
-<div title="Widget persistence" modifier="Mingos" created="200911051127" modified="200911051552" tags="discuss" changecount="4">
+<div title="Widget persistence" modifier="jice" created="200911051127" modified="200911051754" tags="discuss" changecount="9">
 <pre>Always thinking about a UmbraWidget based user customizable game UI, it would be cool to be able to save a widget position and status to disk to be able to retrieve it later. This should be optional of course. When activated, in Umbra demo, the speedometer would appear at the same place and in the same state (minimised or not) it was the last time the demo was run.
 
 Maybe something like that :
@@ -744,7 +744,17 @@ Maybe something like that :
 :    ...
 :};
 
-&gt;That's what we discussed yesterday, yes. The question is: do we WANT it to be saved in binary form?</pre>
+&gt;That's what we discussed yesterday, yes. The question is: do we WANT it to be saved in binary form?
+
+In fact, not really. But do we have choice ? I think we should do it with TCODZip to have it working quickly, then see how to improve libtcod's parser to be able to save them in umbra.txt. Note that we can already save them in a format like this :
+:widgets {
+::    widget &quot;speed-o-meter&quot; {
+:::        x = 0
+:::        y = 2
+:::        minimised = true
+::    }
+:}
+The problem is to read them since we don't know at Umbra compile time what properties the user widgets will need to save. we need the parser to be able to work in a more permissive way.</pre>
 </div>
 <div title="config variables" modifier="Mingos" created="200910300731" modified="200910301626" tags="done" changecount="3">
 <pre>Suggestion :
@@ -752,7 +762,7 @@ rename xSize ySize to consoleWidth consoleHeight ? (more explanatory)
 
 ;changed to rootWidth and rootHeight</pre>
 </div>
-<div title="custom global keybindings" modifier="Mingos" created="200911010258" modified="200911051549" tags="discuss" changecount="16">
+<div title="custom global keybindings" modifier="jice" created="200911010258" modified="200911051754" tags="code unassigned" changecount="18">
 <pre>I've just had an idea for making custom global keybindings. For instance, a hypothetical freak might want the ESCAPE launch a code:
 :if $module is not activated then activate $module
 It's entirely custom and we can't foresee it nor give naive support for it.
@@ -813,7 +823,11 @@ If the dev wants to add something extra, he creates a custom keybinding object a
 
 {{{TCODList &lt;UmbraCustomKeycode *&gt; UmbraEngine::customKeybindings;}}}
 
-The keybindings method in the engine scans the whole list and compares the input key with the keybindings here. If a match is found, execute the action() method. In fact, we could change the whole global keys system into something similar.</pre>
+The keybindings method in the engine scans the whole list and compares the input key with the keybindings here. If a match is found, execute the action() method. In fact, we could change the whole global keys system into something similar.
+
+&gt; Ok now I finally understand why you didn't get the listener stuff : because they were completely wrong... damn, I must sleep more. :D
+&gt; So yeah, I agree with you except the class should be called UmbraCallback instead of UmbraCustomKeycode because it can be used in a wide range of situations, not only global keybinding (widgets callback in mind...).
+</pre>
 </div>
 <div title="default keybindings" modifier="Mingos" created="200910311323" modified="200911010253" tags="done" changecount="12">
 <pre>At the moment, keybindings are fixed, ie, alt+f4 closes the app, pgup uses the previous font, pgdn uses the next font, prtscr saves a screenshot, alt+enter toggles fullscreen.
