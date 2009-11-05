@@ -575,7 +575,7 @@ We can safely assume that the developper will either use custom font names or us
 Font detection stuff done. I added another feats :
 if font name is only font&lt;x&gt;x&lt;y&gt;.png, TCOD layout is assumed. Thus, the current demo fonts works out of the box.</pre>
 </div>
-<div title="Internal modules" modifier="jice" created="200911051103" tags="discuss" changecount="1">
+<div title="Internal modules" modifier="Mingos" created="200911051103" modified="200911051552" tags="code unassigned" changecount="3">
 <pre>Currently, we can only activate an internal module through a global keybinding.
 We need something more versatile. I'd want to be able to do anything with the speedometer, like having a button in my game that opens it at a specific place in a specific state when clicked.
 From the user point of view, the simpler would be to handle internal modules like any other module :
@@ -589,7 +589,8 @@ For this to work, we need internal module ids not to collide with the user modul
 : enum UmbraInternalModuleID { UMBRA_INTERNAL_SPEEDOMETER=-1, UMBRA_ZORK_MODULE=-2, UMBRA_INTERNAL_MAX=2 };
 
 This way, the activateModule function can detect if the moduleId is a user one (get the module from the main modules list) or an internal one (use the internal array).
-</pre>
+
+&gt;OK.</pre>
 </div>
 <div title="MainMenu" modifier="Mingos" created="200910291741" changecount="1">
 <pre>[[GettingStarted]]
@@ -729,7 +730,7 @@ For example in the cave, I have the title screen and most intro screens that req
 <div title="SiteTitle" modifier="Mingos" created="200910291725" changecount="1">
 <pre>Umbra DickyWiki</pre>
 </div>
-<div title="Widget persistence" modifier="jice" created="200911051127" modified="200911051128" tags="discuss" changecount="3">
+<div title="Widget persistence" modifier="Mingos" created="200911051127" modified="200911051552" tags="discuss" changecount="4">
 <pre>Always thinking about a UmbraWidget based user customizable game UI, it would be cool to be able to save a widget position and status to disk to be able to retrieve it later. This should be optional of course. When activated, in Umbra demo, the speedometer would appear at the same place and in the same state (minimised or not) it was the last time the demo was run.
 
 Maybe something like that :
@@ -742,7 +743,8 @@ Maybe something like that :
 :    static void loadWidgets();
 :    ...
 :};
-</pre>
+
+&gt;That's what we discussed yesterday, yes. The question is: do we WANT it to be saved in binary form?</pre>
 </div>
 <div title="config variables" modifier="Mingos" created="200910300731" modified="200910301626" tags="done" changecount="3">
 <pre>Suggestion :
@@ -750,7 +752,7 @@ rename xSize ySize to consoleWidth consoleHeight ? (more explanatory)
 
 ;changed to rootWidth and rootHeight</pre>
 </div>
-<div title="custom global keybindings" modifier="jice" created="200911010258" modified="200911051108" tags="discuss" changecount="12">
+<div title="custom global keybindings" modifier="Mingos" created="200911010258" modified="200911051549" tags="discuss" changecount="16">
 <pre>I've just had an idea for making custom global keybindings. For instance, a hypothetical freak might want the ESCAPE launch a code:
 :if $module is not activated then activate $module
 It's entirely custom and we can't foresee it nor give naive support for it.
@@ -798,7 +800,20 @@ Not really, as I still don't understand it fer shit.
 ; damn... Ok, go for the fixed list of UMBRA_KEYBINDING_CUSTOM# 
 ; so this would be something like :
 : engine.setCustomGlobalKeybinding( UmbraKeybinding customCode, UmbraKeyListener listener )
-; right ?</pre>
+; right ?
+
+I had somehing like this in mind:
+{{{class UmbraCustomKeycode {}}}
+{{{public:}}}
+{{{UmbraKey keybinding;}}}
+{{{virtual void action (void);}}}
+{{{}}}}
+
+If the dev wants to add something extra, he creates a custom keybinding object and pushes it onto...
+
+{{{TCODList &lt;UmbraCustomKeycode *&gt; UmbraEngine::customKeybindings;}}}
+
+The keybindings method in the engine scans the whole list and compares the input key with the keybindings here. If a match is found, execute the action() method. In fact, we could change the whole global keys system into something similar.</pre>
 </div>
 <div title="default keybindings" modifier="Mingos" created="200910311323" modified="200911010253" tags="done" changecount="12">
 <pre>At the moment, keybindings are fixed, ie, alt+f4 closes the app, pgup uses the previous font, pgdn uses the next font, prtscr saves a screenshot, alt+enter toggles fullscreen.
