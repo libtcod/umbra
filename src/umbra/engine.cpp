@@ -39,6 +39,7 @@ UmbraEngine::UmbraEngine (const char *fileName, bool registerDefaultCallbacks, b
     engineInstance = this;
     //register internal modules
     registerInternalModule(UMBRA_INTERNAL_SPEEDOMETER,new UmbraModSpeed());
+    registerInternalModule(UMBRA_INTERNAL_MESSAGE,new UmbraModMessage());
     //register default callbacks
     if (registerDefaultCallbacks) {
         registerCallback(new UmbraCallbackQuit());
@@ -141,7 +142,8 @@ void UmbraEngine::registerFonts( void ) {
 // public function registering the module for activation next frame, by id
 void UmbraEngine::activateModule (int moduleId) {
     if ( moduleId < 0 || moduleId >= modules.size() ) {
-        UmbraError::add("Try to activate invalid module id %d.",moduleId);
+        UmbraError::add("Tried to activate an invalid module: ID %d.",moduleId);
+        toActivate.push(internalModules[UMBRA_INTERNAL_MESSAGE]);
         return;
     }
     UmbraModule *module = modules.get(moduleId);
@@ -213,6 +215,8 @@ int UmbraEngine::run (void) {
     }
 
     while(!TCODConsole::isWindowClosed()) {
+        TCODConsole::root->setBackgroundColor(TCODColor::black);
+        TCODConsole::root->clear();
         //execute only when paused
         if (paused) {
             key = TCODConsole::checkForKeypress(TCOD_KEY_RELEASED);
@@ -260,7 +264,7 @@ int UmbraEngine::run (void) {
 	            // handle input
 	            (*mod)->keyboard(key);
 	            (*mod)->mouse(mouse);
-	            if (!(*mod)->update()) {
+	            if (!(*mod)->update() || !(*mod)->isActive()) {
 	                UmbraModule *module=*mod;
 	                int fallback=module->getFallback();
 	                // deactivate module
@@ -295,7 +299,10 @@ void UmbraEngine::keyboard (TCOD_key_t &key) {
     bool val = false;
 
     for (UmbraCallback ** cbk = callbacks.begin(); cbk != callbacks.end(); cbk++) {
-        if ((*cbk)->evaluate(k)) val = true;
+        if ((*cbk)->evaluate(k)) {
+            val = true;
+            break;
+        }
     }
 
     if (val) {

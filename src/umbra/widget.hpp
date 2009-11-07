@@ -35,7 +35,6 @@ class UmbraRect {
         inline void setSize (int w, int h) { this->w=w;this->h=h; }
         inline void set (int x, int y, int w, int h) { setPos(x,y); setSize(w,h); }
         inline bool isInside (int px, int py) { return px >= x && px < x+w && py >= y && py < y+h; }
-        //inline bool isInsideAbs (int px, int py, int cx, int cy) { return px >= x+cx && px < x+w+cx && py >= y+cy && y < y+h+cy; }
 };
 
 class UmbraPoint {
@@ -46,7 +45,6 @@ class UmbraPoint {
         UmbraPoint (int x, int y): x(x),y(y),mouseHover(false) {}
         inline void set (int x, int y) { this->x=x; this->y=y; }
         inline bool is (int px, int py) { return px == x && py == y; }
-        //inline bool isAbs (int px, int py, int cx, int cy) { return px == x+cx && py == y+cy; }
 };
 
 

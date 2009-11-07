@@ -24,20 +24,16 @@
 * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-#ifndef UMBRA_HPP
-#define UMBRA_HPP
 
-#include "libtcod.hpp"
-#include "version.hpp"
-#include "error.hpp"
-#include "font.hpp"
-#include "config.hpp"
-#include "engine.hpp"
-#include "callback.hpp"
-#include "module.hpp"
-#include "widget.hpp"
-
-#include "imod_speed.hpp"
-#include "imod_msg.hpp"
-
-#endif
+class UmbraModMessage : public UmbraWidget {
+    public:
+        UmbraModMessage (void);
+        bool update (void);
+        void render (void);
+    private:
+        void activate (void);
+        TCODConsole * msg;
+        uint32 startTime;
+        uint32 duration;
+        std::string msgString;
+};

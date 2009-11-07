@@ -84,6 +84,8 @@
 		<Unit filename="src\umbra\error.hpp" />
 		<Unit filename="src\umbra\font.cpp" />
 		<Unit filename="src\umbra\font.hpp" />
+		<Unit filename="src\umbra\imod_msg.cpp" />
+		<Unit filename="src\umbra\imod_msg.hpp" />
 		<Unit filename="src\umbra\imod_speed.cpp" />
 		<Unit filename="src\umbra\imod_speed.hpp" />
 		<Unit filename="src\umbra\module.cpp" />

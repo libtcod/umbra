@@ -24,20 +24,34 @@
 * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-#ifndef UMBRA_HPP
-#define UMBRA_HPP
 
-#include "libtcod.hpp"
-#include "version.hpp"
-#include "error.hpp"
-#include "font.hpp"
-#include "config.hpp"
-#include "engine.hpp"
-#include "callback.hpp"
-#include "module.hpp"
-#include "widget.hpp"
+#include "umbra.hpp"
 
-#include "imod_speed.hpp"
-#include "imod_msg.hpp"
+UmbraModMessage::UmbraModMessage (void) {
+    msg = new TCODConsole(30,6);
+    closeButton.set(28,0);
+    duration = 5000;
+    msgString = "";
+    rect.set(UmbraConfig::rootWidth-32,UmbraConfig::rootHeight-8,30,6);
+}
 
-#endif
+void UmbraModMessage::activate (void) {
+    startTime = TCODSystem::getElapsedMilli();
+    msgString = UmbraError::getLastMessage();
+    msg->setBackgroundColor(TCODColor::blue);
+    msg->clear();
+}
+
+bool UmbraModMessage::update (void) {
+    if (TCODSystem::getElapsedMilli() - startTime >= duration) return false;
+    else return true;
+}
+
+void UmbraModMessage::render (void) {
+    msg->setForegroundColor(TCODColor::white);
+    msg->printCenterRect(15,2,28,3,TCOD_BKGND_NONE,UmbraError::getLastMessage());
+    if (closeButton.mouseHover)
+        msg->setForegroundColor(TCODColor::red);
+    msg->putChar(closeButton.x,closeButton.y,'X',TCOD_BKGND_NONE);
+    TCODConsole::blit(msg,0,0,rect.w,rect.h,TCODConsole::root,rect.x,rect.y,1.0f,0.5f);
+}

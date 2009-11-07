@@ -85,6 +85,12 @@ void UmbraError::save (void) {
     }
 }
 
+const char * UmbraError::getLastMessage (void) {
+    int size = errors.size(); //SIZE MATTERS!
+    if (size == 0) return "No errors registered.";
+    else return (errors.get(size-1))->c_str();
+}
+
 //confirms the existence of a file. Returns false if there is no such file.
 bool UmbraError::fileExists (const char * filename, ...) {
     char f[256];

@@ -52,8 +52,6 @@ bool Demo::update (void) {
 }
 
 void Demo::render (void) {
-    TCODConsole::root->setBackgroundColor(TCODColor::black);
-    TCODConsole::root->clear();
     TCODConsole::root->setForegroundColor(TCODColor::red);
     TCODConsole::root->printLeft(0,0,TCOD_BKGND_NONE,"%s",credits);
     img->blit2x(TCODConsole::root,0,UmbraConfig::rootHeight/4);

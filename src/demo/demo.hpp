@@ -40,7 +40,7 @@ class Demo : public UmbraModule {
         TCODRandom * random;
         TCODImage * img;
         float offset;
-        char credits[32];
+        char credits[64];
 };
 
 #endif
