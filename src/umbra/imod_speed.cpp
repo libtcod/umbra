@@ -82,6 +82,15 @@ bool UmbraModSpeed::update (void) {
         renderPer = (int)(renderTime * 100.0f / (cumulatedElapsed));
         sysPer = 100 - updatePer - renderPer;
         cumulatedElapsed = updateTime = renderTime = 0.0f;
+		// compute time bar picture
+        for (int px = 0; px < TIMEBAR_LENGTH; px++ ) {
+            TCODColor col;
+            if ( px < TIMEBAR_LENGTH*updatePer/100 ) col = TCODColor::green;
+            else if ( px < TIMEBAR_LENGTH*(updatePer+renderPer)/100 ) col = TCODColor::yellow;
+            else col = TCODColor::red;
+            timeBar->putPixel(px,0,col);
+            timeBar->putPixel(px,1,col);
+        }
     }
     if (getStatus() == UMBRA_ACTIVE) return true;
     else return false;
@@ -102,15 +111,6 @@ void UmbraModSpeed::render (void) {
 		speed->printFrame(0,0,MAXIMISED_MODE_WIDTH,MAXIMISED_MODE_HEIGHT,true,"Speed-o-meter");
 		speed->printCenter(MAXIMISED_MODE_WIDTH/2,2,TCOD_BKGND_NONE,"last frame: %3d ms",(int)(TCODSystem::getLastFrameLength()*1000));
 		speed->printCenter(MAXIMISED_MODE_WIDTH/2,3,TCOD_BKGND_NONE,"frames per second: %3d",TCODSystem::getFps());
-		// compute time bar picture
-        for (int px = 0; px < TIMEBAR_LENGTH; px++ ) {
-            TCODColor col;
-            if ( px < TIMEBAR_LENGTH*updatePer/100 ) col = TCODColor::green;
-            else if ( px < TIMEBAR_LENGTH*(updatePer+renderPer)/100 ) col = TCODColor::yellow;
-            else col = TCODColor::red;
-            timeBar->putPixel(px,0,col);
-            timeBar->putPixel(px,1,col);
-        }
         // summary
 		speed->printCenter(MAXIMISED_MODE_WIDTH/2,5,TCOD_BKGND_NONE,
             "%c%c%c%cUpd%c %2d%% %c%c%c%cRender%c %2d%% %c%c%c%cSys%c %2d%%",
