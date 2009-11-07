@@ -108,7 +108,7 @@ void UmbraModSpeed::render (void) {
 		speed->rect(x,4,barLength*updatePer/100,1,false, TCOD_BKGND_SET);
 		x += barLength*updatePer/100;
 		// render part
-        speed->setBackgroundColor(TCODColor::blue);
+        speed->setBackgroundColor(TCODColor::yellow);
 		speed->rect(x,4,barLength*renderPer/100,1,false, TCOD_BKGND_SET);
 		x += barLength*renderPer/100;
 		// system part
@@ -120,7 +120,7 @@ void UmbraModSpeed::render (void) {
             "%c%c%c%cUpd%c %2d%% %c%c%c%cRender%c %2d%% %c%c%c%cSys%c %2d%%",
             TCOD_COLCTRL_FORE_RGB,1,255,1,TCOD_COLCTRL_STOP,
             updatePer,
-            TCOD_COLCTRL_FORE_RGB,1,1,255,TCOD_COLCTRL_STOP,
+            TCOD_COLCTRL_FORE_RGB,255,255,1,TCOD_COLCTRL_STOP,
             renderPer,
             TCOD_COLCTRL_FORE_RGB,255,1,1,TCOD_COLCTRL_STOP,
             sysPer);
