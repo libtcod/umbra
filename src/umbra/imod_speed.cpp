@@ -29,7 +29,7 @@
 
 #define MAXIMISED_MODE_WIDTH 30
 #define MAXIMISED_MODE_HEIGHT 8
-#define TIMEBAR_LENGTH (MAXIMISED_MODE_WIDTH-3)*2
+#define TIMEBAR_LENGTH (MAXIMISED_MODE_WIDTH-4)*2
 
 UmbraModSpeed::UmbraModSpeed (void) : cumulatedElapsed(0.0f), updateTime(0.0f), renderTime(0.0f),
     updatePer(0),renderPer(0),sysPer(0),isMinimised(false) {
@@ -64,7 +64,8 @@ void UmbraModSpeed::mouse (TCOD_mouse_t &ms) {
                 closeButton.set(MAXIMISED_MODE_WIDTH-2,0);
                 dragZone.w = MAXIMISED_MODE_WIDTH-3;
                 // when the widget maximizes, it might cross the screen borders
-                rect.x=MIN(UmbraConfig::rootWidth-rect.w,rect.x);
+                rect.x = rect.x+10-MAXIMISED_MODE_WIDTH;
+                rect.x=MAX(0,rect.x);
                 rect.y=MIN(UmbraConfig::rootHeight-rect.h,rect.y);
             }
 		}
