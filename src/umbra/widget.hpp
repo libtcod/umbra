@@ -41,6 +41,7 @@ class UmbraPoint {
     public:
         int x, y;
         bool mouseHover;
+        bool mouseDown;
         UmbraPoint (void): x(0),y(0),mouseHover(false) {}
         UmbraPoint (int x, int y): x(x),y(y),mouseHover(false) {}
         inline void set (int x, int y) { this->x=x; this->y=y; }
