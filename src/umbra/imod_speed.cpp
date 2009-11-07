@@ -29,6 +29,7 @@
 
 #define MAXIMISED_MODE_WIDTH 30
 #define MAXIMISED_MODE_HEIGHT 8
+#define TIMEBAR_LENGTH (MAXIMISED_MODE_WIDTH-3)*2
 
 UmbraModSpeed::UmbraModSpeed (void) : cumulatedElapsed(0.0f), updateTime(0.0f), renderTime(0.0f),
     updatePer(0),renderPer(0),sysPer(0),isMinimised(false) {
@@ -41,6 +42,7 @@ UmbraModSpeed::UmbraModSpeed (void) : cumulatedElapsed(0.0f), updateTime(0.0f), 
     minimiseButton.set(MAXIMISED_MODE_WIDTH-3,0);
     closeButton.set(MAXIMISED_MODE_WIDTH-2,0);
 	priority=0; // higher prio for internal modules
+	timeBar = new TCODImage(TIMEBAR_LENGTH,2);
 }
 
 void UmbraModSpeed::mouse (TCOD_mouse_t &ms) {
@@ -100,21 +102,15 @@ void UmbraModSpeed::render (void) {
 		speed->printFrame(0,0,MAXIMISED_MODE_WIDTH,MAXIMISED_MODE_HEIGHT,true,"Speed-o-meter");
 		speed->printCenter(MAXIMISED_MODE_WIDTH/2,2,TCOD_BKGND_NONE,"last frame: %3d ms",(int)(TCODSystem::getLastFrameLength()*1000));
 		speed->printCenter(MAXIMISED_MODE_WIDTH/2,3,TCOD_BKGND_NONE,"frames per second: %3d",TCODSystem::getFps());
-		// render time bar
-        int x=2;
-        int barLength=MAXIMISED_MODE_WIDTH-3;
-        // udpate part
-        speed->setBackgroundColor(TCODColor::green);
-		speed->rect(x,4,barLength*updatePer/100,1,false, TCOD_BKGND_SET);
-		x += barLength*updatePer/100;
-		// render part
-        speed->setBackgroundColor(TCODColor::yellow);
-		speed->rect(x,4,barLength*renderPer/100,1,false, TCOD_BKGND_SET);
-		x += barLength*renderPer/100;
-		// system part
-        speed->setBackgroundColor(TCODColor::red);
-		speed->rect(x,4,barLength-x+1,1,false, TCOD_BKGND_SET);
-        speed->setBackgroundColor(TCODColor::black);
+		// compute time bar picture
+        for (int px = 0; px < TIMEBAR_LENGTH; px++ ) {
+            TCODColor col;
+            if ( px < TIMEBAR_LENGTH*updatePer/100 ) col = TCODColor::green;
+            else if ( px < TIMEBAR_LENGTH*(updatePer+renderPer)/100 ) col = TCODColor::yellow;
+            else col = TCODColor::red;
+            timeBar->putPixel(px,0,col);
+            timeBar->putPixel(px,1,col);
+        }
         // summary
 		speed->printCenter(MAXIMISED_MODE_WIDTH/2,5,TCOD_BKGND_NONE,
             "%c%c%c%cUpd%c %2d%% %c%c%c%cRender%c %2d%% %c%c%c%cSys%c %2d%%",
@@ -139,7 +135,9 @@ void UmbraModSpeed::render (void) {
 	else speed->setForegroundColor(TCODColor::lightGrey); //button is not active
 	speed->putChar(closeButton.x,closeButton.y, 'X', TCOD_BKGND_SET);
 	//blit the console
-	TCODConsole::blit(speed,0,0,rect.w,rect.h,TCODConsole::root,rect.x,rect.y,1.0f,0.5f);
+	TCODConsole::blit(speed,0,0,rect.w,rect.h,TCODConsole::root,rect.x,rect.y,1.0f,0.52f);
+	// render non transparent timebar (until libtcod subcell over subcell blitting is fixed...)
+    timeBar->blit2x(TCODConsole::root,rect.x+2,rect.y+4);
 }
 
 void UmbraModSpeed::activate (void) {

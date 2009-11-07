@@ -38,11 +38,13 @@ class UmbraModSpeed : public UmbraWidget {
         void deactivate (void);
     private:
         friend class UmbraEngine;
-        void setTimes(long updateTime, long renderTime);
+        // timebar stuff
+        void setTimes(long updateTime, long renderTime); // this is called by engine each frame
         float cumulatedElapsed;
         float updateTime;
         float renderTime;
         int updatePer, renderPer, sysPer;
+        TCODImage *timeBar;
         TCODConsole * speed;
         int fps;
 		bool isMinimised;
