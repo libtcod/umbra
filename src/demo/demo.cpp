@@ -29,7 +29,7 @@
 #include <stdio.h>
 
 Demo::Demo (void) {
-    sprintf (credits, "Goodbye world!");
+    sprintf (credits, "Goodbye world!\nPress ESC to quit.");
     random = TCODRandom::getInstance();
     noise = new TCODNoise(3,random);
     img = new TCODImage(UmbraConfig::rootWidth*2,UmbraConfig::rootHeight);

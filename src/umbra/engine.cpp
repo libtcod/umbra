@@ -74,6 +74,7 @@ int UmbraEngine::registerModule (UmbraModule * module, int fallback) {
 void UmbraEngine::registerFont (int rows, int columns, const char * filename, int flags) {
     if (!UmbraError::fileExists(filename)) {
         UmbraError::add("Tried to register a font file that does not exist: %s.",filename);
+        displayError();
         return;
     }
     UmbraFont * file = new UmbraFont; //don't delete this later
@@ -143,7 +144,7 @@ void UmbraEngine::registerFonts( void ) {
 void UmbraEngine::activateModule (int moduleId) {
     if ( moduleId < 0 || moduleId >= modules.size() ) {
         UmbraError::add("Tried to activate an invalid module: ID %d.",moduleId);
-        toActivate.push(internalModules[UMBRA_INTERNAL_MESSAGE]);
+        displayError();
         return;
     }
     UmbraModule *module = modules.get(moduleId);
@@ -171,7 +172,8 @@ void UmbraEngine::doActivateModule( UmbraModule *mod ) {
 // register the module for deactivation by id
 void UmbraEngine::deactivateModule (int moduleId) {
     if ( moduleId < 0 || moduleId >= modules.size() ) {
-        UmbraError::add("Try to deactivate invalid module id %d.",moduleId);
+        UmbraError::add("Tried to deactivate an invalid module: ID %d.",moduleId);
+        displayError();
         return;
     }
     UmbraModule *module = modules.get(moduleId);
@@ -211,6 +213,7 @@ int UmbraEngine::run (void) {
 
     if (modules.size() == 0) {
         UmbraError::add("No modules registered!");
+        displayError();
         exit(1);
     }
 
@@ -328,4 +331,8 @@ void UmbraEngine::reinitialise (void) {
 
 void UmbraEngine::registerInternalModule (UmbraInternalModuleID id, UmbraModule * module) {
     internalModules[id] = module;
+}
+
+void UmbraEngine::displayError (void) {
+    if (UmbraConfig::debug && TCODConsole::root != NULL) toActivate.push(internalModules[UMBRA_INTERNAL_MESSAGE]);
 }

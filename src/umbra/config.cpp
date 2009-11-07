@@ -32,6 +32,7 @@ int UmbraConfig::rootWidth;
 int UmbraConfig::rootHeight;
 int UmbraConfig::fontID;
 bool UmbraConfig::fullScreen;
+bool UmbraConfig::debug;
 TCODList <UmbraFont *> UmbraConfig::fonts;
 UmbraFont * UmbraConfig::font = NULL;
 const char * UmbraConfig::fileName = NULL;
@@ -49,6 +50,7 @@ void UmbraConfig::load (const char *fileName) {
         config->addProperty("rootHeight",TCOD_TYPE_INT,true);
         config->addProperty("fontID",TCOD_TYPE_INT,true);
         config->addProperty("fullScreen",TCOD_TYPE_BOOL,true);
+        config->addProperty("debug",TCOD_TYPE_BOOL,true);
         // optional custom font directory
         config->addProperty("fontDir",TCOD_TYPE_STRING,false);
 
@@ -66,6 +68,7 @@ void UmbraConfig::load (const char *fileName) {
     rootHeight = parser.getIntProperty("config.rootHeight");
     fontID = parser.getIntProperty("config.fontID");
     fullScreen = parser.getBoolProperty("config.fullScreen");
+    debug = parser.getBoolProperty("config.debug");
     fontDir = parser.getStringProperty("config.fontDir");
     if ( fontDir != NULL ) {
         fontDir = strdup(fontDir);
@@ -90,8 +93,15 @@ void UmbraConfig::save (void) {
                 "  rootHeight = %d\n"
                 "  fontID = %d\n"
                 "  fullScreen = %s\n"
+                "  debug = %s\n"
+                "  fontDir = \"%s\"\n"
                 "}\n",
-                rootWidth, rootHeight, fontID, (fullScreen?"true":"false"));
+                rootWidth,
+                rootHeight,
+                fontID,
+                (fullScreen?"true":"false"),
+                (debug?"true":"false"),
+                fontDir);
 
     fclose(out);
 }

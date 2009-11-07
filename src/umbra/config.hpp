@@ -35,6 +35,7 @@ class UmbraConfig {
         static int rootWidth;
         static int rootHeight;
         static bool fullScreen;
+        static bool debug; //debugging mode (displays messages)
 
         static UmbraFont * font;
         static inline int getFontID() { return fontID; }

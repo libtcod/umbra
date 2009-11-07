@@ -99,6 +99,8 @@ class UmbraEngine {
 		inline UmbraModule * getModule (int moduleId) { return (moduleId < 0 || moduleId >= modules.size() ? NULL : modules.get(moduleId)); }
         inline static UmbraEngine * getInstance (void) { return engineInstance; }
 
+        void displayError (void);
+
     private:
         static UmbraEngine * engineInstance;
         std::string windowTitle;
