@@ -27,16 +27,19 @@
 
 #include "umbra.hpp"
 
+#define MAXIMISED_MODE_WIDTH 30
+#define MAXIMISED_MODE_HEIGHT 8
+
 UmbraModSpeed::UmbraModSpeed (void) : cumulatedElapsed(0.0f), updateTime(0.0f), renderTime(0.0f),
     updatePer(0),renderPer(0),sysPer(0),isMinimised(false) {
-    speed = new TCODConsole(30,7);
-    rect.set((UmbraConfig::rootWidth/2)-15,(UmbraConfig::rootHeight/2)-3,30,7);
+    speed = new TCODConsole(MAXIMISED_MODE_WIDTH,MAXIMISED_MODE_HEIGHT);
+    rect.set((UmbraConfig::rootWidth/2)-15,(UmbraConfig::rootHeight/2)-3,30,MAXIMISED_MODE_HEIGHT);
 	canDrag = true;
 	// the title bar is drag-sensible
-	dragZone.set(0,0,27,1);
+	dragZone.set(0,0,MAXIMISED_MODE_WIDTH-3,1);
     //the buttons:
-    minimiseButton.set(27,0);
-    closeButton.set(28,0);
+    minimiseButton.set(MAXIMISED_MODE_WIDTH-3,0);
+    closeButton.set(MAXIMISED_MODE_WIDTH-2,0);
 	priority=0; // higher prio for internal modules
 }
 
@@ -53,10 +56,10 @@ void UmbraModSpeed::mouse (TCOD_mouse_t &ms) {
                 closeButton.set(8,0);
                 dragZone.w = 7;
             } else {
-                rect.setSize(30,7);
-                minimiseButton.set(27,0);
-                closeButton.set(28,0);
-                dragZone.w = 27;
+                rect.setSize(MAXIMISED_MODE_WIDTH,MAXIMISED_MODE_HEIGHT);
+                minimiseButton.set(MAXIMISED_MODE_WIDTH-3,0);
+                closeButton.set(MAXIMISED_MODE_WIDTH-2,0);
+                dragZone.w = MAXIMISED_MODE_WIDTH-3;
                 // when the widget maximizes, it might cross the screen borders
                 rect.x=MIN(UmbraConfig::rootWidth-rect.w,rect.x);
                 rect.y=MIN(UmbraConfig::rootHeight-rect.h,rect.y);
@@ -94,10 +97,33 @@ void UmbraModSpeed::render (void) {
 		speed->printLeft(0,0,TCOD_BKGND_SET,"%4dfps ",TCODSystem::getFps());
 		TCODConsole::blit(speed,0,0,8,1,TCODConsole::root,rect.x,rect.y,1.0f,0.5f);
 	} else {
-		speed->printFrame(0,0,30,7,true,"Speed-o-meter");
-		speed->printCenter(15,2,TCOD_BKGND_NONE,"last frame: %3d ms",(int)(TCODSystem::getLastFrameLength()*1000));
-		speed->printCenter(15,3,TCOD_BKGND_NONE,"frames per second: %3d",TCODSystem::getFps());
-		speed->printCenter(15,4,TCOD_BKGND_NONE,"UPD %2d%% REN %2d%% SYS %2d%%",updatePer,renderPer,sysPer);
+		speed->printFrame(0,0,MAXIMISED_MODE_WIDTH,MAXIMISED_MODE_HEIGHT,true,"Speed-o-meter");
+		speed->printCenter(MAXIMISED_MODE_WIDTH/2,2,TCOD_BKGND_NONE,"last frame: %3d ms",(int)(TCODSystem::getLastFrameLength()*1000));
+		speed->printCenter(MAXIMISED_MODE_WIDTH/2,3,TCOD_BKGND_NONE,"frames per second: %3d",TCODSystem::getFps());
+		// render time bar
+        int x=2;
+        int barLength=MAXIMISED_MODE_WIDTH-3;
+        // udpate part
+        speed->setBackgroundColor(TCODColor::green);
+		speed->rect(x,4,barLength*updatePer/100,1,false, TCOD_BKGND_SET);
+		x += barLength*updatePer/100;
+		// render part
+        speed->setBackgroundColor(TCODColor::blue);
+		speed->rect(x,4,barLength*renderPer/100,1,false, TCOD_BKGND_SET);
+		x += barLength*renderPer/100;
+		// system part
+        speed->setBackgroundColor(TCODColor::red);
+		speed->rect(x,4,barLength*sysPer/100,1,false, TCOD_BKGND_SET);
+        speed->setBackgroundColor(TCODColor::black);
+        // summary
+		speed->printCenter(MAXIMISED_MODE_WIDTH/2,5,TCOD_BKGND_NONE,
+            "%c%c%c%cUpd%c %2d%% %c%c%c%cRender%c %2d%% %c%c%c%cSys%c %2d%%",
+            TCOD_COLCTRL_FORE_RGB,1,255,1,TCOD_COLCTRL_STOP,
+            updatePer,
+            TCOD_COLCTRL_FORE_RGB,1,1,255,TCOD_COLCTRL_STOP,
+            renderPer,
+            TCOD_COLCTRL_FORE_RGB,255,1,1,TCOD_COLCTRL_STOP,
+            sysPer);
 		if ( dragZone.mouseHover ) {
             speed->setBackgroundColor(TCODColor::lightRed);
 		    speed->rect(7,0,15,1,false,TCOD_BKGND_SET);
