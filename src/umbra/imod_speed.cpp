@@ -137,7 +137,7 @@ void UmbraModSpeed::render (void) {
 	//blit the console
 	TCODConsole::blit(speed,0,0,rect.w,rect.h,TCODConsole::root,rect.x,rect.y,1.0f,0.52f);
 	// render non transparent timebar (until libtcod subcell over subcell blitting is fixed...)
-    timeBar->blit2x(TCODConsole::root,rect.x+2,rect.y+4);
+    if (! isMinimised ) timeBar->blit2x(TCODConsole::root,rect.x+2,rect.y+4);
 }
 
 void UmbraModSpeed::activate (void) {
