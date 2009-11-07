@@ -57,6 +57,7 @@ void UmbraModSpeed::mouse (TCOD_mouse_t &ms) {
                 minimiseButton.set(7,0);
                 closeButton.set(8,0);
                 dragZone.w = 7;
+                rect.x = rect.x+MAXIMISED_MODE_WIDTH-10;
             } else {
                 rect.setSize(MAXIMISED_MODE_WIDTH,MAXIMISED_MODE_HEIGHT);
                 minimiseButton.set(MAXIMISED_MODE_WIDTH-3,0);
