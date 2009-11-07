@@ -113,7 +113,7 @@ void UmbraModSpeed::render (void) {
 		x += barLength*renderPer/100;
 		// system part
         speed->setBackgroundColor(TCODColor::red);
-		speed->rect(x,4,barLength*sysPer/100,1,false, TCOD_BKGND_SET);
+		speed->rect(x,4,barLength-x+1,1,false, TCOD_BKGND_SET);
         speed->setBackgroundColor(TCODColor::black);
         // summary
 		speed->printCenter(MAXIMISED_MODE_WIDTH/2,5,TCOD_BKGND_NONE,
