@@ -27,9 +27,10 @@
 
 #include "umbra.hpp"
 
-UmbraModSpeed::UmbraModSpeed (void) : isMinimised(false) {
-    speed = new TCODConsole(30,6);
-    rect.set((UmbraConfig::rootWidth/2)-15,(UmbraConfig::rootHeight/2)-3,30,6);
+UmbraModSpeed::UmbraModSpeed (void) : cumulatedElapsed(0.0f), updateTime(0.0f), renderTime(0.0f),
+    updatePer(0),renderPer(0),sysPer(0),isMinimised(false) {
+    speed = new TCODConsole(30,7);
+    rect.set((UmbraConfig::rootWidth/2)-15,(UmbraConfig::rootHeight/2)-3,30,7);
 	canDrag = true;
 	// the title bar is drag-sensible
 	dragZone.set(0,0,27,1);
@@ -52,7 +53,7 @@ void UmbraModSpeed::mouse (TCOD_mouse_t &ms) {
                 closeButton.set(8,0);
                 dragZone.w = 7;
             } else {
-                rect.setSize(30,6);
+                rect.setSize(30,7);
                 minimiseButton.set(27,0);
                 closeButton.set(28,0);
                 dragZone.w = 27;
@@ -69,8 +70,21 @@ void UmbraModSpeed::mouse (TCOD_mouse_t &ms) {
 }
 
 bool UmbraModSpeed::update (void) {
+    cumulatedElapsed += TCODSystem::getLastFrameLength();
+
+    if ( cumulatedElapsed >= 1.0f ) {
+        updatePer = (int)(updateTime * 100.0f / (cumulatedElapsed));
+        renderPer = (int)(renderTime * 100.0f / (cumulatedElapsed));
+        sysPer = 100 - updatePer - renderPer;
+        cumulatedElapsed = updateTime = renderTime = 0.0f;
+    }
     if (getStatus() == UMBRA_ACTIVE) return true;
     else return false;
+}
+
+void UmbraModSpeed::setTimes(long updateTime, long renderTime) {
+    this->updateTime += updateTime * 0.001f;
+    this->renderTime += renderTime * 0.001f;
 }
 
 void UmbraModSpeed::render (void) {
@@ -80,9 +94,10 @@ void UmbraModSpeed::render (void) {
 		speed->printLeft(0,0,TCOD_BKGND_SET,"%4dfps ",TCODSystem::getFps());
 		TCODConsole::blit(speed,0,0,8,1,TCODConsole::root,rect.x,rect.y,1.0f,0.5f);
 	} else {
-		speed->printFrame(0,0,30,6,true,"Speed-o-meter");
+		speed->printFrame(0,0,30,7,true,"Speed-o-meter");
 		speed->printCenter(15,2,TCOD_BKGND_NONE,"last frame: %3d ms",(int)(TCODSystem::getLastFrameLength()*1000));
 		speed->printCenter(15,3,TCOD_BKGND_NONE,"frames per second: %3d",TCODSystem::getFps());
+		speed->printCenter(15,4,TCOD_BKGND_NONE,"UPD %2d%% REN %2d%% SYS %2d%%",updatePer,renderPer,sysPer);
 		if ( dragZone.mouseHover ) {
             speed->setBackgroundColor(TCODColor::lightRed);
 		    speed->rect(7,0,15,1,false,TCOD_BKGND_SET);

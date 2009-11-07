@@ -258,6 +258,7 @@ int UmbraEngine::run (void) {
         }
         mouse = TCODMouse::getStatus();
         keyboard(key);
+        long startTime=TCODSystem::getElapsedMilli();
 		// update all active modules by priority order
 	    for (UmbraModule ** mod = activeModules.begin(); mod != activeModules.end(); mod++) {
 	        if (!(*mod)->isPaused()) {
@@ -278,11 +279,16 @@ int UmbraEngine::run (void) {
 	            }
 	        }
 	    }
+        long updateTime=TCODSystem::getElapsedMilli() - startTime;
         // render active modules by inverted priority order
 	    for (UmbraModule ** mod = activeModules.end(); mod != activeModules.begin(); ) {
 			mod --;
 	        (*mod)->render();
 	    }
+        long renderTime=TCODSystem::getElapsedMilli() - startTime - updateTime;
+        if ( internalModules[UMBRA_INTERNAL_SPEEDOMETER]->isActive() ) {
+            ((UmbraModSpeed *)internalModules[UMBRA_INTERNAL_SPEEDOMETER])->setTimes(updateTime,renderTime);
+        }
         //flush the screen
         TCODConsole::root->flush();
     }
