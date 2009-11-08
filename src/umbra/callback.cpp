@@ -88,10 +88,10 @@ UmbraCallbackSpeedometer::UmbraCallbackSpeedometer (void) {
 }
 
 void UmbraCallbackSpeedometer::action (void) {
-    if (getEngine()->internalModules[0]->isActive()) {
-        getEngine()->toDeactivate.push(getEngine()->internalModules[0]);
+    if (getEngine()->getModule(UMBRA_INTERNAL_SPEEDOMETER)->isActive()) {
+        getEngine()->deactivateModule(UMBRA_INTERNAL_SPEEDOMETER);
     }
     else {
-        getEngine()->toActivate.push(getEngine()->internalModules[0]);
+        getEngine()->activateModule(UMBRA_INTERNAL_SPEEDOMETER);
     }
 }

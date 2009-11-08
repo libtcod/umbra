@@ -74,7 +74,6 @@ enum UmbraInternalModuleID {
 
 //the main engine
 class UmbraEngine {
-    friend class UmbraCallbackSpeedometer;
     public:
         UmbraEngine     (const char *fileName = "data/cfg/umbra.txt",
                         bool registerDefaultCallbacks = true,
@@ -94,9 +93,11 @@ class UmbraEngine {
         // register a module for activation next frame, either by id or reference
         void activateModule (int moduleId);
         void activateModule (UmbraModule *mod);
+        void activateModule (UmbraInternalModuleID id);
         // register a module for deactivation next frame either by id or reference
         void deactivateModule (int moduleId);
         void deactivateModule (UmbraModule * mod);
+        void deactivateModule (UmbraInternalModuleID id);
         //deactivate all modules (the program will end normally)
         void deactivateAll (void);
 
@@ -104,6 +105,7 @@ class UmbraEngine {
         inline int getCurrentFontID() { return UmbraConfig::getFontID(); }
         inline UmbraKeyboardMode getKeyboardMode (void) { return keyboardMode ; }
 		inline UmbraModule * getModule (int moduleId) { return (moduleId < 0 || moduleId >= modules.size() ? NULL : modules.get(moduleId)); }
+		inline UmbraModule * getModule (UmbraInternalModuleID id) { return (id < 0 || id >= UMBRA_INTERNAL_MAX ? NULL : internalModules[id]); }
         inline static UmbraEngine * getInstance (void) { return engineInstance; }
 
         void displayError (void);

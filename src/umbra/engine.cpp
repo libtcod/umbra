@@ -151,6 +151,16 @@ void UmbraEngine::activateModule (int moduleId) {
     activateModule(module);
 }
 
+//public function registering an internal module for activation next frame, by id
+void UmbraEngine::activateModule (UmbraInternalModuleID id) {
+    if (id < 0 || id >= UMBRA_INTERNAL_MAX) {
+        UmbraError::add("Tried to activate an invalid internal module: ID %d.",(int)id);
+        displayError();
+        return;
+    }
+    activateModule(internalModules[id]);
+}
+
 // public function registering the module for activation next frame, by reference
 void UmbraEngine::activateModule(UmbraModule *module) {
     if (module != NULL && ! module->isActive()) {
@@ -178,6 +188,15 @@ void UmbraEngine::deactivateModule (int moduleId) {
     }
     UmbraModule *module = modules.get(moduleId);
     deactivateModule(module);
+}
+
+void UmbraEngine::deactivateModule (UmbraInternalModuleID id) {
+    if (id < 0 || id >= UMBRA_INTERNAL_MAX) {
+        UmbraError::add("Tried to deactivate an invalid internal module: ID %d.",(int)id);
+        displayError();
+        return;
+    }
+    else deactivateModule(internalModules[id]);
 }
 
 // register the module for deactivation by reference
