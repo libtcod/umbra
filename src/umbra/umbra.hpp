@@ -38,6 +38,6 @@
 #include "widget.hpp"
 
 #include "imod_speed.hpp"
-#include "imod_msg.hpp"
+#include "imod_bsod.hpp"
 
 #endif

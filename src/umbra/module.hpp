@@ -25,7 +25,7 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-enum UmbraModuleStatus { UMBRA_UNINITIALIZED, UMBRA_INACTIVE, UMBRA_FADING_IN, UMBRA_ACTIVE, UMBRA_PAUSED, UMBRA_FADING_OUT };
+enum UmbraModuleStatus { UMBRA_UNINITIALISED, UMBRA_INACTIVE, UMBRA_FADING_IN, UMBRA_ACTIVE, UMBRA_PAUSED, UMBRA_FADING_OUT };
 
 //all screens or views, such as credits, main menu, map view, etc. have to inherit this
 class UmbraModule {

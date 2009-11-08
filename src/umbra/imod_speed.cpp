@@ -35,9 +35,8 @@ UmbraModSpeed::UmbraModSpeed (void) : cumulatedElapsed(0.0f), updateTime(0.0f), 
     updatePer(0),renderPer(0),sysPer(0),isMinimised(false) {
     speed = new TCODConsole(MAXIMISED_MODE_WIDTH,MAXIMISED_MODE_HEIGHT);
     rect.set((UmbraConfig::rootWidth/2)-15,(UmbraConfig::rootHeight/2)-3,30,MAXIMISED_MODE_HEIGHT);
-	canDrag = true;
 	// the title bar is drag-sensible
-	dragZone.set(0,0,MAXIMISED_MODE_WIDTH-3,1);
+	setDragZone(0,0,MAXIMISED_MODE_WIDTH-3,1);
     //the buttons:
     minimiseButton.set(MAXIMISED_MODE_WIDTH-3,0);
     closeButton.set(MAXIMISED_MODE_WIDTH-2,0);
@@ -48,10 +47,10 @@ UmbraModSpeed::UmbraModSpeed (void) : cumulatedElapsed(0.0f), updateTime(0.0f), 
 void UmbraModSpeed::mouse (TCOD_mouse_t &ms) {
 	UmbraWidget::mouse(ms);
 	if (ms.lbutton_pressed) {
-		ms.lbutton_pressed=false; // erase event
 		//minimise button is pressed
 		if (minimiseButton.is(mousex,mousey)) {
             isMinimised = !isMinimised;
+            ms.lbutton_pressed=false; // erase event
             if (isMinimised) {
                 rect.setSize(9,1);
                 minimiseButton.set(7,0);
@@ -72,6 +71,7 @@ void UmbraModSpeed::mouse (TCOD_mouse_t &ms) {
 		//close button is pressed
 		else if (closeButton.is(mousex,mousey)) {
 		    getEngine()->deactivateModule(this);
+		    ms.lbutton_pressed=false; // erase event
 		}
 	}
 }

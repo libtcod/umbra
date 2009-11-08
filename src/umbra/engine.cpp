@@ -39,7 +39,7 @@ UmbraEngine::UmbraEngine (const char *fileName, bool registerDefaultCallbacks, b
     engineInstance = this;
     //register internal modules
     registerInternalModule(UMBRA_INTERNAL_SPEEDOMETER,new UmbraModSpeed());
-    registerInternalModule(UMBRA_INTERNAL_MESSAGE,new UmbraModMessage());
+    registerInternalModule(UMBRA_INTERNAL_BSOD,new UmbraModBSOD());
     //register default callbacks
     if (registerDefaultCallbacks) {
         registerCallback(new UmbraCallbackQuit());
@@ -334,5 +334,9 @@ void UmbraEngine::registerInternalModule (UmbraInternalModuleID id, UmbraModule 
 }
 
 void UmbraEngine::displayError (void) {
-    if (UmbraConfig::debug && TCODConsole::root != NULL) toActivate.push(internalModules[UMBRA_INTERNAL_MESSAGE]);
+    if (UmbraConfig::debug && TCODConsole::root != NULL) {
+        if (internalModules[UMBRA_INTERNAL_BSOD]->isActive())
+            toDeactivate.push(internalModules[UMBRA_INTERNAL_BSOD]);
+        toActivate.push(internalModules[UMBRA_INTERNAL_BSOD]);
+    }
 }

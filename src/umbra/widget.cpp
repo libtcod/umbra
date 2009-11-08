@@ -32,8 +32,6 @@ UmbraWidget::UmbraWidget( void ) : mousex(-1),mousey(-1),
 }
 
 void UmbraWidget::mouse(TCOD_mouse_t &ms) {
-	//if ( !isDragging && !rect.isInside(ms.cx,ms.cy) ) return;
-
 	//set mouse positions
 	mousex=ms.cx-rect.x;
 	mousey=ms.cy-rect.y;
@@ -47,20 +45,26 @@ void UmbraWidget::mouse(TCOD_mouse_t &ms) {
 	if (ms.lbutton && closeButton.mouseHover) closeButton.mouseDown = true;
 	else closeButton.mouseDown = false;
 	//deal with dragging
-	if ( ms.lbutton && canDrag && ! isDragging && dragZone.isInside(mousex,mousey) ) {
-		isDragging = true;
-		dragx = mousex;
-		dragy = mousey; // position where the widget is drag
-		ms.lbutton=false; // erase event
-	} else if ( isDragging && ! ms.lbutton ) {
-		isDragging = false;
-		ms.lbutton_pressed=false; // erase event
-	} else if ( isDragging ) {
-		ms.lbutton=false; // erase event
-		rect.x = CLAMP(0,UmbraConfig::rootWidth-rect.w, ms.cx-dragx);
-		rect.y = CLAMP(0,UmbraConfig::rootHeight-rect.h,ms.cy-dragy);
-		mousex=dragx;mousey=dragy;
-		ms.cx=ms.cy=ms.x=ms.y=ms.dx=ms.dy=ms.dcx=ms.dcy=0; // erase mouse move event
+	if (canDrag) {
+        if (ms.lbutton && !isDragging && dragZone.isInside(mousex,mousey)) {
+            isDragging = true;
+            dragx = mousex;
+            dragy = mousey; // position where the widget is drag
+            ms.lbutton = false; // erase event
+        } else if (isDragging && !ms.lbutton) {
+            isDragging = false;
+            ms.lbutton_pressed=false; // erase event
+        } else if (isDragging) {
+            ms.lbutton=false; // erase event
+            rect.x = CLAMP(0,UmbraConfig::rootWidth-rect.w, ms.cx-dragx);
+            rect.y = CLAMP(0,UmbraConfig::rootHeight-rect.h,ms.cy-dragy);
+            mousex=dragx; mousey=dragy;
+            ms.cx=ms.cy=ms.x=ms.y=ms.dx=ms.dy=ms.dcx=ms.dcy=0; // erase mouse move event
+        }
 	}
 }
 
+void UmbraWidget::setDragZone (int x, int y, int w, int h) {
+    dragZone.set(x,y,w,h);
+    if (w > 0 && h > 0) canDrag = true;
+}

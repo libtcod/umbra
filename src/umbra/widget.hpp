@@ -54,6 +54,7 @@ class UmbraWidget : public UmbraModule {
         UmbraWidget (void);
         void mouse (TCOD_mouse_t &ms);
     protected :
+        void setDragZone (int x, int y, int w, int h);
         UmbraRect rect; // part of the screen where the widget is
         UmbraRect dragZone; // part of the widget we can click to drag it
         UmbraPoint minimiseButton; //minimise button coordinates

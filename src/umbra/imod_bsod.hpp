@@ -25,14 +25,14 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-class UmbraModMessage : public UmbraWidget {
+class UmbraModBSOD : public UmbraWidget {
     public:
-        UmbraModMessage (void);
+        UmbraModBSOD (void);
         bool update (void);
         void render (void);
     private:
         void activate (void);
-        TCODConsole * msg;
+        TCODConsole * bsod;
         uint32 startTime;
         uint32 duration;
         std::string msgString;

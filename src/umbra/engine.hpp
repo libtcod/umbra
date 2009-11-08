@@ -28,6 +28,7 @@
 #include <iostream>
 
 class UmbraModule;
+class UmbraCallback;
 
 class UmbraKey {
     friend class UmbraEngine;
@@ -63,6 +64,12 @@ enum UmbraKeybinding {
     UMBRA_KEYBINDING_PAUSE,
     UMBRA_KEYBINDING_SPEEDOMETER,
     UMBRA_KEYBINDING_MAX
+};
+
+enum UmbraInternalModuleID {
+    UMBRA_INTERNAL_SPEEDOMETER,
+    UMBRA_INTERNAL_BSOD,
+    UMBRA_INTERNAL_MAX
 };
 
 //the main engine
@@ -122,7 +129,6 @@ class UmbraEngine {
         void registerFonts (void);
 
         //the internal modules stuff
-        enum UmbraInternalModuleID { UMBRA_INTERNAL_SPEEDOMETER, UMBRA_INTERNAL_MESSAGE, UMBRA_INTERNAL_MAX };
         UmbraModule * internalModules[UMBRA_INTERNAL_MAX];
         void registerInternalModule (UmbraInternalModuleID id, UmbraModule * module);
 };

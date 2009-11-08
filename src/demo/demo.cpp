@@ -59,6 +59,10 @@ void Demo::render (void) {
 
 void Demo::keyboard (TCOD_key_t &key) {
     if (key.vk == TCODK_SPACE) getEngine()->activateModule(2);
+    else if (key.vk == TCODK_ENTER) {
+        UmbraError::add("Test error.");
+        getEngine()->displayError();
+    }
     else if (key.vk == TCODK_ESCAPE) getEngine()->deactivateAll();
 }
 

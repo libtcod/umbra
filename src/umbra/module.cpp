@@ -27,7 +27,7 @@
 
 #include "umbra.hpp"
 
-UmbraModule::UmbraModule (void) : priority(1),status(UMBRA_UNINITIALIZED),
+UmbraModule::UmbraModule (void) : priority(1),status(UMBRA_UNINITIALISED),
     fallback(-1),fadeInLength(0),fadeOutLength(0) {
 }
 
@@ -46,7 +46,7 @@ void UmbraModule::initialise (void) {
 }
 
 void UmbraModule::setActive (bool active) {
-    if (status == UMBRA_UNINITIALIZED ) {
+    if (status == UMBRA_UNINITIALISED ) {
         initialise();
     }
     if (active) {
@@ -59,7 +59,7 @@ void UmbraModule::setActive (bool active) {
 }
 
 void UmbraModule::setPause (bool paused) {
-    if (status == UMBRA_UNINITIALIZED ) {
+    if (status == UMBRA_UNINITIALISED ) {
         initialise();
     }
     if (paused) {

@@ -27,33 +27,38 @@
 
 #include "umbra.hpp"
 
-UmbraModMessage::UmbraModMessage (void) {
-    msg = new TCODConsole(30,8);
+UmbraModBSOD::UmbraModBSOD (void) {
+    bsod = new TCODConsole(30,8);
     closeButton.set(28,0);
     duration = 5000;
     msgString = "";
     rect.set(UmbraConfig::rootWidth-31,UmbraConfig::rootHeight-9,30,8);
+    setDragZone(0,0,28,1);
 }
 
-void UmbraModMessage::activate (void) {
+void UmbraModBSOD::activate (void) {
     startTime = TCODSystem::getElapsedMilli();
     msgString = UmbraError::getLastMessage();
-    msg->setBackgroundColor(TCODColor::blue);
-    msg->clear();
 }
 
-bool UmbraModMessage::update (void) {
+bool UmbraModBSOD::update (void) {
     if (closeButton.mouseDown) setActive(false);
     if (TCODSystem::getElapsedMilli() - startTime >= duration) return false;
     else return true;
 }
 
-void UmbraModMessage::render (void) {
-    msg->setForegroundColor(TCODColor::white);
-    msg->printFrame(0,0,30,8,true,"Umbra message");
-    msg->printCenterRect(15,2,28,5,TCOD_BKGND_NONE,UmbraError::getLastMessage());
+void UmbraModBSOD::render (void) {
+    bsod->setBackgroundColor(TCODColor::blue);
+    bsod->clear();
+    bsod->setForegroundColor(TCODColor::white);
+    bsod->printFrame(0,0,30,8,true,"Umbra BSOD");
+    bsod->printCenterRect(15,2,28,5,TCOD_BKGND_NONE,UmbraError::getLastMessage());
     if (closeButton.mouseHover)
-        msg->setForegroundColor(TCODColor::red);
-    msg->putChar(closeButton.x,closeButton.y,'X',TCOD_BKGND_NONE);
-    TCODConsole::blit(msg,0,0,rect.w,rect.h,TCODConsole::root,rect.x,rect.y,1.0f,0.5f);
+        bsod->setForegroundColor(TCODColor::red);
+    bsod->putChar(closeButton.x,closeButton.y,'X',TCOD_BKGND_NONE);
+    if (dragZone.mouseHover) {
+        bsod->setBackgroundColor(TCODColor::lightRed);
+        bsod->rect(9,0,12,1,false,TCOD_BKGND_SET);
+    }
+    TCODConsole::blit(bsod,0,0,rect.w,rect.h,TCODConsole::root,rect.x,rect.y,1.0f,0.5f);
 }
