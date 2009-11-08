@@ -110,7 +110,7 @@ void UmbraModSpeed::render (void) {
 		speed->printLeft(0,0,TCOD_BKGND_SET,"%4dfps ",TCODSystem::getFps());
 		TCODConsole::blit(speed,0,0,8,1,TCODConsole::root,rect.x,rect.y,1.0f,0.5f);
 	} else {
-		speed->printFrame(0,0,MAXIMISED_MODE_WIDTH,MAXIMISED_MODE_HEIGHT,true,"Speed-o-meter");
+		speed->printFrame(0,0,MAXIMISED_MODE_WIDTH,MAXIMISED_MODE_HEIGHT,true,TCOD_BKGND_SET,"Speed-o-meter");
 		speed->printCenter(MAXIMISED_MODE_WIDTH/2,2,TCOD_BKGND_NONE,"last frame: %3d ms",(int)(TCODSystem::getLastFrameLength()*1000));
 		speed->printCenter(MAXIMISED_MODE_WIDTH/2,3,TCOD_BKGND_NONE,"frames per second: %3d",TCODSystem::getFps());
         // summary
@@ -122,7 +122,7 @@ void UmbraModSpeed::render (void) {
             renderPer,
             TCOD_COLCTRL_FORE_RGB,255,1,1,TCOD_COLCTRL_STOP,
             sysPer);
-		if ( dragZone.mouseHover ) {
+		if ( dragZone.mouseHover || isDragging) {
             speed->setBackgroundColor(TCODColor::lightRed);
 		    speed->rect(7,0,15,1,false,TCOD_BKGND_SET);
 		}

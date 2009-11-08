@@ -218,8 +218,6 @@ int UmbraEngine::run (void) {
     }
 
     while(!TCODConsole::isWindowClosed()) {
-        TCODConsole::root->setBackgroundColor(TCODColor::black);
-        TCODConsole::root->clear();
         //execute only when paused
         if (paused) {
             key = TCODConsole::checkForKeypress(TCOD_KEY_RELEASED);
@@ -282,6 +280,8 @@ int UmbraEngine::run (void) {
 	            }
 	        }
 	    }
+	    TCODConsole::root->setBackgroundColor(TCODColor::black);
+        TCODConsole::root->clear();
         long updateTime=TCODSystem::getElapsedMilli() - startTime;
         // render active modules by inverted priority order
 	    for (UmbraModule ** mod = activeModules.end(); mod != activeModules.begin(); ) {
