@@ -511,11 +511,10 @@ Also see [[AdvancedOptions]]</pre>
 </div>
 <!--POST-SHADOWAREA-->
 <div id="storeArea">
-<div title="DefaultTiddlers" modifier="jice" created="200910291727" modified="200911051128" changecount="28">
+<div title="DefaultTiddlers" modifier="Mingos" created="200910291727" modified="200911081359" changecount="29">
 <pre>[[Widget persistence]]
 [[Internal modules]]
-[[Faders]]
-[[custom global keybindings]]</pre>
+[[Faders]]</pre>
 </div>
 <div title="Faders" modifier="jice" created="200911011856" modified="200911040011" tags="code Jice" changecount="9">
 <pre>Here is a proposition for screen fading handling.
@@ -575,7 +574,7 @@ We can safely assume that the developper will either use custom font names or us
 Font detection stuff done. I added another feats :
 if font name is only font&lt;x&gt;x&lt;y&gt;.png, TCOD layout is assumed. Thus, the current demo fonts works out of the box.</pre>
 </div>
-<div title="Internal modules" modifier="Mingos" created="200911051103" modified="200911051552" tags="code unassigned" changecount="3">
+<div title="Internal modules" modifier="Mingos" created="200911051103" modified="200911081402" tags="code Mingos" changecount="4">
 <pre>Currently, we can only activate an internal module through a global keybinding.
 We need something more versatile. I'd want to be able to do anything with the speedometer, like having a button in my game that opens it at a specific place in a specific state when clicked.
 From the user point of view, the simpler would be to handle internal modules like any other module :
@@ -1019,7 +1018,7 @@ rename xSize ySize to consoleWidth consoleHeight ? (more explanatory)
 
 ;changed to rootWidth and rootHeight</pre>
 </div>
-<div title="custom global keybindings" modifier="Mingos" created="200911010258" modified="200911051834" tags="code Mingos" changecount="19">
+<div title="custom global keybindings" modifier="Mingos" created="200911010258" modified="200911081359" tags="done" changecount="20">
 <pre>I've just had an idea for making custom global keybindings. For instance, a hypothetical freak might want the ESCAPE launch a code:
 :if $module is not activated then activate $module
 It's entirely custom and we can't foresee it nor give naive support for it.
