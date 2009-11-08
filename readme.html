@@ -937,6 +937,115 @@ Methods:
 [[UmbraEngine::setKeyboardMode]]
 [[UmbraEngine::setWindowTitle]]</pre>
 </div>
+<div title="UmbraEngine::activateModule" modifier="Mingos" created="200911081445" modified="200911081456" changecount="3">
+<pre>;construction:
+&lt;code C++&gt;
+void activateModule (
+    int moduleId
+);
+
+void activateModule (
+    UmbraModule * mod
+);
+
+void activateModule (
+    UmbraInternalModuleID id
+);
+&lt;/code&gt;
+
+;return value:
+:void
+
+;description:
+:Puts a module on the activation list. It will be activated in the next main game loop iteration (next frame).
+:You may use three ways of specifying a module: either specify the integer user module ID, pass a reference to the module in question, or specify an internal module ID.
+
+;example:
+&lt;code c++&gt;
+//module IDs
+enum {
+    MOD_CREDITS,
+    MOD_MAIN_MENU
+};
+UmbraEngine engine;  
+engine.registerModule (new Module1(), MOD_CREDITS);
+UmbraModule * mod = new Module2();
+engine.registerModule (mod, MOD_MAIN_MENU);
+engine.activateModule(MOD_CREDITS); //user module ID
+engine.activateModule(mod); //module reference
+engine.activateModule(UMBRA_INTERNAL_SPEEDOMETER); //internal module ID
+&lt;/code&gt;</pre>
+</div>
+<div title="UmbraEngine::deactivateModule" modifier="Mingos" created="200911081458" changecount="1">
+<pre>;construction:
+&lt;code C++&gt;
+void deactivateModule (
+    int moduleId
+);
+
+void deactivateModule (
+    UmbraModule * mod
+);
+
+void deactivateModule (
+    UmbraInternalModuleID id
+);
+&lt;/code&gt;
+
+;return value:
+:void
+
+;description:
+:Puts a module on the deactivation list. It will be deactivated in the next main game loop iteration (next frame).
+:You may use three ways of specifying a module: either specify the integer user module ID, pass a reference to the module in question, or specify an internal module ID.
+
+;example:
+&lt;code c++&gt;
+//module IDs
+enum {
+    MOD_CREDITS,
+    MOD_MAIN_MENU
+};
+UmbraEngine engine;  
+engine.registerModule (new Module1(), MOD_CREDITS);
+UmbraModule * mod = new Module2();
+engine.registerModule (mod, MOD_MAIN_MENU);
+engine.activateModule(MOD_CREDITS); //user module ID
+engine.activateModule(mod); //module reference
+engine.activateModule(UMBRA_INTERNAL_SPEEDOMETER); //internal module ID
+engine.deactivateModule(MOD_CREDITS); //user module ID
+engine.deactivateModule(mod); //module reference
+engine.deactivateModule(UMBRA_INTERNAL_SPEEDOMETER); //internal module ID
+&lt;/code&gt;</pre>
+</div>
+<div title="UmbraEngine::getModule" modifier="Mingos" created="200911081506" changecount="1">
+<pre>;construction:
+&lt;code C++&gt;
+UmbraModule *  getModule (
+    int moduleId
+);
+
+UmbraModule * getModule (
+    UmbraInternalModuleID id
+);
+&lt;/code&gt;
+
+;return value:
+:reference to the UmbraModule object with the specified ID
+
+;description:
+:retrieves a reference to the module with the ID passed in the argument. Both user modules (integer ID) and internal modules (UmbraInternalModuleID) can be retrieved that way.
+:Modules need to be registered to be retrieved. They needn't be active or even initialised.
+
+;example:
+&lt;code C++&gt;
+const int modID = 0;
+UmbraEngine engine;
+engine.registerModule (new Module(), modID);
+UmbraModule * mod = engine.getModule (modID); //registered user module
+UmbraModule * mod2 = engine.getModule (UMBRA_INTERNAL_SPEEDOMETER); //an internal module
+&lt;/code&gt;</pre>
+</div>
 <div title="UmbraEngine::registerFont" modifier="jice" created="200911051013" changecount="1">
 <pre>;construction:
 &lt;code C++&gt;
