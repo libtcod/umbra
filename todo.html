@@ -511,8 +511,9 @@ Also see [[AdvancedOptions]]</pre>
 </div>
 <!--POST-SHADOWAREA-->
 <div id="storeArea">
-<div title="DefaultTiddlers" modifier="Mingos" created="200910291727" modified="200911081359" changecount="29">
-<pre>[[Widget persistence]]
+<div title="DefaultTiddlers" modifier="Mingos" created="200910291727" modified="200911091837" changecount="32">
+<pre>[[implicit initialisation]]
+[[Widget persistence]]
 [[Internal modules]]
 [[Faders]]</pre>
 </div>
@@ -1127,6 +1128,17 @@ It's an aesthetic thing, probably, but is an API inconsistency.
 What do we do? Allow both or use either of the two?
 
 ;you're right we should stick to british. feel free to fix them when you find some. I can barely distinguish both but I'll try to do it too...</pre>
+</div>
+<div title="implicit initialisation" modifier="Mingos" created="200911091829" modified="200911091829" tags="discuss" changecount="2">
+<pre>Why does the dev need to initialise the engine at all? How about we simply add the initialise function call to the beginning of Engine::run? If we do, we'll be able to shorten this:
+&lt;code C++&gt;
+if (engine.initialise()) return engine.run();
+else return 1;
+&lt;/code&gt;
+to a single line:
+&lt;code C++&gt;
+return engine.run();
+&lt;/code&gt;</pre>
 </div>
 <div title="internal modules" modifier="Mingos" created="200911012201" modified="200911022125" tags="done" changecount="6">
 <pre>Some modules might be available per default. One of them is the speed-o-meter for benchmarking purposes.

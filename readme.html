@@ -1100,6 +1100,33 @@ engine.deactivateModule(UMBRA_INTERNAL_SPEEDOMETER); //internal module ID
 :[[UmbraEngine::activateModule]]
 :[[UmbraEngine::activateModule]]</pre>
 </div>
+<div title="UmbraEngine::getInstance" modifier="Mingos" created="200911091623" modified="200911091625" changecount="2">
+<pre>Returns a pointer the the engine.
+
+;construction:
+&lt;code C++&gt;
+static UmbraEngine * getInstance (
+    void
+);
+&lt;/code&gt;
+
+;return value:
+:[[UmbraEngine]]*
+
+;remarks:
+:Since modules aren't aware of the engine, this static method hands them a possibility to access the engine's methods.
+:This method is static, so it can be called without having to use the engine instance's name.
+
+;example:
+&lt;code c++&gt;
+UmbraEngine engine;
+UmbraEngine::getInstance()-&gt;registerFont(32,8,&quot;data/img/font10x10.png&quot;);
+&lt;/code&gt;
+
+;see also:
+:[[UmbraModule::getEngine]]
+:[[UmbraCallback::getEngine]]</pre>
+</div>
 <div title="UmbraEngine::getModule" modifier="Mingos" created="200911081506" modified="200911081543" changecount="2">
 <pre>retrieves a reference to the module with the ID passed in the argument.
 
@@ -1129,6 +1156,34 @@ engine.registerModule (new Module(), modID);
 UmbraModule * mod = engine.getModule (modID); //registered user module
 UmbraModule * mod2 = engine.getModule (UMBRA_INTERNAL_SPEEDOMETER); //an internal module
 &lt;/code&gt;</pre>
+</div>
+<div title="UmbraEngine::initialise" modifier="Mingos" created="200911091904" modified="200911091905" changecount="2">
+<pre>Initialises the engine.
+
+;construction:
+&lt;code C++&gt;
+bool initialise (
+    void
+);
+&lt;/code&gt;
+
+;return value:
+:boolean (whether the engine has been successfully initialised)
+
+;remarks:
+:In order to start running, the engine needs to be initialised first.
+
+;example:
+&lt;code c++&gt;
+UmbraEngine engine;
+engine.registerModule(new MyModule());
+engine.activateModule(0);
+if (engine.initialise()) return engine.run();
+else return 1;
+&lt;/code&gt;
+
+;see also:
+:[[UmbraModule::run]]</pre>
 </div>
 <div title="UmbraEngine::registerFont" modifier="Mingos" created="200911051013" modified="200911081545" changecount="2">
 <pre>Registers a font file to be used by libtcod.
@@ -1160,6 +1215,35 @@ engine.registerFont(32,8,&quot;./fonts/arial10x10.png&quot;, TCOD_FONT_LAYOUT_TC
 ;see also
 :[[UmbraEngine::getCurrentFontID]]
 :[[FontAutodetection]]</pre>
+</div>
+<div title="UmbraEngine::registerModule" modifier="Mingos" created="200911091644" modified="200911091645" changecount="3">
+<pre>Registers a user defined module for future activation.
+
+;construction:
+&lt;code C++&gt;
+int registerModule (
+    UmbraModule * module,
+    int fallback = (-1)
+);
+&lt;/code&gt;
+
+;return value:
+The registered module's integer ID number.
+
+;remarks:
+:The method requires the creation of a pointer to a module. The easiest way to achieve this is to call the {{{new}}} operator inside the method's argument.
+:The method registers the newly created module for further use and assigns it an ID number. This number is generated automatically: the first registered module gets ID 0, the next is assigned 1, then 2, and so on, progressively. It is always wise to control the order in which the modules are registered.
+:The second argument is optional. It is a module ID that will be activated once the currently registered module is deactivated. If no fallback ID is specified, no modules will be activated after deactivating the one currently registered.
+
+;example:
+&lt;code c++&gt;
+UmbraEngine engine;
+int mod1 = engine.registerModule(new MyModule()); //mod1 = 0
+int mod2 = engine.registerModule(new MyModule2(),mod1); //mod2 = 1; falls back to the previous one
+&lt;/code&gt;
+
+;see also:
+:[[Fallbacks]]</pre>
 </div>
 <div title="UmbraInternalModuleID" modifier="Mingos" created="200911081536" modified="200911081541" changecount="5">
 <pre>ID numbers for all internal modules available in Umbra.
