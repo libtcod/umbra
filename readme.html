@@ -519,6 +519,20 @@ Also see [[AdvancedOptions]]</pre>
 <div title="About Umbra" modifier="Mingos" created="200910241806" changecount="1">
 <pre>Umbra Engine is a general purpose engine for applications that use libtcod, mainly games. It is thought to be a &quot;module player&quot; more than anything else, meaning that it lacks any game logic or other game elements. The game/app developer will still need to write everything from scratch, but Umbra will make sure the game is divided into manageable chunks, or modules, making sure that even at advanced stages the project is manageable. Also, the engine takes control over the main game loop and screen flushing, provides a global keybindings method and lets the developer define module-specific keybindings.</pre>
 </div>
+<div title="BSOD" modifier="Mingos" created="200911092016" changecount="1">
+<pre>The BSOD is an internal module created with the sole purpose of notifying the developer that a non fatal error has occurred in the program. It is supposed to be used in conjunction with the [[UmbraError::add]] method.
+
+The BSOD is, as the name implies, a blue screen. It's not as annoying as its namesake, as it has the for of a small, semitransparent blue box that disappears a few seconds after it is displayed. Additionally, it can be moved around in case it happens to cover something important or even closed with a close button in the top right corner.
+
+The module, when triggered using the method [[UmbraEngine::displayError]], will display the last registered error mesage (or the line &quot;No errors registered&quot; in case it is displayed before any errors have been added to the log). Here is an example use:
+&lt;code C++&gt;
+if (errorCondition) {
+    UmbraError::add(&quot;Example error message.&quot;);
+    UmbraEngine::getInstance()-&gt;displayError();
+}
+&lt;/code&gt;
+Please note that this module requires the console emulator to be active, otherwise it won't be displayed. For this reason, the BSOD is only useful for displaying non fatal errors. In case a fatal error is encountered, it will typically call {{{exit(1);}}} instead of {{{displayError();}}}. The BSOD is useless in such situations, and the error message can only be retrieved from the error log saved to the disc.</pre>
+</div>
 <div title="Classes" modifier="Mingos" created="200911042330" changecount="1">
 <pre>[[UmbraConfig]]
 [[UmbraEngine]]
@@ -550,6 +564,32 @@ Also see [[AdvancedOptions]]</pre>
 [[UmbraKeybinding]]
 [[UmbraKeyboardMode]]
 [[UmbraModuleStatus]]</pre>
+</div>
+<div title="Fallbacks" modifier="Mingos" created="200911091937" modified="200911091958" changecount="8">
+<pre>A fallback (not to be confused with a callback) is a simple integer ID number that can be assigned to any registered module.
+
+When a module is deactivated, it can adopt one of two behaviours:
+#Do nothing, simply end itself,
+#Trigger the activation of another module
+The second case is called a fallback, since a deactivated module //falls back// to another one.
+
+This behaviour can be defined at the moment of module registering. The method that registers a module is [[UmbraEngine::registerModule]], with the declaration {{{UmbraEngine::registerModule (UmbraModule * module, int fallback)}}}. The second argument, the integer variable called {{{fallback}}} is optional. If it is not specified, the registered module will simply end when it's deactivated. On the other hand, if another module's ID is passed to the method as the second argument, the deactivation of the registered module will trigger the activation of another one, with ID number equal to the one specified as {{{fallback}}}.
+
+Let's see this in an example situation:
+&lt;code C++&gt;
+int main (void) {
+    enum { MOD_CREDITS, MOD_MAINMENU }; //module IDs
+    UmbraEngine engine;
+    engine.registerModule(new Credits(),MOD_MAINMENU); //with fallback
+    engine.registerModule(new Menu()); //no fallback
+    engine.activateModule(MOD_CREDITS);
+    if (engine.initialise()) return engine.run();
+    else return 1;
+}
+&lt;/code&gt;
+In line 02. we declre an enumeration that coincides with the ID numbers that are assigned to registered modules (see [[UmbraEngine::registerModule]] for details). In line 04. we register a module called Credits. It is assigned a fallback {{{MOD_MAINMENU}}}. In the next line, another module is registered, called Menu, but without a falback. Finally, in line 06., the module with ID {{{MOD_CREDITS}}} is activated.
+
+How will the engine behave? The first activated module is supposedly a credits screen, which is usually displayed only during a few seconds in order to honour copyright holders (in case of Umbra, the creators of SDL, libtcod and Umbra itself would be mentioned). When it ends, usually after a specified amount of time has passed, it will give place to another screen, usually related to the game. In our small example, it is a main menu screen. When the main menu ends, it will not fall back to any module automatically, as there are usually various possibilities for the main menu to end. It may trigger the character creation screen, savegame choice screen, options screen or simply end the game. For this reason, no fallback has been specified in line 05. Had it been assigned a fallback, the main menu would always fall back to the specified module, which is not desired.</pre>
 </div>
 <div title="Font autodetection" modifier="Mingos" created="200911050951" modified="200911090022" changecount="11">
 <pre>By default Umbra will look for {{{font&lt;w&gt;x&lt;h&gt;[_&lt;layout&gt;].png}}} files in the {{{&quot;./data/img&quot;}}} directory. You can change this directory by adding a fontDir variable in umbra.txt, for example :
@@ -617,8 +657,8 @@ Internal modules are widgets that can be activated in a number of ways. For inst
 [[UmbraModule::setPause]]
 [[UmbraModule::update]]</pre>
 </div>
-<div title="Mingos" modifier="Mingos" created="200910241825" changecount="1">
-<pre>The developer of this humble engine. Please visit my website for more details about what I do.
+<div title="Mingos" modifier="Mingos" created="200910241825" modified="200911092020" changecount="2">
+<pre>One of the developers of this humble engine. Please visit my website for more details about what I do.
 
 http://umbrarumregnum.110mb.com/</pre>
 </div>
@@ -1334,14 +1374,14 @@ mod-&gt;setFadeIn(1000,TCODColor::blue);
 
 </pre>
 </div>
-<div title="Using Umbra" modifier="Mingos" created="200910241814" modified="200911090018" changecount="13">
+<div title="Using Umbra" modifier="Mingos" created="200910241814" modified="200911091928" changecount="15">
 <pre>#Basics
 ##[[Linking Umbra to your project]]
 ##[[Umbra Hello World]]
 #Engine
 ##[[The engine]]
 ##[[Engine instantiation versus initialisation]]
-##[[Before initialising]]
+##[[Things to do before running the engine]]
 ###[[Registering modules]]
 ###[[Registering fonts]]
 ###[[Font autodetection]]
