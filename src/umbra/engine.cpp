@@ -320,7 +320,7 @@ int UmbraEngine::run (void) {
 }
 
 void UmbraEngine::keyboard (TCOD_key_t &key) {
-    if (key.vk == TCODK_NONE) return;
+    if (key.vk == TCODK_NONE || key.pressed) return;
 
     UmbraKey k(key.vk, key.c, key.ralt|key.lalt, key.rctrl|key.lctrl, key.shift);
 
