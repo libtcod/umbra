@@ -1014,11 +1014,13 @@ class UmbraModule {
 &lt;/code&gt;
 &gt;The engine would call save on game exit. Load might be called either in engine initialisation or module registering. This way every dev would just write the save/load the way he wants it (if he wants it at all).</pre>
 </div>
-<div title="additional privacy" modifier="Mingos" created="200911092235" changecount="1">
+<div title="additional privacy" modifier="jice" created="200911092235" modified="200911101046" tags="code Mingos" changecount="2">
 <pre>While writing the code I found out that there are many methods, mainly in UmbraConfig, that really shouldn't be public. What do you say if we clean the code up by hiding methods that aren't meant to be used from the developer? We can make some classes friends (usually to the Engine).
 
 Example:
-{{{UmbraConfig::load}}} is public, but it should be used once and only once in the whole program, inside the engine. There's no point in making it available to the developer.</pre>
+{{{UmbraConfig::load}}} is public, but it should be used once and only once in the whole program, inside the engine. There's no point in making it available to the developer.
+
+&gt; ok.</pre>
 </div>
 <div title="config variables" modifier="Mingos" created="200910300731" modified="200910301626" tags="done" changecount="3">
 <pre>Suggestion :
@@ -1136,7 +1138,7 @@ What do we do? Allow both or use either of the two?
 
 ;you're right we should stick to british. feel free to fix them when you find some. I can barely distinguish both but I'll try to do it too...</pre>
 </div>
-<div title="implicit initialisation" modifier="Mingos" created="200911091829" modified="200911091829" tags="discuss" changecount="2">
+<div title="implicit initialisation" modifier="jice" created="200911091829" modified="200911101051" tags="discuss" changecount="3">
 <pre>Why does the dev need to initialise the engine at all? How about we simply add the initialise function call to the beginning of Engine::run? If we do, we'll be able to shorten this:
 &lt;code C++&gt;
 if (engine.initialise()) return engine.run();
@@ -1145,7 +1147,9 @@ else return 1;
 to a single line:
 &lt;code C++&gt;
 return engine.run();
-&lt;/code&gt;</pre>
+&lt;/code&gt;
+
+&gt; Well, typically in the cave, I need to dynamically update some characters in the font between engine.initialise and engine.run (because I can't do it before the root is initialised). I'll try to put it rather in some module initialise function. If it works (can't see why it couldn't, but we'd better be sure before changing the engine), we might do this change.</pre>
 </div>
 <div title="internal modules" modifier="Mingos" created="200911012201" modified="200911022125" tags="done" changecount="6">
 <pre>Some modules might be available per default. One of them is the speed-o-meter for benchmarking purposes.
