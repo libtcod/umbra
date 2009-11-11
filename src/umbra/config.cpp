@@ -99,7 +99,7 @@ void UmbraConfig::save (void) {
                 rootWidth,
                 rootHeight,
                 fontID,
-                (fullScreen?"true":"false"),
+                (TCODConsole::isFullscreen()?"true":"false"),
                 (debug?"true":"false"),
                 fontDir);
 
@@ -126,4 +126,3 @@ bool UmbraConfig::activateFont (int shift) {
     fontID += s;
     return true;
 }
-

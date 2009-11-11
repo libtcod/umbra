@@ -33,7 +33,9 @@ UmbraEngine * UmbraEngine::engineInstance = NULL;
 
 //constructor
 UmbraEngine::UmbraEngine (const char *fileName, bool registerDefaultCallbacks, bool registerAdditionalCallbacks) : keyboardMode( UMBRA_KEYBOARD_RELEASED ) {
+    //load configuration variables
     UmbraConfig::load(fileName);
+
     paused = false;
     setWindowTitle("%s ver. %s (%s)", UMBRA_TITLE, UMBRA_VERSION, UMBRA_STATUS);
     engineInstance = this;
@@ -91,13 +93,13 @@ struct TmpFontData {
     int size;
 };
 #define MAX_FONTS 16
-void UmbraEngine::registerFonts( void ) {
+bool UmbraEngine::registerFonts( void ) {
     // if fonts registered by the user, do nothing
-    if ( UmbraConfig::getNbFonts() > 0 ) return;
+    if ( getNbFonts() > 0 ) return true;
     TmpFontData dat[MAX_FONTS];
     TCODList<TmpFontData *> fontDataList;
     // look for font*png in font directory
-    TCODList<const char *> dir=TCODSystem::getDirectoryContent(UmbraConfig::getFontDir(),"font*.png");
+    TCODList<const char *> dir=TCODSystem::getDirectoryContent(getFontDir(),"font*.png");
     if ( dir.size() > 0 ) {
         int fontNum=0;
         for (const char **fontName = dir.begin(); fontName != dir.end() && fontNum < MAX_FONTS; fontName++) {
@@ -118,7 +120,7 @@ void UmbraEngine::registerFonts( void ) {
                     }
                     // compute font grid size from image size & char size
                     int w,h;
-                    sprintf(dat[fontNum].name,"%s/%s",UmbraConfig::getFontDir(),*fontName);
+                    sprintf(dat[fontNum].name,"%s/%s",getFontDir(),*fontName);
                     TCODImage tmp(dat[fontNum].name);
                     tmp.getSize(&w,&h);
                     dat[fontNum].size = charWidth*charHeight;
@@ -138,6 +140,16 @@ void UmbraEngine::registerFonts( void ) {
             registerFont((*dat)->rows,(*dat)->columns,(*dat)->name,(*dat)->flags);
         }
     }
+    else {
+        UmbraError::add("No fonts registered. The font directory %s is empty.",getFontDir());
+        return false;
+    }
+
+    if (getNbFonts() == 0) {
+        UmbraError::add("No fonts registered. Autodetection found no fonts matching the naming pattern font<WIDTH>x<HEIGHT>[_<LAYOUT>].png in the specified directory %s.",getFontDir());
+        return false;
+    }
+    else return true;
 }
 
 // public function registering the module for activation next frame, by id
@@ -215,15 +227,20 @@ void UmbraEngine::deactivateAll (void) {
 
 bool UmbraEngine::initialise (void) {
     // autodetect fonts if needed
-    registerFonts();
+    bool retVal = registerFonts();
     //activate the base font
-    UmbraConfig::activateFont();
-    //initialise console
-    TCODConsole::setCustomFont(UmbraConfig::font->filename(),UmbraConfig::font->flags(),UmbraConfig::font->columns(),UmbraConfig::font->rows());
-    TCODConsole::initRoot(UmbraConfig::rootWidth,UmbraConfig::rootHeight,windowTitle.c_str(), UmbraConfig::fullScreen);
-    TCODSystem::setFps(25);
-    TCODMouse::showCursor(true);
-    return true;
+    if (retVal) {
+        UmbraConfig::activateFont();
+        //initialise console
+        TCODConsole::setCustomFont(UmbraConfig::font->filename(),UmbraConfig::font->flags(),UmbraConfig::font->columns(),UmbraConfig::font->rows());
+        TCODConsole::initRoot(getRootWidth(),getRootHeight(),windowTitle.c_str(), UmbraConfig::fullScreen);
+        TCODSystem::setFps(25);
+        TCODMouse::showCursor(true);
+    }
+    else {
+        UmbraError::add("Could not initialise the root console.");
+    }
+    return retVal;
 }
 
 int UmbraEngine::run (void) {
@@ -342,10 +359,8 @@ void UmbraEngine::keyboard (TCOD_key_t &key) {
 void UmbraEngine::reinitialise (void) {
     delete TCODConsole::root;
     TCODConsole::root = NULL;
-    if (!initialise()) {
-        UmbraError::add("Could not reinitialise the root console.");
-        exit(1);
-    }
+    TCODConsole::setCustomFont(UmbraConfig::font->filename(),UmbraConfig::font->flags(),UmbraConfig::font->columns(),UmbraConfig::font->rows());
+    TCODConsole::initRoot(getRootWidth(),getRootHeight(),windowTitle.c_str(), UmbraConfig::fullScreen);
 }
 
 void UmbraEngine::registerInternalModule (UmbraInternalModuleID id, UmbraModule * module) {

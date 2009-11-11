@@ -27,12 +27,14 @@
 
 #include "main.hpp"
 
+UmbraEngine engine = UmbraEngine("data/cfg/umbra.txt",true,true);
+
 enum { MOD_CREDITS, MOD_DEMO, MOD_SPEED };
 
 int main()
 {
     //create the engine
-    UmbraEngine engine("data/cfg/umbra.txt",true,true);
+    //UmbraEngine engine("data/cfg/umbra.txt",true,true);
     //set window title
     engine.setWindowTitle("Umbra demo");
     //register fonts

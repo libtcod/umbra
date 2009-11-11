@@ -533,9 +533,8 @@ if (errorCondition) {
 &lt;/code&gt;
 Please note that this module requires the console emulator to be active, otherwise it won't be displayed. For this reason, the BSOD is only useful for displaying non fatal errors. In case a fatal error is encountered, it will typically call {{{exit(1);}}} instead of {{{displayError();}}}. The BSOD is useless in such situations, and the error message can only be retrieved from the error log saved to the disc.</pre>
 </div>
-<div title="Classes" modifier="Mingos" created="200911042330" changecount="1">
-<pre>[[UmbraConfig]]
-[[UmbraEngine]]
+<div title="Classes" modifier="Mingos" created="200911042330" modified="200911110111" changecount="3">
+<pre>[[UmbraEngine]]
 [[UmbraError]]
 [[UmbraModule]]
 [[UmbraPoint]]
@@ -591,7 +590,7 @@ In line 02. we declre an enumeration that coincides with the ID numbers that are
 
 How will the engine behave? The first activated module is supposedly a credits screen, which is usually displayed only during a few seconds in order to honour copyright holders (in case of Umbra, the creators of SDL, libtcod and Umbra itself would be mentioned). When it ends, usually after a specified amount of time has passed, it will give place to another screen, usually related to the game. In our small example, it is a main menu screen. When the main menu ends, it will not fall back to any module automatically, as there are usually various possibilities for the main menu to end. It may trigger the character creation screen, savegame choice screen, options screen or simply end the game. For this reason, no fallback has been specified in line 05. Had it been assigned a fallback, the main menu would always fall back to the specified module, which is not desired.</pre>
 </div>
-<div title="Font autodetection" modifier="Mingos" created="200911050951" modified="200911090022" changecount="11">
+<div title="Font autodetection" modifier="Mingos" created="200911050951" modified="200911110111" changecount="14">
 <pre>By default Umbra will look for {{{font&lt;w&gt;x&lt;h&gt;[_&lt;layout&gt;].png}}} files in the {{{&quot;./data/img&quot;}}} directory. You can change this directory by adding a fontDir variable in umbra.txt, for example :
 &lt;code c++&gt;
 /*
@@ -619,7 +618,10 @@ Examples :
 
 All those fonts will be automatically registered and sorted by character &quot;size&quot; = width x height, smallest to biggest. When the game runs, you can switch the current font by pressing pageUp and pageDown (by default). The font selected will be remembered the next time you run the game.
 
-If you want a finer control on the way fonts are loaded, you can register them manually using [[UmbraEngine::registerFont]].</pre>
+If you want a finer control on the way fonts are loaded, you can register them manually using [[UmbraEngine::registerFont]].
+
+;see also:
+:[[Registering fonts]]</pre>
 </div>
 <div title="Internal modules" modifier="Mingos" created="200911082358" modified="200911090005" changecount="4">
 <pre>Internal modules are modules that come integrated with Umbra. They are widgets intended for program diagnostics. The ones you will most commonly use are the [[Speed-o-meter]] and the [[BSOD]]. These modules are automatically instantiated, so they will consume some memory, but they needn't be used if it is not your wish. They do not consume any CPU power until they are activated.
@@ -632,20 +634,27 @@ Internal modules are widgets that can be activated in a number of ways. For inst
 [[API reference]]
 [[Credits]]</pre>
 </div>
-<div title="Methods" modifier="Mingos" created="200911042331" modified="200911092217" changecount="4">
-<pre>[[UmbraEngine::activateModule]]
+<div title="Methods" modifier="Mingos" created="200911042331" modified="200911110111" changecount="7">
+<pre>[[UmbraEngine::activateFont]]
+[[UmbraEngine::activateModule]]
 [[UmbraEngine::deactivateAll]]
 [[UmbraEngine::deactivateModule]]
 [[UmbraEngine::getCurrentFontID]]
+[[UmbraEngine::getFontDir]]
+[[UmbraEngine::getFontID]]
 [[UmbraEngine::getInstance]]
 [[UmbraEngine::getKeyboardMode]]
 [[UmbraEngine::getModule]]
+[[UmbraEngine::getNbFonts]]
+[[UmbraEngine::getRootHeight]]
+[[UmbraEngine::getRootWidth]]
 [[UmbraEngine::initialise]]
 [[UmbraEngine::registerFont]]
 [[UmbraEngine::registerModule]]
 [[UmbraEngine::run]]
 [[UmbraEngine::setKeybinding]]
 [[UmbraEngine::setKeyboardMode]]
+[[UmbraEngine::setRootDimensions]]
 [[UmbraEngine::setWindowTitle]]
 
 [[UmbraError::add]]
@@ -677,6 +686,49 @@ Internal modules are widgets that can be activated in a number of ways. For inst
 <pre>One of the developers of this humble engine. Please visit my website for more details about what I do.
 
 http://umbrarumregnum.110mb.com/</pre>
+</div>
+<div title="Referencing the engine" modifier="Mingos" created="200911110037" modified="200911110111" changecount="9">
+<pre>Since the engine is the basic and most important class in all Umbra-powered applications, it is obvious that it needs to be referenced across the code. There are three ways of achieving this:
+#Via a global variable,
+#Via a static engine instance getter,
+#Via a helper method.
+!Global variable
+
+The simplest way to create a universal engine reference valid in all parts of code is to create a global engine instance. It will be available to all the classes throughout the source code. The global instance can be created by adding a declaration in main.hpp:
+&lt;code C++&gt;
+extern UmbraEngine engine;
+&lt;/code&gt;
+and an implementation in main.cpp, before main(). This will allow to reference the engine by its global variable name:
+&lt;code C++&gt;
+#include &lt;main.hpp&gt;
+UmbraEngine engine = UmbraEngine(&quot;data/cfg/umbra.txt&quot;,true,false);
+...
+int main (void) {
+    engine.setWindowTitle(&quot;Umbra demo&quot;);
+    ...
+}
+&lt;/code&gt;
+!Engine instance getter
+
+The engine has a static getter method that will retrieve a pointer to the engine instance: [[UmbraEngine::getInstance]]. Since it is a static method, it can be called anywhere throughout the code. Example:
+&lt;code C++&gt;
+class Example {
+    inline void title (void) {
+        UmbraEngine::getInstance()-&gt;setWindowTitle(&quot;Umbra demo&quot;);
+    }
+};
+&lt;/code&gt;
+!Helper methods
+
+There are two special cases where helper methods have been introduced in order to spare the developer the necessity to write the entire code of the above method call. In [[UmbraModule]] and [[UmbraCallback]] special methods are available: [[UmbraModule::getEngine]] and [[UmbraCallback::getEngine]]. All classes that inherit either of the two may use this simplified syntax to retrieve a pointer to the engine:
+&lt;code C++&gt;
+class MyModule : public UmbraModule {
+    inline void title (void) {
+        getEngine()-&gt;setWindowTitle(&quot;Umbra demo&quot;);
+    }
+};
+&lt;/code&gt;
+Please note that [[UmbraWidget]] inherits [[UmbraModule]] and thus the [[UmbraModule::getEngine]] method is also available inside widgets.</pre>
 </div>
 <div title="SiteSubtitle" modifier="Mingos" created="200910241742" changecount="1">
 <pre>a generic engine for libtcod-based applications</pre>
@@ -1390,12 +1442,13 @@ mod-&gt;setFadeIn(1000,TCODColor::blue);
 
 </pre>
 </div>
-<div title="Using Umbra" modifier="Mingos" created="200910241814" modified="200911091928" changecount="15">
+<div title="Using Umbra" modifier="Mingos" created="200910241814" modified="200911110111" changecount="17">
 <pre>#Basics
 ##[[Linking Umbra to your project]]
 ##[[Umbra Hello World]]
 #Engine
 ##[[The engine]]
+##[[Referencing the engine]]
 ##[[Engine instantiation versus initialisation]]
 ##[[Things to do before running the engine]]
 ###[[Registering modules]]

@@ -26,11 +26,13 @@
 */
 
 class UmbraConfig {
-    public:
+    friend class UmbraEngine;
+    private:
+        static bool activateFont (int shift = 0);
+
         static void load (const char *fileName); //load config from file
         static void save (void); //save config to file
         static void registerFont (UmbraFont * _font);
-        static bool activateFont (int shift = 0);
 
         static int rootWidth;
         static int rootHeight;
@@ -38,10 +40,6 @@ class UmbraConfig {
         static bool debug; //debugging mode (displays messages)
 
         static UmbraFont * font;
-        static inline int getFontID() { return fontID; }
-        static inline int getNbFonts() { return fonts.size(); }
-        static inline const char *getFontDir() {return fontDir;}
-    private:
         static const char * fileName;
         static const char * fontDir;
         static int fontID;

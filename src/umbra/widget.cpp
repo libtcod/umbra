@@ -56,8 +56,8 @@ void UmbraWidget::mouse(TCOD_mouse_t &ms) {
             ms.lbutton_pressed=false; // erase event
         } else if (isDragging) {
             ms.lbutton=false; // erase event
-            rect.x = CLAMP(0,UmbraConfig::rootWidth-rect.w, ms.cx-dragx);
-            rect.y = CLAMP(0,UmbraConfig::rootHeight-rect.h,ms.cy-dragy);
+            rect.x = CLAMP(0,getEngine()->getRootWidth()-rect.w, ms.cx-dragx);
+            rect.y = CLAMP(0,getEngine()->getRootHeight()-rect.h,ms.cy-dragy);
             mousex=dragx; mousey=dragy;
             ms.cx=ms.cy=ms.x=ms.y=ms.dx=ms.dy=ms.dcx=ms.dcy=0; // erase mouse move event
         }

@@ -32,7 +32,7 @@ UmbraModBSOD::UmbraModBSOD (void) {
     closeButton.set(28,0);
     duration = 5000;
     msgString = "";
-    rect.set(UmbraConfig::rootWidth-31,UmbraConfig::rootHeight-9,30,8);
+    rect.set(getEngine()->getRootWidth()-31,getEngine()->getRootHeight()-9,30,8);
     setDragZone(0,0,28,1);
 }
 

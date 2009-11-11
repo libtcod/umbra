@@ -32,17 +32,17 @@ Demo::Demo (void) {
     sprintf (credits, "Goodbye world!\nPress ESC to quit.");
     random = TCODRandom::getInstance();
     noise = new TCODNoise(3,random);
-    img = new TCODImage(UmbraConfig::rootWidth*2,UmbraConfig::rootHeight);
+    img = new TCODImage(getEngine()->getRootWidth()*2,getEngine()->getRootHeight());
     offset = 0.0f;
 }
 
 bool Demo::update (void) {
     int i, j;
-    int xres = UmbraConfig::rootWidth*2;
-    for (i = 0; i < xres; i++) for (j = 0; j < UmbraConfig::rootHeight; j++) {
+    int xres = getEngine()->getRootWidth()*2;
+    for (i = 0; i < xres; i++) for (j = 0; j < getEngine()->getRootHeight(); j++) {
         float f[3];
         f[0] = 8.0f * i / xres;
-        f[1] = 8.0f * j / UmbraConfig::rootHeight;
+        f[1] = 8.0f * j / getEngine()->getRootHeight();
         f[2] = offset;
         uint8 val = (uint8)((noise->getFbmSimplex(f,4.0f)+1.0f) * 64.0f);
         img->putPixel(i,j,TCODColor(val,val,val));
@@ -54,7 +54,7 @@ bool Demo::update (void) {
 void Demo::render (void) {
     TCODConsole::root->setForegroundColor(TCODColor::red);
     TCODConsole::root->printLeft(0,0,TCOD_BKGND_NONE,"%s",credits);
-    img->blit2x(TCODConsole::root,0,UmbraConfig::rootHeight/4);
+    img->blit2x(TCODConsole::root,0,getEngine()->getRootHeight()/4);
 }
 
 void Demo::keyboard (TCOD_key_t &key) {

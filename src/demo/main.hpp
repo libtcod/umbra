@@ -28,3 +28,5 @@
 #include "../umbra/umbra.hpp"
 #include "credits.hpp"
 #include "demo.hpp"
+
+extern UmbraEngine engine;

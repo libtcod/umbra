@@ -511,9 +511,8 @@ Also see [[AdvancedOptions]]</pre>
 </div>
 <!--POST-SHADOWAREA-->
 <div id="storeArea">
-<div title="DefaultTiddlers" modifier="Mingos" created="200910291727" modified="200911092218" changecount="33">
-<pre>[[additional privacy]]
-[[implicit initialisation]]
+<div title="DefaultTiddlers" modifier="Mingos" created="200910291727" modified="200911110117" changecount="34">
+<pre>[[implicit initialisation]]
 [[Widget persistence]]
 [[Internal modules]]
 [[Faders]]</pre>
@@ -1014,7 +1013,7 @@ class UmbraModule {
 &lt;/code&gt;
 &gt;The engine would call save on game exit. Load might be called either in engine initialisation or module registering. This way every dev would just write the save/load the way he wants it (if he wants it at all).</pre>
 </div>
-<div title="additional privacy" modifier="jice" created="200911092235" modified="200911101046" tags="code Mingos" changecount="2">
+<div title="additional privacy" modifier="Mingos" created="200911092235" modified="200911110117" tags="done" changecount="3">
 <pre>While writing the code I found out that there are many methods, mainly in UmbraConfig, that really shouldn't be public. What do you say if we clean the code up by hiding methods that aren't meant to be used from the developer? We can make some classes friends (usually to the Engine).
 
 Example:

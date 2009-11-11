@@ -102,13 +102,24 @@ class UmbraEngine {
         void deactivateAll (void);
 
         inline bool getPaused (void) { return paused; }
-        inline int getCurrentFontID() { return UmbraConfig::getFontID(); }
         inline UmbraKeyboardMode getKeyboardMode (void) { return keyboardMode ; }
 		inline UmbraModule * getModule (int moduleId) { return (moduleId < 0 || moduleId >= modules.size() ? NULL : modules.get(moduleId)); }
 		inline UmbraModule * getModule (UmbraInternalModuleID id) { return (id < 0 || id >= UMBRA_INTERNAL_MAX ? NULL : internalModules[id]); }
         inline static UmbraEngine * getInstance (void) { return engineInstance; }
 
         void displayError (void);
+
+        //Config-related stuff
+        inline bool activateFont (int shift = 0) { return UmbraConfig::activateFont(shift); }
+
+        inline int getRootWidth (void) { return UmbraConfig::rootWidth; }
+        inline int getRootHeight (void) { return UmbraConfig::rootHeight; }
+
+        inline int getFontID() { return UmbraConfig::fontID; }
+        inline int getNbFonts() { return UmbraConfig::fonts.size(); }
+        inline const char * getFontDir() { return UmbraConfig::fontDir; }
+
+        static void setRootDimensions (int w, int h) { UmbraConfig::rootWidth = w; UmbraConfig::rootHeight = h; getInstance()->reinitialise(); }
 
     private:
         static UmbraEngine * engineInstance;
@@ -128,7 +139,7 @@ class UmbraEngine {
         // actually put the module in active list
 		void doActivateModule( UmbraModule *mod );
         // font autodetection if no font is registered
-        void registerFonts (void);
+        bool registerFonts (void);
 
         //the internal modules stuff
         UmbraModule * internalModules[UMBRA_INTERNAL_MAX];

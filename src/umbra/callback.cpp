@@ -61,7 +61,7 @@ UmbraCallbackFontUp::UmbraCallbackFontUp (void) {
 }
 
 void UmbraCallbackFontUp::action (void) {
-    if (UmbraConfig::activateFont(1)) getEngine()->reinitialise();
+    if (getEngine()->activateFont(1)) getEngine()->reinitialise();
 }
 
 //switch font down
@@ -70,7 +70,7 @@ UmbraCallbackFontDown::UmbraCallbackFontDown (void) {
 }
 
 void UmbraCallbackFontDown::action (void) {
-    if (UmbraConfig::activateFont(-1)) getEngine()->reinitialise();
+    if (getEngine()->activateFont(-1)) getEngine()->reinitialise();
 }
 
 //pause the program

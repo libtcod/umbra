@@ -34,7 +34,7 @@
 UmbraModSpeed::UmbraModSpeed (void) : cumulatedElapsed(0.0f), updateTime(0.0f), renderTime(0.0f),
     updatePer(0),renderPer(0),sysPer(0),isMinimised(false) {
     speed = new TCODConsole(MAXIMISED_MODE_WIDTH,MAXIMISED_MODE_HEIGHT);
-    rect.set((UmbraConfig::rootWidth/2)-15,(UmbraConfig::rootHeight/2)-3,30,MAXIMISED_MODE_HEIGHT);
+    rect.set((getEngine()->getRootWidth()/2)-15,(getEngine()->getRootHeight()/2)-3,30,MAXIMISED_MODE_HEIGHT);
 	// the title bar is drag-sensible
 	setDragZone(0,0,MAXIMISED_MODE_WIDTH-3,1);
     //the buttons:
@@ -65,7 +65,7 @@ void UmbraModSpeed::mouse (TCOD_mouse_t &ms) {
                 // when the widget maximizes, it might cross the screen borders
                 rect.x = rect.x+10-MAXIMISED_MODE_WIDTH;
                 rect.x=MAX(0,rect.x);
-                rect.y=MIN(UmbraConfig::rootHeight-rect.h,rect.y);
+                rect.y=MIN(getEngine()->getRootHeight()-rect.h,rect.y);
             }
 		}
 		//close button is pressed
