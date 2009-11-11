@@ -43,7 +43,7 @@ DAMAGE.
 <!--}}}-->
 
 <!--PRE-HEAD-END-->
-<title> Umbra Engine - a generic engine for libtcod-based applications </title>
+<title> Umbra - a generic engine for libtcod-based applications </title>
 <style id="styleArea" type="text/css">
 #saveTest {display:none;}
 #messageArea {display:none;}
@@ -771,6 +771,31 @@ class MyModule : public UmbraModule {
 &lt;/code&gt;
 Please note that [[UmbraWidget]] inherits [[UmbraModule]] and thus the [[UmbraModule::getEngine]] method is also available inside widgets.</pre>
 </div>
+<div title="Registering fonts" modifier="Mingos" created="200911112244" changecount="1">
+<pre>As with the modules, registering a font &quot;tells&quot; the engine that there is a font file ready to be used. It has nothing to do with actually using the font.
+
+Registering a font can be done using [[UmbraEngine::registerFont]] method. It is necessary to specify the font file, as well as the number of columns and rows. Optionally, the layout can also be specified, although this is not necessary for fonts that use the default TCOD layout.
+
+Once the fonts are registered, the engine will be able to choose the correct font file to load.</pre>
+</div>
+<div title="Registering modules" modifier="Mingos" created="200911112149" changecount="1">
+<pre>Registering a module is basically &quot;telling&quot; the engine that a module has been instantiated and that you would like to make it useable. Registering a module can be done by calling [[UmbraEngine::registerModule]] method.
+
+Note that you may both instantiate the module before calling [[UmbraEngine::registerModule]] and pass the method a reference to the module, or you may simply instantiate the module inside the method's argument.
+&lt;code C++&gt;
+UmbraEngine engine();
+UmbraModule * mod1 = new MyModule1();
+engine.registerModule(mod1);
+int mod2id = engine.registerModule(new MyModule2());
+&lt;/code&gt;
+In the above example, we can access both modules in different ways:
+&lt;code C++&gt;
+mod1-&gt;method();
+engine.getModule(mod2)-&gt;method();
+&lt;/code&gt;
+Please read [[Accessing modules and widgets]] for more detailed information on this topic.
+</pre>
+</div>
 <div title="Reporting an error" modifier="Mingos" created="200911111608" changecount="1">
 <pre>Reporting an error is extremely easy in Umbra. It's enough to add this line of code:
 &lt;code C++&gt;
@@ -784,8 +809,8 @@ This method will sent the specified error message to stderr, append it to the er
 <div title="SiteSubtitle" modifier="Mingos" created="200910241742" changecount="1">
 <pre>a generic engine for libtcod-based applications</pre>
 </div>
-<div title="SiteTitle" modifier="Mingos" created="200910241741" modified="200910241742" changecount="2">
-<pre>Umbra Engine</pre>
+<div title="SiteTitle" modifier="Mingos" created="200910241741" modified="200911112227" changecount="3">
+<pre>Umbra</pre>
 </div>
 <div title="StyleSheet" modifier="Jonny Gerold" created="200904132312" server.type="file" server.host="dl.getdropbox.com/u/52078/Notes/Notes.html" server.page.revision="200904132312">
 <pre>[[StyleSheetSyntaxHighlighter]]</pre>
@@ -1034,6 +1059,17 @@ var dp={sh:{Toolbar:{},Utils:{},RegexLib:{},Brushes:{},Strings:{AboutDialog:&quo
 There needs to be one and only one instance of the engine, no more, no less. After having registered modules, fonts and callbacks and having configured other things the developer might need, the engine can then be initialised. The initialisation process contains a series of self checks and will only be successful if no obstacles are encountered. In case there are problems, an error log will be created in a text file in the working directory. The file will contain the error(s) the engine has encountered.
 
 Once the initialisation is successful, the engine can be run. Running the engine initiates the main program loop. In it, modules are executed, activated and deactivated, mouse and keyboard input is read and so on. This is when the program is actually executed.</pre>
+</div>
+<div title="Things to do before initialising the engine" modifier="Mingos" created="200911112124" changecount="1">
+<pre>A freshly instantiated engine is as good as no engine at all. It will probably refuse to initialise, and even if it doesn't, it will instantly close itself as soon as it is run. That's why certain things should be done before initialising the engine.
+
+First of all, the engine will need modules to run. Without them, the application will close itself. Writing the modules in question isn't enough, one also needs to inform the engine of their existence by registering them.
+
+At least one of the registered modules will also need to be activated, as even a bunch of registered engines will result in an application that instantly closes itself if there's not a single active module to run.
+
+Fonts can be registered as well, although in certain circumstances this is not mandatory.
+
+More actions can be performed as well, although they are optional.</pre>
 </div>
 <div title="Umbra Hello World" modifier="Mingos" created="200911082305" modified="200911082346" changecount="14">
 <pre>Let's begin with source code for a //Hello world// program. First, let's create the following {{{main.hpp}}} file:
@@ -1349,14 +1385,14 @@ else return 1;
 ;see also:
 :[[UmbraModule::run]]</pre>
 </div>
-<div title="UmbraEngine::registerFont" modifier="Scautura" created="200911051013" modified="200911111214" changecount="3">
+<div title="UmbraEngine::registerFont" modifier="Mingos" created="200911051013" modified="200911112247" changecount="5">
 <pre>Registers a font file to be used by libtcod.
 
 ;construction:
 &lt;code C++&gt;
 void UmbraEngine::registerFont (
-    int rows, 
     int columns, 
+    int rows,
     const char * filename, 
     int flags);
 &lt;/code&gt;
@@ -1377,7 +1413,10 @@ engine.registerFont(32,8,&quot;./fonts/arial10x10.png&quot;, TCOD_FONT_LAYOUT_TC
 &lt;/code&gt;
 
 ;see also
-:[[UmbraEngine::getCurrentFontID]]
+:[[UmbraEngine::activateFont]]
+:[[UmbraEngine::getFontID]]
+:[[UmbraEngine::getFontDir]]
+:[[UmbraEngine::getNbFonts]]
 :[[FontAutodetection]]</pre>
 </div>
 <div title="UmbraEngine::registerModule" modifier="Scautura" created="200911091644" modified="200911111215" changecount="4">
@@ -1529,7 +1568,7 @@ mod-&gt;setFadeIn(1000,TCODColor::blue);
 
 </pre>
 </div>
-<div title="Using Umbra" modifier="Mingos" created="200910241814" modified="200911111518" changecount="18">
+<div title="Using Umbra" modifier="Mingos" created="200910241814" modified="200911112146" changecount="20">
 <pre>#Basics
 ##[[Linking Umbra to your project]]
 ##[[Umbra Hello World]]
@@ -1551,6 +1590,7 @@ mod-&gt;setFadeIn(1000,TCODColor::blue);
 ##[[Internal modules]]
 ###[[Speed-o-meter]]
 ###[[BSOD]]
+##[[Accessing modules and widgets]]
 #Callbacks
 ##[[What are callbacks]]
 ##[[Creating callbacks]]

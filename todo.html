@@ -511,10 +511,8 @@ Also see [[AdvancedOptions]]</pre>
 </div>
 <!--POST-SHADOWAREA-->
 <div id="storeArea">
-<div title="DefaultTiddlers" modifier="Mingos" created="200910291727" modified="200911110117" changecount="34">
-<pre>[[implicit initialisation]]
-[[Widget persistence]]
-[[Internal modules]]
+<div title="DefaultTiddlers" modifier="Mingos" created="200910291727" modified="200911112251" changecount="36">
+<pre>[[Widget persistence]]
 [[Faders]]</pre>
 </div>
 <div title="Faders" modifier="jice" created="200911011856" modified="200911040011" tags="code Jice" changecount="9">
@@ -575,7 +573,7 @@ We can safely assume that the developper will either use custom font names or us
 Font detection stuff done. I added another feats :
 if font name is only font&lt;x&gt;x&lt;y&gt;.png, TCOD layout is assumed. Thus, the current demo fonts works out of the box.</pre>
 </div>
-<div title="Internal modules" modifier="Mingos" created="200911051103" modified="200911081402" tags="code Mingos" changecount="4">
+<div title="Internal modules" modifier="Mingos" created="200911051103" modified="200911112250" tags="done" changecount="5">
 <pre>Currently, we can only activate an internal module through a global keybinding.
 We need something more versatile. I'd want to be able to do anything with the speedometer, like having a button in my game that opens it at a specific place in a specific state when clicked.
 From the user point of view, the simpler would be to handle internal modules like any other module :
@@ -1137,7 +1135,7 @@ What do we do? Allow both or use either of the two?
 
 ;you're right we should stick to british. feel free to fix them when you find some. I can barely distinguish both but I'll try to do it too...</pre>
 </div>
-<div title="implicit initialisation" modifier="jice" created="200911091829" modified="200911101051" tags="discuss" changecount="3">
+<div title="implicit initialisation" modifier="Mingos" created="200911091829" modified="200911112249" tags="rejected" changecount="4">
 <pre>Why does the dev need to initialise the engine at all? How about we simply add the initialise function call to the beginning of Engine::run? If we do, we'll be able to shorten this:
 &lt;code C++&gt;
 if (engine.initialise()) return engine.run();
@@ -1148,7 +1146,9 @@ to a single line:
 return engine.run();
 &lt;/code&gt;
 
-&gt; Well, typically in the cave, I need to dynamically update some characters in the font between engine.initialise and engine.run (because I can't do it before the root is initialised). I'll try to put it rather in some module initialise function. If it works (can't see why it couldn't, but we'd better be sure before changing the engine), we might do this change.</pre>
+&gt; Well, typically in the cave, I need to dynamically update some characters in the font between engine.initialise and engine.run (because I can't do it before the root is initialised). I'll try to put it rather in some module initialise function. If it works (can't see why it couldn't, but we'd better be sure before changing the engine), we might do this change.
+
+Fuck it.</pre>
 </div>
 <div title="internal modules" modifier="Mingos" created="200911012201" modified="200911022125" tags="done" changecount="6">
 <pre>Some modules might be available per default. One of them is the speed-o-meter for benchmarking purposes.

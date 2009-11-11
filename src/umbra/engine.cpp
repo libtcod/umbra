@@ -73,14 +73,14 @@ int UmbraEngine::registerModule (UmbraModule * module, int fallback) {
 }
 
 //register a font
-void UmbraEngine::registerFont (int rows, int columns, const char * filename, int flags) {
+void UmbraEngine::registerFont (int columns, int rows, const char * filename, int flags) {
     if (!UmbraError::fileExists(filename)) {
         UmbraError::add("Tried to register a font file that does not exist: %s.",filename);
         displayError();
         return;
     }
     UmbraFont * file = new UmbraFont; //don't delete this later
-    file->initialise(rows,columns,filename,flags);
+    file->initialise(columns,rows,filename,flags);
     UmbraConfig::registerFont(file);
 }
 
@@ -137,7 +137,7 @@ bool UmbraEngine::registerFonts( void ) {
         }
         for (TmpFontData **dat=fontDataList.begin(); dat != fontDataList.end(); dat ++) {
             // register the fonts from smallest to biggest
-            registerFont((*dat)->rows,(*dat)->columns,(*dat)->name,(*dat)->flags);
+            registerFont((*dat)->columns,(*dat)->rows,(*dat)->name,(*dat)->flags);
         }
     }
     else {

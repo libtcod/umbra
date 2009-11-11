@@ -80,7 +80,7 @@ class UmbraEngine {
                         bool registerAdditionalCallbacks = false); //constructor
 
         int registerModule (UmbraModule * module, int fallback = (-1)); //add a module to the modules list. returns id
-        void registerFont (int rows, int columns, const char * filename, int flags = TCOD_FONT_LAYOUT_TCOD);
+        void registerFont (int columns, int rows, const char * filename, int flags = TCOD_FONT_LAYOUT_TCOD);
         bool initialise (void); //initialises the engine
         void reinitialise (void);
         int run (void); //runs the engine

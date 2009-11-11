@@ -31,25 +31,14 @@
 UmbraFont::UmbraFont (void) {
     std::string _filename;
     _filename = "NULL";
-    _rows = 0;
     _columns = 0;
+    _rows = 0;
     _flags = 0;
 }
 
-void UmbraFont::initialise (int r, int c, const char * fn, int f) {
-    _rows = r;
+void UmbraFont::initialise (int c, int r, const char * fn, int f) {
     _columns = c;
+    _rows = r;
     _flags = f;
     _filename = fn;
-}
-
-void UmbraFont::initialise (int s, const char * fn, int f) {
-    TCODImage * img = new TCODImage(fn);
-    int w, h;
-    img->getSize(&w, &h);
-    _rows = w/s;
-    _columns = h/s;
-    _flags = f;
-    _filename = fn;
-    delete img;
 }
