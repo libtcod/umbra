@@ -561,6 +561,15 @@ Please note that this module requires the console emulator to be active, otherwi
 <div title="DefaultTiddlers" modifier="Mingos" created="200910241745" modified="200910241818" changecount="2">
 <pre>[[About Umbra]]</pre>
 </div>
+<div title="Displaying an error" modifier="Mingos" created="200911111643" changecount="1">
+<pre>The errors that have been appended to the log using the method [[UmbraError::add]] can be displayed in a variety of ways.
+
+Probably the easiest way is to use [[UmbraEngine::displayError]] method. It will activate the [[BSOD]] module and automatically display the last registered error. It can be called at any time and will work only if the root console is initialised.
+
+If only the last message is of interest, but for some reason BSOD use is not an option, the last registered error message can also be retrieved with [[UmbraError::getLastMessage]].
+
+Any other message can be retrieved as well using the [[UmbraError::getMessage]] method. You can specify the message index you wish to retrieve. In case you don't know how many errors have been registered so far, you can always check this with [[UmbraError::getNbErrors]].</pre>
+</div>
 <div title="Engine instantiation versus initialisation" modifier="Mingos" created="200911111512" modified="200911111546" changecount="3">
 <pre>The difference between the two concepts is very important. The engine needs to be instantiated in order to become available at all, but in order to run it also needs to be configured.
 
@@ -589,6 +598,11 @@ else return 1;
 [[UmbraKeybinding]]
 [[UmbraKeyboardMode]]
 [[UmbraModuleStatus]]</pre>
+</div>
+<div title="Error log" modifier="Mingos" created="200911111602" changecount="1">
+<pre>The error log is a list of error messages registered throughout a single run of the application. Errors can be appended to that list, and each time an error is reported, it will be sent to stderr (in case of console-based applications, stderr is the system console) and also to a text file {{{errorlog.txt}}} located in the application's working directory.
+
+The errors are added automatically when something goes wrong inside Umbra, but the developer can also use the log to append custom error messages.</pre>
 </div>
 <div title="Fallbacks" modifier="Scautura" created="200911091937" modified="200911111205" changecount="9">
 <pre>A fallback (not to be confused with a callback) is a simple integer ID number that can be assigned to any registered module.
@@ -660,7 +674,7 @@ Internal modules are widgets that can be activated in a number of ways. For inst
 [[API reference]]
 [[Credits]]</pre>
 </div>
-<div title="Methods" modifier="Mingos" created="200911042331" modified="200911111444" changecount="8">
+<div title="Methods" modifier="Mingos" created="200911042331" modified="200911111644" changecount="9">
 <pre>[[UmbraEngine::activateFont]]
 [[UmbraEngine::activateModule]]
 [[UmbraEngine::deactivateAll]]
@@ -685,6 +699,8 @@ Internal modules are widgets that can be activated in a number of ways. For inst
 [[UmbraError::add]]
 [[UmbraError::fileExists]]
 [[UmbraError::getLastMessage]]
+[[UmbraError::getMessage]]
+[[UmbraError::getNbErrors]]
 
 [[UmbraModule::initialise]]
 [[UmbraModule::keyboard]]
@@ -754,6 +770,13 @@ class MyModule : public UmbraModule {
 };
 &lt;/code&gt;
 Please note that [[UmbraWidget]] inherits [[UmbraModule]] and thus the [[UmbraModule::getEngine]] method is also available inside widgets.</pre>
+</div>
+<div title="Reporting an error" modifier="Mingos" created="200911111608" changecount="1">
+<pre>Reporting an error is extremely easy in Umbra. It's enough to add this line of code:
+&lt;code C++&gt;
+UmbraError::add(&quot;Error message&quot;);
+&lt;/code&gt;
+This method will sent the specified error message to stderr, append it to the error list and also save the file {{{errorlog.txt}}}, containing all of the error messages registered so far, to the hard disc.</pre>
 </div>
 <div title="Scautura" modifier="Scautura" created="200911111208" changecount="1">
 <pre>Proofreader. Nothing more.</pre>

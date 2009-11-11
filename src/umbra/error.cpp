@@ -33,7 +33,7 @@
 TCODList <std::string*> UmbraError::errors;
 
 //append an error message
-void UmbraError::add (const char * errStr, ...) {
+int UmbraError::add (const char * errStr, ...) {
     char err[2048];
     va_list ap;
     va_start(ap,errStr);
@@ -46,6 +46,8 @@ void UmbraError::add (const char * errStr, ...) {
     fprintf(stderr,"%s\n",errorMessage->c_str());
 
     save();
+
+    return errors.size()-1;
 }
 
 //save the error log
@@ -90,6 +92,13 @@ const char * UmbraError::getLastMessage (void) {
     if (size == 0) return "No errors registered.";
     else return (errors.get(size-1))->c_str();
 }
+
+const char * UmbraError::getMessage (int idx) {
+    if (idx < 0 || idx >= errors.size()) return "Requested wrong error index.";
+    else return (errors.get(idx))->c_str();
+}
+
+
 
 //confirms the existence of a file. Returns false if there is no such file.
 bool UmbraError::fileExists (const char * filename, ...) {

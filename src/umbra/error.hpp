@@ -33,7 +33,9 @@ class UmbraError {
         static void save (void); //saves the error log to an external file for further examination
 
     public:
-        static void add (const char * errStr, ...); //adds an error to the list
+        static int add (const char * errStr, ...); //adds an error to the list
         static bool fileExists (const char * filename, ...); //confirms the existence of a file
         static const char * getLastMessage (void); //retrieves the last message
+        static const char * getMessage (int idx); //retrieve message with index number idx
+        static inline int getNbErrors (void) { return errors.size(); }
 };
