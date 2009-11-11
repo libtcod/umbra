@@ -687,7 +687,7 @@ Internal modules are widgets that can be activated in a number of ways. For inst
 
 http://umbrarumregnum.110mb.com/</pre>
 </div>
-<div title="Referencing the engine" modifier="Mingos" created="200911110037" modified="200911110111" changecount="9">
+<div title="Referencing the engine" modifier="jice" created="200911110037" modified="200911111018" changecount="11">
 <pre>Since the engine is the basic and most important class in all Umbra-powered applications, it is obvious that it needs to be referenced across the code. There are three ways of achieving this:
 #Via a global variable,
 #Via a static engine instance getter,
@@ -701,7 +701,7 @@ extern UmbraEngine engine;
 and an implementation in main.cpp, before main(). This will allow to reference the engine by its global variable name:
 &lt;code C++&gt;
 #include &lt;main.hpp&gt;
-UmbraEngine engine = UmbraEngine(&quot;data/cfg/umbra.txt&quot;,true,false);
+UmbraEngine engine (&quot;data/cfg/umbra.txt&quot;,true,false);
 ...
 int main (void) {
     engine.setWindowTitle(&quot;Umbra demo&quot;);
@@ -710,7 +710,7 @@ int main (void) {
 &lt;/code&gt;
 !Engine instance getter
 
-The engine has a static getter method that will retrieve a pointer to the engine instance: [[UmbraEngine::getInstance]]. Since it is a static method, it can be called anywhere throughout the code. Example:
+The engine has a static getter method that will retrieve a pointer to the engine instance: [[UmbraEngine::getInstance]]. Since it is a static method, it can be called anywhere throughout the code. If the engine has not been create, the first call to this function will create it with default parameters. Example:
 &lt;code C++&gt;
 class Example {
     inline void title (void) {

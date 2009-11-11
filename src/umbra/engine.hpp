@@ -105,7 +105,7 @@ class UmbraEngine {
         inline UmbraKeyboardMode getKeyboardMode (void) { return keyboardMode ; }
 		inline UmbraModule * getModule (int moduleId) { return (moduleId < 0 || moduleId >= modules.size() ? NULL : modules.get(moduleId)); }
 		inline UmbraModule * getModule (UmbraInternalModuleID id) { return (id < 0 || id >= UMBRA_INTERNAL_MAX ? NULL : internalModules[id]); }
-        inline static UmbraEngine * getInstance (void) { return engineInstance; }
+        inline static UmbraEngine * getInstance (void) { if (engineInstance == NULL) engineInstance = new UmbraEngine(); return engineInstance; }
 
         void displayError (void);
 
