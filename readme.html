@@ -1644,6 +1644,13 @@ All of the above are absolutely independent from other modules. Modules can be r
 
 There's also a special kind of module, called widget, that offers extra interactivity. See [[What is a widget]] for more details.</pre>
 </div>
+<div title="What is a widget" modifier="Mingos" created="200911122041" changecount="1">
+<pre>A widget is, essentially, a module. It inherits the [[UmbraModule]] class, so it can be updated and rendered in the exact same fashion a standard module would. The difference is that a widget offers additional interactivity options.
+
+Widgets include special areas that can be defined to make the widget become interactive. Per default, a widget has a drag zone, a close button and a minimise button. If they are given legal values, they can be shown in the widget, and also react to mouse movement and clicks.
+
+It is not recommended to use widgets in games that only use keyboard control, since they are slower than normal modules and will be able to offer the same functionality.</pre>
+</div>
 </div>
 <!--POST-STOREAREA-->
 <!--POST-BODY-START-->
