@@ -519,6 +519,11 @@ Also see [[AdvancedOptions]]</pre>
 <div title="About Umbra" modifier="Mingos" created="200910241806" changecount="1">
 <pre>Umbra Engine is a general purpose engine for applications that use libtcod, mainly games. It is thought to be a &quot;module player&quot; more than anything else, meaning that it lacks any game logic or other game elements. The game/app developer will still need to write everything from scratch, but Umbra will make sure the game is divided into manageable chunks, or modules, making sure that even at advanced stages the project is manageable. Also, the engine takes control over the main game loop and screen flushing, provides a global keybindings method and lets the developer define module-specific keybindings.</pre>
 </div>
+<div title="Activating modules" modifier="Mingos" created="200911121718" changecount="1">
+<pre>A registered module resides inside the modules list, but before the engine actually runs any of the modules from the list, the developer has to specify which one needs to be activated. Typically, a main menu, a title screen or a credits screen will be the first activated module.
+
+Module activation is extremely simple. Once a module is registered, it is given an ID number, which the developer can deduce from the order in which the modules were registered. This number can then be used to activate a module. The method that actually does the trick is [[UmbraModule::activateModule]]. Instead of the ID number, the method also accepts the module reference as an argument. In both cases, the chosen module will be put on a separate list of modules destinated for activation in the next frame. The engine should run with no problems once a module is active.</pre>
+</div>
 <div title="BSOD" modifier="Scautura" created="200911092016" modified="200911111207" changecount="2">
 <pre>The BSOD is an internal module created with the sole purpose of notifying the developer that a non fatal error has occurred in the program. It is supposed to be used in conjunction with the [[UmbraError::add]] method.
 
@@ -1568,6 +1573,25 @@ mod-&gt;setFadeIn(1000,TCODColor::blue);
 
 </pre>
 </div>
+<div title="UmbraModule::update" modifier="Mingos" created="200911121749" changecount="1">
+<pre>Updates the module's internal logic.
+
+;construction:
+&lt;code C++&gt;
+bool update (
+    void
+);
+&lt;/code&gt;
+
+;return value:
+:boolean, indicating whether the module is still active or not (returning {{{false}}} will deactivate the module).
+
+;remarks:
+:This method will be called automatically each frame. It shouldn't be called manually, but rather overloaded in each module.
+
+;see also:
+:[[UmbraModule::render]]</pre>
+</div>
 <div title="Using Umbra" modifier="Mingos" created="200910241814" modified="200911112146" changecount="20">
 <pre>#Basics
 ##[[Linking Umbra to your project]]
@@ -1601,6 +1625,24 @@ mod-&gt;setFadeIn(1000,TCODColor::blue);
 ##[[Displaying an error]]
 
 Please read the [[API reference]] for details on how everything works.</pre>
+</div>
+<div title="What is a module" modifier="Mingos" created="200911121549" modified="200911121634" changecount="4">
+<pre>From the general point of view, a module is a &quot;chunk&quot; of an application that can be clearly separated from the others. For instance, a single screen, such as a menu or a credits screen, will typically be a module. The developer should understand a module as ''a class derived from [[UmbraModule]]'', ie, one that inherits [[UmbraModule]].
+
+Each module has its own set of typical methods that the engine can call, the most important ones being:
+#[[UmbraModule::update]]
+#[[UmbraModule::render]]
+#[[UmbraModule::keyboard]]
+#[[UmbraModule::mouse]]
+The first of the four is used to update the module's internal logic. For instance, a main map view in a real time roguelike game will update the mobs' position on the map, adjust their reactions towards the player character, calculate their attacks and so on.
+
+The rendering method will represent the above data graphically, ie, will print the map view on the screen, with the mob positions updated, etc.
+
+The next two methods take care of player input. Mouse status and pressed keys will be parsed and correct actions will be taken if a specified input is encountered.
+
+All of the above are absolutely independent from other modules. Modules can be rendered on top of each other, so there can be multiple active modules at all times. For instance, one might prefer to make the message display a separate module, while keeping the map in a different one.
+
+There's also a special kind of module, called widget, that offers extra interactivity. See [[What is a widget]] for more details.</pre>
 </div>
 </div>
 <!--POST-STOREAREA-->
