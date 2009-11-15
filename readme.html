@@ -546,6 +546,135 @@ Please note that this module requires the console emulator to be active, otherwi
 [[UmbraRect]]
 [[UmbraWidget]]</pre>
 </div>
+<div title="Creating a module" modifier="Mingos" created="200911142341" modified="200911151849" changecount="11">
+<pre>Creating a module is essentially easy. Here's the simplest way:
+&lt;code C++&gt;
+class MyModule : public UmbraModule {};
+&lt;/code&gt;
+Yes, that's right. By creating any class that inherits [[UmbraModule]] you can create a perfectly valid module that will be recognised by the engine.
+
+Creating a ''valid'' module is one thing. Making it ''functional'' is a different story. Registering the above module is legal, but no code would ever be executed should it be run.
+
+Each module, along with [[UmbraModule]], inherits a set of virtual methods, which are called by the engine. These need to be overridden. First, let's have a look at the method that is probably the most interesting to the developer: [[UmbraModule::update]].
+!Update
+
+The module needs to update its internal logic in order to work. This is what [[UmbraModule::update]] is supposed to do. Imagine you have a chess program. The updating would be roughly something like this:
+&lt;code C++&gt;
+bool MyModule::update (void) {
+    if (computersTurn) {
+        calculateMove();
+        refreshFigurePositions();
+        computersTurn = false;
+    }
+    if (!checkmate &amp;&amp; !stalemate) return true;
+    else return false;
+}
+&lt;/code&gt;
+In other words, the updating of a chess program would:
+#check whether it's the computer's move,
+##if it is, find the best move available,
+##make that move by updating the figures positions
+##switch to the player's turn
+#check whether the game has ended
+##if it hasn't, return true (module keeps active)
+##if it has, return false (deactivate module)
+A key feature of [[UmbraModule::update]] is the effect its return value has on the entire module. Should it return {{{false}}}, the module will automatically be marked for deactivation. If the method returns {{{true}}}, the module still can get deactivated, for instance, by another module.
+
+If the update method isn't overridden, it will always return true. This might be useful in case of modules that simply display a static piece of graphics or text, or have the render method depend on an external source.
+!Render
+
+The [[UmbraModule::render]] does exactly what its name indicates: takes care of graphical representation. There are no rules regarding how the rendering should look like. Umbra leaves this to the developer's intuition and specific needs.
+
+One possibility is to do it the straightforward way: draw everything directly to the root console. There are many situations that do not require a more sophisticated solution. Imagine a module that simply renders a smoky background behing the items in the main menu. It's the lowest layer and it won't overwrite anything. It'll also probably cover the entire console's area, so the simple rendering is perfectly acceptable.
+
+Another way would be using an offscreen console. It is a good solution to blit an offscreen console over the root if, for instance, only a small area with a dynamic position needs to be rendered. Imagine a dialogue balloon appearing over a character in a roguelike game. Its position and size wouldn't be fixed, so blitting an offscreen console would be the only sensible solution.
+!Example module
+
+Here's an example of an extremely simple module.
+
+{{{credits.hpp}}}:
+&lt;code C++&gt;
+#ifndef MODULE_CREDITS_HPP
+#define MODULE_CREDITS_HPP
+
+class Credits : public UmbraModule {
+    public:
+        Credits ();
+ //the constructor
+        void activate (void); //to be run on module activation
+        bool update (void);
+        void render (void);
+        void keyboard (TCOD_key_t &amp;key); //keyboard input
+
+    private:
+        std::string credits; //credits text
+        uint32 startTime; //used for the timeout
+        uint32 duration; //used for the timeout
+        int x, y; //rendering starting position
+};
+
+#endif
+&lt;/code&gt;
+The module Credits contains no specific methods, it only overrides four [[UmbraModule]]'s virtual methods. {{{activate}}} is the custom code that will be executed each time the module is activated. {{{update}}} is overridden as well and will be used to determine the deactivation condition: a timeout. {{{render}}} displays the credits text, and {{{keyboard}}} parses keyboard input. None of these needs to be called manually, as the engine knows exactly what to do with those methods.
+
+The variables are very important for this module, even though all but one might as well be replaced by literals. {{{std::string credits}}} is the actual credits text that will be displayed. {{{uint32 startTime}}} is a variable that will be used to determine how long the module has been running. {{{uint32 duration}}} is how long, in milliseconds, we want the module to run before it's deactivated (timeout). Finally, {{{int x, y}}} are the coordinates where the credits will be displayed.
+
+{{{credits.cpp}}}:
+&lt;code C++&gt;
+#include &quot;umbra.hpp&quot;
+#include &quot;credits.hpp&quot;
+#include &lt;stdio.h&gt;
+
+//constructor
+Credits::Credits () {
+    credits = &quot;Game Title\n&quot;
+              &quot;by Game Author\n&quot;
+              &quot;\n&quot;
+              &quot;powered by:\n&quot;
+              &quot;libtcod 1.4.3 by Jice,\n&quot;
+              &quot;Umbra by Mingos &amp; Jice&quot;;
+    duration = 3000;
+    x = UmbraConfig::rootWidth/2;
+    y = (UmbraConfig::rootHeight/2)-3;
+}
+
+//update: check the timeout
+bool Credits::update (void) {
+    if (TCODSystem::getElapsedMilli()-startTime &lt; duration)
+        return true;
+    else
+        return false;
+}
+
+//render: put the credits text on the screen
+void Credits::render (void) {
+    TCODConsole::root-&gt;setForegroundColor(TCODColor::white);
+    TCODConsole::root-&gt;setBackgroundColor(TCODColor::black);
+    TCODConsole::root-&gt;printCenter(x,y,TCOD_BKGND_NONE,credits.c_str());
+}
+
+//keyboard input
+void Credits::keyboard (TCOD_key_t &amp;key) {
+    if (key.vk == TCODK_SPACE) setActive (false);
+}
+
+//activation code
+void Credits::activate (void) {
+    startTime = TCODSystem::getElapsedMilli();
+}
+&lt;/code&gt;
+The constructor, as can be expected, sets the initial values for the module's variables. The credits text is set, the timeout is fixed to 3 seconds (3000 milliseconds), and the coordinates are chosen for the credits renderer.
+
+The {{{update}}} method only does one thing: check whether the module has timed out. It compares the elapsed time to the module's activation time plus the timeout.
+
+It's logical that the {{{render}}} method also needn't be complicated: it just sets the background and foreground colours and prints the credits string at the coordinates {{{[x,y]}}}.
+
+The activation custom code is very simple. It is launched only when the module is activated, so we can safely put the {{{startTime}}} initialisation there. As soon as the module's activated, this method will check the current elapsed time and assign its value to the {{{startTime}}} variable. It will thus become the module's starting time and a base to evaluate the timeout.
+
+Finally, the {{{keyboard}}} parsing. It does a simple check: if the space bar is pressed, the module will be deactivated.
+
+The entire module, when registered and activated, will be enough to create a simple application that displays the credits text until 3 seconds have passed or until the keybar is pressed (whichever happens first).</pre>
+</div>
 <div title="Credits" modifier="Mingos" created="200910272033" modified="200911111429" changecount="6">
 <pre>The following people had a say in the creation of Umbra:
 
