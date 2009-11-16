@@ -797,6 +797,21 @@ If you want a finer control on the way fonts are loaded, you can register them m
 ;see also:
 :[[Registering fonts]]</pre>
 </div>
+<div title="Initialisation versus activation" modifier="Mingos" created="200911162110" modified="200911162133" changecount="3">
+<pre>The [[UmbraModule]] provides two virtual methods which can be overridden in a custom module. These are [[UmbraModule::initialise]] and [[UmbraModule::activate]]. The difference between the two might seem a bit blurry, so let's have a closer look at what they do.
+!Initialisation
+
+The [[UmbraModule::initialise]] method is run only once per module in the entire execution time of the application. In fact, for some modules, it might never be run, but in this case, the module simply never gets activated. What we need to bear in mind is that the method will be run only when the module is activated ''for the first time''. Every subsequent activation will not trigger initialisation anymore.
+
+What's the practical use of this feature? The initialisation might as well be handled in the constructor, one might remark. The answer is simple: the module might depend on information that's not available at the moment the constructor is run. Sure, in most cases it won't. But what if it does? Well, that's when this method can provide a delayed initialisation or a &quot;second constructor&quot;.
+!Activation
+
+The activation of a module consists essentially of putting the module on the activation list, and commencing to run it, starting from the subsequent frame (or main loop iteration). During activation, it might be necessary to run some sort of custom code. This is when [[UmbraModule::activate]] comes in. It is run once per module activation.
+
+A simple example of its practical use would be a module with a timeout, such as the [[BSOD]]. During the activation of the [[BSOD]], the module needs to check and store the elapsed time from apllication start. This value is set every time the module is activated in order to know when it's supposed to be deactivated. Until it's actually deactivated, the value will not change. The effect is a timeout: the module deactivates itself X time after activation.
+
+Paired with [[UmbraModule::activate]] is also [[UmbraModule::deactivate]]. In case a module needs to run some special code upon deactivation, it's enough to override this method.</pre>
+</div>
 <div title="Internal modules" modifier="Mingos" created="200911082358" modified="200911090005" changecount="4">
 <pre>Internal modules are modules that come integrated with Umbra. They are widgets intended for program diagnostics. The ones you will most commonly use are the [[Speed-o-meter]] and the [[BSOD]]. These modules are automatically instantiated, so they will consume some memory, but they needn't be used if it is not your wish. They do not consume any CPU power until they are activated.
 
@@ -1721,7 +1736,7 @@ bool update (
 ;see also:
 :[[UmbraModule::render]]</pre>
 </div>
-<div title="Using Umbra" modifier="Mingos" created="200910241814" modified="200911112146" changecount="20">
+<div title="Using Umbra" modifier="Mingos" created="200910241814" modified="200911162103" changecount="21">
 <pre>#Basics
 ##[[Linking Umbra to your project]]
 ##[[Umbra Hello World]]
@@ -1744,6 +1759,7 @@ bool update (
 ###[[Speed-o-meter]]
 ###[[BSOD]]
 ##[[Accessing modules and widgets]]
+##[[Initialisation versus activation]]
 #Callbacks
 ##[[What are callbacks]]
 ##[[Creating callbacks]]
