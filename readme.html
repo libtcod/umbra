@@ -675,7 +675,7 @@ Finally, the {{{keyboard}}} parsing. It does a simple check: if the space bar is
 
 The entire module, when registered and activated, will be enough to create a simple application that displays the credits text until 3 seconds have passed or until the keybar is pressed (whichever happens first).</pre>
 </div>
-<div title="Creating a widget" modifier="Mingos" created="200911162231" tags="workInProgress" changecount="1">
+<div title="Creating a widget" modifier="Mingos" created="200911162231" modified="200911232204" tags="workInProgress" changecount="6">
 <pre>Creating a ''valid'' widget is as easy as creating a ''valid'' module:
 &lt;code C++&gt;
 class MyWidget : public UmbraWidget {};
@@ -690,7 +690,15 @@ There are also a few interesting member objects which must be initialised in ord
 Custom mouse input may be defined using [[UmbraModule::mouse]], but it is not necessary if all interactivity that's desired is the functional close button, the minimise button and/or the drag zone. Additional interactive objects will require custom mouse input.
 !Rendering a widget
 
-(TODO)
+It is highly recommended to use an offscreen console. All rendering should be done on it, never directly on the root console. If a widget is rendered directly on the root console, it doesn't have dynamic position on the screen and thus needn't be a widget at all.
+
+Mouse input, more specifically widget dragging, will be applied to {{{UmbraRect UmbraWidget::rect}}}, so it's convenient to end the rendering method with the following line:
+&lt;code C++&gt;
+TCODConsole::blit(consoleName,0,0,rect.w,rect.h,TCODConsole::root,rect.x,rect.y,1.0f,0.5f);
+&lt;/code&gt;
+where {{{consoleName}}} is the offscreen console used in the rendered widget. The transparency values may differ, of course, and needn't be fixed to 1.0f and 0.5f.
+
+This is not a requirement, but rather a useful guideline. Dealing with rendering this way spares additional code required to refer to dynamic cell positions, as well as transparency issues.
 !Drag zone
 
 The widget always comes with a very special member object: {{{UmbraRect dragZone}}}. The drag zone is a rectangular area that will react to the mouse hovering over it and to being clicked and dragged. It will result in the entire widget being dragged around the console. In order for it to work, the draggable area needs to be specified. This is done via the [[UmbraWidget::setDragZone]] method. Specifying a valid set of coordinates inside the widget will activate draggability. That's it, an active drag zone already lets the widget be dragged around.
@@ -710,7 +718,21 @@ if (dragZone.mouseHover || isDragging) {
 As you can see, there are two variables that are used in the process: {{{dragZone.mouseHover}}} and {{{isDragging}}}. They are set automatically each frame, so there's no need to bother with how they work. The former indicates whether the mouse cursor is hovering over the drag zone and the latter indicates whether the widget is being dragged. As can be observed in the code snippet, if any of the two conditions is met, the background colour of the area corresponding to the widget's label (&quot;Umbra BSOD&quot;, printed in white by the {{{TCODConsole::printFrame}}} method from libtcod) is changed to light red. If none of the conditions is satisfied, the label remains white.
 !Minimise and close buttons
 
-(TODO)</pre>
+Another useful feature of a widget are the minimise and close buttons. They are implemented as {{{UmbraPoint minimiseButton}}} and {{{UmbraPoint closeButton}}}. As with the drag zone, the widget will need to be instructed where the points are supposed to be placed. This can be achieved using the [[UmbraPoint::set]] method. Once instructed about the placement of the buttons within the widget (specifically, relative to the coordinates [0,0] of {{{UmbraRect UmbraWidget::rect}}}), the widget will be able to collect data from the mouse and determine whether the cursor is hovering over the buttons and whether it's down. The hover and down events can be retrieved directly from the points using the variables {{{UmbraPoint::mouseHover}}} and {{{UmbraPoint::mouseDown}}}:
+&lt;code C++&gt;
+if (closeButton.mouseDown) setActive(false);
+&lt;/code&gt;
+The above code will check whether the mouse button has been pressed on the close button of a widget and if so, it will deactivate the widget.
+
+The buttons will not be rendered themselves. Rendering them has to be taken care of in the widget's rendering method. The below code snippet has been copied from the [[Speed-o-meter]] widget:
+&lt;code C++&gt;
+if (closeButton.mouseHover)
+    speed-&gt;setForegroundColor(TCODColor::red); //button is active
+else
+    speed-&gt;setForegroundColor(TCODColor::lightGrey); //button is not active
+speed-&gt;putChar(closeButton.x,closeButton.y,'X',TCOD_BKGND_SET);
+&lt;/code&gt;
+In the above code snippet, {{{speed}}} is the offscreen console the widget uses. Note that {{{mouseHover}}} variable is used to determine the colour of the button character.</pre>
 </div>
 <div title="Credits" modifier="Mingos" created="200910272033" modified="200911111429" changecount="6">
 <pre>The following people had a say in the creation of Umbra:
