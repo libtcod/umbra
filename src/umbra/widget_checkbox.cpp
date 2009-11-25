@@ -25,31 +25,56 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-class UmbraModSpeed : public UmbraWidget {
-    public:
-        UmbraModSpeed (void);
-        bool update (void);
-        void render (void);
-		void mouse (TCOD_mouse_t &ms);
-		// in case a user wants it minimized from start
-		inline void setMinimised(bool val) { isMinimised=val; }
-                        //TEST CODE
-                        UmbraCheckbox cb;
-                        //END TEST CODE
-	protected :
-        void activate (void);
-        void deactivate (void);
-    private:
-        friend class UmbraEngine;
-        // timebar stuff
-        void setTimes(long updateTime, long renderTime); // this is called by engine each frame
-        float cumulatedElapsed;
-        float updateTime;
-        float renderTime;
-        int updatePer, renderPer, sysPer;
-        TCODImage *timeBar;
-        TCODConsole * speed;
-        int fps;
-		bool isMinimised;
-};
+#include "umbra.hpp"
+
+UmbraCheckbox::UmbraCheckbox (void) {
+    parent = NULL;
+    area.set(0,0,0,0);
+    text = "";
+    checked = false;
+    visible = true;
+}
+
+UmbraCheckbox::UmbraCheckbox (UmbraWidget * parent, int x, int y, int w, int h, const char * text) {
+    this->parent = parent;
+    area.set(x, y, w, h);
+    this->text = text;
+    checked = false;
+    visible = true;
+}
+
+void UmbraCheckbox::set (UmbraWidget * parent, int x, int y, int w, int h, const char * text) {
+    this->parent = parent;
+    area.set(x, y, w, h);
+    this->text = text;
+    checked = false;
+    visible = true;
+}
+
+void UmbraCheckbox::mouse (TCOD_mouse_t &ms) {
+    if (!visible)
+        return;
+    if (area.isInside(ms.cx-parent->rect.x, ms.cy-parent->rect.y))
+        area.mouseHover = true;
+    else
+        area.mouseHover = false;
+    if (area.mouseHover && ms.lbutton) {
+        area.mouseDown = true;
+        checked = !checked;
+        ms.lbutton_pressed=false;
+    }
+    else area.mouseDown = false;
+}
+
+void UmbraCheckbox::render (TCODConsole * con) {
+    if (!visible)
+        return;
+    if (checked)
+        con->putChar(area.x,area.y,TCOD_CHAR_CHECKBOX_SET,TCOD_BKGND_NONE);
+    else
+        con->putChar(area.x,area.y,TCOD_CHAR_CHECKBOX_UNSET,TCOD_BKGND_NONE);
+    if (!text.empty())
+        con->printLeftRect(area.x+2, area.y, area.w-2, area.h, TCOD_BKGND_NONE, text.c_str());
+}
+
 

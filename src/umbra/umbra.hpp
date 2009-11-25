@@ -37,6 +37,8 @@
 #include "module.hpp"
 #include "widget.hpp"
 
+#include "widget_checkbox.hpp"
+
 #include "imod_speed.hpp"
 #include "imod_bsod.hpp"
 

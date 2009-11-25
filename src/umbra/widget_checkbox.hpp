@@ -25,31 +25,21 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-class UmbraModSpeed : public UmbraWidget {
-    public:
-        UmbraModSpeed (void);
-        bool update (void);
-        void render (void);
-		void mouse (TCOD_mouse_t &ms);
-		// in case a user wants it minimized from start
-		inline void setMinimised(bool val) { isMinimised=val; }
-                        //TEST CODE
-                        UmbraCheckbox cb;
-                        //END TEST CODE
-	protected :
-        void activate (void);
-        void deactivate (void);
-    private:
-        friend class UmbraEngine;
-        // timebar stuff
-        void setTimes(long updateTime, long renderTime); // this is called by engine each frame
-        float cumulatedElapsed;
-        float updateTime;
-        float renderTime;
-        int updatePer, renderPer, sysPer;
-        TCODImage *timeBar;
-        TCODConsole * speed;
-        int fps;
-		bool isMinimised;
-};
+#include <iostream>
 
+class UmbraWidget;
+class UmbraRect;
+
+class UmbraCheckbox {
+    public:
+        UmbraCheckbox (void);
+        UmbraCheckbox (UmbraWidget * parent, int x, int y, int w, int h, const char * text = "");
+        void set (UmbraWidget * parent, int x, int y, int w, int h, const char * text = "");
+        UmbraRect area; //the rectangle where the object is contained
+        UmbraWidget * parent; //reference to the widget that contains the object
+        bool visible; //visibility (cab be toggled)
+        bool checked;
+        std::string text;
+        void render (TCODConsole * con);
+        void mouse (TCOD_mouse_t &ms); //checks the status
+};

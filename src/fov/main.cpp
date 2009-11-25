@@ -31,8 +31,7 @@ UmbraEngine engine = UmbraEngine("data/cfg/umbra.txt",true,true);
 
 enum { MOD_SETUP, MOD_RESULT };
 
-int main()
-{
+int main() {
     //create the engine
     //UmbraEngine engine("data/cfg/umbra.txt",true,true);
     //set window title
