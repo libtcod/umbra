@@ -8,19 +8,19 @@
 		<Build>
 			<Target title="Demo Debug WIN">
 				<Option output="UR" prefix_auto="1" extension_auto="1" />
-				<Option object_output="obj\" />
+				<Option object_output="obj/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-g" />
 				</Compiler>
 				<Linker>
-					<Add library="..\libtcod-1.4.3\lib\libtcod-mingw-debug.a" />
+					<Add library="../libtcod-1.4.3/lib/libtcod-mingw-debug.a" />
 				</Linker>
 			</Target>
 			<Target title="Demo Release WIN">
 				<Option output="UR" prefix_auto="1" extension_auto="1" />
-				<Option object_output="obj\" />
+				<Option object_output="obj/" />
 				<Option type="0" />
 				<Option compiler="gcc" />
 				<Compiler>
@@ -28,12 +28,12 @@
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
-					<Add library="..\libtcod-1.4.3\lib\libtcod-mingw.a" />
+					<Add library="../libtcod-1.4.3/lib/libtcod-mingw.a" />
 				</Linker>
 			</Target>
 			<Target title="Demo Debug LINUX">
 				<Option output="UR" prefix_auto="1" extension_auto="1" />
-				<Option object_output="obj\" />
+				<Option object_output="obj/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
@@ -42,13 +42,13 @@
 				<Linker>
 					<Add option="-lefence" />
 					<Add option="-Wl,-rpath,lib" />
-					<Add library="lib\libtcod_debug.so" />
-					<Add library="lib\libtcodxx_debug.so" />
+					<Add library="lib/libtcod_debug.so" />
+					<Add library="lib/libtcodxx_debug.so" />
 				</Linker>
 			</Target>
 			<Target title="Demo Release LINUX">
 				<Option output="UR" prefix_auto="1" extension_auto="1" />
-				<Option object_output="obj\" />
+				<Option object_output="obj/" />
 				<Option type="0" />
 				<Option compiler="gcc" />
 				<Compiler>
@@ -57,25 +57,25 @@
 				<Linker>
 					<Add option="-s" />
 					<Add option="-Wl,-rpath,lib" />
-					<Add library="lib\libtcod.so" />
-					<Add library="lib\libtcodxx.so" />
+					<Add library="lib/libtcod.so" />
+					<Add library="lib/libtcodxx.so" />
 				</Linker>
 			</Target>
 			<Target title="Fovbench Debug WIN">
 				<Option output="fov" prefix_auto="1" extension_auto="1" />
-				<Option object_output="obj\" />
+				<Option object_output="obj/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-g" />
 				</Compiler>
 				<Linker>
-					<Add library="..\libtcod-1.4.3\lib\libtcod-mingw-debug.a" />
+					<Add library="../libtcod-1.4.3/lib/libtcod-mingw-debug.a" />
 				</Linker>
 			</Target>
 			<Target title="Fovbench Release WIN">
 				<Option output="fov" prefix_auto="1" extension_auto="1" />
-				<Option object_output="obj\" />
+				<Option object_output="obj/" />
 				<Option type="0" />
 				<Option compiler="gcc" />
 				<Compiler>
@@ -83,12 +83,12 @@
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
-					<Add library="..\libtcod-1.4.3\lib\libtcod-mingw.a" />
+					<Add library="../libtcod-1.4.3/lib/libtcod-mingw.a" />
 				</Linker>
 			</Target>
 			<Target title="Fovbench Debug LINUX">
 				<Option output="fov" prefix_auto="1" extension_auto="1" />
-				<Option object_output="obj\" />
+				<Option object_output="obj/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
@@ -97,13 +97,13 @@
 				<Linker>
 					<Add option="-lefence" />
 					<Add option="-Wl,-rpath,lib" />
-					<Add library="lib\libtcod_debug.so" />
-					<Add library="lib\libtcodxx_debug.so" />
+					<Add library="lib/libtcod_debug.so" />
+					<Add library="lib/libtcodxx_debug.so" />
 				</Linker>
 			</Target>
 			<Target title="Fovbench Release LINUX">
 				<Option output="fov" prefix_auto="1" extension_auto="1" />
-				<Option object_output="obj\" />
+				<Option object_output="obj/" />
 				<Option type="0" />
 				<Option compiler="gcc" />
 				<Compiler>
@@ -112,115 +112,109 @@
 				<Linker>
 					<Add option="-s" />
 					<Add option="-Wl,-rpath,lib" />
-					<Add library="lib\libtcod.so" />
-					<Add library="lib\libtcodxx.so" />
+					<Add library="lib/libtcod.so" />
+					<Add library="lib/libtcodxx.so" />
 				</Linker>
 			</Target>
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
-			<Add directory="..\libtcod-1.4.3\include" />
+			<Add directory="../libtcod-1.4.3/include" />
 			<Add directory="src" />
 		</Compiler>
-		<Unit filename="src\demo\credits.cpp">
+		<Unit filename="src/demo/credits.cpp">
 			<Option target="Demo Debug WIN" />
 			<Option target="Demo Release WIN" />
 			<Option target="Demo Debug LINUX" />
 			<Option target="Demo Release LINUX" />
-			<Option target="Fovbench Debug LINUX" />
 		</Unit>
-		<Unit filename="src\demo\credits.hpp">
+		<Unit filename="src/demo/credits.hpp">
 			<Option target="Demo Debug WIN" />
 			<Option target="Demo Release WIN" />
 			<Option target="Demo Debug LINUX" />
 			<Option target="Demo Release LINUX" />
-			<Option target="Fovbench Debug LINUX" />
 		</Unit>
-		<Unit filename="src\demo\demo.cpp">
+		<Unit filename="src/demo/demo.cpp">
 			<Option target="Demo Debug WIN" />
 			<Option target="Demo Release WIN" />
 			<Option target="Demo Debug LINUX" />
 			<Option target="Demo Release LINUX" />
-			<Option target="Fovbench Debug LINUX" />
 		</Unit>
-		<Unit filename="src\demo\demo.hpp">
+		<Unit filename="src/demo/demo.hpp">
 			<Option target="Demo Debug WIN" />
 			<Option target="Demo Release WIN" />
 			<Option target="Demo Debug LINUX" />
 			<Option target="Demo Release LINUX" />
-			<Option target="Fovbench Debug LINUX" />
 		</Unit>
-		<Unit filename="src\demo\main.cpp">
+		<Unit filename="src/demo/main.cpp">
 			<Option target="Demo Debug WIN" />
 			<Option target="Demo Release WIN" />
 			<Option target="Demo Debug LINUX" />
 			<Option target="Demo Release LINUX" />
-			<Option target="Fovbench Debug LINUX" />
 		</Unit>
-		<Unit filename="src\demo\main.hpp">
+		<Unit filename="src/demo/main.hpp">
 			<Option target="Demo Debug WIN" />
 			<Option target="Demo Release WIN" />
 			<Option target="Demo Debug LINUX" />
 			<Option target="Demo Release LINUX" />
-			<Option target="Fovbench Debug LINUX" />
 		</Unit>
-		<Unit filename="src\fov\fov.cpp">
+		<Unit filename="src/fov/fov.cpp">
 			<Option target="Fovbench Debug WIN" />
 			<Option target="Fovbench Release WIN" />
 			<Option target="Fovbench Debug LINUX" />
 			<Option target="Fovbench Release LINUX" />
 		</Unit>
-		<Unit filename="src\fov\fov.hpp">
+		<Unit filename="src/fov/fov.hpp">
 			<Option target="Fovbench Debug WIN" />
 			<Option target="Fovbench Release WIN" />
 			<Option target="Fovbench Debug LINUX" />
 			<Option target="Fovbench Release LINUX" />
 		</Unit>
-		<Unit filename="src\fov\fov_setup.cpp">
+		<Unit filename="src/fov/fov_setup.cpp">
 			<Option target="Fovbench Debug WIN" />
 			<Option target="Fovbench Release WIN" />
 			<Option target="Fovbench Debug LINUX" />
 			<Option target="Fovbench Release LINUX" />
 		</Unit>
-		<Unit filename="src\fov\fov_setup.hpp">
+		<Unit filename="src/fov/fov_setup.hpp">
 			<Option target="Fovbench Debug WIN" />
 			<Option target="Fovbench Release WIN" />
 			<Option target="Fovbench Debug LINUX" />
 			<Option target="Fovbench Release LINUX" />
 		</Unit>
-		<Unit filename="src\fov\main.cpp">
+		<Unit filename="src/fov/main.cpp">
 			<Option target="Fovbench Debug WIN" />
 			<Option target="Fovbench Release WIN" />
 			<Option target="Fovbench Debug LINUX" />
 			<Option target="Fovbench Release LINUX" />
 		</Unit>
-		<Unit filename="src\fov\main.hpp">
+		<Unit filename="src/fov/main.hpp">
 			<Option target="Fovbench Debug WIN" />
 			<Option target="Fovbench Release WIN" />
 			<Option target="Fovbench Debug LINUX" />
 			<Option target="Fovbench Release LINUX" />
 		</Unit>
-		<Unit filename="src\umbra\callback.cpp" />
-		<Unit filename="src\umbra\callback.hpp" />
-		<Unit filename="src\umbra\config.cpp" />
-		<Unit filename="src\umbra\config.hpp" />
-		<Unit filename="src\umbra\engine.cpp" />
-		<Unit filename="src\umbra\engine.hpp" />
-		<Unit filename="src\umbra\error.cpp" />
-		<Unit filename="src\umbra\error.hpp" />
-		<Unit filename="src\umbra\font.cpp" />
-		<Unit filename="src\umbra\font.hpp" />
-		<Unit filename="src\umbra\imod_bsod.cpp" />
-		<Unit filename="src\umbra\imod_bsod.hpp" />
-		<Unit filename="src\umbra\imod_speed.cpp" />
-		<Unit filename="src\umbra\imod_speed.hpp" />
-		<Unit filename="src\umbra\module.cpp" />
-		<Unit filename="src\umbra\module.hpp" />
-		<Unit filename="src\umbra\umbra.hpp" />
-		<Unit filename="src\umbra\version.hpp" />
-		<Unit filename="src\umbra\widget.cpp" />
-		<Unit filename="src\umbra\widget.hpp" />
+		<Unit filename="src/umbra/callback.cpp" />
+		<Unit filename="src/umbra/callback.hpp" />
+		<Unit filename="src/umbra/config.cpp" />
+		<Unit filename="src/umbra/config.hpp" />
+		<Unit filename="src/umbra/engine.cpp" />
+		<Unit filename="src/umbra/engine.hpp" />
+		<Unit filename="src/umbra/error.cpp" />
+		<Unit filename="src/umbra/error.hpp" />
+		<Unit filename="src/umbra/font.cpp" />
+		<Unit filename="src/umbra/font.hpp" />
+		<Unit filename="src/umbra/imod_bsod.cpp" />
+		<Unit filename="src/umbra/imod_bsod.hpp" />
+		<Unit filename="src/umbra/imod_speed.cpp" />
+		<Unit filename="src/umbra/imod_speed.hpp" />
+		<Unit filename="src/umbra/module.cpp" />
+		<Unit filename="src/umbra/module.hpp" />
+		<Unit filename="src/umbra/umbra.hpp" />
+		<Unit filename="src/umbra/version.hpp" />
+		<Unit filename="src/umbra/widget.cpp" />
+		<Unit filename="src/umbra/widget.hpp" />
 		<Extensions>
 			<code_completion />
 			<envvars />
