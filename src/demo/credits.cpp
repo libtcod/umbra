@@ -36,7 +36,7 @@ MatrixLead::MatrixLead (void) {
     y = 0;
     x = random->getInt(0,engine.getRootWidth()-1);
     lastY = TCODSystem::getElapsedMilli();
-    yDuration = random->getInt(200,700);
+    yDuration = random->getInt(20,70);
     if (!matrix) matrix = new TCODConsole(engine.getRootWidth(),engine.getRootHeight());
 }
 
@@ -62,7 +62,7 @@ Credits::Credits () {
 
 bool Credits::update (void) {
     if (!MatrixLead::random) MatrixLead::random = new TCODRandom();
-    if (MatrixLead::random->getInt(0,100) > 85) leads.push(new MatrixLead());
+    if (MatrixLead::random->getInt(0,100) > 75) leads.push(new MatrixLead());
     return isActive();
 }
 
@@ -73,12 +73,12 @@ void Credits::render (void) {
             (*mx)->render(t);
             if ((*mx)->y >= engine.getRootHeight())  {
                 MatrixLead * tmp = (*mx);
-                leads.removeFast((*mx));
+                mx = leads.removeFast(mx);
                 delete tmp;
             }
         }
 
-        TCODConsole::blit(MatrixLead::matrix,0,0,engine.getRootWidth(),engine.getRootHeight(),TCODConsole::root,0,0,0.995f,0.0f);
+        TCODConsole::blit(MatrixLead::matrix,0,0,engine.getRootWidth(),engine.getRootHeight(),TCODConsole::root,0,0,0.95f,0.0f);
         TCODConsole::blit(TCODConsole::root,0,0,engine.getRootWidth(),engine.getRootHeight(),MatrixLead::matrix,0,0,1.0f,0.0f);
     }
 
