@@ -28,6 +28,18 @@
 #ifndef MODULE_CREDITS_HPP
 #define MODULE_CREDITS_HPP
 
+class MatrixLead {
+    public:
+        MatrixLead (void);
+        static TCODRandom * random;
+        int x, y; //coordinates
+        uint32 lastY; //last y increment
+        uint32 yDuration; //how long it takes to increment y
+        static TCODConsole * matrix;
+        void render (uint32 time);
+};
+
+
 class Credits : public UmbraModule {
     public:
         Credits ();
@@ -35,9 +47,9 @@ class Credits : public UmbraModule {
         void render (void);
         void keyboard (TCOD_key_t &key);
 
-
     private:
         char credits[64];
+        TCODList <MatrixLead *> leads;
 };
 
 #endif
