@@ -33,6 +33,7 @@ class UmbraRect;
 class UmbraButton {
     public:
         UmbraButton (void);
+        virtual ~UmbraButton() {}
         UmbraButton (UmbraWidget * parent, int x, int y, int w, int h, const char * text = "");
         void set (UmbraWidget * parent, int x, int y, int w, int h, const char * text = "");
         UmbraRect area; //the rectangle where the object is contained

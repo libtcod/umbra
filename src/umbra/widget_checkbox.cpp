@@ -58,7 +58,7 @@ void UmbraCheckbox::mouse (TCOD_mouse_t &ms) {
         area.mouseHover = true;
     else
         area.mouseHover = false;
-    if (area.mouseHover && ms.lbutton) {
+    if (area.mouseHover && ms.lbutton_pressed) {
         area.mouseDown = true;
         checked = !checked;
         ms.lbutton_pressed=false;
