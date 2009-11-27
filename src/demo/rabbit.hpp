@@ -25,29 +25,22 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef MODULE_CREDITS_HPP
-#define MODULE_CREDITS_HPP
+#ifndef RABBIT_HPP
+#define RABBIT_HPP
 
-class MatrixLead {
+class RabbitButton : public UmbraButton {
     public:
-        MatrixLead (void);
-        static TCODRandom * random;
-        int x, y; //coordinates
-        uint32 lastY; //last y increment
-        uint32 yDuration; //how long it takes to increment y
-        static TCODConsole * matrix;
-        void render (uint32 time);
+        //RabbitButton (void);
+        void action (void);
 };
 
-
-class Credits : public UmbraModule {
+class RabbitWidget : public UmbraWidget {
     public:
-        bool update (void);
+        RabbitWidget (void);
+        void mouse (TCOD_mouse_t &ms);
         void render (void);
-        void keyboard (TCOD_key_t &key);
-
-    private:
-        TCODList <MatrixLead *> leads;
+        RabbitButton button;
+        TCODConsole * rabbit;
 };
 
 #endif

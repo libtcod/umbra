@@ -36,7 +36,7 @@ MatrixLead::MatrixLead (void) {
     y = 0;
     x = random->getInt(0,engine.getRootWidth()-1);
     lastY = TCODSystem::getElapsedMilli();
-    yDuration = random->getInt(20,70);
+    yDuration = random->getInt(50,250);
     if (!matrix) matrix = new TCODConsole(engine.getRootWidth(),engine.getRootHeight());
 }
 
@@ -56,13 +56,9 @@ void MatrixLead::render (uint32 time) {
     matrix->putChar(x,y,c,TCOD_BKGND_NONE);
 }
 
-Credits::Credits () {
-    sprintf (credits, "Hello world!\nPress SPACE to end module...");
-}
-
 bool Credits::update (void) {
     if (!MatrixLead::random) MatrixLead::random = new TCODRandom();
-    if (MatrixLead::random->getInt(0,100) > 75) leads.push(new MatrixLead());
+    if (MatrixLead::random->getInt(0,3) == 0) leads.push(new MatrixLead());
     return isActive();
 }
 
@@ -78,12 +74,9 @@ void Credits::render (void) {
             }
         }
 
-        TCODConsole::blit(MatrixLead::matrix,0,0,engine.getRootWidth(),engine.getRootHeight(),TCODConsole::root,0,0,0.95f,0.0f);
+        TCODConsole::blit(MatrixLead::matrix,0,0,engine.getRootWidth(),engine.getRootHeight(),TCODConsole::root,0,0,0.98f,0.0f);
         TCODConsole::blit(TCODConsole::root,0,0,engine.getRootWidth(),engine.getRootHeight(),MatrixLead::matrix,0,0,1.0f,0.0f);
     }
-
-    TCODConsole::root->setForegroundColor(TCODColor::white);
-    TCODConsole::root->printLeft(0,0,TCOD_BKGND_NONE,"%s",credits);
 }
 
 void Credits::keyboard (TCOD_key_t &key) {

@@ -52,6 +52,7 @@ class UmbraPoint {
 
 class UmbraWidget : public UmbraModule {
     friend class UmbraCheckbox;
+    friend class UmbraButton;
     public :
         UmbraWidget (void);
         void mouse (TCOD_mouse_t &ms);

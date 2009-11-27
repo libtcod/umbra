@@ -29,8 +29,6 @@
 
 UmbraEngine engine = UmbraEngine("data/cfg/umbra.txt",true,true);
 
-enum { MOD_CREDITS, MOD_DEMO, MOD_SPEED };
-
 int main()
 {
     //create the engine
@@ -46,8 +44,10 @@ int main()
     //declare modules
     engine.registerModule(new Credits(),MOD_DEMO);
     engine.registerModule(new Demo());
+    engine.registerModule(new RabbitWidget());
     //activate modules
     engine.activateModule(MOD_CREDITS);
+    engine.activateModule(MOD_RABBIT);
     //initialise and run the engine
     if (engine.initialise()) return engine.run();
     else return 1;

@@ -37,7 +37,7 @@ class UmbraCheckbox {
         void set (UmbraWidget * parent, int x, int y, int w, int h, const char * text = "");
         UmbraRect area; //the rectangle where the object is contained
         UmbraWidget * parent; //reference to the widget that contains the object
-        bool visible; //visibility (cab be toggled)
+        bool visible; //visibility (can be toggled)
         bool checked;
         std::string text;
         void render (TCODConsole * con);

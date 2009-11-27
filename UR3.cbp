@@ -159,6 +159,18 @@
 			<Option target="Demo Debug LINUX" />
 			<Option target="Demo Release LINUX" />
 		</Unit>
+		<Unit filename="src/demo/rabbit.cpp">
+			<Option target="Demo Debug WIN" />
+			<Option target="Demo Release WIN" />
+			<Option target="Demo Debug LINUX" />
+			<Option target="Demo Release LINUX" />
+		</Unit>
+		<Unit filename="src/demo/rabbit.hpp">
+			<Option target="Demo Debug WIN" />
+			<Option target="Demo Release WIN" />
+			<Option target="Demo Debug LINUX" />
+			<Option target="Demo Release LINUX" />
+		</Unit>
 		<Unit filename="src/fov/fov.cpp">
 			<Option target="Fovbench Debug WIN" />
 			<Option target="Fovbench Release WIN" />
@@ -215,6 +227,8 @@
 		<Unit filename="src/umbra/version.hpp" />
 		<Unit filename="src/umbra/widget.cpp" />
 		<Unit filename="src/umbra/widget.hpp" />
+		<Unit filename="src/umbra/widget_button.cpp" />
+		<Unit filename="src/umbra/widget_button.hpp" />
 		<Unit filename="src/umbra/widget_checkbox.cpp" />
 		<Unit filename="src/umbra/widget_checkbox.hpp" />
 		<Extensions>

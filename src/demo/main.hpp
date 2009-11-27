@@ -27,6 +27,9 @@
 
 #include "../umbra/umbra.hpp"
 #include "credits.hpp"
+#include "rabbit.hpp"
 #include "demo.hpp"
+
+enum { MOD_CREDITS, MOD_DEMO, MOD_RABBIT };
 
 extern UmbraEngine engine;

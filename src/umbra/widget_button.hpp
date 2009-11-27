@@ -25,29 +25,21 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef MODULE_CREDITS_HPP
-#define MODULE_CREDITS_HPP
+#include <iostream>
 
-class MatrixLead {
+class UmbraWidget;
+class UmbraRect;
+
+class UmbraButton {
     public:
-        MatrixLead (void);
-        static TCODRandom * random;
-        int x, y; //coordinates
-        uint32 lastY; //last y increment
-        uint32 yDuration; //how long it takes to increment y
-        static TCODConsole * matrix;
-        void render (uint32 time);
+        UmbraButton (void);
+        UmbraButton (UmbraWidget * parent, int x, int y, int w, int h, const char * text = "");
+        void set (UmbraWidget * parent, int x, int y, int w, int h, const char * text = "");
+        UmbraRect area; //the rectangle where the object is contained
+        UmbraWidget * parent; //reference to the widget that contains the object
+        bool visible; //visibility (can be toggled)
+        std::string text;
+        virtual void render (TCODConsole * con);
+        void mouse (TCOD_mouse_t &ms); //checks the status
+        virtual void action (void) {} //custom code executed after a button press
 };
-
-
-class Credits : public UmbraModule {
-    public:
-        bool update (void);
-        void render (void);
-        void keyboard (TCOD_key_t &key);
-
-    private:
-        TCODList <MatrixLead *> leads;
-};
-
-#endif

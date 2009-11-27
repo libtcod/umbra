@@ -76,5 +76,3 @@ void UmbraCheckbox::render (TCODConsole * con) {
     if (!text.empty())
         con->printLeftRect(area.x+2, area.y, area.w-2, area.h, TCOD_BKGND_NONE, text.c_str());
 }
-
-

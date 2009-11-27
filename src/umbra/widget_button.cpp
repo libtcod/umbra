@@ -25,29 +25,48 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef MODULE_CREDITS_HPP
-#define MODULE_CREDITS_HPP
+#include "umbra.hpp"
 
-class MatrixLead {
-    public:
-        MatrixLead (void);
-        static TCODRandom * random;
-        int x, y; //coordinates
-        uint32 lastY; //last y increment
-        uint32 yDuration; //how long it takes to increment y
-        static TCODConsole * matrix;
-        void render (uint32 time);
-};
+UmbraButton::UmbraButton (void) {
+    parent = NULL;
+    area.set(0,0,0,0);
+    text = "";
+    visible = true;
+}
 
+UmbraButton::UmbraButton (UmbraWidget * parent, int x, int y, int w, int h, const char * text) {
+    this->parent = parent;
+    area.set(x, y, w, h);
+    this->text = text;
+    visible = true;
+}
 
-class Credits : public UmbraModule {
-    public:
-        bool update (void);
-        void render (void);
-        void keyboard (TCOD_key_t &key);
+void UmbraButton::set (UmbraWidget * parent, int x, int y, int w, int h, const char * text) {
+    this->parent = parent;
+    area.set(x, y, w, h);
+    this->text = text;
+    visible = true;
+}
 
-    private:
-        TCODList <MatrixLead *> leads;
-};
+void UmbraButton::mouse (TCOD_mouse_t &ms) {
+    if (!visible)
+        return;
+    if (area.isInside(ms.cx-parent->rect.x, ms.cy-parent->rect.y))
+        area.mouseHover = true;
+    else
+        area.mouseHover = false;
+    if (area.mouseHover && ms.lbutton) {
+        area.mouseDown = true;
+        ms.lbutton_pressed=false;
+        action();
+    }
+    else area.mouseDown = false;
+}
 
-#endif
+void UmbraButton::render (TCODConsole * con) {
+    if (!visible)
+        return;
+    con->printFrame(area.x,area.y,area.w,area.h,false,TCOD_BKGND_NONE,NULL);
+    if (!text.empty())
+        con->printCenterRect(area.x+(area.w/2),area.y+(area.h/2),area.w-2,area.h-2,TCOD_BKGND_NONE,text.c_str());
+}

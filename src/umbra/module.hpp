@@ -36,7 +36,7 @@ class UmbraModule {
         virtual void initialise (void); // allocate resources. called only once
 
         virtual void render (void) { } //render the module on the root console
-        virtual bool update (void) { return true; } //update the module's logic
+        virtual bool update (void) { return isActive(); } //update the module's logic
         virtual void keyboard (TCOD_key_t &key) { } //module-specific keyboard
         virtual void mouse (TCOD_mouse_t &ms) { } //module-specific mouse
 
