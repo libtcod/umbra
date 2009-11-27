@@ -31,30 +31,31 @@
 Demo::Demo (void) {
     sprintf (credits, "Goodbye world!\nPress ESC to quit.");
     random = TCODRandom::getInstance();
-    noise = new TCODNoise(3,random);
-    img = new TCODImage(getEngine()->getRootWidth()*2,getEngine()->getRootHeight());
+    noise = new TCODNoise(2,random);
+    img = new TCODImage(getEngine()->getRootWidth()*2,getEngine()->getRootHeight()*2);
     offset = 0.0f;
 }
 
 bool Demo::update (void) {
-    int i, j;
-    int xres = getEngine()->getRootWidth()*2;
-    for (i = 0; i < xres; i++) for (j = 0; j < getEngine()->getRootHeight(); j++) {
-        float f[3];
-        f[0] = 8.0f * i / xres;
-        f[1] = 8.0f * j / getEngine()->getRootHeight();
-        f[2] = offset;
-        uint8 val = (uint8)((noise->getFbmSimplex(f,4.0f)+1.0f) * 64.0f);
-        img->putPixel(i,j,TCODColor(val,val,val));
+    if (isActive()) {
+        int i, j;
+        for (i = 0; i < getEngine()->getRootWidth()*2; i++) for (j = 0; j < getEngine()->getRootHeight()*2; j++) {
+            float f[2];
+            f[0] = 8.0f * i / getEngine()->getRootWidth();
+            f[1] = (8.0f * j / getEngine()->getRootHeight()) + offset;
+            int val = (uint8)((noise->getSimplex(f)+1.0f)*24.0f);
+            img->putPixel(i,j,TCODColor(0,val/2,val));
+        }
+        offset += 0.01f;
+        return true;
     }
-    offset += 0.05f;
-    return isActive();
+    else return false;
 }
 
 void Demo::render (void) {
     TCODConsole::root->setForegroundColor(TCODColor::red);
     TCODConsole::root->printLeft(0,0,TCOD_BKGND_NONE,"%s",credits);
-    img->blit2x(TCODConsole::root,0,getEngine()->getRootHeight()/4);
+    img->blit(TCODConsole::root,0,0);
 }
 
 void Demo::keyboard (TCOD_key_t &key) {
