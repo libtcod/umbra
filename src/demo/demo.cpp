@@ -32,14 +32,18 @@ Demo::Demo (void) {
     sprintf (credits, "Goodbye world!\nPress ESC to quit.");
     random = TCODRandom::getInstance();
     noise = new TCODNoise(2,random);
-    img = new TCODImage(getEngine()->getRootWidth()*2,getEngine()->getRootHeight()*2);
     offset = 0.0f;
+}
+
+void Demo::initialise (void) {
+    img = new TCODImage(getEngine()->getRootWidth(),getEngine()->getRootHeight());
+    printf ("console dimensions: %d, %d.\n",getEngine()->getRootWidth(),getEngine()->getRootHeight());
 }
 
 bool Demo::update (void) {
     if (isActive()) {
         int i, j;
-        for (i = 0; i < getEngine()->getRootWidth()*2; i++) for (j = 0; j < getEngine()->getRootHeight()*2; j++) {
+        for (i = 0; i < getEngine()->getRootWidth(); i++) for (j = 0; j < getEngine()->getRootHeight(); j++) {
             float f[2];
             f[0] = 8.0f * i / getEngine()->getRootWidth();
             f[1] = (8.0f * j / getEngine()->getRootHeight()) + offset;
@@ -55,7 +59,7 @@ bool Demo::update (void) {
 void Demo::render (void) {
     TCODConsole::root->setForegroundColor(TCODColor::red);
     TCODConsole::root->printLeft(0,0,TCOD_BKGND_NONE,"%s",credits);
-    img->blit(TCODConsole::root,0,0);
+    img->blit(TCODConsole::root,getEngine()->getRootWidth()/2,getEngine()->getRootHeight()/2);
 }
 
 void Demo::keyboard (TCOD_key_t &key) {
