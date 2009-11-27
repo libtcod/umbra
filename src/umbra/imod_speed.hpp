@@ -33,9 +33,6 @@ class UmbraModSpeed : public UmbraWidget {
 		void mouse (TCOD_mouse_t &ms);
 		// in case a user wants it minimized from start
 		inline void setMinimised(bool val) { isMinimised=val; }
-                        //TEST CODE
-                        UmbraCheckbox cb;
-                        //END TEST CODE
 	protected :
         void activate (void);
         void deactivate (void);

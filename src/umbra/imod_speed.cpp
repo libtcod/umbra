@@ -42,16 +42,10 @@ UmbraModSpeed::UmbraModSpeed (void) : cumulatedElapsed(0.0f), updateTime(0.0f), 
     closeButton.set(MAXIMISED_MODE_WIDTH-2,0);
 	priority=0; // higher prio for internal modules
 	timeBar = new TCODImage(TIMEBAR_LENGTH,2);
-                    //TEST CODE
-                    cb.set(this,1,1,20,1,"Test string");
-                    //END TEST CODE
 }
 
 void UmbraModSpeed::mouse (TCOD_mouse_t &ms) {
 	UmbraWidget::mouse(ms);
-                    //TEST CODE
-                    cb.mouse(ms);
-                    //END TEST CODE
 	if (ms.lbutton_pressed) {
 		//minimise button is pressed
 		if (minimiseButton.is(mousex,mousey)) {
@@ -142,15 +136,6 @@ void UmbraModSpeed::render (void) {
 	if (closeButton.mouseHover) speed->setForegroundColor(TCODColor::red); //button is active
 	else speed->setForegroundColor(TCODColor::lightGrey); //button is not active
 	speed->putChar(closeButton.x,closeButton.y, 'X', TCOD_BKGND_SET);
-
-                    //TEST CODE
-                    if (! isMinimised ) {
-                        if (cb.area.mouseHover) speed->setForegroundColor(TCODColor::lightBlue);
-                        else speed->setForegroundColor(TCODColor::blue);
-                        cb.render(speed);
-                    }
-                    //END TEST CODE
-
 	//blit the console
 	TCODConsole::blit(speed,0,0,rect.w,rect.h,TCODConsole::root,rect.x,rect.y,1.0f,0.52f);
 	// render non transparent timebar (until libtcod subcell over subcell blitting is fixed...)
