@@ -123,6 +123,18 @@
 			<Add directory="../libtcod-1.4.3/include" />
 			<Add directory="src" />
 		</Compiler>
+		<Unit filename="src/demo/credits.cpp">
+			<Option target="Demo Debug WIN" />
+			<Option target="Demo Release WIN" />
+			<Option target="Demo Debug LINUX" />
+			<Option target="Demo Release LINUX" />
+		</Unit>
+		<Unit filename="src/demo/credits.hpp">
+			<Option target="Demo Debug WIN" />
+			<Option target="Demo Release WIN" />
+			<Option target="Demo Debug LINUX" />
+			<Option target="Demo Release LINUX" />
+		</Unit>
 		<Unit filename="src/demo/demo.cpp">
 			<Option target="Demo Debug WIN" />
 			<Option target="Demo Release WIN" />

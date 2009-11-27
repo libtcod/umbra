@@ -25,36 +25,19 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#include "main.hpp"
+#ifndef CREDITS_HPP
+#define CREDITS_HPP
 
-void RabbitButton::action (void) {
-    parent->setActive(false);
-    engine.getModule(MOD_MATRIX)->setActive(false);
-}
+class Credits : public UmbraWidget {
+    public:
+        Credits (void);
+        void initialise (void);
+        bool update (void);
+        void render (void);
+        std::string text;
+        uint32 startTime;
+        uint32 duration;
+        TCODConsole * credits;
+};
 
-RabbitWidget::RabbitWidget (void) {
-    rabbit = new TCODConsole(24,12);
-    rect.set(engine.getRootWidth()/2-12,engine.getRootHeight()/2-6,24,12);
-    setDragZone(0,0,24,1);
-    button.set(this,10,7,4,3,"OK");
-}
-
-void RabbitWidget::mouse (TCOD_mouse_t &ms) {
-    UmbraWidget::mouse(ms);
-    button.mouse(ms);
-}
-
-void RabbitWidget::render (void) {
-    rabbit->setForegroundColor(TCODColor::white);
-    rabbit->setBackgroundColor(TCODColor::black);
-    rabbit->printFrame(0,0,24,12,true,TCOD_BKGND_SET,"Wake up, Neo");
-    rabbit->printCenterRect(12,2,24,6,TCOD_BKGND_NONE,"The Matrix has you. Press OK to follow the white rabbit.");
-    if (dragZone.mouseHover || isDragging) {
-        rabbit->setBackgroundColor(TCODColor::lightRed);
-        rabbit->rect(5,0,14,1,false,TCOD_BKGND_SET);
-    }
-    if (button.area.mouseHover) rabbit->setForegroundColor(TCODColor::lightGreen);
-    else rabbit->setForegroundColor(TCODColor::white);
-    button.render(rabbit);
-    TCODConsole::blit(rabbit,0,0,rect.w,rect.h,TCODConsole::root,rect.x,rect.y,1.0f,0.5f);
-}
+#endif

@@ -27,34 +27,36 @@
 
 #include "main.hpp"
 
-void RabbitButton::action (void) {
-    parent->setActive(false);
-    engine.getModule(MOD_MATRIX)->setActive(false);
+Credits::Credits (void) {
+    credits = new TCODConsole(48,11);
+    text = "Umbra demo\n"
+           "Copyright (c) 2009 Dominik Marczuk, Jice\n"
+           "\n"
+           "Powered by:\n"
+           "libtcod "TCOD_STRVERSION"\n"
+           "Copyright (c) 2008, 2009 Jice\n"
+           "\n"
+           "Simple DirectMedia Layer 1.2.12\n"
+           "Copyright (c) Sam Lantinga";
+    rect.set(getEngine()->getRootWidth()/2-24,getEngine()->getRootHeight()/2-5,48,11);
 }
 
-RabbitWidget::RabbitWidget (void) {
-    rabbit = new TCODConsole(24,12);
-    rect.set(engine.getRootWidth()/2-12,engine.getRootHeight()/2-6,24,12);
-    setDragZone(0,0,24,1);
-    button.set(this,10,7,4,3,"OK");
+void Credits::initialise (void) {
+    startTime = TCODSystem::getElapsedMilli();
+    duration = 5000;
 }
 
-void RabbitWidget::mouse (TCOD_mouse_t &ms) {
-    UmbraWidget::mouse(ms);
-    button.mouse(ms);
+bool Credits::update (void) {
+    if (startTime + duration > TCODSystem::getElapsedMilli())
+        return true;
+    else
+        return false;
 }
 
-void RabbitWidget::render (void) {
-    rabbit->setForegroundColor(TCODColor::white);
-    rabbit->setBackgroundColor(TCODColor::black);
-    rabbit->printFrame(0,0,24,12,true,TCOD_BKGND_SET,"Wake up, Neo");
-    rabbit->printCenterRect(12,2,24,6,TCOD_BKGND_NONE,"The Matrix has you. Press OK to follow the white rabbit.");
-    if (dragZone.mouseHover || isDragging) {
-        rabbit->setBackgroundColor(TCODColor::lightRed);
-        rabbit->rect(5,0,14,1,false,TCOD_BKGND_SET);
-    }
-    if (button.area.mouseHover) rabbit->setForegroundColor(TCODColor::lightGreen);
-    else rabbit->setForegroundColor(TCODColor::white);
-    button.render(rabbit);
-    TCODConsole::blit(rabbit,0,0,rect.w,rect.h,TCODConsole::root,rect.x,rect.y,1.0f,0.5f);
+void Credits::render (void) {
+    credits->setForegroundColor(TCODColor::white);
+    credits->setBackgroundColor(TCODColor::black);
+    credits->printFrame(0,0,48,11,true,TCOD_BKGND_SET,NULL);
+    credits->printCenterRect(24,1,46,9,TCOD_BKGND_NONE,text.c_str());
+    TCODConsole::blit(credits,0,0,rect.w,rect.h,TCODConsole::root,rect.x,rect.y,1.0f,0.75f);
 }

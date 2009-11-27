@@ -29,7 +29,8 @@
 #include "matrix.hpp"
 #include "rabbit.hpp"
 #include "demo.hpp"
+#include "credits.hpp"
 
-enum { MOD_MATRIX, MOD_DEMO, MOD_RABBIT };
+enum { MOD_MATRIX, MOD_DEMO, MOD_RABBIT, MOD_CREDITS };
 
 extern UmbraEngine engine;
