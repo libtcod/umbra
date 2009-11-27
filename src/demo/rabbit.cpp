@@ -29,7 +29,7 @@
 
 void RabbitButton::action (void) {
     parent->setActive(false);
-    engine.getModule(MOD_CREDITS)->setActive(false);
+    engine.getModule(MOD_MATRIX)->setActive(false);
 }
 
 RabbitWidget::RabbitWidget (void) {

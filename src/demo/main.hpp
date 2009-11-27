@@ -26,10 +26,10 @@
 */
 
 #include "../umbra/umbra.hpp"
-#include "credits.hpp"
+#include "matrix.hpp"
 #include "rabbit.hpp"
 #include "demo.hpp"
 
-enum { MOD_CREDITS, MOD_DEMO, MOD_RABBIT };
+enum { MOD_MATRIX, MOD_DEMO, MOD_RABBIT };
 
 extern UmbraEngine engine;

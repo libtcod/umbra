@@ -5,7 +5,7 @@
 config {
   rootWidth = 80
   rootHeight = 60
-  fontID = 1
+  fontID = 2
   fullScreen = false
   debug = true
   fontDir = "data/img"

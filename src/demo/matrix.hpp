@@ -25,30 +25,28 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#include "main.hpp"
+#ifndef MODULE_CREDITS_HPP
+#define MODULE_CREDITS_HPP
 
-UmbraEngine engine = UmbraEngine("data/cfg/umbra.txt",true,true);
+class MatrixLead {
+    public:
+        MatrixLead (void);
+        static TCODRandom * random;
+        int x, y; //coordinates
+        uint32 lastY; //last y increment
+        uint32 yDuration; //how long it takes to increment y
+        static TCODConsole * matrix;
+        void render (uint32 time);
+};
 
-int main()
-{
-    //create the engine
-    //UmbraEngine engine("data/cfg/umbra.txt",true,true);
-    //set window title
-    engine.setWindowTitle("Umbra demo");
-    //register fonts
-    /*
-    engine.registerFont(32,8,"data/img/font8x8.png",TCOD_FONT_LAYOUT_TCOD|TCOD_FONT_TYPE_GRAYSCALE);
-    engine.registerFont(32,8,"data/img/font10x10.png",TCOD_FONT_LAYOUT_TCOD|TCOD_FONT_TYPE_GRAYSCALE);
-    engine.registerFont(32,8,"data/img/font12x12.png",TCOD_FONT_LAYOUT_TCOD|TCOD_FONT_TYPE_GRAYSCALE);
-    */
-    //declare modules
-    engine.registerModule(new Matrix(),MOD_DEMO);
-    engine.registerModule(new Demo());
-    engine.registerModule(new RabbitWidget());
-    //activate modules
-    engine.activateModule(MOD_MATRIX);
-    engine.activateModule(MOD_RABBIT);
-    //initialise and run the engine
-    if (engine.initialise()) return engine.run();
-    else return 1;
-}
+
+class Matrix : public UmbraModule {
+    public:
+        bool update (void);
+        void render (void);
+
+    private:
+        TCODList <MatrixLead *> leads;
+};
+
+#endif
