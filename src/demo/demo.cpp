@@ -37,7 +37,7 @@ Demo::Demo (void) {
 
 void Demo::initialise (void) {
     img = new TCODImage(getEngine()->getRootWidth(),getEngine()->getRootHeight());
-    printf ("console dimensions: %d, %d.\n",getEngine()->getRootWidth(),getEngine()->getRootHeight());
+    logo = new TCODImage("data/img/umbra.png");
 }
 
 bool Demo::update (void) {
@@ -60,10 +60,11 @@ void Demo::render (void) {
     TCODConsole::root->setForegroundColor(TCODColor::red);
     TCODConsole::root->printLeft(0,0,TCOD_BKGND_NONE,"%s",credits);
     img->blit(TCODConsole::root,getEngine()->getRootWidth()/2,getEngine()->getRootHeight()/2);
+    logo->blit(TCODConsole::root,getEngine()->getRootWidth()/2,getEngine()->getRootHeight()/2,TCOD_BKGND_LIGHTEN);
 }
 
 void Demo::keyboard (TCOD_key_t &key) {
-    if (key.vk == TCODK_SPACE) getEngine()->activateModule(2);
+    if (key.vk == TCODK_SPACE) getEngine()->activateModule(666);
     else if (key.vk == TCODK_ENTER) {
         UmbraError::add("Test error.");
         getEngine()->displayError();

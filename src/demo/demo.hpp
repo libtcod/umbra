@@ -40,6 +40,7 @@ class Demo : public UmbraModule {
         TCODNoise * noise;
         TCODRandom * random;
         TCODImage * img;
+        TCODImage * logo;
         float offset;
         char credits[64];
 };
