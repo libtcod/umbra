@@ -27,32 +27,40 @@
 
 #include "main.hpp"
 
-UmbraEngine engine = UmbraEngine("data/cfg/umbra.txt",true,true);
+Panel::Panel (void) {
+    width = 16;
+    height = 24;
+    posx = 0;
+    posy = (getEngine()->getRootHeight() - height) / 2;
+    rect.set(posx,posy,width,height);
+    panel = new TCODConsole(width,height);
+    priority = 0; //always on top
+    lastHover = 0;
+    delay = 3000;
+}
 
-int main()
-{
-    //create the engine
-    //UmbraEngine engine("data/cfg/umbra.txt",true,true);
-    //set window title
-    engine.setWindowTitle("Umbra demo");
-    //register fonts
-    /*
-    engine.registerFont(32,8,"data/img/font8x8.png",TCOD_FONT_LAYOUT_TCOD|TCOD_FONT_TYPE_GRAYSCALE);
-    engine.registerFont(32,8,"data/img/font10x10.png",TCOD_FONT_LAYOUT_TCOD|TCOD_FONT_TYPE_GRAYSCALE);
-    engine.registerFont(32,8,"data/img/font12x12.png",TCOD_FONT_LAYOUT_TCOD|TCOD_FONT_TYPE_GRAYSCALE);
-    */
-    //declare modules
-    engine.registerModule(new Matrix(),MOD_DEMO);
-    engine.registerModule(new Demo());
-    engine.registerModule(new RabbitWidget());
-    engine.registerModule(new Credits());
-    engine.registerModule(new Panel());
-    //activate modules
-    engine.activateModule(MOD_MATRIX);
-    engine.activateModule(MOD_RABBIT);
-    engine.activateModule(MOD_CREDITS);
-    engine.activateModule(MOD_PANEL);
-    //initialise and run the engine
-    if (engine.initialise()) return engine.run();
-    else return 1;
+void Panel::render (void) {
+    panel->setBackgroundColor(TCODColor::red);
+    panel->setForegroundColor(TCODColor::yellow);
+    panel->printFrame(0,0,rect.w,rect.h,true,TCOD_BKGND_SET,NULL);
+    TCODConsole::blit(panel,0,0,rect.w,rect.h,TCODConsole::root,posx,posy,1.0f,0.5f);
+}
+
+bool Panel::update (void) {
+    uint32 time = TCODSystem::getElapsedMilli();
+    if (rect.mouseHover) {
+        lastHover = time;
+        posx = 0;
+    }
+    else if (time >= lastHover + delay) {
+        posx--;
+        posx = MAX(posx,(-width)+1);
+        rect.set(posx,posy,width,height);
+    }
+    return isActive();
+}
+
+void Panel::mouse (TCOD_mouse_t &ms) {
+    UmbraWidget::mouse(ms);
+    return;
 }

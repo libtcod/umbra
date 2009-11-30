@@ -171,6 +171,18 @@
 			<Option target="Demo Debug LINUX" />
 			<Option target="Demo Release LINUX" />
 		</Unit>
+		<Unit filename="src/demo/panel.cpp">
+			<Option target="Demo Debug WIN" />
+			<Option target="Demo Release WIN" />
+			<Option target="Demo Debug LINUX" />
+			<Option target="Demo Release LINUX" />
+		</Unit>
+		<Unit filename="src/demo/panel.hpp">
+			<Option target="Demo Debug WIN" />
+			<Option target="Demo Release WIN" />
+			<Option target="Demo Debug LINUX" />
+			<Option target="Demo Release LINUX" />
+		</Unit>
 		<Unit filename="src/demo/rabbit.cpp">
 			<Option target="Demo Debug WIN" />
 			<Option target="Demo Release WIN" />

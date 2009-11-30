@@ -25,34 +25,30 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#include "main.hpp"
+#ifndef PANEL_HPP
+#define PANEL_HPP
 
-UmbraEngine engine = UmbraEngine("data/cfg/umbra.txt",true,true);
+//class ButtonMatrix : public UmbraButton { public: void action (void); };
+//class ButtonNoise : public UmbraButton { public: void action (void); };
+//class ButtonError : public UmbraButton { public: void action (void); };
+//class ButtonQuit : public UmbraButton { public: void action (void); };
 
-int main()
-{
-    //create the engine
-    //UmbraEngine engine("data/cfg/umbra.txt",true,true);
-    //set window title
-    engine.setWindowTitle("Umbra demo");
-    //register fonts
-    /*
-    engine.registerFont(32,8,"data/img/font8x8.png",TCOD_FONT_LAYOUT_TCOD|TCOD_FONT_TYPE_GRAYSCALE);
-    engine.registerFont(32,8,"data/img/font10x10.png",TCOD_FONT_LAYOUT_TCOD|TCOD_FONT_TYPE_GRAYSCALE);
-    engine.registerFont(32,8,"data/img/font12x12.png",TCOD_FONT_LAYOUT_TCOD|TCOD_FONT_TYPE_GRAYSCALE);
-    */
-    //declare modules
-    engine.registerModule(new Matrix(),MOD_DEMO);
-    engine.registerModule(new Demo());
-    engine.registerModule(new RabbitWidget());
-    engine.registerModule(new Credits());
-    engine.registerModule(new Panel());
-    //activate modules
-    engine.activateModule(MOD_MATRIX);
-    engine.activateModule(MOD_RABBIT);
-    engine.activateModule(MOD_CREDITS);
-    engine.activateModule(MOD_PANEL);
-    //initialise and run the engine
-    if (engine.initialise()) return engine.run();
-    else return 1;
-}
+class Panel : public UmbraWidget {
+    public:
+        Panel (void);
+        //ButtonMatrix bMatrix;
+        //ButtonNoise bNoise;
+        //ButtonError bError;
+        //ButtonQuit bQuit;
+        //std::string text;
+        bool update (void);
+        void mouse (TCOD_mouse_t &ms);
+        void render (void);
+        TCODConsole * panel;
+    private:
+        int posx, posy, width, height;
+        uint32 delay;
+        uint32 lastHover; //the time the mouse last hovered over the panel
+};
+
+#endif

@@ -39,6 +39,7 @@ void UmbraWidget::mouse(TCOD_mouse_t &ms) {
 	minimiseButton.mouseHover = minimiseButton.is(mousex,mousey);
 	closeButton.mouseHover = closeButton.is(mousex,mousey);
 	dragZone.mouseHover = dragZone.isInside(mousex,mousey);
+	rect.mouseHover = rect.isInside(ms.cx,ms.cy);
 	//check whether the mouse is down on a button
 	if (ms.lbutton && minimiseButton.mouseHover) minimiseButton.mouseDown = true;
 	else minimiseButton.mouseDown = false;
