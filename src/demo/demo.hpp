@@ -42,7 +42,6 @@ class Demo : public UmbraModule {
         TCODImage * img;
         TCODImage * logo;
         float offset;
-        char credits[64];
 };
 
 #endif

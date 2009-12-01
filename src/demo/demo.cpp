@@ -29,7 +29,6 @@
 #include <stdio.h>
 
 Demo::Demo (void) {
-    sprintf (credits, "Goodbye world!\nPress ESC to quit.");
     random = TCODRandom::getInstance();
     noise = new TCODNoise(2,random);
     offset = 0.0f;
@@ -57,8 +56,6 @@ bool Demo::update (void) {
 }
 
 void Demo::render (void) {
-    TCODConsole::root->setForegroundColor(TCODColor::red);
-    TCODConsole::root->printLeft(0,0,TCOD_BKGND_NONE,"%s",credits);
     img->blit(TCODConsole::root,getEngine()->getRootWidth()/2,getEngine()->getRootHeight()/2);
     logo->blit(TCODConsole::root,getEngine()->getRootWidth()/2,getEngine()->getRootHeight()/2,TCOD_BKGND_LIGHTEN);
 }

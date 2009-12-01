@@ -30,23 +30,23 @@
 UmbraCheckbox::UmbraCheckbox (void) {
     parent = NULL;
     area.set(0,0,0,0);
-    text = "";
+    tag = "";
     checked = false;
     visible = true;
 }
 
-UmbraCheckbox::UmbraCheckbox (UmbraWidget * parent, int x, int y, int w, int h, const char * text) {
+UmbraCheckbox::UmbraCheckbox (UmbraWidget * parent, int x, int y, int w, int h, const char * tag) {
     this->parent = parent;
     area.set(x, y, w, h);
-    this->text = text;
+    this->tag = tag;
     checked = false;
     visible = true;
 }
 
-void UmbraCheckbox::set (UmbraWidget * parent, int x, int y, int w, int h, const char * text) {
+void UmbraCheckbox::set (UmbraWidget * parent, int x, int y, int w, int h, const char * tag) {
     this->parent = parent;
     area.set(x, y, w, h);
-    this->text = text;
+    this->tag = tag;
     checked = false;
     visible = true;
 }
@@ -54,8 +54,10 @@ void UmbraCheckbox::set (UmbraWidget * parent, int x, int y, int w, int h, const
 void UmbraCheckbox::mouse (TCOD_mouse_t &ms) {
     if (!visible)
         return;
-    if (area.isInside(ms.cx-parent->rect.x, ms.cy-parent->rect.y))
+    if (area.isInside(ms.cx-parent->rect.x, ms.cy-parent->rect.y)) {
         area.mouseHover = true;
+        onMouseOver();
+    }
     else
         area.mouseHover = false;
     if (area.mouseHover && ms.lbutton_pressed) {
@@ -73,6 +75,6 @@ void UmbraCheckbox::render (TCODConsole * con) {
         con->putChar(area.x,area.y,TCOD_CHAR_CHECKBOX_SET,TCOD_BKGND_NONE);
     else
         con->putChar(area.x,area.y,TCOD_CHAR_CHECKBOX_UNSET,TCOD_BKGND_NONE);
-    if (!text.empty())
-        con->printLeftRect(area.x+2, area.y, area.w-2, area.h, TCOD_BKGND_NONE, text.c_str());
+    if (!tag.empty())
+        con->printLeftRect(area.x+2, area.y, area.w-2, area.h, TCOD_BKGND_NONE, tag.c_str());
 }

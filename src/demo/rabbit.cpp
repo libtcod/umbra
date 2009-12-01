@@ -27,7 +27,7 @@
 
 #include "main.hpp"
 
-void RabbitButton::action (void) {
+void RabbitButton::onMouseDown (void) {
     parent->setActive(false);
     engine.getModule(MOD_MATRIX)->setActive(false);
 }

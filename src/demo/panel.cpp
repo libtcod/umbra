@@ -27,9 +27,20 @@
 
 #include "main.hpp"
 
+ButtonQuit::ButtonQuit (void) {
+    text = "Quit the demonstration.";
+}
+
+void ButtonQuit::onMouseOver (void) {
+}
+
+void ButtonQuit::onMouseDown (void) {
+    engine.deactivateAll();
+}
+
 Panel::Panel (void) {
-    width = 16;
-    height = 24;
+    width = 24;
+    height = 48;
     posx = 0;
     posy = (getEngine()->getRootHeight() - height) / 2;
     rect.set(posx,posy,width,height);
@@ -37,12 +48,15 @@ Panel::Panel (void) {
     priority = 0; //always on top
     lastHover = 0;
     delay = 3000;
+    bQuit.set(this,2,2,20,3,"Quit");
 }
 
 void Panel::render (void) {
-    panel->setBackgroundColor(TCODColor::red);
-    panel->setForegroundColor(TCODColor::yellow);
+    panel->setBackgroundColor(TCODColor::darkerGrey);
+    panel->setForegroundColor(TCODColor::silver);
     panel->printFrame(0,0,rect.w,rect.h,true,TCOD_BKGND_SET,NULL);
+    if (bQuit.area.mouseHover) panel->setForegroundColor(TCODColor::white);
+    bQuit.render(panel);
     TCODConsole::blit(panel,0,0,rect.w,rect.h,TCODConsole::root,posx,posy,1.0f,0.5f);
 }
 
@@ -64,5 +78,6 @@ bool Panel::update (void) {
 
 void Panel::mouse (TCOD_mouse_t &ms) {
     UmbraWidget::mouse(ms);
+    bQuit.mouse(ms);
     return;
 }

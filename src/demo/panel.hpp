@@ -28,10 +28,10 @@
 #ifndef PANEL_HPP
 #define PANEL_HPP
 
-//class ButtonMatrix : public UmbraButton { public: void action (void); };
-//class ButtonNoise : public UmbraButton { public: void action (void); };
-//class ButtonError : public UmbraButton { public: void action (void); };
-//class ButtonQuit : public UmbraButton { public: void action (void); };
+//class ButtonMatrix : public UmbraButton { public: ButtonMatrix (void); void onMouseOver (void); void onMouseDown (void); std::string text; };
+//class ButtonNoise : public UmbraButton { public: ButtonNoise (void); void onMouseOver (void); void onMouseDown (void); std::string text; };
+//class ButtonError : public UmbraButton { public: ButtonError (void); void onMouseOver (void); void onMouseDown (void); std::string text; };
+class ButtonQuit : public UmbraButton { public: ButtonQuit (void); void onMouseOver (void); void onMouseDown (void); std::string text; };
 
 class Panel : public UmbraWidget {
     public:
@@ -39,8 +39,7 @@ class Panel : public UmbraWidget {
         //ButtonMatrix bMatrix;
         //ButtonNoise bNoise;
         //ButtonError bError;
-        //ButtonQuit bQuit;
-        //std::string text;
+        ButtonQuit bQuit;
         bool update (void);
         void mouse (TCOD_mouse_t &ms);
         void render (void);

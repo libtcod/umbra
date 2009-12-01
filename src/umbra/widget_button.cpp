@@ -30,35 +30,37 @@
 UmbraButton::UmbraButton (void) {
     parent = NULL;
     area.set(0,0,0,0);
-    text = "";
+    tag = "";
     visible = true;
 }
 
-UmbraButton::UmbraButton (UmbraWidget * parent, int x, int y, int w, int h, const char * text) {
+UmbraButton::UmbraButton (UmbraWidget * parent, int x, int y, int w, int h, const char * tag) {
     this->parent = parent;
     area.set(x, y, w, h);
-    this->text = text;
+    this->tag = tag;
     visible = true;
 }
 
-void UmbraButton::set (UmbraWidget * parent, int x, int y, int w, int h, const char * text) {
+void UmbraButton::set (UmbraWidget * parent, int x, int y, int w, int h, const char * tag) {
     this->parent = parent;
     area.set(x, y, w, h);
-    this->text = text;
+    this->tag = tag;
     visible = true;
 }
 
 void UmbraButton::mouse (TCOD_mouse_t &ms) {
     if (!visible)
         return;
-    if (area.isInside(ms.cx-parent->rect.x, ms.cy-parent->rect.y))
+    if (area.isInside(ms.cx-parent->rect.x, ms.cy-parent->rect.y)) {
         area.mouseHover = true;
+        onMouseOver();
+    }
     else
         area.mouseHover = false;
     if (area.mouseHover && ms.lbutton) {
         area.mouseDown = true;
         ms.lbutton_pressed=false;
-        action();
+        onMouseDown();
     }
     else area.mouseDown = false;
 }
@@ -67,6 +69,6 @@ void UmbraButton::render (TCODConsole * con) {
     if (!visible)
         return;
     con->printFrame(area.x,area.y,area.w,area.h,false,TCOD_BKGND_NONE,NULL);
-    if (!text.empty())
-        con->printCenterRect(area.x+(area.w/2),area.y+(area.h/2),area.w-2,area.h-2,TCOD_BKGND_NONE,text.c_str());
+    if (!tag.empty())
+        con->printCenterRect(area.x+(area.w/2),area.y+(area.h/2),area.w-2,area.h-2,TCOD_BKGND_NONE,tag.c_str());
 }

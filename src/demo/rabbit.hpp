@@ -31,7 +31,7 @@
 class RabbitButton : public UmbraButton {
     public:
         //RabbitButton (void);
-        void action (void);
+        void onMouseDown (void);
 };
 
 class RabbitWidget : public UmbraWidget {
