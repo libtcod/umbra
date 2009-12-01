@@ -50,10 +50,12 @@ bool Panel::update (void) {
     uint32 time = TCODSystem::getElapsedMilli();
     if (rect.mouseHover) {
         lastHover = time;
-        posx = 0;
+        posx += 3;
+        posx = MIN(posx,0);
+        rect.set(posx,posy,width,height);
     }
     else if (time >= lastHover + delay) {
-        posx--;
+        posx -= 2;
         posx = MAX(posx,(-width)+1);
         rect.set(posx,posy,width,height);
     }
