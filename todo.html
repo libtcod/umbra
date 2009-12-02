@@ -1022,7 +1022,7 @@ class UmbraFaderDissolve : public UmbraFader {
 &lt;/code&gt;
 The dissolve fader already implements the fader-specific stuff and can be put inside the faders stuff inside a module...</pre>
 </div>
-<div title="Widget hierarchy" modifier="jice" created="200912021041" modified="200912021059" tags="discuss" changecount="5">
+<div title="Widget hierarchy" modifier="Mingos" created="200912021041" modified="200912022100" tags="discuss" changecount="10">
 <pre>Ok, I think it's safe to keep UmbraWidget inheriting from UmbraModule since it needs the keyboard/mouse events, the render function and some widgets might even require the update (the speedoMeter does). Besides, this keeps us from having separate code in the engine to handle widgets.
 
 Now the base UmbraWidget class handles :
@@ -1038,7 +1038,21 @@ From this base class, we have three abstract subclasses :
 
 Now all these things must draw themselves on screen, but while we can have limited customization on &quot;feel&quot;, we can't enforce the &quot;look&quot; to the user. We must provide a default, good looking, skin, but it should be possible to customize very easily everything concerning the look. That's another tricky part, but let's do first a working widget toolkit before messing with skins...
 Another tricky part might be : how do we handle overlapping windows ?... We'll see when we have them working...
-</pre>
+
+&gt; My version:
+&gt; *UmbraModule - base class
+&gt; *UmbraWidget : public UmbraModule - base class for widgets
+&gt; *UmbraPanel : public UmbraWidget - container for widgets; renders nothing, just manages widgets
+&gt; *UmbraWindow : public UmbraPanel - draggable (optionally) window with (optional) minimise/maximise and close buttons. Default minimise action minimises the widget to label+X (label, maximise, close), possibly with a maximum label width (truncation)
+&gt; *UmbraBox : public UmbraPanel - non draggable window with no minimise or close, optional label (for instance 
+&gt; *UmbraButton : public UmbraWidget (and other widgets) - self-explanatory
+&gt;
+&gt;Preset widgets would also be cool, such as a notification window, a, OK/Cancel window, etc. Plus, of course, the inbuilt ones: BSOD, speedo, perhaps some more...
+&gt;
+&gt;Modules contain UmbraPanel lists which point to root widgets. UmbraPanels (and derivates) are activated/deactivated together with the modules. Root widgets can also be activated/deactivated independently from modules, but it's preferred that they are UmbraPanels or derivates.
+&gt;Panels are containers and can contain further panels or widgets. They are uniqie in that they deal with updating and rendering of all widget children.
+&gt;
+&gt;Widget looks: each widget contains a pointer to a class UmbraAppearance with . Should it be NULL, default looks are used (perhaps from an instance of UmbraAppearance in the engine), otherwise rendering code is taken from the UmbraAppearance object to which the pointer points (a derived class that overrides the standard rendering code with custom stuff). This is somewhat complicated if someone wants a custom look, but newbies can go for standard looks and intermediate to advanced coders can have 100% freedom.</pre>
 </div>
 <div title="Widget persistence" modifier="Mingos" created="200911051127" modified="200911131629" tags="code Mingos" changecount="13">
 <pre>Always thinking about a UmbraWidget based user customizable game UI, it would be cool to be able to save a widget position and status to disk to be able to retrieve it later. This should be optional of course. When activated, in Umbra demo, the speedometer would appear at the same place and in the same state (minimised or not) it was the last time the demo was run.
