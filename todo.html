@@ -1022,7 +1022,7 @@ class UmbraFaderDissolve : public UmbraFader {
 &lt;/code&gt;
 The dissolve fader already implements the fader-specific stuff and can be put inside the faders stuff inside a module...</pre>
 </div>
-<div title="Widget hierarchy" modifier="Mingos" created="200912021041" modified="200912022100" tags="discuss" changecount="10">
+<div title="Widget hierarchy" modifier="jice" created="200912021041" modified="200912031009" tags="discuss" changecount="12">
 <pre>Ok, I think it's safe to keep UmbraWidget inheriting from UmbraModule since it needs the keyboard/mouse events, the render function and some widgets might even require the update (the speedoMeter does). Besides, this keeps us from having separate code in the engine to handle widgets.
 
 Now the base UmbraWidget class handles :
@@ -1045,14 +1045,65 @@ Another tricky part might be : how do we handle overlapping windows ?... We'll s
 &gt; *UmbraPanel : public UmbraWidget - container for widgets; renders nothing, just manages widgets
 &gt; *UmbraWindow : public UmbraPanel - draggable (optionally) window with (optional) minimise/maximise and close buttons. Default minimise action minimises the widget to label+X (label, maximise, close), possibly with a maximum label width (truncation)
 &gt; *UmbraBox : public UmbraPanel - non draggable window with no minimise or close, optional label (for instance 
+Can't you already do that with UmbraWindow ? Everything is optional in UmbraWindow. I think we could use a bit field in the constructor with values like
+* UMBRA_WINDOW_BORDER : draw a frame around window ?
+* UMBRA_WINDOW_TITLE : draw a title bar
+* UMBRA_WINDOW_MINIMIZE : add a minimize button
+* UMBRA_WINDOW_CLOSE : add a close button
+* UMBRA_WINDOW_DRAG : window is draggable
+
 &gt; *UmbraButton : public UmbraWidget (and other widgets) - self-explanatory
 &gt;
 &gt;Preset widgets would also be cool, such as a notification window, a, OK/Cancel window, etc. Plus, of course, the inbuilt ones: BSOD, speedo, perhaps some more...
+That's what I intended to do with UmbraMessageBox(string title, int flags, string content, ... ) with flags indicating which buttons to show :
+* UMBRA_MSGBOX_OK : add a 'Ok' button
+* UMBRA_MSGBOX_CANCEL : add a 'cancel' button
+...
+Pretty much the same features as this : http://msdn.microsoft.com/en-us/library/ms645505%28VS.85%29.aspx
 &gt;
 &gt;Modules contain UmbraPanel lists which point to root widgets. UmbraPanels (and derivates) are activated/deactivated together with the modules. Root widgets can also be activated/deactivated independently from modules, but it's preferred that they are UmbraPanels or derivates.
 &gt;Panels are containers and can contain further panels or widgets. They are uniqie in that they deal with updating and rendering of all widget children.
 &gt;
-&gt;Widget looks: each widget contains a pointer to a class UmbraAppearance with . Should it be NULL, default looks are used (perhaps from an instance of UmbraAppearance in the engine), otherwise rendering code is taken from the UmbraAppearance object to which the pointer points (a derived class that overrides the standard rendering code with custom stuff). This is somewhat complicated if someone wants a custom look, but newbies can go for standard looks and intermediate to advanced coders can have 100% freedom.</pre>
+&gt;Widget looks: each widget contains a pointer to a class UmbraAppearance with . Should it be NULL, default looks are used (perhaps from an instance of UmbraAppearance in the engine), otherwise rendering code is taken from the UmbraAppearance object to which the pointer points (a derived class that overrides the standard rendering code with custom stuff). This is somewhat complicated if someone wants a custom look, but newbies can go for standard looks and intermediate to advanced coders can have 100% freedom.
+Thought on this :
+* the UmbraAppearance, (or WidgetRenderer ?) has set of basic functions used by the widgets :
+&lt;code C++&gt;
+MyRenderer : public UmbraWidgetRenderer {
+   void drawFrame(int x, int y, int w, int h);
+   void drawButton(int x, int y, const char *title);
+   ...
+};
+engine.setWidgetRenderer(new MyRenderer());
+&lt;/code&gt;
+You can override only the functions where you want to change the look else, the default UmbraWidgetRenderer implementation is used.
+* default renderer configuration
+Instead of overriding the rendering code, you can simply change the behaviour of the default rendering code because it relies heavily on properties. Note that this solution is not incompatible with the previous one. We could have CSS-like configuration AND overridable renderer. This is how it could work :
+&lt;code C++&gt;
+engine.setWidgetStylesheet(&quot;data/cfg/skin.cfg&quot;);
+&lt;/code&gt;
+skin.cfg is a tcod config file. It contains only a few &quot;structs&quot;, one for each data type :
+* colorProperty
+* intProperty
+* boolProperty
+* stringProperty
+* floatProperty
+Now libtcod's parser allow to give a name to a struct. It's in the name that we put the CSS like descriptor. The format of the name would be :
+[ widgetClass ] [ .skinClass ] [ #widgetId ] property
+widgetClass : if specified, limits this property effet to widget of the given C++ type (UmbraWindow, UmbraButton, ...)
+skinClass  : UmbraWidget should have a skinClass string property similar to the css class of an HTML element
+widgetId : UmbraWidget should have an id string property similar to the css id of an HTML element
+property : this is the name of a property used by the renderer, like css properties (text-align, background-color, whatever...)
+Example of skin.cfg :
+&lt;code C++&gt;
+skin {
+    // all UmbraWindow have red frames
+    colorProperty &quot;UmbraWindow frameColor&quot; { value = &quot;#FF0000&quot; }
+    // UmbraWindow of class &quot;sideBar&quot; have green frames
+    colorProperty &quot;UmbraWindow.sidebar frameColor&quot; { value = &quot;#00FF00&quot; }
+    // all UmbraWindow have no minimize button
+    boolProperty &quot;UmbraWindow hasMinimizeButton&quot; { value = false }
+}
+&lt;/code&gt;</pre>
 </div>
 <div title="Widget persistence" modifier="Mingos" created="200911051127" modified="200911131629" tags="code Mingos" changecount="13">
 <pre>Always thinking about a UmbraWidget based user customizable game UI, it would be cool to be able to save a widget position and status to disk to be able to retrieve it later. This should be optional of course. When activated, in Umbra demo, the speedometer would appear at the same place and in the same state (minimised or not) it was the last time the demo was run.
