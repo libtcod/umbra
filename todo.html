@@ -1022,7 +1022,7 @@ class UmbraFaderDissolve : public UmbraFader {
 &lt;/code&gt;
 The dissolve fader already implements the fader-specific stuff and can be put inside the faders stuff inside a module...</pre>
 </div>
-<div title="Widget hierarchy" modifier="jice" created="200912021041" modified="200912031009" tags="discuss" changecount="12">
+<div title="Widget hierarchy" modifier="Mingos" created="200912021041" modified="200912031636" tags="discuss" changecount="13">
 <pre>Ok, I think it's safe to keep UmbraWidget inheriting from UmbraModule since it needs the keyboard/mouse events, the render function and some widgets might even require the update (the speedoMeter does). Besides, this keeps us from having separate code in the engine to handle widgets.
 
 Now the base UmbraWidget class handles :
@@ -1052,6 +1052,8 @@ Can't you already do that with UmbraWindow ? Everything is optional in UmbraWind
 * UMBRA_WINDOW_CLOSE : add a close button
 * UMBRA_WINDOW_DRAG : window is draggable
 
+&gt;&gt;Yeah, OK, sounds perfect.
+
 &gt; *UmbraButton : public UmbraWidget (and other widgets) - self-explanatory
 &gt;
 &gt;Preset widgets would also be cool, such as a notification window, a, OK/Cancel window, etc. Plus, of course, the inbuilt ones: BSOD, speedo, perhaps some more...
@@ -1060,7 +1062,9 @@ That's what I intended to do with UmbraMessageBox(string title, int flags, strin
 * UMBRA_MSGBOX_CANCEL : add a 'cancel' button
 ...
 Pretty much the same features as this : http://msdn.microsoft.com/en-us/library/ms645505%28VS.85%29.aspx
-&gt;
+
+&gt;&gt;Perfect.
+
 &gt;Modules contain UmbraPanel lists which point to root widgets. UmbraPanels (and derivates) are activated/deactivated together with the modules. Root widgets can also be activated/deactivated independently from modules, but it's preferred that they are UmbraPanels or derivates.
 &gt;Panels are containers and can contain further panels or widgets. They are uniqie in that they deal with updating and rendering of all widget children.
 &gt;
@@ -1076,6 +1080,9 @@ MyRenderer : public UmbraWidgetRenderer {
 engine.setWidgetRenderer(new MyRenderer());
 &lt;/code&gt;
 You can override only the functions where you want to change the look else, the default UmbraWidgetRenderer implementation is used.
+
+&gt;&gt;That's exactly what I had in mind.
+
 * default renderer configuration
 Instead of overriding the rendering code, you can simply change the behaviour of the default rendering code because it relies heavily on properties. Note that this solution is not incompatible with the previous one. We could have CSS-like configuration AND overridable renderer. This is how it could work :
 &lt;code C++&gt;
@@ -1103,7 +1110,9 @@ skin {
     // all UmbraWindow have no minimize button
     boolProperty &quot;UmbraWindow hasMinimizeButton&quot; { value = false }
 }
-&lt;/code&gt;</pre>
+&lt;/code&gt;
+
+&gt;&gt;YEAH BABY!!! Modifiable skin files! GRRREAT! I want that implemented!!!</pre>
 </div>
 <div title="Widget persistence" modifier="Mingos" created="200911051127" modified="200911131629" tags="code Mingos" changecount="13">
 <pre>Always thinking about a UmbraWidget based user customizable game UI, it would be cool to be able to save a widget position and status to disk to be able to retrieve it later. This should be optional of course. When activated, in Umbra demo, the speedometer would appear at the same place and in the same state (minimised or not) it was the last time the demo was run.
