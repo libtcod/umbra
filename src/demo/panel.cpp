@@ -27,18 +27,18 @@
 
 #include "main.hpp"
 
-ButtonQuit::ButtonQuit (void) {
+ButtonQuit::ButtonQuit () {
     text = "Quit the demonstration.";
 }
 
-void ButtonQuit::onMouseOver (void) {
+void ButtonQuit::onMouseOver () {
 }
 
-void ButtonQuit::onMouseDown (void) {
+void ButtonQuit::onMouseDown () {
     engine.deactivateAll();
 }
 
-Panel::Panel (void) {
+Panel::Panel () {
     width = 24;
     height = 48;
     posx = 0;
@@ -51,7 +51,7 @@ Panel::Panel (void) {
     bQuit.set(this,2,2,20,3,"Quit");
 }
 
-void Panel::render (void) {
+void Panel::render () {
     panel->setBackgroundColor(TCODColor::darkerGrey);
     panel->setForegroundColor(TCODColor::silver);
     panel->printFrame(0,0,rect.w,rect.h,true,TCOD_BKGND_SET,NULL);
@@ -60,7 +60,7 @@ void Panel::render (void) {
     TCODConsole::blit(panel,0,0,rect.w,rect.h,TCODConsole::root,posx,posy,1.0f,0.5f);
 }
 
-bool Panel::update (void) {
+bool Panel::update () {
     uint32 time = TCODSystem::getElapsedMilli();
     if (rect.mouseHover) {
         lastHover = time;

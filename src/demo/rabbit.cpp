@@ -27,12 +27,12 @@
 
 #include "main.hpp"
 
-void RabbitButton::onMouseDown (void) {
+void RabbitButton::onMouseDown () {
     parent->setActive(false);
     engine.getModule(MOD_MATRIX)->setActive(false);
 }
 
-RabbitWidget::RabbitWidget (void) {
+RabbitWidget::RabbitWidget () {
     rabbit = new TCODConsole(24,12);
     rect.set(engine.getRootWidth()/2-12,engine.getRootHeight()/2-6,24,12);
     setDragZone(0,0,24,1);
@@ -44,7 +44,7 @@ void RabbitWidget::mouse (TCOD_mouse_t &ms) {
     button.mouse(ms);
 }
 
-void RabbitWidget::render (void) {
+void RabbitWidget::render () {
     rabbit->setForegroundColor(TCODColor::white);
     rabbit->setBackgroundColor(TCODColor::black);
     rabbit->printFrame(0,0,24,12,true,TCOD_BKGND_SET,"Wake up, Neo");

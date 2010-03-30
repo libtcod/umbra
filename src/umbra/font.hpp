@@ -29,13 +29,13 @@
 
 class UmbraFont {
     public:
-        UmbraFont (void);
-        ~UmbraFont (void);
+        UmbraFont ();
+        ~UmbraFont ();
         void initialise (int c, int r, const char * fn, int f = TCOD_FONT_LAYOUT_TCOD); //initialise manually
-        inline const char * filename (void) { return _filename.c_str(); }
-        inline int columns (void) { return _columns; }
-        inline int rows (void) { return _rows; }
-        inline int flags (void) { return _flags; }
+        inline const char * filename () { return _filename.c_str(); }
+        inline int columns () { return _columns; }
+        inline int rows () { return _rows; }
+        inline int flags () { return _flags; }
 
     private:
         std::string _filename;

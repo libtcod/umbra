@@ -31,7 +31,7 @@ class UmbraConfig {
         static bool activateFont (int shift = 0);
 
         static void load (const char *fileName); //load config from file
-        static void save (void); //save config to file
+        static void save (); //save config to file
         static void registerFont (UmbraFont * _font);
 
         static int rootWidth;

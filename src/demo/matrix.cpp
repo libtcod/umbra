@@ -31,7 +31,7 @@
 TCODRandom * MatrixLead::random;
 TCODConsole * MatrixLead::matrix;
 
-MatrixLead::MatrixLead (void) {
+MatrixLead::MatrixLead () {
     if (!random) random = new TCODRandom();
     y = 0;
     x = random->getInt(0,engine.getRootWidth()-1);
@@ -56,13 +56,13 @@ void MatrixLead::render (uint32 time) {
     matrix->putChar(x,y,c,TCOD_BKGND_NONE);
 }
 
-bool Matrix::update (void) {
+bool Matrix::update () {
     if (!MatrixLead::random) MatrixLead::random = new TCODRandom();
     if (MatrixLead::random->getInt(0,3) == 0) leads.push(new MatrixLead());
     return isActive();
 }
 
-void Matrix::render (void) {
+void Matrix::render () {
     uint32 t = TCODSystem::getElapsedMilli();
     if (leads.size() > 0) {
         for (MatrixLead ** mx = leads.begin(); mx != leads.end(); mx++) {

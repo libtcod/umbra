@@ -1020,6 +1020,30 @@ This method will sent the specified error message to stderr, append it to the er
 <div title="SiteTitle" modifier="Mingos" created="200910241741" modified="200911112227" changecount="3">
 <pre>Umbra</pre>
 </div>
+<div title="Speed-o-meter" modifier="Mingos" created="201003301739" modified="201003301757" changecount="9">
+<pre>The Speed-o-meter, or &quot;Speedo&quot;, is a benchmarking tool. It removes the frames per second limit so that the usage of the CPU core running the main program thread can go up to 100%. It also displays a small window with a graph depicting the time spent on various calculations:
+* ''update'' - time spent inside your active modules' [[UmbraModule::update|update]] method,
+* ''render'' - time spent inside your active modules' [[UmbraModule::render|render()]] method,
+* ''system'' - the time spent on &quot;system calls&quot; (everything not belonging to the above two).
+Apart fromt this information, Speedo will also tell you how long it took to render the last frame (in milliseconds - constant values of 40ms and above should be considered a warning, especially on a fast CPU) and how many frames per second your program manages to render (if this value is much higher than your usual frames per second limit, you have no performance issues).
+
+When turned off, Speedo will set the frames per second limit back to its previous value.
+
+If UmbraEngine is initialised with the additional callbacks enabled (see [[UmbraEngine::UmbraEngine]]), Speedo will turn itself on and off when you press F5.
+
+Please remember to use a code profiler, such as gprof, to profile your code. Speedo is not a profiler, it can merely inform you of possible performance issues, but will not identify any bottlenecks in the program.</pre>
+</div>
+<div title="Starting a project using Umbra" modifier="Mingos" created="201003301731" modified="201003301732" changecount="3">
+<pre>Umbra is not a library, but a collection of c++ code files. As such, absolutely no linking is required to start using Umbra.
+
+What is necessary, however, is adding the code that comes with Umbra to your project. Since you're not likely to want to modify Umbra files, save in some corner cases where you might need a higher grade of customisation, you are advised to place Umbra files in a separate directory so that they don't distract you from your own code.
+
+Once you have done that, all you need to do to be able to start using Umbra is including its main header file in your code:
+&lt;code C++&gt;
+#include &quot;umbra.hpp&quot;
+&lt;/code&gt;
+Umbra requires libtcod to run, so it already includes it, and therefore you are not required to include it separately.</pre>
+</div>
 <div title="StyleSheet" modifier="Jonny Gerold" created="200904132312" server.type="file" server.host="dl.getdropbox.com/u/52078/Notes/Notes.html" server.page.revision="200904132312">
 <pre>[[StyleSheetSyntaxHighlighter]]</pre>
 </div>
@@ -1593,7 +1617,7 @@ else return 1;
 ;see also:
 :[[UmbraModule::run]]</pre>
 </div>
-<div title="UmbraEngine::registerFont" modifier="Mingos" created="200911051013" modified="200911112247" changecount="5">
+<div title="UmbraEngine::registerFont" modifier="Mingos" created="200911051013" modified="201003231656" changecount="7">
 <pre>Registers a font file to be used by libtcod.
 
 ;construction:
@@ -1609,7 +1633,7 @@ void UmbraEngine::registerFont (
 :void
 
 ;remarks:
-:If you don't want Umbra to use FontAutodetection, you have to register your font(s) manually before initialising the engine.
+:If you don't want Umbra to use [[Font autodetection]], you have to register your font(s) manually before initialising the engine.
 :Use this method to register each font, ordered smallest to biggest. The parameters are the same as in libtcod's setCustomFont method. See libtcod documentation for details.
 :Each registered font is assigned an id, starting with 0 and incrementing. The user can change the font by pressing pageUp or pageDown (by default). You can know what font is currently used with [[UmbraEngine::getCurrentFontID]].
 
@@ -1687,6 +1711,113 @@ else
 ;see also:
 :[[UmbraEngine::initialise]]</pre>
 </div>
+<div title="UmbraEngine::setWindowTitle" modifier="Mingos" created="201003302007" changecount="1">
+<pre>Sets the game window title.
+
+;construction:
+&lt;code C++&gt;
+void setWindowTitle (
+    const char * title,
+    ...
+);
+&lt;/code&gt;
+
+;return value:
+:none
+
+;remarks:
+:The title string uses printf-like formatting.
+:This method should be used prior to calling [[UmbraEngine::initialise]]. Should the title change afterwards, the change will be seen only after calling [[UmbraEngine::reinitialise]].
+
+;example:
+&lt;code C++&gt;
+UmbraEngine engine;  
+engine.registerModule(new MyModule());  
+engine.activateModule(0);
+engine.setWindowTitle(&quot;My game window title&quot;); 
+if (engine.initialise()) return engine.run();  
+else return 1;
+}
+&lt;/code&gt;
+
+;see also:
+:[[UmbraEngine::reinitialise]]</pre>
+</div>
+<div title="UmbraError" modifier="Mingos" created="201003301723" changecount="1">
+<pre>UmbraError is a static class that does not take part in handling game itself. As its name implies, it is there to handle errors and aid in preventing the occurrence of errors. It is essentially a list of all logged errors, which you can use for debugging.
+
+UmbraError has five public methods, all of which you are welcome to call at any point in your program. These are:
+* [[UmbraError::add]] adds a new error to the list and displays it on stderr
+* [[UmbraError::fileExists]] checks whether a file exists in the specified location
+* [[UmbraError::getLastMessage]] retrieves the last logged error
+* [[UmbraError::getMessage]] retrieves any message, providing you know at which position it was logged
+* [[UmbraError::getNbErrors]] retrieves the total number of logged errors
+
+Umbra uses this class internally in many situations to notify you of any possible mistakes, such as trying to load a module that hasn't been initialised yet. The last logged message can be displayed onstderr (default behaviour), but if Umbra is in debug mode, it will also activate a warning prompt, humorously called the [[BSOD]].
+
+Should any error be logged during the program execution, an error log file called errorlog.txt will be created in the program's execution directory for your review. Please remember to read it if there are any issues, as it may contain indications regarding what you can do to repair the issue.</pre>
+</div>
+<div title="UmbraError::add" modifier="Mingos" created="201003301902" modified="201003301912" changecount="6">
+<pre>Appends an error message to the error list in the log.
+
+;construction:
+&lt;code C++&gt;
+static int add (
+    const char * errStr,
+    ...
+);
+
+static int add (
+    std::string errStr
+);
+&lt;/code&gt;
+
+;return value:
+:Integer: error ID number in the error log.
+
+;remarks:
+:Using this method will append an error the the error log, display it on stderr (typically, the console) and ensure that the error log is saved to a text file.
+:The version that takes a {{{const char *}}} as argument, accepts printf-like formatting.
+
+;example:
+&lt;code C++&gt;
+if (errorCondition) {
+    UmbraError::add(&quot;Oh my God, I'm an error!&quot;);
+    UmbraError::add(&quot;%d, %d, %d, format me!&quot;, 1, 2, 3);
+    std::string err = &quot;STL is good for error reporting too!&quot;;
+    UmbraError::add(err);
+}
+&lt;/code&gt;</pre>
+</div>
+<div title="UmbraError::fileExists" modifier="Mingos" created="201003301940" modified="201003301943" changecount="3">
+<pre>Checks whether a given file exists.
+
+;construction:
+&lt;code C++&gt;
+static bool fileExists (
+    const char * filename,
+    ...
+);
+&lt;/code&gt;
+
+;return value:
+:Boolean: {{{true}}} if the specified file exists, {{{false}}} otherwise.
+
+;remarks:
+:This method is best used to prevent crashes due to a missing file. Useful for confirming the existence of data and configuration files.
+:The file name can be formatted like in printf-like functions.
+
+;example:
+&lt;code C++&gt;
+if (!UmbraError::fileExists(&quot;my/directory/missingfile.txt&quot;)) {
+    UmbraError::add(&quot;The file is missing!&quot;);
+    exit(1);
+}
+&lt;/code&gt;
+
+;see also:
+:[[UmbraError::add]]</pre>
+</div>
 <div title="UmbraInternalModuleID" modifier="Mingos" created="200911081536" modified="200911081541" changecount="5">
 <pre>ID numbers for all internal modules available in Umbra.
 
@@ -1716,10 +1847,10 @@ engine.activateModule(UMBRA_INTERNAL_SPEEDOMETER);
 ;see also
 :[[UmbraEngine::displayError]]</pre>
 </div>
-<div title="UmbraModule" modifier="Mingos" created="200910241828" modified="200911111427" changecount="27">
-<pre>UmbraModule is a single &quot;chunk&quot; of your game, with its own renderer and keybindings. It might be the main menu, the character creation screen, the overworld view, the trading screen or whatever you think needs a separate view. Modules might also be sub-screens like dialogs or widgets (your inventory dialog for example). Eventually, modules can be some non-visual game logic you want to be able to easily enable or disable. In that case, you would only override the update() method and leave an empty render() method.
+<div title="UmbraModule" modifier="Mingos" created="200910241828" modified="201003301707" changecount="28">
+<pre>UmbraModule is a single &quot;chunk&quot; of your game, with its own renderer and keybindings. It might be the main menu, the character creation screen, the overworld view, the trading screen or whatever you think needs a separate view. Modules might also be sub-screens like dialogs or widgets (your inventory dialog for example). Finally, modules can be some non-visual game logic you want to be able to easily enable or disable. In that case, you would only override the update() method and leave an empty render() method.
 
-By default, an activated module will do nothing. It will simply stay here in memory until it's deactivated. You can add features to it by overriding some on its methods :
+By default, an activated module will do nothing. It will simply stay here in memory until it's deactivated. You can add features to it by overriding some on its methods:
 
 The [[UmbraModule::initialise]] is called only once: when the module is activated for the first time. You can put in there all costly resource loading stuff like bitmap loading.
 
@@ -1795,9 +1926,9 @@ bool update (
 ;see also:
 :[[UmbraModule::render]]</pre>
 </div>
-<div title="Using Umbra" modifier="Mingos" created="200910241814" modified="200911292247" changecount="22">
+<div title="Using Umbra" modifier="Mingos" created="200910241814" modified="201003301726" changecount="23">
 <pre>#Basics
-##[[Linking Umbra to your project]]
+##[[Starting a project using Umbra]]
 ##[[Umbra Hello World]]
 #Engine
 ##[[The engine]]

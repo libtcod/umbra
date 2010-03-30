@@ -31,16 +31,16 @@
 TCODRandom * FOV::random;
 uint32 FOV::seed;
 
-FOV::FOV (void) {
+FOV::FOV () {
     if (!random) random = TCODRandom::getInstance();
     accumulatedTime = 0;
 }
 
-void FOV::initialise (void) {
+void FOV::initialise () {
     if (!seed) seed = random->getInt(0,0xFFFFFFFF);
 }
 
-void FOV::activate (void) {
+void FOV::activate () {
     delete random;
     random = new TCODRandom(seed);
 }

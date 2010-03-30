@@ -28,66 +28,66 @@
 #include "umbra.hpp"
 
 //quit program
-UmbraCallbackQuit::UmbraCallbackQuit (void) {
+UmbraCallbackQuit::UmbraCallbackQuit () {
     key2.assign(TCODK_F4,0,true,false,false);
     key.assign(TCODK_CHAR,'q',false,true,true);
 }
 
-void UmbraCallbackQuit::action (void) {
+void UmbraCallbackQuit::action () {
     getEngine()->deactivateAll();
 }
 
 //switch fullscreen
-UmbraCallbackFullscreen::UmbraCallbackFullscreen (void) {
+UmbraCallbackFullscreen::UmbraCallbackFullscreen () {
     key.assign(TCODK_ENTER,'\r',true,false,false);
 }
 
-void UmbraCallbackFullscreen::action (void) {
+void UmbraCallbackFullscreen::action () {
     TCODConsole::setFullscreen(!TCODConsole::isFullscreen());
 }
 
 //save screenshot
-UmbraCallbackScreenshot::UmbraCallbackScreenshot (void) {
+UmbraCallbackScreenshot::UmbraCallbackScreenshot () {
     key.assign(TCODK_PRINTSCREEN,0,false,false,false);
 }
 
-void UmbraCallbackScreenshot::action (void) {
+void UmbraCallbackScreenshot::action () {
     TCODSystem::saveScreenshot(NULL);
 }
 
 //switch font up
-UmbraCallbackFontUp::UmbraCallbackFontUp (void) {
+UmbraCallbackFontUp::UmbraCallbackFontUp () {
     key.assign(TCODK_PAGEUP,0,false,false,false);
 }
 
-void UmbraCallbackFontUp::action (void) {
+void UmbraCallbackFontUp::action () {
     if (getEngine()->activateFont(1)) getEngine()->reinitialise();
 }
 
 //switch font down
-UmbraCallbackFontDown::UmbraCallbackFontDown (void) {
+UmbraCallbackFontDown::UmbraCallbackFontDown () {
     key.assign(TCODK_PAGEDOWN,0,false,false,false);
 }
 
-void UmbraCallbackFontDown::action (void) {
+void UmbraCallbackFontDown::action () {
     if (getEngine()->activateFont(-1)) getEngine()->reinitialise();
 }
 
 //pause the program
-UmbraCallbackPause::UmbraCallbackPause (void) {
+UmbraCallbackPause::UmbraCallbackPause () {
     key.assign(TCODK_PAUSE,0,false,false,false);
 }
 
-void UmbraCallbackPause::action (void) {
+void UmbraCallbackPause::action () {
     getEngine()->setPaused(!getEngine()->getPaused());
 }
 
 //pause the program
-UmbraCallbackSpeedometer::UmbraCallbackSpeedometer (void) {
+UmbraCallbackSpeedometer::UmbraCallbackSpeedometer () {
     key.assign(TCODK_F5,0,false,false,false);
 }
 
-void UmbraCallbackSpeedometer::action (void) {
+void UmbraCallbackSpeedometer::action () {
     if (getEngine()->getModule(UMBRA_INTERNAL_SPEEDOMETER)->isActive()) {
         getEngine()->deactivateModule(UMBRA_INTERNAL_SPEEDOMETER);
     }

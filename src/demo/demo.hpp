@@ -30,10 +30,10 @@
 
 class Demo : public UmbraModule {
     public:
-        Demo (void);
-        void initialise (void);
-        bool update (void);
-        void render (void);
+        Demo ();
+        void initialise ();
+        bool update ();
+        void render ();
         void keyboard (TCOD_key_t &key);
 
     private:

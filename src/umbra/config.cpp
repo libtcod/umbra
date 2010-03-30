@@ -80,7 +80,7 @@ void UmbraConfig::load (const char *fileName) {
     loaded = true;
 }
 
-void UmbraConfig::save (void) {
+void UmbraConfig::save () {
     FILE * out;
     out = fopen(fileName,"w");
 

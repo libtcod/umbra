@@ -31,7 +31,7 @@
 #define MAXIMISED_MODE_HEIGHT 8
 #define TIMEBAR_LENGTH (MAXIMISED_MODE_WIDTH-4)*2
 
-UmbraModSpeed::UmbraModSpeed (void) : cumulatedElapsed(0.0f), updateTime(0.0f), renderTime(0.0f),
+UmbraModSpeed::UmbraModSpeed () : cumulatedElapsed(0.0f), updateTime(0.0f), renderTime(0.0f),
     updatePer(0),renderPer(0),sysPer(0),isMinimised(false) {
     speed = new TCODConsole(MAXIMISED_MODE_WIDTH,MAXIMISED_MODE_HEIGHT);
     rect.set((getEngine()->getRootWidth()/2)-15,(getEngine()->getRootHeight()/2)-3,30,MAXIMISED_MODE_HEIGHT);
@@ -76,7 +76,7 @@ void UmbraModSpeed::mouse (TCOD_mouse_t &ms) {
 	}
 }
 
-bool UmbraModSpeed::update (void) {
+bool UmbraModSpeed::update () {
     cumulatedElapsed += TCODSystem::getLastFrameLength();
 
     if ( cumulatedElapsed >= 1.0f ) {
@@ -103,7 +103,7 @@ void UmbraModSpeed::setTimes(long updateTime, long renderTime) {
     this->renderTime += renderTime * 0.001f;
 }
 
-void UmbraModSpeed::render (void) {
+void UmbraModSpeed::render () {
     speed->setBackgroundColor(TCODColor::black);
     speed->setForegroundColor(TCODColor::white);
 	if ( isMinimised ) {
@@ -142,11 +142,11 @@ void UmbraModSpeed::render (void) {
     if (! isMinimised ) timeBar->blit2x(TCODConsole::root,rect.x+2,rect.y+4);
 }
 
-void UmbraModSpeed::activate (void) {
+void UmbraModSpeed::activate () {
     fps = TCODSystem::getFps();
     TCODSystem::setFps(0);
 }
 
-void UmbraModSpeed::deactivate (void) {
+void UmbraModSpeed::deactivate () {
     TCODSystem::setFps(fps);
 }

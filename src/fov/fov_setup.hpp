@@ -27,9 +27,9 @@
 
 class FovSetup : public UmbraModule {
     public:
-        FovSetup(void);
-        bool update (void);
-        void render (void);
+        FovSetup();
+        bool update ();
+        void render ();
         void keyboard (TCOD_key_t &key);
 
     private:

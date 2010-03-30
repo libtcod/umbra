@@ -50,8 +50,21 @@ int UmbraError::add (const char * errStr, ...) {
     return errors.size()-1;
 }
 
+//append an error message
+int UmbraError::add (std::string errStr) {
+	std::string * errorMessage = new std::string(errStr);
+
+	errors.push(errorMessage);
+    fprintf(stderr,"%s\n",errorMessage->c_str());
+
+    save();
+
+    return errors.size()-1;
+}
+
+
 //save the error log
-void UmbraError::save (void) {
+void UmbraError::save () {
     //if there are no errors, return
     if (errors.size() == 0) return;
     //else create the log file
@@ -87,7 +100,7 @@ void UmbraError::save (void) {
     }
 }
 
-const char * UmbraError::getLastMessage (void) {
+const char * UmbraError::getLastMessage () {
     int size = errors.size(); //SIZE MATTERS!
     if (size == 0) return "No errors registered.";
     else return (errors.get(size-1))->c_str();

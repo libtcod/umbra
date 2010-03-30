@@ -30,7 +30,7 @@
 
 class MatrixLead {
     public:
-        MatrixLead (void);
+        MatrixLead ();
         static TCODRandom * random;
         int x, y; //coordinates
         uint32 lastY; //last y increment
@@ -42,8 +42,8 @@ class MatrixLead {
 
 class Matrix : public UmbraModule {
     public:
-        bool update (void);
-        void render (void);
+        bool update ();
+        void render ();
 
     private:
         TCODList <MatrixLead *> leads;

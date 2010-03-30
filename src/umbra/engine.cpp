@@ -219,13 +219,13 @@ void UmbraEngine::deactivateModule(UmbraModule *module) {
     }
 }
 
-void UmbraEngine::deactivateAll (void) {
+void UmbraEngine::deactivateAll () {
     for (UmbraModule ** mod = activeModules.begin(); mod != activeModules.end(); mod++) {
         deactivateModule((*mod));
     }
 }
 
-bool UmbraEngine::initialise (void) {
+bool UmbraEngine::initialise () {
     // autodetect fonts if needed
     bool retVal = registerFonts();
     //activate the base font
@@ -243,7 +243,7 @@ bool UmbraEngine::initialise (void) {
     return retVal;
 }
 
-int UmbraEngine::run (void) {
+int UmbraEngine::run () {
     TCOD_key_t key;
     TCOD_mouse_t mouse;
 
@@ -356,7 +356,7 @@ void UmbraEngine::keyboard (TCOD_key_t &key) {
     }
 }
 
-void UmbraEngine::reinitialise (void) {
+void UmbraEngine::reinitialise () {
     delete TCODConsole::root;
     TCODConsole::root = NULL;
     TCODConsole::setCustomFont(UmbraConfig::font->filename(),UmbraConfig::font->flags(),UmbraConfig::font->columns(),UmbraConfig::font->rows());
@@ -367,7 +367,7 @@ void UmbraEngine::registerInternalModule (UmbraInternalModuleID id, UmbraModule 
     internalModules[id] = module;
 }
 
-void UmbraEngine::displayError (void) {
+void UmbraEngine::displayError () {
     if (UmbraConfig::debug && TCODConsole::root != NULL) {
         if (internalModules[UMBRA_INTERNAL_BSOD]->isActive())
             toDeactivate.push(internalModules[UMBRA_INTERNAL_BSOD]);

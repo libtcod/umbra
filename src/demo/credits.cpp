@@ -27,7 +27,7 @@
 
 #include "main.hpp"
 
-Credits::Credits (void) {
+Credits::Credits () {
     credits = new TCODConsole(48,11);
     text = "Umbra demo\n"
            "Copyright (c) 2009 Dominik Marczuk, Jice\n"
@@ -41,19 +41,19 @@ Credits::Credits (void) {
     rect.set(getEngine()->getRootWidth()/2-24,getEngine()->getRootHeight()/2-5,48,11);
 }
 
-void Credits::initialise (void) {
+void Credits::initialise () {
     startTime = TCODSystem::getElapsedMilli();
     duration = 5000;
 }
 
-bool Credits::update (void) {
+bool Credits::update () {
     if (startTime + duration > TCODSystem::getElapsedMilli())
         return true;
     else
         return false;
 }
 
-void Credits::render (void) {
+void Credits::render () {
     credits->setForegroundColor(TCODColor::white);
     credits->setBackgroundColor(TCODColor::black);
     credits->printFrame(0,0,48,11,true,TCOD_BKGND_SET,NULL);

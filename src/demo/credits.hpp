@@ -30,10 +30,10 @@
 
 class Credits : public UmbraWidget {
     public:
-        Credits (void);
-        void initialise (void);
-        bool update (void);
-        void render (void);
+        Credits ();
+        void initialise ();
+        bool update ();
+        void render ();
         std::string text;
         uint32 startTime;
         uint32 duration;

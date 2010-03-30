@@ -27,7 +27,7 @@
 
 #include "umbra.hpp"
 
-UmbraCheckbox::UmbraCheckbox (void) {
+UmbraCheckbox::UmbraCheckbox () {
     parent = NULL;
     area.set(0,0,0,0);
     tag = "";

@@ -27,9 +27,9 @@
 
 class FOV : public UmbraModule {
     public:
-        FOV (void);
-        void initialise (void); //used to choose a seed that will be restored upon each activation
-        void activate (void); //restores the seed in order to repeat the test in the same conditions
+        FOV ();
+        void initialise (); //used to choose a seed that will be restored upon each activation
+        void activate (); //restores the seed in order to repeat the test in the same conditions
     protected:
         static TCODRandom * random;
         TCODMap * map;

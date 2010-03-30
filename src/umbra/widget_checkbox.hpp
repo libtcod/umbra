@@ -32,8 +32,8 @@ class UmbraRect;
 
 class UmbraCheckbox {
     public:
-        UmbraCheckbox (void);
-        virtual ~UmbraCheckbox (void) {}
+        UmbraCheckbox ();
+        virtual ~UmbraCheckbox () {}
         UmbraCheckbox (UmbraWidget * parent, int x, int y, int w, int h, const char * tag = "");
         void set (UmbraWidget * parent, int x, int y, int w, int h, const char * tag = "");
         UmbraRect area; //the rectangle where the object is contained
@@ -43,5 +43,5 @@ class UmbraCheckbox {
         std::string tag;
         void render (TCODConsole * con);
         void mouse (TCOD_mouse_t &ms); //checks the status
-        virtual void onMouseOver (void) {} //custom code launched when mouse cursor is over the checkbox area
+        virtual void onMouseOver () {} //custom code launched when mouse cursor is over the checkbox area
 };

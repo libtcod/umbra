@@ -27,15 +27,15 @@
 
 class UmbraModSpeed : public UmbraWidget {
     public:
-        UmbraModSpeed (void);
-        bool update (void);
-        void render (void);
+        UmbraModSpeed ();
+        bool update ();
+        void render ();
 		void mouse (TCOD_mouse_t &ms);
 		// in case a user wants it minimized from start
 		inline void setMinimised(bool val) { isMinimised=val; }
 	protected :
-        void activate (void);
-        void deactivate (void);
+        void activate ();
+        void deactivate ();
     private:
         friend class UmbraEngine;
         // timebar stuff

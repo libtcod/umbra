@@ -30,7 +30,7 @@ class UmbraRect {
         int x,y,w,h;
         bool mouseHover;
         bool mouseDown;
-        UmbraRect (void): x(0),y(0),w(0),h(0),mouseHover(false) {}
+        UmbraRect (): x(0),y(0),w(0),h(0),mouseHover(false) {}
         UmbraRect (int x, int y, int w, int h): x(x),y(y),w(w),h(h),mouseHover(false) {}
         inline void setPos (int x, int y) { this->x=x; this->y=y; }
         inline void setSize (int w, int h) { this->w=w;this->h=h; }
@@ -43,7 +43,7 @@ class UmbraPoint {
         int x, y;
         bool mouseHover;
         bool mouseDown;
-        UmbraPoint (void): x(0),y(0),mouseHover(false) {}
+        UmbraPoint (): x(0),y(0),mouseHover(false) {}
         UmbraPoint (int x, int y): x(x),y(y),mouseHover(false) {}
         inline void set (int x, int y) { this->x=x; this->y=y; }
         inline bool is (int px, int py) { return px == x && py == y; }
@@ -54,7 +54,7 @@ class UmbraWidget : public UmbraModule {
     friend class UmbraCheckbox;
     friend class UmbraButton;
     public :
-        UmbraWidget (void);
+        UmbraWidget ();
         void mouse (TCOD_mouse_t &ms);
     protected :
         void setDragZone (int x, int y, int w, int h);

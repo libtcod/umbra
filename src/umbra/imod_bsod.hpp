@@ -27,11 +27,11 @@
 
 class UmbraModBSOD : public UmbraWidget {
     public:
-        UmbraModBSOD (void);
-        bool update (void);
-        void render (void);
+        UmbraModBSOD ();
+        bool update ();
+        void render ();
     private:
-        void activate (void);
+        void activate ();
         TCODConsole * bsod;
         uint32 startTime;
         uint32 duration;

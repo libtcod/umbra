@@ -30,13 +30,13 @@ enum UmbraModuleStatus { UMBRA_UNINITIALISED, UMBRA_INACTIVE, UMBRA_FADING_IN, U
 //all screens or views, such as credits, main menu, map view, etc. have to inherit this
 class UmbraModule {
     public:
-        UmbraModule (void); //constructor
-        virtual ~UmbraModule (void) {} //destructor
+        UmbraModule (); //constructor
+        virtual ~UmbraModule () {} //destructor
 
-        virtual void initialise (void); // allocate resources. called only once
+        virtual void initialise (); // allocate resources. called only once
 
-        virtual void render (void) { } //render the module on the root console
-        virtual bool update (void) { return isActive(); } //update the module's logic
+        virtual void render () { } //render the module on the root console
+        virtual bool update () { return isActive(); } //update the module's logic
         virtual void keyboard (TCOD_key_t &key) { } //module-specific keyboard
         virtual void mouse (TCOD_mouse_t &ms) { } //module-specific mouse
 
@@ -48,16 +48,16 @@ class UmbraModule {
         void setPause (bool paused);
 
         //getters
-        inline int getFallback (void) { return fallback; }
-        inline int getFadeInLength (void) { return fadeInLength; }
-        inline int getFadeOutLength (void) { return fadeOutLength; }
-        inline TCODColor getFadeInColor (void) { return fadeInColor; }
-        inline TCODColor getFadeOutColor (void) { return fadeOutColor; }
-        inline bool isPaused (void) { return status == UMBRA_PAUSED; }
-        inline bool isActive (void) { return status > UMBRA_INACTIVE; }
-        inline UmbraEngine * getEngine (void) { return UmbraEngine::getInstance(); }
+        inline int getFallback () { return fallback; }
+        inline int getFadeInLength () { return fadeInLength; }
+        inline int getFadeOutLength () { return fadeOutLength; }
+        inline TCODColor getFadeInColor () { return fadeInColor; }
+        inline TCODColor getFadeOutColor () { return fadeOutColor; }
+        inline bool isPaused () { return status == UMBRA_PAUSED; }
+        inline bool isActive () { return status > UMBRA_INACTIVE; }
+        inline UmbraEngine * getEngine () { return UmbraEngine::getInstance(); }
 		inline int getPriority() { return priority; }
-		inline UmbraModuleStatus getStatus (void) { return status; }
+		inline UmbraModuleStatus getStatus () { return status; }
 
     protected:
         // for activation/deactivation custom code

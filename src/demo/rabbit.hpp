@@ -30,15 +30,15 @@
 
 class RabbitButton : public UmbraButton {
     public:
-        //RabbitButton (void);
-        void onMouseDown (void);
+        //RabbitButton ();
+        void onMouseDown ();
 };
 
 class RabbitWidget : public UmbraWidget {
     public:
-        RabbitWidget (void);
+        RabbitWidget ();
         void mouse (TCOD_mouse_t &ms);
-        void render (void);
+        void render ();
         RabbitButton button;
         TCODConsole * rabbit;
 };

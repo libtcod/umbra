@@ -27,7 +27,7 @@
 
 #include "umbra.hpp"
 
-UmbraModule::UmbraModule (void) : priority(1),status(UMBRA_UNINITIALISED),
+UmbraModule::UmbraModule () : priority(1),status(UMBRA_UNINITIALISED),
     fallback(-1),fadeInLength(0),fadeOutLength(0) {
 }
 
@@ -41,7 +41,7 @@ void UmbraModule::setFadeOut (int lengthInMilli, TCODColor col) {
     fadeOutColor = col;
 }
 
-void UmbraModule::initialise (void) {
+void UmbraModule::initialise () {
     status=UMBRA_INACTIVE;
 }
 

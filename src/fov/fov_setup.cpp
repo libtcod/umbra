@@ -27,14 +27,14 @@
 
 #include "main.hpp"
 
-FovSetup::FovSetup (void) {
+FovSetup::FovSetup () {
 }
 
-bool FovSetup::update (void) {
+bool FovSetup::update () {
     return true;
 }
 
-void FovSetup::render (void) {
+void FovSetup::render () {
 }
 
 void FovSetup::keyboard (TCOD_key_t &key) {

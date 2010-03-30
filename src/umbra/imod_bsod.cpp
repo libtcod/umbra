@@ -27,7 +27,7 @@
 
 #include "umbra.hpp"
 
-UmbraModBSOD::UmbraModBSOD (void) {
+UmbraModBSOD::UmbraModBSOD () {
     bsod = new TCODConsole(30,8);
     closeButton.set(28,0);
     duration = 5000;
@@ -36,18 +36,18 @@ UmbraModBSOD::UmbraModBSOD (void) {
     setDragZone(0,0,28,1);
 }
 
-void UmbraModBSOD::activate (void) {
+void UmbraModBSOD::activate () {
     startTime = TCODSystem::getElapsedMilli();
     msgString = UmbraError::getLastMessage();
 }
 
-bool UmbraModBSOD::update (void) {
+bool UmbraModBSOD::update () {
     if (closeButton.mouseDown) setActive(false);
     if (TCODSystem::getElapsedMilli() - startTime >= duration) return false;
     else return true;
 }
 
-void UmbraModBSOD::render (void) {
+void UmbraModBSOD::render () {
     bsod->setBackgroundColor(TCODColor::blue);
     bsod->clear();
     bsod->setForegroundColor(TCODColor::white);

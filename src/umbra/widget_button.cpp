@@ -27,7 +27,7 @@
 
 #include "umbra.hpp"
 
-UmbraButton::UmbraButton (void) {
+UmbraButton::UmbraButton () {
     parent = NULL;
     area.set(0,0,0,0);
     tag = "";

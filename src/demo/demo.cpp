@@ -28,18 +28,18 @@
 #include "main.hpp"
 #include <stdio.h>
 
-Demo::Demo (void) {
+Demo::Demo () {
     random = TCODRandom::getInstance();
     noise = new TCODNoise(2,random);
     offset = 0.0f;
 }
 
-void Demo::initialise (void) {
+void Demo::initialise () {
     img = new TCODImage(getEngine()->getRootWidth(),getEngine()->getRootHeight());
     logo = new TCODImage("data/img/umbra.png");
 }
 
-bool Demo::update (void) {
+bool Demo::update () {
     if (isActive()) {
         int i, j;
         for (i = 0; i < getEngine()->getRootWidth(); i++) for (j = 0; j < getEngine()->getRootHeight(); j++) {
@@ -55,7 +55,7 @@ bool Demo::update (void) {
     else return false;
 }
 
-void Demo::render (void) {
+void Demo::render () {
     img->blit(TCODConsole::root,getEngine()->getRootWidth()/2,getEngine()->getRootHeight()/2);
     logo->blit(TCODConsole::root,getEngine()->getRootWidth()/2,getEngine()->getRootHeight()/2,TCOD_BKGND_LIGHTEN);
 }
@@ -63,7 +63,8 @@ void Demo::render (void) {
 void Demo::keyboard (TCOD_key_t &key) {
     if (key.vk == TCODK_SPACE) getEngine()->activateModule(666);
     else if (key.vk == TCODK_ENTER) {
-        UmbraError::add("Test error.");
+        std::string e = "This is a test error";
+        UmbraError::add(e);
         getEngine()->displayError();
     }
     else if (key.vk == TCODK_ESCAPE) getEngine()->deactivateAll();

@@ -32,7 +32,7 @@ class UmbraRect;
 
 class UmbraButton {
     public:
-        UmbraButton (void);
+        UmbraButton ();
         virtual ~UmbraButton() {}
         UmbraButton (UmbraWidget * parent, int x, int y, int w, int h, const char * tag = "");
         void set (UmbraWidget * parent, int x, int y, int w, int h, const char * tag = "");
@@ -42,6 +42,6 @@ class UmbraButton {
         std::string tag;
         virtual void render (TCODConsole * con);
         void mouse (TCOD_mouse_t &ms); //checks the status
-        virtual void onMouseDown (void) {} //custom code executed after a button press
-        virtual void onMouseOver (void) {} //custom code executed when the mouse is hovering
+        virtual void onMouseDown () {} //custom code executed after a button press
+        virtual void onMouseOver () {} //custom code executed when the mouse is hovering
 };

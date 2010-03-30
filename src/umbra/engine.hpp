@@ -34,7 +34,7 @@ class UmbraKey {
     friend class UmbraEngine;
     friend class UmbraCallback;
     public:
-        UmbraKey (void): vk(TCODK_NONE),c(0),alt(false),ctrl(false),shift(false) {}
+        UmbraKey (): vk(TCODK_NONE),c(0),alt(false),ctrl(false),shift(false) {}
         UmbraKey (TCOD_keycode_t vk, char c, bool alt, bool ctrl, bool shift): vk(vk),c(c),alt(alt),ctrl(ctrl),shift(shift) {}
         inline void assign (TCOD_keycode_t vk, char c, bool alt, bool ctrl, bool shift) { this->vk=vk; this->c=c; this->alt=alt; this->ctrl=ctrl; this->shift=shift; }
         inline void assign (UmbraKey k1) { vk=k1.vk; c=k1.c; alt=k1.alt; ctrl=k1.ctrl; shift=k1.shift; }
@@ -81,9 +81,9 @@ class UmbraEngine {
 
         int registerModule (UmbraModule * module, int fallback = (-1)); //add a module to the modules list. returns id
         void registerFont (int columns, int rows, const char * filename, int flags = TCOD_FONT_LAYOUT_TCOD);
-        bool initialise (void); //initialises the engine
-        void reinitialise (void);
-        int run (void); //runs the engine
+        bool initialise (); //initialises the engine
+        void reinitialise ();
+        int run (); //runs the engine
 
         void setWindowTitle (const char * title, ...);
         inline void setKeyboardMode (UmbraKeyboardMode mode) { keyboardMode = mode; }
@@ -99,21 +99,21 @@ class UmbraEngine {
         void deactivateModule (UmbraModule * mod);
         void deactivateModule (UmbraInternalModuleID id);
         //deactivate all modules (the program will end normally)
-        void deactivateAll (void);
+        void deactivateAll ();
 
-        inline bool getPaused (void) { return paused; }
-        inline UmbraKeyboardMode getKeyboardMode (void) { return keyboardMode ; }
+        inline bool getPaused () { return paused; }
+        inline UmbraKeyboardMode getKeyboardMode () { return keyboardMode ; }
 		inline UmbraModule * getModule (int moduleId) { return (moduleId < 0 || moduleId >= modules.size() ? NULL : modules.get(moduleId)); }
 		inline UmbraModule * getModule (UmbraInternalModuleID id) { return (id < 0 || id >= UMBRA_INTERNAL_MAX ? NULL : internalModules[id]); }
-        inline static UmbraEngine * getInstance (void) { if (engineInstance == NULL) engineInstance = new UmbraEngine(); return engineInstance; }
+        inline static UmbraEngine * getInstance () { if (engineInstance == NULL) engineInstance = new UmbraEngine(); return engineInstance; }
 
-        void displayError (void);
+        void displayError ();
 
         //Config-related stuff
         inline bool activateFont (int shift = 0) { return UmbraConfig::activateFont(shift); }
 
-        inline int getRootWidth (void) { return UmbraConfig::rootWidth; }
-        inline int getRootHeight (void) { return UmbraConfig::rootHeight; }
+        inline int getRootWidth () { return UmbraConfig::rootWidth; }
+        inline int getRootHeight () { return UmbraConfig::rootHeight; }
 
         inline int getFontID() { return UmbraConfig::fontID; }
         inline int getNbFonts() { return UmbraConfig::fonts.size(); }
@@ -139,7 +139,7 @@ class UmbraEngine {
         // actually put the module in active list
 		void doActivateModule( UmbraModule *mod );
         // font autodetection if no font is registered
-        bool registerFonts (void);
+        bool registerFonts ();
 
         //the internal modules stuff
         UmbraModule * internalModules[UMBRA_INTERNAL_MAX];

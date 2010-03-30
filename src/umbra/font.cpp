@@ -28,7 +28,7 @@
 #include "umbra.hpp"
 #include <string>
 
-UmbraFont::UmbraFont (void) {
+UmbraFont::UmbraFont () {
     std::string _filename;
     _filename = "NULL";
     _columns = 0;
