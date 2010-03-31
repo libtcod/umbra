@@ -2,12 +2,12 @@
 <CodeBlocks_project_file>
 	<FileVersion major="1" minor="6" />
 	<Project>
-		<Option title="UR3" />
+		<Option title="Umbra" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="Demo Debug WIN">
-				<Option output="UR" prefix_auto="1" extension_auto="1" />
+				<Option output="umbra-demo-debug" prefix_auto="0" extension_auto="1" />
 				<Option object_output="obj\" />
 				<Option type="1" />
 				<Option compiler="gcc" />
@@ -19,7 +19,7 @@
 				</Linker>
 			</Target>
 			<Target title="Demo Release WIN">
-				<Option output="UR" prefix_auto="1" extension_auto="1" />
+				<Option output="umbra-demo-release" prefix_auto="0" extension_auto="1" />
 				<Option object_output="obj\" />
 				<Option type="0" />
 				<Option compiler="gcc" />
@@ -32,7 +32,7 @@
 				</Linker>
 			</Target>
 			<Target title="Demo Debug LINUX">
-				<Option output="UR" prefix_auto="1" extension_auto="1" />
+				<Option output="umbra-demo-debug" prefix_auto="0" extension_auto="1" />
 				<Option object_output="obj\" />
 				<Option type="1" />
 				<Option compiler="gcc" />
@@ -47,7 +47,7 @@
 				</Linker>
 			</Target>
 			<Target title="Demo Release LINUX">
-				<Option output="UR" prefix_auto="1" extension_auto="1" />
+				<Option output="umbra-demo-release" prefix_auto="0" extension_auto="1" />
 				<Option object_output="obj\" />
 				<Option type="0" />
 				<Option compiler="gcc" />
@@ -62,7 +62,7 @@
 				</Linker>
 			</Target>
 			<Target title="Fovbench Debug WIN">
-				<Option output="fov" prefix_auto="1" extension_auto="1" />
+				<Option output="fovbench-debug" prefix_auto="0" extension_auto="1" />
 				<Option object_output="obj\" />
 				<Option type="1" />
 				<Option compiler="gcc" />
@@ -74,7 +74,7 @@
 				</Linker>
 			</Target>
 			<Target title="Fovbench Release WIN">
-				<Option output="fov" prefix_auto="1" extension_auto="1" />
+				<Option output="fovbench-release" prefix_auto="0" extension_auto="1" />
 				<Option object_output="obj\" />
 				<Option type="0" />
 				<Option compiler="gcc" />
@@ -87,7 +87,7 @@
 				</Linker>
 			</Target>
 			<Target title="Fovbench Debug LINUX">
-				<Option output="fov" prefix_auto="1" extension_auto="1" />
+				<Option output="fovbench-debug" prefix_auto="0" extension_auto="1" />
 				<Option object_output="obj\" />
 				<Option type="1" />
 				<Option compiler="gcc" />
@@ -102,7 +102,7 @@
 				</Linker>
 			</Target>
 			<Target title="Fovbench Release LINUX">
-				<Option output="fov" prefix_auto="1" extension_auto="1" />
+				<Option output="fovbench-release" prefix_auto="0" extension_auto="1" />
 				<Option object_output="obj\" />
 				<Option type="0" />
 				<Option compiler="gcc" />
