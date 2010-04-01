@@ -856,7 +856,7 @@ If you want a finer control on the way fonts are loaded, you can register them m
 ;see also:
 :[[Registering fonts]]</pre>
 </div>
-<div title="Initialisation versus activation" modifier="Mingos" created="200911162110" modified="200911162133" changecount="3">
+<div title="Initialisation versus activation" modifier="Mingos" created="200911162110" modified="201003312357" changecount="4">
 <pre>The [[UmbraModule]] provides two virtual methods which can be overridden in a custom module. These are [[UmbraModule::initialise]] and [[UmbraModule::activate]]. The difference between the two might seem a bit blurry, so let's have a closer look at what they do.
 !Initialisation
 
@@ -867,7 +867,7 @@ What's the practical use of this feature? The initialisation might as well be ha
 
 The activation of a module consists essentially of putting the module on the activation list, and commencing to run it, starting from the subsequent frame (or main loop iteration). During activation, it might be necessary to run some sort of custom code. This is when [[UmbraModule::activate]] comes in. It is run once per module activation.
 
-A simple example of its practical use would be a module with a timeout, such as the [[BSOD]]. During the activation of the [[BSOD]], the module needs to check and store the elapsed time from apllication start. This value is set every time the module is activated in order to know when it's supposed to be deactivated. Until it's actually deactivated, the value will not change. The effect is a timeout: the module deactivates itself X time after activation.
+A simple example of its practical use would be a module with a timeout, such as the [[BSOD]]. During the activation of the [[BSOD]], the module needs to check and store the elapsed time from application start. This value is set every time the module is activated in order to know when it's supposed to be deactivated. Until it's actually deactivated, the value will not change. The effect is a timeout: the module deactivates itself X time after activation.
 
 Paired with [[UmbraModule::activate]] is also [[UmbraModule::deactivate]]. In case a module needs to run some special code upon deactivation, it's enough to override this method.</pre>
 </div>
@@ -1004,12 +1004,14 @@ engine.getModule(mod2)-&gt;method();
 Please read [[Accessing modules and widgets]] for more detailed information on this topic.
 </pre>
 </div>
-<div title="Reporting an error" modifier="Mingos" created="200911111608" changecount="1">
+<div title="Reporting an error" modifier="Mingos" created="200911111608" modified="201004010000" changecount="2">
 <pre>Reporting an error is extremely easy in Umbra. It's enough to add this line of code:
 &lt;code C++&gt;
 UmbraError::add(&quot;Error message&quot;);
 &lt;/code&gt;
-This method will sent the specified error message to stderr, append it to the error list and also save the file {{{errorlog.txt}}}, containing all of the error messages registered so far, to the hard disc.</pre>
+This method will send the specified error message to stderr, append it to the error list and also save the file {{{errorlog.txt}}}, containing all of the error messages registered so far, to the hard disc.
+
+Bear in mind that this method accepts printf-like text formatting. Ultimately, you can also pass a {{{std::string}}} as the argument instead of {{{const char*}}}.</pre>
 </div>
 <div title="Scautura" modifier="Scautura" created="200911111208" changecount="1">
 <pre>Proofreader. Nothing more.</pre>
@@ -1847,7 +1849,7 @@ engine.activateModule(UMBRA_INTERNAL_SPEEDOMETER);
 ;see also
 :[[UmbraEngine::displayError]]</pre>
 </div>
-<div title="UmbraModule" modifier="Mingos" created="200910241828" modified="201003301707" changecount="28">
+<div title="UmbraModule" modifier="Mingos" created="200910241828" modified="201003312342" changecount="29">
 <pre>UmbraModule is a single &quot;chunk&quot; of your game, with its own renderer and keybindings. It might be the main menu, the character creation screen, the overworld view, the trading screen or whatever you think needs a separate view. Modules might also be sub-screens like dialogs or widgets (your inventory dialog for example). Finally, modules can be some non-visual game logic you want to be able to easily enable or disable. In that case, you would only override the update() method and leave an empty render() method.
 
 By default, an activated module will do nothing. It will simply stay here in memory until it's deactivated. You can add features to it by overriding some on its methods:
@@ -1877,7 +1879,177 @@ During the render phase, [[UmbraModule::render]] is called for each active modul
 :[[UmbraModule::setFadeOut]]
 :[[UmbraModule::pause]]
 :[[UmbraModule::resume]]
+:[[UmbraModule::setActive]]
 :[[UmbraModule::update]]</pre>
+</div>
+<div title="UmbraModule::activate" modifier="Mingos" created="201003312325" modified="201003312333" changecount="4">
+<pre>May contain custom code executed upon module activation.
+
+;construction:
+&lt;code C++&gt;
+virtual void activate (
+    void
+);
+&lt;/code&gt;
+
+;return value:
+:none (void)
+
+;remarks:
+:This method will be called automatically whenever the module containing it is activated. It cannot be called manually.
+:It will typically contain code such as the activation of other modules (for instance, main game view may internally activate a message log).
+
+;see also:
+:[[UmbraModule::deactivate]]
+:[[UmbraModule::pause]]
+:[[UmbraModule::resume]]</pre>
+</div>
+<div title="UmbraModule::deactivate" modifier="Mingos" created="201003312327" modified="201003312333" changecount="3">
+<pre>May contain custom code executed upon module deactivation.
+
+;construction:
+&lt;code C++&gt;
+virtual void deactivate (
+    void
+);
+&lt;/code&gt;
+
+;return value:
+:none (void)
+
+;remarks:
+:This method will be called automatically whenever the module containing it is deactivated. It cannot be called manually.
+:It will typically contain code such as the deactivation of other modules (for instance, main game view may internally deactivate a message log).
+
+;see also:
+:[[UmbraModule::activate]]
+:[[UmbraModule::pause]]
+:[[UmbraModule::resume]]</pre>
+</div>
+<div title="UmbraModule::initialise" modifier="Mingos" created="201003312342" modified="201003312343" changecount="2">
+<pre>Custom code executed at module initialisation.
+
+;construction:
+&lt;code C++&gt;
+virtual void initialise (
+    void
+);
+&lt;/code&gt;
+
+;return value:
+:none (void)
+
+;remarks:
+:This method will be called automatically when the module is activated for the first time. This method shall be called once and only once.
+:It may contain any code, typically some resource allocation which cannot be done in the module's constructor.
+:Should memory be allocated in this method, it is wise to deallocate it in the destructor.
+
+;see also:
+:[[UmbraModule::setActive]]</pre>
+</div>
+<div title="UmbraModule::keyboard" modifier="Mingos" created="201003312316" modified="201003312332" changecount="5">
+<pre>Handles keyboard input.
+
+;construction:
+&lt;code C++&gt;
+virtual void keyboard (
+    TCOD_key_t &amp;key
+);
+&lt;/code&gt;
+
+;return value:
+:none (void)
+
+;remarks:
+:This method will be called automatically each frame. It shouldn't be called manually, but rather overloaded in each module.
+:You should put only what's relevant to the given module in this method. Each module may react to different keybindings.
+:It is a good idea to zero the {{{key}}} variable out in case a relevant keystroke is detected so that modules with a lower priority don't parse the same keystroke again.
+
+;see also:
+:[[UmbraModule::mouse]]</pre>
+</div>
+<div title="UmbraModule::mouse" modifier="Mingos" created="201003312321" modified="201003312332" changecount="3">
+<pre>Handles mouse input.
+
+;construction:
+&lt;code C++&gt;
+virtual void mouse (
+    TCOD_mouse_t &amp;ms
+);
+&lt;/code&gt;
+
+;return value:
+:none (void)
+
+;remarks:
+:This method will be called automatically each frame. It shouldn't be called manually, but rather overloaded in each module.
+:It is a good idea to zero the {{{ms}}} variable out in case some relevant input (usually a click in a given area) is parsed, otherwise modules with a lower priority will try to parse the same input.
+
+;see also:
+:[[UmbraModule::keyboard]]</pre>
+</div>
+<div title="UmbraModule::pause" modifier="Mingos" created="201003312330" modified="201003312334" changecount="3">
+<pre>May contain custom code executed upon module pausing.
+
+;construction:
+&lt;code C++&gt;
+virtual void pause (
+    void
+);
+&lt;/code&gt;
+
+;return value:
+:none (void)
+
+;remarks:
+:This method will be called automatically whenever the module containing it is paused. It cannot be called manually.
+:It may contain any code, for instance, pausing the background music.
+
+;see also:
+:[[UmbraModule::activate]]
+:[[UmbraModule::deactivate]]
+:[[UmbraModule::resume]]</pre>
+</div>
+<div title="UmbraModule::render" modifier="Mingos" created="201003312308" modified="201003312332" changecount="2">
+<pre>Handles rendering on the screen.
+
+;construction:
+&lt;code C++&gt;
+virtual void render (
+    void
+);
+&lt;/code&gt;
+
+;return value:
+:none (void)
+
+;remarks:
+:This method will be called automatically each frame. It shouldn't be called manually, but rather overloaded in each module.
+
+;see also:
+:[[UmbraModule::update]]</pre>
+</div>
+<div title="UmbraModule::resume" modifier="Mingos" created="201003312331" modified="201003312333" changecount="2">
+<pre>May contain custom code executed upon module unpausing.
+
+;construction:
+&lt;code C++&gt;
+virtual void resume (
+    void
+);
+&lt;/code&gt;
+
+;return value:
+:none (void)
+
+;remarks:
+:This method will be called automatically whenever the module containing it is unpaused. It cannot be called manually.
+:It may contain any code, for instance, unpausing the background music.
+
+;see also:
+:[[UmbraModule::activate]]
+:[[UmbraModule::deactivate]]
+:[[UmbraModule::pause]]</pre>
 </div>
 <div title="UmbraModule::setFadeIn" modifier="Mingos" created="200910251957" modified="200911050010" changecount="43">
 <pre>;construction:
@@ -1907,12 +2079,12 @@ mod-&gt;setFadeIn(1000,TCODColor::blue);
 
 </pre>
 </div>
-<div title="UmbraModule::update" modifier="Mingos" created="200911121749" changecount="1">
+<div title="UmbraModule::update" modifier="Mingos" created="200911121749" modified="201003312332" changecount="4">
 <pre>Updates the module's internal logic.
 
 ;construction:
 &lt;code C++&gt;
-bool update (
+virtual bool update (
     void
 );
 &lt;/code&gt;
