@@ -1849,7 +1849,7 @@ engine.activateModule(UMBRA_INTERNAL_SPEEDOMETER);
 ;see also
 :[[UmbraEngine::displayError]]</pre>
 </div>
-<div title="UmbraModule" modifier="Mingos" created="200910241828" modified="201003312342" changecount="29">
+<div title="UmbraModule" modifier="Mingos" created="200910241828" modified="201004011559" changecount="30">
 <pre>UmbraModule is a single &quot;chunk&quot; of your game, with its own renderer and keybindings. It might be the main menu, the character creation screen, the overworld view, the trading screen or whatever you think needs a separate view. Modules might also be sub-screens like dialogs or widgets (your inventory dialog for example). Finally, modules can be some non-visual game logic you want to be able to easily enable or disable. In that case, you would only override the update() method and leave an empty render() method.
 
 By default, an activated module will do nothing. It will simply stay here in memory until it's deactivated. You can add features to it by overriding some on its methods:
@@ -1869,20 +1869,32 @@ During the world updating phase, [[UmbraModule::update]] is called for each acti
 During the render phase, [[UmbraModule::render]] is called for each active module.
 
 ;Methods:
-:[[UmbraModule::initialise]]
-:[[UmbraModule::keyboard]]
-:[[UmbraModule::mouse]]
-:[[UmbraModule::render]]
 :[[UmbraModule::activate]]
 :[[UmbraModule::deactivate]]
-:[[UmbraModule::setFadeIn]]
-:[[UmbraModule::setFadeOut]]
+:[[UmbraModule::getEngine]]
+:[[UmbraModule::getFadeInColour]]
+:[[UmbraModule::getFadeOutColour]]
+:[[UmbraModule::getFadeInLength]]
+:[[UmbraModule::getFadeOutLength]]
+:[[UmbraModule::getFallback]]
+:[[UmbraModule::getPriority]]
+:[[UmbraModule::getStatus]]
+:[[UmbraModule::initialise]]
+:[[UmbraModule::isActive]]
+:[[UmbraModule::isPaused]]
+:[[UmbraModule::keyboard]]
+:[[UmbraModule::mouse]]
 :[[UmbraModule::pause]]
+:[[UmbraModule::render]]
 :[[UmbraModule::resume]]
 :[[UmbraModule::setActive]]
+:[[UmbraModule::setFadeIn]]
+:[[UmbraModule::setFadeOut]]
+:[[UmbraModule::setFallback]]
+:[[UmbraModule::setPause]]
 :[[UmbraModule::update]]</pre>
 </div>
-<div title="UmbraModule::activate" modifier="Mingos" created="201003312325" modified="201003312333" changecount="4">
+<div title="UmbraModule::activate" modifier="Mingos" created="201003312325" modified="201004011559" changecount="6">
 <pre>May contain custom code executed upon module activation.
 
 ;construction:
@@ -1901,10 +1913,11 @@ virtual void activate (
 
 ;see also:
 :[[UmbraModule::deactivate]]
+:[[UmbraModule::setActive]]
 :[[UmbraModule::pause]]
 :[[UmbraModule::resume]]</pre>
 </div>
-<div title="UmbraModule::deactivate" modifier="Mingos" created="201003312327" modified="201003312333" changecount="3">
+<div title="UmbraModule::deactivate" modifier="Mingos" created="201003312327" modified="201004011538" changecount="4">
 <pre>May contain custom code executed upon module deactivation.
 
 ;construction:
@@ -1923,6 +1936,7 @@ virtual void deactivate (
 
 ;see also:
 :[[UmbraModule::activate]]
+:[[UmbraModule::setActive]]
 :[[UmbraModule::pause]]
 :[[UmbraModule::resume]]</pre>
 </div>
@@ -1946,6 +1960,42 @@ virtual void initialise (
 
 ;see also:
 :[[UmbraModule::setActive]]</pre>
+</div>
+<div title="UmbraModule::isActive" modifier="Mingos" created="201004011546" changecount="1">
+<pre>Checks whether the module is active.
+
+;construction:
+&lt;code C++&gt;
+bool isActive (
+    void
+);
+&lt;/code&gt;
+
+;return value:
+:boolean: {{{true}}} if the module is active, {{{false}}} otherwise.
+
+;remarks:
+
+;see also:
+:[[UmbraModule::setActive]]</pre>
+</div>
+<div title="UmbraModule::isPaused" modifier="Mingos" created="201004011545" modified="201004011545" changecount="2">
+<pre>Checks whether the module is paused.
+
+;construction:
+&lt;code C++&gt;
+bool isPaused (
+    void
+);
+&lt;/code&gt;
+
+;return value:
+:boolean: {{{true}}} if the module is paused, {{{false}}} otherwise.
+
+;remarks:
+
+;see also:
+:[[UmbraModule::setPause]]</pre>
 </div>
 <div title="UmbraModule::keyboard" modifier="Mingos" created="201003312316" modified="201003312332" changecount="5">
 <pre>Handles keyboard input.
@@ -1988,7 +2038,7 @@ virtual void mouse (
 ;see also:
 :[[UmbraModule::keyboard]]</pre>
 </div>
-<div title="UmbraModule::pause" modifier="Mingos" created="201003312330" modified="201003312334" changecount="3">
+<div title="UmbraModule::pause" modifier="Mingos" created="201003312330" modified="201004011541" changecount="4">
 <pre>May contain custom code executed upon module pausing.
 
 ;construction:
@@ -2006,6 +2056,7 @@ virtual void pause (
 :It may contain any code, for instance, pausing the background music.
 
 ;see also:
+:[[UmbraModule::setPause]]
 :[[UmbraModule::activate]]
 :[[UmbraModule::deactivate]]
 :[[UmbraModule::resume]]</pre>
@@ -2029,7 +2080,7 @@ virtual void render (
 ;see also:
 :[[UmbraModule::update]]</pre>
 </div>
-<div title="UmbraModule::resume" modifier="Mingos" created="201003312331" modified="201003312333" changecount="2">
+<div title="UmbraModule::resume" modifier="Mingos" created="201003312331" modified="201004011541" changecount="3">
 <pre>May contain custom code executed upon module unpausing.
 
 ;construction:
@@ -2047,12 +2098,39 @@ virtual void resume (
 :It may contain any code, for instance, unpausing the background music.
 
 ;see also:
+:[[UmbraModule::setPause]]
 :[[UmbraModule::activate]]
 :[[UmbraModule::deactivate]]
 :[[UmbraModule::pause]]</pre>
 </div>
-<div title="UmbraModule::setFadeIn" modifier="Mingos" created="200910251957" modified="200911050010" changecount="43">
-<pre>;construction:
+<div title="UmbraModule::setActive" modifier="Mingos" created="201004011536" modified="201004011541" changecount="2">
+<pre>Activates or deactivates the module.
+
+;construction:
+&lt;code C++&gt;
+void setActive (
+    bool active
+);
+&lt;/code&gt;
+
+;return value:
+:none (void)
+
+;remarks:
+:If the argument is {{{true}}}, the module will be activated, if it's {{{false}}}, the module will be deativated.
+:Note that when a module is activated or deactivated, [[UmbraModule::activate]] or [[UmbraModule::deactivate]], respectively, are called in the following iteration of the main application loop.
+
+;see also:
+:[[UmbraModule::isActive]]
+:[[UmbraModule::activate]]
+:[[UmbraModule::deactivate]]</pre>
+</div>
+<div title="UmbraModule::setFadeIn" modifier="Mingos" created="200910251957" modified="201004011605" changecount="50">
+<pre>@@This is a work in progress feature. As of April 2010, it does not work in Umbra.@@
+
+Sets fade in duration for the module, in milliseconds.
+
+;construction:
 &lt;code C++&gt;
 void UmbraModule::setFadeIn (
     int lengthInMilli,
@@ -2061,11 +2139,11 @@ void UmbraModule::setFadeIn (
 &lt;/code&gt;
 
 ;return value:
-:void
+:none (void)
 
-;description:
-:Sets fade in value for the module. The value is expressed in milliseconds. The default value is set to 0 in the constructor and can be changed at any moment. A module with non zero fade value will fade in upon starting and fade out upon ending (before giving pass to another module).
-:The second argument is the colour that will be used to fade in from a colour. Usually it's black.
+;remarks:
+:The default value is set to 0 in the constructor and can be changed at any moment. A module with non zero fade value will fade in upon activation and fade out upon deactivation (before falling back to another module).
+:The second argument is the colour that the module will fade in from. Usually it's black.
 :When writing a new module, it is a good idea to use this method once only, in the module's constructor.
 
 ;example:
@@ -2077,7 +2155,86 @@ UmbraModule * mod = engine.getModule (modID);
 mod-&gt;setFadeIn(1000,TCODColor::blue);
 &lt;/code&gt;
 
+;see also:
+:[[UmbraModule::setFadeOut]]
 </pre>
+</div>
+<div title="UmbraModule::setFadeOut" modifier="Mingos" created="201004011550" modified="201004011608" changecount="6">
+<pre>@@This is a work in progress feature. As of April 2010, it does not work in Umbra.@@
+
+Sets fade out duration for the module, in milliseconds.
+
+;construction:
+&lt;code C++&gt;
+void UmbraModule::setFadeOut (
+    int lengthInMilli,
+    TCODColor col = TCODColor::black
+);
+&lt;/code&gt;
+
+;return value:
+:none (void)
+
+;remarks:
+:The default value is set to 0 in the constructor and can be changed at any moment. A module with non zero fade value will fade in upon activation and fade out upon deactivation (before falling back to another module).
+:The second argument is the colour that the module will fade out to. Usually it's black.
+:When writing a new module, it is a good idea to use this method once only, in the module's constructor.
+
+;example:
+&lt;code C++&gt;
+const int modID = 0;
+UmbraEngine engine;
+engine.registerModule (new Module(), modID);
+UmbraModule * mod = engine.getModule (modID);
+mod-&gt;setFadeOut(1000,TCODColor::blue);
+&lt;/code&gt;
+
+;see also:
+:[[UmbraModule::setFadeIn]]
+</pre>
+</div>
+<div title="UmbraModule::setFallback" modifier="Mingos" created="201004011604" changecount="1">
+<pre>Sets the fallback module.
+
+;construction:
+&lt;code C++&gt;
+void setFallback (
+    int fback
+);
+&lt;/code&gt;
+
+;return value:
+:none (void)
+
+;remarks:
+:When the module is deactivated, the module with ID number specified as the argument to {{{UmbraModule::setFallback}}} will be activated.
+:The ID number of the fallback module is the number returned by [[UmbraEngine::registerModule]].
+
+;see also:
+:[[UmbraModule::getFallback]]
+:[[UmbraEngine::registerModule]]</pre>
+</div>
+<div title="UmbraModule::setPause" modifier="Mingos" created="201004011543" changecount="1">
+<pre>Pauses or unpauses the module.
+
+;construction:
+&lt;code C++&gt;
+void setPause (
+    bool paused
+);
+&lt;/code&gt;
+
+;return value:
+:none (void)
+
+;remarks:
+:If the argument is {{{true}}}, the module will be paused, if it's {{{false}}}, the module will be unpaused.
+:Note that when a module is paused or unpaused, [[UmbraModule::pause]] or [[UmbraModule::resume]], respectively, are called in the following iteration of the main application loop.
+
+;see also:
+:[[UmbraModule::isPaused]]
+:[[UmbraModule::pause]]
+:[[UmbraModule::resume]]</pre>
 </div>
 <div title="UmbraModule::update" modifier="Mingos" created="200911121749" modified="201003312332" changecount="4">
 <pre>Updates the module's internal logic.

@@ -51,8 +51,8 @@ class UmbraModule {
         inline int getFallback () { return fallback; }
         inline int getFadeInLength () { return fadeInLength; }
         inline int getFadeOutLength () { return fadeOutLength; }
-        inline TCODColor getFadeInColor () { return fadeInColor; }
-        inline TCODColor getFadeOutColor () { return fadeOutColor; }
+        inline TCODColor getFadeInColour () { return fadeInColour; }
+        inline TCODColor getFadeOutColour () { return fadeOutColour; }
         inline bool isPaused () { return status == UMBRA_PAUSED; }
         inline bool isActive () { return status > UMBRA_INACTIVE; }
         inline UmbraEngine * getEngine () { return UmbraEngine::getInstance(); }
@@ -71,7 +71,7 @@ class UmbraModule {
         UmbraModuleStatus status;
         int fallback; //fallback module's index
         int fadeInLength;
-        TCODColor fadeInColor;
+        TCODColor fadeInColour;
         int fadeOutLength;
-        TCODColor fadeOutColor;
+        TCODColor fadeOutColour;
 };
