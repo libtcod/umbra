@@ -1534,7 +1534,7 @@ engine.deactivateModule(UMBRA_INTERNAL_SPEEDOMETER); //internal module ID
 ;see also:
 :[[UmbraEngine::activateModule]]</pre>
 </div>
-<div title="UmbraEngine::getInstance" modifier="Mingos" created="200911091623" modified="200911091625" changecount="2">
+<div title="UmbraEngine::getInstance" modifier="Mingos" created="200911091623" modified="201004021301" changecount="3">
 <pre>Returns a pointer the the engine.
 
 ;construction:
@@ -1545,7 +1545,7 @@ static UmbraEngine * getInstance (
 &lt;/code&gt;
 
 ;return value:
-:[[UmbraEngine]]*
+:{{{UmbraEngine*}}}: a pointer to the engine
 
 ;remarks:
 :Since modules aren't aware of the engine, this static method hands them a possibility to access the engine's methods.
@@ -1940,6 +1940,26 @@ virtual void deactivate (
 :[[UmbraModule::pause]]
 :[[UmbraModule::resume]]</pre>
 </div>
+<div title="UmbraModule::getEngine" modifier="Mingos" created="201004021259" modified="201004021300" changecount="3">
+<pre>Gets a pointer to the engine.
+
+;construction:
+&lt;code C++&gt;
+UmbraEngine * UmbraModule::getEngine (
+    void
+);
+&lt;/code&gt;
+
+;return value:
+:{{{UmbraEngine*}}}: a pointer to the engine.
+
+;remarks:
+:This method is included in the {{{UmbraModule}}} to make communication with the game engine easier. Using it enables you to call the engine's methods from within the module (for instance, module activation).
+
+;see also:
+:[[UmbraEngine::getInstance]]
+</pre>
+</div>
 <div title="UmbraModule::initialise" modifier="Mingos" created="201003312342" modified="201003312343" changecount="2">
 <pre>Custom code executed at module initialisation.
 
@@ -2159,7 +2179,7 @@ mod-&gt;setFadeIn(1000,TCODColor::blue);
 :[[UmbraModule::setFadeOut]]
 </pre>
 </div>
-<div title="UmbraModule::setFadeOut" modifier="Mingos" created="201004011550" modified="201004011608" changecount="6">
+<div title="UmbraModule::setFadeOut" modifier="Mingos" created="201004011550" modified="201004021254" changecount="7">
 <pre>@@This is a work in progress feature. As of April 2010, it does not work in Umbra.@@
 
 Sets fade out duration for the module, in milliseconds.
