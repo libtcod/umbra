@@ -29,6 +29,7 @@
 #include <stdio.h>
 #include <stdarg.h>
 
+TCOD_renderer_t UmbraEngine::renderer = TCOD_RENDERER_SDL;
 UmbraEngine * UmbraEngine::engineInstance = NULL;
 
 //constructor
@@ -225,15 +226,16 @@ void UmbraEngine::deactivateAll () {
     }
 }
 
-bool UmbraEngine::initialise () {
+bool UmbraEngine::initialise (TCOD_renderer_t renderer) {
     // autodetect fonts if needed
     bool retVal = registerFonts();
     //activate the base font
     if (retVal) {
+		UmbraEngine::renderer=renderer;
         UmbraConfig::activateFont();
         //initialise console
         TCODConsole::setCustomFont(UmbraConfig::font->filename(),UmbraConfig::font->flags(),UmbraConfig::font->columns(),UmbraConfig::font->rows());
-        TCODConsole::initRoot(getRootWidth(),getRootHeight(),windowTitle.c_str(), UmbraConfig::fullScreen);
+        TCODConsole::initRoot(getRootWidth(),getRootHeight(),windowTitle.c_str(), UmbraConfig::fullScreen, renderer);
         TCODSystem::setFps(25);
         TCODMouse::showCursor(true);
     }
@@ -356,11 +358,12 @@ void UmbraEngine::keyboard (TCOD_key_t &key) {
     }
 }
 
-void UmbraEngine::reinitialise () {
+void UmbraEngine::reinitialise (TCOD_renderer_t renderer) {
     delete TCODConsole::root;
     TCODConsole::root = NULL;
     TCODConsole::setCustomFont(UmbraConfig::font->filename(),UmbraConfig::font->flags(),UmbraConfig::font->columns(),UmbraConfig::font->rows());
-    TCODConsole::initRoot(getRootWidth(),getRootHeight(),windowTitle.c_str(), UmbraConfig::fullScreen);
+	UmbraEngine::renderer=renderer;
+    TCODConsole::initRoot(getRootWidth(),getRootHeight(),windowTitle.c_str(), UmbraConfig::fullScreen, this->renderer);
 }
 
 void UmbraEngine::registerInternalModule (UmbraInternalModuleID id, UmbraModule * module) {

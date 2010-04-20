@@ -52,7 +52,7 @@ void UmbraModBSOD::render () {
     bsod->clear();
     bsod->setForegroundColor(TCODColor::white);
     bsod->printFrame(0,0,30,8,true,TCOD_BKGND_NONE,"Umbra BSOD");
-    bsod->printCenterRect(15,2,28,5,TCOD_BKGND_NONE,UmbraError::getLastMessage());
+    bsod->printRectEx(15,2,28,5,TCOD_BKGND_NONE,TCOD_CENTER,UmbraError::getLastMessage());
     if (closeButton.mouseHover)
         bsod->setForegroundColor(TCODColor::red);
     bsod->putChar(closeButton.x,closeButton.y,'X',TCOD_BKGND_NONE);

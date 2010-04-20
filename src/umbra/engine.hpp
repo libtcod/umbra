@@ -81,8 +81,8 @@ class UmbraEngine {
 
         int registerModule (UmbraModule * module, int fallback = (-1)); //add a module to the modules list. returns id
         void registerFont (int columns, int rows, const char * filename, int flags = TCOD_FONT_LAYOUT_TCOD);
-        bool initialise (); //initialises the engine
-        void reinitialise ();
+        bool initialise (TCOD_renderer_t renderer = TCOD_RENDERER_SDL); //initialises the engine
+        void reinitialise (TCOD_renderer_t renderer = TCOD_RENDERER_SDL);
         int run (); //runs the engine
 
         void setWindowTitle (const char * title, ...);
@@ -119,13 +119,14 @@ class UmbraEngine {
         inline int getNbFonts() { return UmbraConfig::fonts.size(); }
         inline const char * getFontDir() { return UmbraConfig::fontDir; }
 
-        static void setRootDimensions (int w, int h) { UmbraConfig::rootWidth = w; UmbraConfig::rootHeight = h; getInstance()->reinitialise(); }
+        static void setRootDimensions (int w, int h) { UmbraConfig::rootWidth = w; UmbraConfig::rootHeight = h; getInstance()->reinitialise(renderer); }
 
     private:
         static UmbraEngine * engineInstance;
         std::string windowTitle;
         void keyboard (TCOD_key_t &key);
         bool paused;
+		static TCOD_renderer_t renderer;
 
         TCODList <UmbraModule*> modules; // list of all registered modules
         TCODList <UmbraModule*> activeModules; // currently active modules
