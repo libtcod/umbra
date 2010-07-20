@@ -70,5 +70,5 @@ void UmbraButton::render (TCODConsole * con) {
         return;
     con->printFrame(area.x,area.y,area.w,area.h,false,TCOD_BKGND_NONE,NULL);
     if (!tag.empty())
-        con->printCenterRect(area.x+(area.w/2),area.y+(area.h/2),area.w-2,area.h-2,TCOD_BKGND_NONE,tag.c_str());
+        con->printRectEx(area.x+(area.w/2),area.y+(area.h/2),area.w-2,area.h-2,TCOD_BKGND_NONE,TCOD_CENTER,tag.c_str());
 }

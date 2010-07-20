@@ -33,12 +33,12 @@ UmbraModule::UmbraModule () : priority(1),status(UMBRA_UNINITIALISED),
 
 void UmbraModule::setFadeIn (int lengthInMilli, TCODColor col) {
     fadeInLength = lengthInMilli;
-    fadeInColor = col;
+    fadeInColour = col;
 }
 
 void UmbraModule::setFadeOut (int lengthInMilli, TCODColor col) {
     fadeOutLength = lengthInMilli;
-    fadeOutColor = col;
+    fadeOutColour = col;
 }
 
 void UmbraModule::initialise () {

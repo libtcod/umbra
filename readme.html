@@ -86,20 +86,20 @@ This page requires JavaScript to function properly.<br /><br />If you are using 
 </pre>
 </div>
 <div title="ColorPalette">
-<pre>Background: #fff
-Foreground: #000
-PrimaryPale: #8cf
-PrimaryLight: #18f
-PrimaryMid: #04b
-PrimaryDark: #014
+<pre>Background: #202020
+Foreground: #d0d0d0
+PrimaryPale: #ffa
+PrimaryLight: #fa3
+PrimaryMid: #d61
+PrimaryDark: #740
 SecondaryPale: #ffc
-SecondaryLight: #fe8
-SecondaryMid: #db4
-SecondaryDark: #841
-TertiaryPale: #eee
-TertiaryLight: #ccc
-TertiaryMid: #999
-TertiaryDark: #666
+SecondaryLight: #fe4
+SecondaryMid: #fb0
+SecondaryDark: #f80
+TertiaryPale: #444
+TertiaryLight: #555
+TertiaryMid: #666
+TertiaryDark: #888
 Error: #f88
 </pre>
 </div>
@@ -797,7 +797,7 @@ else return 1;
 
 The errors are added automatically when something goes wrong inside Umbra, but the developer can also use the log to append custom error messages.</pre>
 </div>
-<div title="Fallbacks" modifier="Scautura" created="200911091937" modified="200911111205" changecount="9">
+<div title="Fallbacks" modifier="Mingos" created="200911091937" modified="201007201810" changecount="10">
 <pre>A fallback (not to be confused with a callback) is a simple integer ID number that can be assigned to any registered module.
 
 When a module is deactivated, it can adopt one of two behaviours:
@@ -809,7 +809,7 @@ This behaviour can be defined at the moment of module registering. The method th
 
 Let's see this in an example situation:
 &lt;code C++&gt;
-int main (void) {
+int main () {
     enum { MOD_CREDITS, MOD_MAINMENU }; //module IDs
     UmbraEngine engine;
     engine.registerModule(new Credits(),MOD_MAINMENU); //with fallback
@@ -823,7 +823,7 @@ In line 02. we declare an enumeration that coincides with the ID numbers that ar
 
 How will the engine behave? The first activated module is supposedly a credits screen, which is usually displayed only during a few seconds in order to honour copyright holders (in case of Umbra, the creators of SDL, libtcod and Umbra itself would be mentioned). When it ends, usually after a specified amount of time has passed, it will give place to another screen, usually related to the game. In our small example, it is a main menu screen. When the main menu ends, it will not fall back to any module automatically, as there are usually various possibilities for the main menu to end. It may trigger the character creation screen, savegame choice screen, options screen or simply end the game. For this reason, no fallback has been specified in line 05. Had it been assigned a fallback, the main menu would always fall back to the specified module, which is not desired.</pre>
 </div>
-<div title="Font autodetection" modifier="Scautura" created="200911050951" modified="200911111203" changecount="15">
+<div title="Font autodetection" modifier="Mingos" created="200911050951" modified="201007202136" changecount="16">
 <pre>By default Umbra will look for {{{font&lt;w&gt;x&lt;h&gt;[_&lt;layout&gt;].png}}} files in the {{{&quot;./data/img&quot;}}} directory. You can change this directory by adding a fontDir variable in umbra.txt, for example :
 &lt;code c++&gt;
 /*
@@ -839,8 +839,8 @@ config {
   fontDir = &quot;./fonts&quot;
 }
 &lt;/code&gt;
-If no font file is found, we fall back to the default libtcod behaviour : we'll try to use the default &quot;./terminal.png&quot; font file.
-Font files names must have the following format : 
+If no font file is found, we fall back to the default libtcod behaviour: we'll try to use the default {{{&quot;./terminal.png&quot;}}} font file.
+Font files names must have the following format: 
 {{{font&lt;w&gt;x&lt;h&gt;[_&lt;layout&gt;].png}}}
 w and h represent the character width and height in the font.
 layout is either {{{TCOD}}}, {{{ASCII_INCOL}}} or {{{ASCII_INROW}}}. If missing, {{{TCOD}}} is assumed. Fonts must be grayscale (see libtcod setCustomFont documentation).
@@ -849,7 +849,7 @@ Examples :
 {{{font10x10_ASCII_INCOL.png}}}: grayscale font with 10 pixels wide square characters, ASCII in columns layout
 {{{font10x12_ASCII_INROW.png}}}: grayscale font with non square characters, ASCII in rows layout
 
-All those fonts will be automatically registered and sorted by character &quot;size&quot; = width x height, smallest to biggest. When the game runs, you can switch the current font by pressing pageUp and pageDown (by default). The font selected will be remembered the next time you run the game.
+All those fonts will be automatically registered and sorted by character &quot;size&quot; = width * height, smallest to biggest. When the game runs, you can switch the current font by pressing pageUp and pageDown (by default). The font selected will be remembered the next time you run the game.
 
 If you want a finer control on the way fonts are loaded, you can register them manually using [[UmbraEngine::registerFont]].
 
@@ -936,18 +936,34 @@ Internal modules are widgets that can be activated in a number of ways. For inst
 
 http://umbrarumregnum.110mb.com/</pre>
 </div>
-<div title="Referencing the engine" modifier="jice" created="200911110037" modified="200911111018" changecount="11">
+<div title="PageTemplate" modifier="TiddlyThemes" created="200701130013" modified="200708091512" tags="MonochromeTheme" server.type="file" server.host="tiddlythemes.com/empties/Monochrome.html" server.page.revision="200708091512">
+<pre>&lt;div id='header' class='header' macro='gradient vert   #555555       #3b3b3b '&gt;
+        &lt;div class='siteTitle' refresh='content' tiddler='SiteTitle'&gt;&lt;/div&gt;
+        &lt;span id='topMenu' refresh='content' tiddler='MainMenu'&gt;&lt;/span&gt;
+&lt;/div&gt;
+
+&lt;div id='sidebar'&gt;
+&lt;div id='sidebarOptions' refresh='content' tiddler='SideBarOptions'&gt;&lt;/div&gt;
+&lt;div id='sidebarTabs' refresh='content' force='true' tiddler='SideBarTabs'&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id='displayArea'&gt;
+&lt;div id='messageArea'&gt;&lt;/div&gt;
+&lt;div id='tiddlerDisplay'&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;!--}}}--&gt;</pre>
+</div>
+<div title="Referencing the engine" modifier="Mingos" created="200911110037" modified="201007202132" changecount="12">
 <pre>Since the engine is the basic and most important class in all Umbra-powered applications, it is obvious that it needs to be referenced across the code. There are three ways of achieving this:
 #Via a global variable,
 #Via a static engine instance getter,
 #Via a helper method.
 !Global variable
 
-The simplest way to create a universal engine reference valid in all parts of code is to create a global engine instance. It will be available to all the classes throughout the source code. The global instance can be created by adding a declaration in main.hpp:
+The simplest way to create a universal engine reference valid in all parts of code is to create a global engine instance. It will be available to all the classes throughout the source code. The global instance can be created by adding a declaration in {{{main.hpp}}}:
 &lt;code C++&gt;
 extern UmbraEngine engine;
 &lt;/code&gt;
-and an implementation in main.cpp, before main(). This will allow to reference the engine by its global variable name:
+and an implementation in {{{main.cpp}}}, before {{{main()}}}. This will allow to reference the engine by its global variable name:
 &lt;code C++&gt;
 #include &lt;main.hpp&gt;
 UmbraEngine engine (&quot;data/cfg/umbra.txt&quot;,true,false);
@@ -1016,6 +1032,144 @@ Bear in mind that this method accepts printf-like text formatting. Ultimately, y
 <div title="Scautura" modifier="Scautura" created="200911111208" changecount="1">
 <pre>Proofreader. Nothing more.</pre>
 </div>
+<div title="SideBarOptions" modifier="TiddlyThemes" created="200701130013" modified="200708091512" tags="LewcidOrangeTheme" server.type="file" server.host="tiddlythemes.com/empties/LewcidOrange.html" server.page.revision="200708091512">
+<pre>&lt;&lt;closeAll&gt;&gt;&lt;&lt;permaview&gt;&gt;&lt;&lt;newTiddler&gt;&gt;&lt;&lt;newJournal 'DD MMM YYYY'&gt;&gt;&lt;&lt;saveChanges&gt;&gt;&lt;&lt;slider chkSliderOptionsPanel OptionsPanel 'options »' 'Change TiddlyWiki advanced options'&gt;&gt;</pre>
+</div>
+<div title="SideBarWG" modifier="TiddlyThemes" created="200701130013" modified="200708091512" tags="LewcidOrangeTheme" server.type="file" server.host="tiddlythemes.com/empties/LewcidOrange.html" server.page.revision="200708091512">
+<pre>/***
+This CSS by DaveBirss.
+***/
+/*{{{*/
+
+
+.tabSelected {
+ background: #fff;
+}
+
+.tabUnselected {
+ background: #eee;
+}
+
+#sidebar {
+ color: #000;
+ background: transparent; 
+}
+
+#sidebarOptions {
+ background: #fff;
+}
+
+#sidebarOptions input {
+	border: 1px solid #ccc;
+}
+
+#sidebarOptions input:hover, #sidebarOptions input:active,  #sidebarOptions input:focus {
+	border: 1px solid #000;
+}
+
+#sidebarOptions .button {
+ color: #999;
+}
+
+#sidebarOptions .button:hover {
+ color: #000;
+ background: #fff;
+ border-color:white;
+}
+
+#sidebarOptions .button:active {
+ color: #000;
+ background: #fff;
+}
+
+#sidebarOptions .sliderPanel {
+ background: transparent;
+}
+
+#sidebarOptions .sliderPanel A {
+ color: #999;
+}
+
+#sidebarOptions .sliderPanel A:hover {
+ color: #000;
+ background: #fff;
+}
+
+#sidebarOptions .sliderPanel A:active {
+ color: #000;
+ background: #fff;
+}
+
+.sidebarSubHeading {
+ color: #000;
+}
+
+#sidebarTabs {`
+ background: #fff
+}
+
+#sidebarTabs .tabSelected {
+ color: #000;
+ background: #fff;
+ border-top: solid 1px #ccc;
+ border-left: solid 1px #ccc;
+ border-right: solid 1px #ccc;
+ border-bottom: none;
+}
+
+#sidebarTabs .tabUnselected {
+ color: #999;
+ background: #eee;
+ border-top: solid 1px #ccc;
+ border-left: solid 1px #ccc;
+ border-right: solid 1px #ccc;
+ border-bottom: none;
+}
+
+#sidebarTabs .tabContents {
+ background: #fff;
+}
+
+
+#sidebarTabs .txtMoreTab .tabSelected {
+ background: #fff;
+}
+
+#sidebarTabs .txtMoreTab .tabUnselected {
+ background: #eee;
+}
+
+#sidebarTabs .txtMoreTab .tabContents {
+ background: #fff;
+}
+
+#sidebarTabs .tabContents .tiddlyLink {
+ color: #999;
+ border:none;
+}
+
+#sidebarTabs .tabContents .tiddlyLink:hover {
+ background: #fff;
+ color: #000;
+ border:none;
+}
+
+#sidebarTabs .tabContents {
+ color: #000;
+}
+
+#sidebarTabs .button {
+ color: #666;
+}
+
+#sidebarTabs .tabContents .button:hover {
+ color: #000;
+ background: #fff;
+}
+
+#sidebar {color:#999;}
+/*}}}*/</pre>
+</div>
 <div title="SiteSubtitle" modifier="Mingos" created="200910241742" changecount="1">
 <pre>a generic engine for libtcod-based applications</pre>
 </div>
@@ -1035,8 +1189,8 @@ If UmbraEngine is initialised with the additional callbacks enabled (see [[Umbra
 
 Please remember to use a code profiler, such as gprof, to profile your code. Speedo is not a profiler, it can merely inform you of possible performance issues, but will not identify any bottlenecks in the program.</pre>
 </div>
-<div title="Starting a project using Umbra" modifier="Mingos" created="201003301731" modified="201003301732" changecount="3">
-<pre>Umbra is not a library, but a collection of c++ code files. As such, absolutely no linking is required to start using Umbra.
+<div title="Starting a project using Umbra" modifier="Mingos" created="201003301731" modified="201007202131" changecount="4">
+<pre>Umbra is not a library, but a collection of C++ code files. As such, absolutely no linking is required to start using Umbra.
 
 What is necessary, however, is adding the code that comes with Umbra to your project. Since you're not likely to want to modify Umbra files, save in some corner cases where you might need a higher grade of customisation, you are advised to place Umbra files in a separate directory so that they don't distract you from your own code.
 
@@ -1046,10 +1200,246 @@ Once you have done that, all you need to do to be able to start using Umbra is i
 &lt;/code&gt;
 Umbra requires libtcod to run, so it already includes it, and therefore you are not required to include it separately.</pre>
 </div>
-<div title="StyleSheet" modifier="Jonny Gerold" created="200904132312" server.type="file" server.host="dl.getdropbox.com/u/52078/Notes/Notes.html" server.page.revision="200904132312">
-<pre>[[StyleSheetSyntaxHighlighter]]</pre>
+<div title="StyleSheet" modifier="Mingos" created="200701130013" modified="201007202109" tags="MonochromeTheme" server.type="file" server.host="tiddlythemes.com/empties/Monochrome.html" server.page.revision="200708091512" changecount="3">
+<pre>[[StyleSheetSyntaxHighlighter]]
+
+/*{{{*/
+/*Monochrome Theme for TiddlyWiki*/
+/*Design and CSS by Saq Imtiaz*/
+/*Version 1.0*/
+/*}}}*/
+/*{{{*/
+
+body {background:#3B3B3B; color:#C3C3C3; font:12px Verdana, Helvetica, sans-serif;
+	}
+
+#header {padding: 0em 0em 0em 0em; background:transparent;	font-family: arial,helvetica; font-size:12px;
+ }
+
+.siteTitle {
+padding-top:5px;
+float:left;
+font-family: 'Trebuchet MS' sans-serif;
+font-weight: bold;
+font-size: 32px;
+color: #ccc; margin-right:2em;margin-left:0.5em;
+}
+
+#topMenu br {display:none;}
+#topMenu a, #topMenu .tiddlyLink, #topMenu .button {margin:0em; color:#666; padding:15px 15px 10px 15px;padding-top:1.6em;border:none; border-right: 1px solid #666;float:left;}
+#topMenu {border-left: 1px solid #666;  float:left;margin:0;}
+#topMenu a:hover {color:#ccc; background:#3b3b3b;}
+
+#displayArea {margin-left:1.35em; margin-right:17.65em; margin-top:0.5em; padding-top:1em; padding-bottom:10px;}
+
+.tiddler {background:#454545; margin-bottom:20px; padding:1em 2em 1em 2em;}
+
+a, a:hover{
+color:#fff;
+text-decoration: none; background:transparent;
+}
+
+.viewer a, .viewer a:hover{border-bottom:1px dotted #fff; font-weight:normal;}
+
+.viewer .button, .editorFooter .button{
+color: #fff;
+border: 1px solid #fff;
+}
+
+.viewer .button:hover,
+.editorFooter .button:hover, .viewer .button:active, .viewer .highlight,.editorFooter .button:active, .editorFooter .highlight{
+color: #fff;
+background: #3B3B3B;
+border-color: #3B3B3B;
+}
+
+.title {color:#ccc; font-family:'Lucida Grande', Verdana, Sans-Serif; font-size:1.5em;
+}
+
+.subtitle, .subtitle a { color: #777; font-size: 0.95em;margin:0.2em;}
+.shadow .title{color:#777;}
+
+.toolbar {font-size:90%;}
+.selected .toolbar a {color:#666;border:0;}
+.selected .toolbar a:hover {color:#999; background:transparent;border:0;}
+
+.toolbar .button:hover, .toolbar .highlight, .toolbar .marked, .toolbar a.button:active{color:#666;border:0; background:transparent;border:0;}
+
+.tagging, .tagged {
+border: 1px solid #555;
+background-color: 	#444;
+}
+
+.selected .tagging, .selected .tagged {
+background-color: 	#3B3B3B;
+border: 1px solid #666;
+}
+
+.tagging .listTitle, .tagged .listTitle {
+color: #666;
+}
+
+.selected .tagging .listTitle, .selected .tagged .listTitle {
+color: #aaa;
+}
+
+.tagging .button, .tagged .button {
+color:		#838383;
+}
+.selected .tagging .button, .selected .tagged .button {
+color:#c3c3c3;
+}
+
+.highlight, .marked {background:transparent; color:#111; border:none; text-decoration:underline;}
+
+.tagging .button:hover, .tagged .button:hover, .tagging .button:active, .tagged .button:active {
+border: none; background:transparent; text-decoration:underline; color:#333;
+}
+
+#sidebarOptions {margin-top:1em;}
+#sidebar {margin-right:1.35em;}
+
+#sidebarTabs .tabContents {	
+	font-family: arial,helvetica;}
+
+#sidebarOptions a, #sidebarOptions a:hover{border:none;color:#666;}
+#sidebarOptions a:hover, #sidebarOptions a:active {background:#454545; color:#ccc;}
+#sidebarTabs .tabContents {background:#454545;border:0px solid #666; border-right:1px solid #454545;}
+#sidebarOptions input {background:#ccc; border:1px solid #666;}
+
+#sidebarTabs .tabContents .tiddlyLink, #sidebarTabs .tabContents .button{color:#666;font-weight:normal;}
+#sidebarTabs .tabContents .tiddlyLink:hover, #sidebarTabs .tabContents .button:hover {color:#ccc; background:transparent;}
+.listTitle {color:#777;}
+
+#sidebarTabs .tabSelected,#sidebarTabs .tabSelected:hover{background:#454545;border:none;color:#ccc; border:1px solid #454545;}
+#sidebarTabs .tabUnselected{background:#3B3B3B; border:1px solid #454545; color:#666;}
+
+   #sidebarTabs .txtMoreTab .tabSelected,
+   #sidebarTabs .txtMoreTab .tab:hover,
+   #sidebarTabs .txtMoreTab .tabContents{
+color: #ccc;
+background: #3B3B3B; border:1px solid #3B3B3B;
+}
+
+   #sidebarTabs .txtMoreTab .tabUnselected {
+
+color: #777; border:1px solid #3B3B3B;
+background: #454545;
+}
+
+
+#sidebarTabs .tabContents .button:hover, #sidebarTabs .tabContents .highlight, #sidebarTabs .tabContents .marked, #sidebarTabs .tabContents a.button:active{color:#ccc; background:transparent;}
+
+   #sidebarOptions .sliderPanel {
+background: #454545; font-size: .9em;
+}
+
+#sidebarOptions .sliderPanel input {border:1px solid #666; background:#ccc;}
+#sidebarOptions .sliderPanel .txtOptionInput {border:1px solid #666;width:9em;}
+
+#sidebarOptions .sliderPanel a {font-weight:normal; color:#666;background-color: #454545; border-bottom:1px dotted #333;}
+
+#sidebarOptions .sliderPanel a:hover {
+color:#ccc;
+background-color: #454545;
+border:none;
+border-bottom:1px dotted #111;
+}
+
+.popup {
+background: #3B3B3B;
+border: 1px solid #454545;
+}
+
+.popup li.disabled {
+color: #000;
+}
+
+.popup li a, .popup li a:visited {
+color: #777;
+border: none;
+}
+
+.popup li a:hover {
+background: #3b3b3b;
+color: #c3c3c3;
+border: none;
+}
+.popup hr {
+	color: #777;
+	background: #777;
+	border-bottom: 1px;
+}
+
+.listBreak div{
+	border-bottom: 1px solid #777;
+}
+
+#messageArea {
+border: 4px dotted #ccc;
+background: #454545;
+color: #777;
+font-size:90%;
+}
+
+#messageArea .button{
+
+color: #3B3B3B;
+background:#ccc;
+border: 1px solid #ccc;
+}
+
+#messageArea .button:hover {
+
+color: #ccc;
+background: #3B3B3B;
+border-color: #3B3B3B;
+}
+
+.viewer blockquote {
+border-left: 5px solid 		#3B3B3B; background:#3B3B3B
+}
+
+.viewer table, .viewer td {
+border: 1px solid 	#2E2E2E;
+}
+
+.viewer th, thead td {
+background: #3B3B3B;
+border: 1px solid #3B3B3B;
+color: #ccc;
+}
+.viewer pre {
+border: 1px solid #3b3b3b;
+background: #5F5F5F;
+}
+
+.viewer code {
+color: #c3c3c3; background:#5f5f5f;
+}
+
+.viewer hr {
+border-top: dashed 1px #222; margin:0 1em;
+}
+
+.editor input {
+border: 1px solid #ccc; margin-top:5px;
+}
+
+.editor textarea {
+border: 1px solid #ccc;
+}
+
+h1,h2,h3,h4,h5 { color: 		#9c9c9c; background: transparent; padding-bottom:2px; font-family: Arial, Helvetica, sans-serif; }
+h1 {font-size:18px;}
+h2 {font-size:16px;}
+h3 {font-size: 14px;}
+
+a.tiddlyLinkExisting, a.tiddlyLinkExisting:hover {
+    font-weight: bold;
+}</pre>
 </div>
-<div title="StyleSheetSyntaxHighlighter" modifier="Jonny Gerold" created="200904132302" server.type="file" server.host="dl.getdropbox.com/u/52078/Notes/Notes.html" server.page.revision="200904132302">
+<div title="StyleSheetSyntaxHighlighter" modifier="Mingos" created="200904132302" modified="201007202130" server.type="file" server.host="dl.getdropbox.com/u/52078/Notes/Notes.html" server.page.revision="200904132302" changecount="3">
 <pre>/***
 StyleSheet for ~SyntaxHighlighter
 ***/
@@ -1236,10 +1626,10 @@ StyleSheet for ~SyntaxHighlighter
 
 /* Language specific styles */
 
-.dp-highlighter .comment, .dp-highlighter .comments { color: #008200; background-color: inherit; }
+.dp-highlighter .comment, .dp-highlighter .comments { color: #808080; background-color: inherit; }
 .dp-highlighter .string { color: blue; background-color: inherit; }
-.dp-highlighter .keyword { color: #069; font-weight: bold; background-color: inherit; }
-.dp-highlighter .preprocessor { color: gray; background-color: inherit; }
+.dp-highlighter .keyword { color: navy; font-weight: bold; background-color: inherit; }
+.dp-highlighter .preprocessor { color: green; background-color: inherit; }
 
 /*}}}*/</pre>
 </div>
@@ -1294,31 +1684,31 @@ There needs to be one and only one instance of the engine, no more, no less. Aft
 
 Once the initialisation is successful, the engine can be run. Running the engine initiates the main program loop. In it, modules are executed, activated and deactivated, mouse and keyboard input is read and so on. This is when the program is actually executed.</pre>
 </div>
-<div title="Things to do before initialising the engine" modifier="Mingos" created="200911112124" changecount="1">
+<div title="Things to do before initialising the engine" modifier="Mingos" created="200911112124" modified="201007202134" changecount="2">
 <pre>A freshly instantiated engine is as good as no engine at all. It will probably refuse to initialise, and even if it doesn't, it will instantly close itself as soon as it is run. That's why certain things should be done before initialising the engine.
 
 First of all, the engine will need modules to run. Without them, the application will close itself. Writing the modules in question isn't enough, one also needs to inform the engine of their existence by registering them.
 
-At least one of the registered modules will also need to be activated, as even a bunch of registered engines will result in an application that instantly closes itself if there's not a single active module to run.
+At least one of the registered modules will also need to be activated, as even a bunch of registered modules will result in an application that instantly closes itself if there's not a single active module to run.
 
 Fonts can be registered as well, although in certain circumstances this is not mandatory.
 
 More actions can be performed as well, although they are optional.</pre>
 </div>
-<div title="Umbra Hello World" modifier="Mingos" created="200911082305" modified="200911082346" changecount="14">
+<div title="Umbra Hello World" modifier="Mingos" created="200911082305" modified="201007202127" changecount="15">
 <pre>Let's begin with source code for a //Hello world// program. First, let's create the following {{{main.hpp}}} file:
 &lt;code C++&gt;
 #include &quot;umbra.hpp&quot; //assumes its search directory is known
 
 class HelloWorld : public UmbraModule {
-    void render (void);
+    void render ();
 };
 &lt;/code&gt;
 Then, let's create the following {{{main.cpp}}} file:
 &lt;code C++&gt;
 #include &quot;main.hpp&quot;
 
-void HelloWorld::render (void) {
+void HelloWorld::render () {
     TCODConsole::root-&gt;printLeft(0,0,TCOD_BKGND_NONE,&quot;Hello world!&quot;);
 }
 
@@ -1342,26 +1732,26 @@ After implementing the method in {{{main.cpp}}}, we can finally write the heart 
 
 Finally, we reach the point where the module is registered and active, and the only missing thing is running the engine. First, we need to initialise it, and if the initialisation is successful, run the engine. That's it, this is the code that powers a &quot;Hello world&quot; program made with Umbra.</pre>
 </div>
-<div title="UmbraEngine" modifier="Mingos" created="200910241822" modified="200911111444" changecount="46">
+<div title="UmbraEngine" modifier="Mingos" created="200910241822" modified="201007202118" changecount="51">
 <pre>The class UmbraEngine contains the heart of Umbra. An instance of UmbraEngine needs to be created in order for Umbra to become alive:
 
 &lt;code C++&gt;
 UmbraEngine engine;
 &lt;/code&gt;
 
-Umbra will look for its umbra.txt configuration file in ./data/cfg/ by default. If you want it in another directory, use this syntax ;
+Umbra will look for its {{{umbra.txt}}} configuration file in {{{./data/cfg/}}} by default. If you want it in another directory, use this syntax ;
 
 &lt;code C++&gt;
-UmbraEngine engine ( &quot;./config&quot; );
+UmbraEngine engine(&quot;./config&quot;);
 &lt;/code&gt;
 
-Then, several [[UmbraModule]]s need to be declared. The modules are assigned unique id numbers. The first registered module has id=0, the second one has id=1 and so on. Make sure you can refer to those modules in some way, for instance, by creating an enumeration with unique names. The registerModule function also returns the registered module id.
+Then, several [[UmbraModule]]s need to be declared. The modules are assigned unique id numbers. The first registered module has {{{id=0}}}, the second one has {{{id=1}}} and so on. Make sure you can refer to those modules in some way, for instance, by creating an enumeration with unique names. The registerModule function also returns the registered module id.
 
 &lt;code C++&gt;
 engine.registerModule(new Credits());
 &lt;/code&gt;
 
-You can also register a module with a fallback module that will be automatically activated when the current module is deactivated (when its update function returns false) :
+You can also register a module with a fallback module that will be automatically activated when the current module is deactivated (when its update function returns {{{false}}}):
 
 &lt;code C++&gt;
 int mainMenuId = engine.registerModule(new MainMenu());
@@ -1416,7 +1806,35 @@ else return 1;
 :[[UmbraEngine::setRootDimensions]]
 :[[UmbraEngine::setWindowTitle]]</pre>
 </div>
-<div title="UmbraEngine::activateModule" modifier="Mingos" created="200911081445" modified="200911082256" changecount="5">
+<div title="UmbraEngine::activateFont" modifier="Mingos" created="201007201539" modified="201007201803" changecount="11">
+<pre>Activates a previously registered font.
+
+;construction:
+&lt;code C++&gt;
+bool activateFont (
+    int shift = 0
+);
+&lt;/code&gt;
+
+;parametres:
+:{{{int shift}}}: a value of 0 will cause no effect at all. This is the default value, so specifying none will also cause no effect. A positive value will switch to the next font in the registered fonts list. A negative value will switch to the previous font in the registered fonts list.
+
+;return value:
+:{{{bool}}}: {{{true}}} if the requested font could be activated, {{{false}}} otherwise.
+
+;remarks:
+:This method will reinitialise the root console.
+:If the engine is created with the {{{registerDefaultCallbacks}}} parametre set to {{{true}}}, this method can be accessed anytime during the application runtime by pressing the page up and page down keys.
+
+;see also:
+:[[UmbraModule::getFontDir]]
+:[[UmbraModule::getFontID]]
+:[[UmbraEngine::getCurrentFontID]]
+:[[UmbraModule::registerFont]]
+:[[UmbraEngine::getNbFonts]]
+:[[Font autodetection]]</pre>
+</div>
+<div title="UmbraEngine::activateModule" modifier="Mingos" created="200911081445" modified="201007201800" changecount="9">
 <pre>Puts a module on the activation list. It will be activated in the next main game loop iteration (next frame).
 
 ;construction:
@@ -1434,8 +1852,13 @@ void activateModule (
 );
 &lt;/code&gt;
 
+;parametres:
+:{{{int moduleId}}} - the ID number of a module, returned by the [[UmbraEngine::registerModule]] method.
+:{{{UmbraModule * mod}}} - pointer to a module, returned by the [[UmbraEngine::getModule]] methods.
+:{{{UmbraInternalModuleID id}}} - the ID number of an internal module, as defined in the [[UmbraInternalModuleID]] enum.
+
 ;return value:
-:void
+:{{{void}}}
 
 ;remarks:
 :You may use three ways of specifying a module: either specify the integer user module ID, pass a reference to the module in question, or specify an internal module ID.
@@ -1459,18 +1882,20 @@ engine.activateModule(UMBRA_INTERNAL_SPEEDOMETER); //internal module ID
 ;see also:
 :[[UmbraEngine::deactivateModule]]</pre>
 </div>
-<div title="UmbraEngine::deactivateAll" modifier="Mingos" created="200911082255" modified="200911082256" changecount="2">
+<div title="UmbraEngine::deactivateAll" modifier="Mingos" created="200911082255" modified="201007201802" changecount="4">
 <pre>Deactivates all active modules in order to end the program.
 
 ;construction:
 &lt;code C++&gt;
 void deactivateAll (
-    void
 );
 &lt;/code&gt;
 
+;parametres:
+:none
+
 ;return value:
-:void
+:{{{void}}}
 
 ;remarks:
 :If the program is supposed to end, calling this method will deactivate all modules and end the main program loop.
@@ -1488,7 +1913,7 @@ class MyModule : public UmbraModule {
 ;see also:
 :[[UmbraEngine::deactivateModule]]</pre>
 </div>
-<div title="UmbraEngine::deactivateModule" modifier="Mingos" created="200911081458" modified="200911111435" changecount="7">
+<div title="UmbraEngine::deactivateModule" modifier="Mingos" created="200911081458" modified="201007201802" changecount="10">
 <pre>Puts a module on the deactivation list. It will be deactivated in the next main game loop iteration (next frame).
 
 ;construction:
@@ -1506,8 +1931,13 @@ void deactivateModule (
 );
 &lt;/code&gt;
 
+;parametres:
+:{{{int moduleId}}} - the ID number of a module, returned by the [[UmbraEngine::registerModule]] method.
+:{{{UmbraModule * mod}}} - pointer to a module, returned by the [[UmbraEngine::getModule]] methods.
+:{{{UmbraInternalModuleID id}}} - the ID number of an internal module, as defined in the [[UmbraInternalModuleID]] enum.
+
 ;return value:
-:void
+:{{{void}}}
 
 ;remarks:
 :You may use three ways of specifying a module: either specify the integer user module ID, pass a reference to the module in question, or specify an internal module ID.
@@ -1534,15 +1964,17 @@ engine.deactivateModule(UMBRA_INTERNAL_SPEEDOMETER); //internal module ID
 ;see also:
 :[[UmbraEngine::activateModule]]</pre>
 </div>
-<div title="UmbraEngine::getInstance" modifier="Mingos" created="200911091623" modified="201004021301" changecount="3">
+<div title="UmbraEngine::getInstance" modifier="Mingos" created="200911091623" modified="201007201802" changecount="5">
 <pre>Returns a pointer the the engine.
 
 ;construction:
 &lt;code C++&gt;
 static UmbraEngine * getInstance (
-    void
 );
 &lt;/code&gt;
+
+;parametres:
+:none
 
 ;return value:
 :{{{UmbraEngine*}}}: a pointer to the engine
@@ -1561,7 +1993,7 @@ UmbraEngine::getInstance()-&gt;registerFont(32,8,&quot;data/img/font10x10.png&qu
 :[[UmbraModule::getEngine]]
 :[[UmbraCallback::getEngine]]</pre>
 </div>
-<div title="UmbraEngine::getModule" modifier="Mingos" created="200911081506" modified="200911081543" changecount="2">
+<div title="UmbraEngine::getModule" modifier="Mingos" created="200911081506" modified="201007201804" changecount="5">
 <pre>retrieves a reference to the module with the ID passed in the argument.
 
 ;construction:
@@ -1575,8 +2007,12 @@ UmbraModule * getModule (
 );
 &lt;/code&gt;
 
+;parametres:
+:{{{int moduleId}}}: the ID number of a module, returned by the [[UmbraEngine::registerModule]] method.
+:{{{UmbraInternalModuleID id}}}: the ID number of an internal module, as defined in the [[UmbraInternalModuleID]] enum.
+
 ;return value:
-:reference to the UmbraModule object with the specified ID
+:{{{UmbraModule*}}}: reference to the UmbraModule object with the specified ID
 
 ;remarks:
 :Both user modules (integer ID) and internal modules (UmbraInternalModuleID) can be retrieved that way.
@@ -1591,18 +2027,20 @@ UmbraModule * mod = engine.getModule (modID); //registered user module
 UmbraModule * mod2 = engine.getModule (UMBRA_INTERNAL_SPEEDOMETER); //an internal module
 &lt;/code&gt;</pre>
 </div>
-<div title="UmbraEngine::initialise" modifier="Mingos" created="200911091904" modified="200911091905" changecount="2">
+<div title="UmbraEngine::initialise" modifier="Mingos" created="200911091904" modified="201007201805" changecount="4">
 <pre>Initialises the engine.
 
 ;construction:
 &lt;code C++&gt;
 bool initialise (
-    void
 );
 &lt;/code&gt;
 
+;parametres:
+:none
+
 ;return value:
-:boolean (whether the engine has been successfully initialised)
+:{{{boolean}}}: {{{true}}} if the engine has been initialised successfully, {{{false}}} otherwise.
 
 ;remarks:
 :In order to start running, the engine needs to be initialised first.
@@ -1619,7 +2057,7 @@ else return 1;
 ;see also:
 :[[UmbraModule::run]]</pre>
 </div>
-<div title="UmbraEngine::registerFont" modifier="Mingos" created="200911051013" modified="201003231656" changecount="7">
+<div title="UmbraEngine::registerFont" modifier="Mingos" created="200911051013" modified="201007201808" changecount="10">
 <pre>Registers a font file to be used by libtcod.
 
 ;construction:
@@ -1628,11 +2066,18 @@ void UmbraEngine::registerFont (
     int columns, 
     int rows,
     const char * filename, 
-    int flags);
+    int flags
+);
 &lt;/code&gt;
 
+;parametres:
+:{{{int columns}}}: the number of columns in the font image file
+:{{{int rows}}}: the number of rown int the font image file
+:{{{const char * filename}}}: the name of the file containing the font image
+:{{{int flags}}}: the flags that should be used to register the font. Please refer to ''libtcod'' documentation to check the available flags.
+
 ;return value:
-:void
+:{{{void}}}
 
 ;remarks:
 :If you don't want Umbra to use [[Font autodetection]], you have to register your font(s) manually before initialising the engine.
@@ -1650,10 +2095,11 @@ engine.registerFont(32,8,&quot;./fonts/arial10x10.png&quot;, TCOD_FONT_LAYOUT_TC
 :[[UmbraEngine::activateFont]]
 :[[UmbraEngine::getFontID]]
 :[[UmbraEngine::getFontDir]]
+:[[UmbraEngine::getCurrentFontID]]
 :[[UmbraEngine::getNbFonts]]
-:[[FontAutodetection]]</pre>
+:[[Font autodetection]]</pre>
 </div>
-<div title="UmbraEngine::registerModule" modifier="Scautura" created="200911091644" modified="200911111215" changecount="4">
+<div title="UmbraEngine::registerModule" modifier="Mingos" created="200911091644" modified="201007201809" changecount="8">
 <pre>Registers a user defined module for future activation.
 
 ;construction:
@@ -1664,8 +2110,12 @@ int registerModule (
 );
 &lt;/code&gt;
 
+;parametre:
+:{{{UmbraModule * module}}}: a pointer to the module to be registered.
+:{{{int fallback}}}: ID number of the module to be activated once the registered one is deactivated (module fallback). A value of -1 sets the fallback off. Specifying no value also sets the fallback off.
+
 ;return value:
-:The registered module's integer ID number.
+:{{{int}}}: the registered module's ID number.
 
 ;remarks:
 :The method requires the creation of a pointer to a module. The easiest way to achieve this is to call the {{{new}}} operator inside the method's argument.
@@ -1682,18 +2132,20 @@ int mod2 = engine.registerModule(new MyModule2(),mod1); //mod2 = 1; falls back t
 ;see also:
 :[[Fallbacks]]</pre>
 </div>
-<div title="UmbraEngine::run" modifier="Mingos" created="200911111442" modified="200911111443" changecount="2">
+<div title="UmbraEngine::run" modifier="Mingos" created="200911111442" modified="201007201811" changecount="4">
 <pre>Initiates the main game loop, effectively running the application.
 
 ;construction:
 &lt;code C++&gt;
 int run (
-    void
 );
 &lt;/code&gt;
 
+;parametres:
+:none
+
 ;return value:
-:integer (0 on successful exit or other number on abnormal termination). In case a nonzero value is returned, you should check the error log, as it will probably contain the description of the bug that caused the method to return an error.
+:{{{int}}}: 0 on successful exit or other number on abnormal termination. In case a nonzero value is returned, you should check the error log, as it will probably contain the description of what caused the error.
 
 ;remarks:
 :The engine needs to be run to initiate the application's main loop. The engine needs to be instantiated and successfully initialised before it can be run.
@@ -1713,7 +2165,7 @@ else
 ;see also:
 :[[UmbraEngine::initialise]]</pre>
 </div>
-<div title="UmbraEngine::setWindowTitle" modifier="Mingos" created="201003302007" changecount="1">
+<div title="UmbraEngine::setWindowTitle" modifier="Mingos" created="201003302007" modified="201007201814" changecount="6">
 <pre>Sets the game window title.
 
 ;construction:
@@ -1724,11 +2176,13 @@ void setWindowTitle (
 );
 &lt;/code&gt;
 
+;parametres:
+:{{{const char * title}}}: the string containing the window's title. Uses {{{printf}}}-like formatting.
+
 ;return value:
-:none
+:{{{void}}}
 
 ;remarks:
-:The title string uses printf-like formatting.
 :This method should be used prior to calling [[UmbraEngine::initialise]]. Should the title change afterwards, the change will be seen only after calling [[UmbraEngine::reinitialise]].
 
 ;example:
@@ -1743,9 +2197,10 @@ else return 1;
 &lt;/code&gt;
 
 ;see also:
+:[[UmbraEngine::initialise]]
 :[[UmbraEngine::reinitialise]]</pre>
 </div>
-<div title="UmbraError" modifier="Mingos" created="201003301723" changecount="1">
+<div title="UmbraError" modifier="Mingos" created="201003301723" modified="201007202120" changecount="2">
 <pre>UmbraError is a static class that does not take part in handling game itself. As its name implies, it is there to handle errors and aid in preventing the occurrence of errors. It is essentially a list of all logged errors, which you can use for debugging.
 
 UmbraError has five public methods, all of which you are welcome to call at any point in your program. These are:
@@ -1755,11 +2210,11 @@ UmbraError has five public methods, all of which you are welcome to call at any 
 * [[UmbraError::getMessage]] retrieves any message, providing you know at which position it was logged
 * [[UmbraError::getNbErrors]] retrieves the total number of logged errors
 
-Umbra uses this class internally in many situations to notify you of any possible mistakes, such as trying to load a module that hasn't been initialised yet. The last logged message can be displayed onstderr (default behaviour), but if Umbra is in debug mode, it will also activate a warning prompt, humorously called the [[BSOD]].
+Umbra uses this class internally in many situations to notify you of any possible mistakes, such as trying to load a module that hasn't been initialised yet. The last logged message can be displayed on {{{stderr}}} (default behaviour), but if Umbra is in debug mode, it will also activate a warning prompt, humorously called the [[BSOD]].
 
-Should any error be logged during the program execution, an error log file called errorlog.txt will be created in the program's execution directory for your review. Please remember to read it if there are any issues, as it may contain indications regarding what you can do to repair the issue.</pre>
+Should any error be logged during the program execution, an error log file called {{{errorlog.txt}}} will be created in the program's execution directory for your review. Please remember to read it if there are any issues, as it may contain indications regarding what you can do to repair the issue.</pre>
 </div>
-<div title="UmbraError::add" modifier="Mingos" created="201003301902" modified="201003301912" changecount="6">
+<div title="UmbraError::add" modifier="Mingos" created="201003301902" modified="201007201813" changecount="9">
 <pre>Appends an error message to the error list in the log.
 
 ;construction:
@@ -1774,12 +2229,15 @@ static int add (
 );
 &lt;/code&gt;
 
+;parametres:
+:{{{const char * errStr}}}: the string contaning the error message. The string uses {{{printf}}}-like formatting.
+:{{{std::string errStr}}}: the string contaning the error message.
+
 ;return value:
-:Integer: error ID number in the error log.
+:{{{int}}}: error ID number in the error log.
 
 ;remarks:
 :Using this method will append an error the the error log, display it on stderr (typically, the console) and ensure that the error log is saved to a text file.
-:The version that takes a {{{const char *}}} as argument, accepts printf-like formatting.
 
 ;example:
 &lt;code C++&gt;
@@ -1791,7 +2249,7 @@ if (errorCondition) {
 }
 &lt;/code&gt;</pre>
 </div>
-<div title="UmbraError::fileExists" modifier="Mingos" created="201003301940" modified="201003301943" changecount="3">
+<div title="UmbraError::fileExists" modifier="Mingos" created="201003301940" modified="201007201816" changecount="5">
 <pre>Checks whether a given file exists.
 
 ;construction:
@@ -1802,12 +2260,14 @@ static bool fileExists (
 );
 &lt;/code&gt;
 
+;parametres:
+:{{{const char * filename}}}: the name of the file whose existence needs to be confirmed. The string accepts a {{{printf}}}-like formatting.
+
 ;return value:
-:Boolean: {{{true}}} if the specified file exists, {{{false}}} otherwise.
+:{{{bool}}}: {{{true}}} if the specified file exists, {{{false}}} otherwise.
 
 ;remarks:
 :This method is best used to prevent crashes due to a missing file. Useful for confirming the existence of data and configuration files.
-:The file name can be formatted like in printf-like functions.
 
 ;example:
 &lt;code C++&gt;
@@ -1820,7 +2280,7 @@ if (!UmbraError::fileExists(&quot;my/directory/missingfile.txt&quot;)) {
 ;see also:
 :[[UmbraError::add]]</pre>
 </div>
-<div title="UmbraInternalModuleID" modifier="Mingos" created="200911081536" modified="200911081541" changecount="5">
+<div title="UmbraInternalModuleID" modifier="Mingos" created="200911081536" modified="201007202126" changecount="6">
 <pre>ID numbers for all internal modules available in Umbra.
 
 ;enumeration
@@ -1849,24 +2309,24 @@ engine.activateModule(UMBRA_INTERNAL_SPEEDOMETER);
 ;see also
 :[[UmbraEngine::displayError]]</pre>
 </div>
-<div title="UmbraModule" modifier="Mingos" created="200910241828" modified="201004011559" changecount="30">
-<pre>UmbraModule is a single &quot;chunk&quot; of your game, with its own renderer and keybindings. It might be the main menu, the character creation screen, the overworld view, the trading screen or whatever you think needs a separate view. Modules might also be sub-screens like dialogs or widgets (your inventory dialog for example). Finally, modules can be some non-visual game logic you want to be able to easily enable or disable. In that case, you would only override the update() method and leave an empty render() method.
+<div title="UmbraModule" modifier="Mingos" created="200910241828" modified="201007202125" changecount="33">
+<pre>UmbraModule is a single &quot;chunk&quot; of the game, with its own renderer and keybindings. It might be the main menu, the character creation screen, the overworld view, the trading screen or whatever might need a separate view. Modules might also be sub-screens like dialogs or widgets (the inventory dialog for example). Finally, modules can be some non-visual game logic one might want to easily enable or disable. In that case, it's only necessary override the {{{update()}}} method and leave an empty {{{render()}}} method.
 
-By default, an activated module will do nothing. It will simply stay here in memory until it's deactivated. You can add features to it by overriding some on its methods:
+By default, an activated module will do nothing. It will simply stay there in memory until it's deactivated. Features can be added to it to it by overriding some of its methods:
 
-The [[UmbraModule::initialise]] is called only once: when the module is activated for the first time. You can put in there all costly resource loading stuff like bitmap loading.
+The [[UmbraModule::initialise]] is called only once: when the module is activated for the first time. All costly resource loading stuff like bitmap loading can be put there.
 
-Modules can be activated by calling one of the [[UmbraEngine::activateModule]] functions. The [[UmbraModule::activate]] is called each time the module is activated. You can reset some internal data in this function.
+Modules can be activated by calling one of the [[UmbraEngine::activateModule]] functions. The [[UmbraModule::activate]] is called each time the module is activated. It's possible to reset some internal data in this function.
 
-A module is deactivated when its update function returns false or when the [[UmbraEngine::deactivateModule]] function is called. The [[UmbraModule::deactivate]] function is called each time the module is deactivated. Put your module termination code here.
+A module is deactivated when its {{{update()}}} function returns false or when the [[UmbraEngine::deactivateModule]] function is called. The [[UmbraModule::deactivate]] function is called each time the module is deactivated. Module termination code should be placed there.
 
 The main Umbra game loop has 3 phases:
-* Control management
-* World updating
-* World rendering
-During the control management phase, [[UmbraModule::keyboard]] and [[UmbraModule::mouse]] methods are called for each active module.
-During the world updating phase, [[UmbraModule::update]] is called for each active module. In this function, your module can activate or deactivate other modules using [[UmbraEngine::activateModule]] and [[UmbraEngine::deactivateModule]] methods. The updated module can deactivate itself by returning false in this method.
-During the render phase, [[UmbraModule::render]] is called for each active module.
+# Control management
+# World updating
+# World rendering
+* During the control management phase, [[UmbraModule::keyboard]] and [[UmbraModule::mouse]] methods are called for each active module.
+* During the world updating phase, [[UmbraModule::update]] is called for each active module. In this function, the module can activate or deactivate other modules using [[UmbraEngine::activateModule]] and [[UmbraEngine::deactivateModule]] methods. The updated module can deactivate itself by returning false in this method.
+* During the render phase, [[UmbraModule::render]] is called for each active module.
 
 ;Methods:
 :[[UmbraModule::activate]]
@@ -1960,21 +2420,23 @@ UmbraEngine * UmbraModule::getEngine (
 :[[UmbraEngine::getInstance]]
 </pre>
 </div>
-<div title="UmbraModule::initialise" modifier="Mingos" created="201003312342" modified="201003312343" changecount="2">
+<div title="UmbraModule::initialise" modifier="Mingos" created="201003312342" modified="201007201831" changecount="4">
 <pre>Custom code executed at module initialisation.
 
 ;construction:
 &lt;code C++&gt;
 virtual void initialise (
-    void
 );
 &lt;/code&gt;
 
+;parametres:
+:none
+
 ;return value:
-:none (void)
+:{{{void}}}
 
 ;remarks:
-:This method will be called automatically when the module is activated for the first time. This method shall be called once and only once.
+:This method will be called automatically when the module is activated for the first time. It shall be called once and only once.
 :It may contain any code, typically some resource allocation which cannot be done in the module's constructor.
 :Should memory be allocated in this method, it is wise to deallocate it in the destructor.
 
@@ -2017,7 +2479,7 @@ bool isPaused (
 ;see also:
 :[[UmbraModule::setPause]]</pre>
 </div>
-<div title="UmbraModule::keyboard" modifier="Mingos" created="201003312316" modified="201003312332" changecount="5">
+<div title="UmbraModule::keyboard" modifier="Mingos" created="201003312316" modified="201007201845" changecount="6">
 <pre>Handles keyboard input.
 
 ;construction:
@@ -2027,18 +2489,31 @@ virtual void keyboard (
 );
 &lt;/code&gt;
 
+;parametres:
+:{{{TCOD_key_t &amp;key}}}: address of the {{{TCOD_key_t}}} variable, catching keyboard input.
+
 ;return value:
-:none (void)
+:{{{void}}}
 
 ;remarks:
 :This method will be called automatically each frame. It shouldn't be called manually, but rather overloaded in each module.
 :You should put only what's relevant to the given module in this method. Each module may react to different keybindings.
 :It is a good idea to zero the {{{key}}} variable out in case a relevant keystroke is detected so that modules with a lower priority don't parse the same keystroke again.
 
+;example:
+&lt;code C++&gt;
+void MyModule::keyboard (TCOD_key_t &amp;key) {
+    if (key.vk == TCODK_SPACE) {
+        doSomething();
+        key.vk = TCODK_NONE;
+    }
+}
+&lt;/code&gt;
+
 ;see also:
 :[[UmbraModule::mouse]]</pre>
 </div>
-<div title="UmbraModule::mouse" modifier="Mingos" created="201003312321" modified="201003312332" changecount="3">
+<div title="UmbraModule::mouse" modifier="Mingos" created="201003312321" modified="201007202011" changecount="4">
 <pre>Handles mouse input.
 
 ;construction:
@@ -2048,12 +2523,25 @@ virtual void mouse (
 );
 &lt;/code&gt;
 
+;parametres:
+:{{{TCOD_mouse_t &amp;ms}}}: address of the {{{TCOD_mouse_t}}} variable that collects mouse events.
+
 ;return value:
-:none (void)
+:{{{void}}}
 
 ;remarks:
 :This method will be called automatically each frame. It shouldn't be called manually, but rather overloaded in each module.
 :It is a good idea to zero the {{{ms}}} variable out in case some relevant input (usually a click in a given area) is parsed, otherwise modules with a lower priority will try to parse the same input.
+
+;example:
+&lt;code C++&gt;
+void MyModule::mouse (TCOD_mouse_t &amp;ms) {
+    if (ms.lbutton) {
+        doSomething();
+        ms.lbutton = 0;
+    }
+}
+&lt;/code&gt;
 
 ;see also:
 :[[UmbraModule::keyboard]]</pre>
@@ -2081,18 +2569,20 @@ virtual void pause (
 :[[UmbraModule::deactivate]]
 :[[UmbraModule::resume]]</pre>
 </div>
-<div title="UmbraModule::render" modifier="Mingos" created="201003312308" modified="201003312332" changecount="2">
+<div title="UmbraModule::render" modifier="Mingos" created="201003312308" modified="201007202102" changecount="4">
 <pre>Handles rendering on the screen.
 
 ;construction:
 &lt;code C++&gt;
 virtual void render (
-    void
 );
 &lt;/code&gt;
 
+;parametres:
+:none
+
 ;return value:
-:none (void)
+:{{{void}}}
 
 ;remarks:
 :This method will be called automatically each frame. It shouldn't be called manually, but rather overloaded in each module.
@@ -2123,7 +2613,7 @@ virtual void resume (
 :[[UmbraModule::deactivate]]
 :[[UmbraModule::pause]]</pre>
 </div>
-<div title="UmbraModule::setActive" modifier="Mingos" created="201004011536" modified="201004011541" changecount="2">
+<div title="UmbraModule::setActive" modifier="Mingos" created="201004011536" modified="201007202103" changecount="3">
 <pre>Activates or deactivates the module.
 
 ;construction:
@@ -2133,11 +2623,13 @@ void setActive (
 );
 &lt;/code&gt;
 
+;parametres
+:{{{bool active}}}: a value of {{{true}}} tells the method to activate the module. A value of {{{false}}} deactivates the module.
+
 ;return value:
-:none (void)
+:{{{void}}}
 
 ;remarks:
-:If the argument is {{{true}}}, the module will be activated, if it's {{{false}}}, the module will be deativated.
 :Note that when a module is activated or deactivated, [[UmbraModule::activate]] or [[UmbraModule::deactivate]], respectively, are called in the following iteration of the main application loop.
 
 ;see also:
@@ -2145,8 +2637,8 @@ void setActive (
 :[[UmbraModule::activate]]
 :[[UmbraModule::deactivate]]</pre>
 </div>
-<div title="UmbraModule::setFadeIn" modifier="Mingos" created="200910251957" modified="201004011605" changecount="50">
-<pre>@@This is a work in progress feature. As of April 2010, it does not work in Umbra.@@
+<div title="UmbraModule::setFadeIn" modifier="Mingos" created="200910251957" modified="201007202111" changecount="52">
+<pre>@@This is a work in progress feature. As of July 2010, it does not work in Umbra.@@
 
 Sets fade in duration for the module, in milliseconds.
 
@@ -2179,8 +2671,8 @@ mod-&gt;setFadeIn(1000,TCODColor::blue);
 :[[UmbraModule::setFadeOut]]
 </pre>
 </div>
-<div title="UmbraModule::setFadeOut" modifier="Mingos" created="201004011550" modified="201004021254" changecount="7">
-<pre>@@This is a work in progress feature. As of April 2010, it does not work in Umbra.@@
+<div title="UmbraModule::setFadeOut" modifier="Mingos" created="201004011550" modified="201007202111" changecount="8">
+<pre>@@This is a work in progress feature. As of July 2010, it does not work in Umbra.@@
 
 Sets fade out duration for the module, in milliseconds.
 
@@ -2234,7 +2726,7 @@ void setFallback (
 :[[UmbraModule::getFallback]]
 :[[UmbraEngine::registerModule]]</pre>
 </div>
-<div title="UmbraModule::setPause" modifier="Mingos" created="201004011543" changecount="1">
+<div title="UmbraModule::setPause" modifier="Mingos" created="201004011543" modified="201007202116" changecount="3">
 <pre>Pauses or unpauses the module.
 
 ;construction:
@@ -2244,11 +2736,13 @@ void setPause (
 );
 &lt;/code&gt;
 
+;parametres
+:{{{bool paused}}}: {{{true}}} pauses the module, {{{false}}} unpauses it.
+
 ;return value:
-:none (void)
+:{{{void}}}
 
 ;remarks:
-:If the argument is {{{true}}}, the module will be paused, if it's {{{false}}}, the module will be unpaused.
 :Note that when a module is paused or unpaused, [[UmbraModule::pause]] or [[UmbraModule::resume]], respectively, are called in the following iteration of the main application loop.
 
 ;see also:
@@ -2256,21 +2750,24 @@ void setPause (
 :[[UmbraModule::pause]]
 :[[UmbraModule::resume]]</pre>
 </div>
-<div title="UmbraModule::update" modifier="Mingos" created="200911121749" modified="201003312332" changecount="4">
+<div title="UmbraModule::update" modifier="Mingos" created="200911121749" modified="201007202115" changecount="5">
 <pre>Updates the module's internal logic.
 
 ;construction:
 &lt;code C++&gt;
 virtual bool update (
-    void
 );
 &lt;/code&gt;
 
+;parametres:
+:none
+
 ;return value:
-:boolean, indicating whether the module is still active or not (returning {{{false}}} will deactivate the module).
+:{{{bool}}}: the method is expected to return {{{true}}} if the module should remain active in the next main loop iteration, {{{false}}} if it should be deactivated.
 
 ;remarks:
 :This method will be called automatically each frame. It shouldn't be called manually, but rather overloaded in each module.
+:The developer is expected to adhere to the rules concerning the return value. Making the method return a value of {{{false}}} will deactivate the module.
 
 ;see also:
 :[[UmbraModule::render]]</pre>

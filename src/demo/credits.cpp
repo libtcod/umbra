@@ -57,6 +57,6 @@ void Credits::render () {
     credits->setForegroundColor(TCODColor::white);
     credits->setBackgroundColor(TCODColor::black);
     credits->printFrame(0,0,48,11,true,TCOD_BKGND_SET,NULL);
-    credits->printCenterRect(24,1,46,9,TCOD_BKGND_NONE,text.c_str());
+    credits->printRectEx(24,1,46,9,TCOD_BKGND_NONE,TCOD_CENTER,text.c_str());
     TCODConsole::blit(credits,0,0,rect.w,rect.h,TCODConsole::root,rect.x,rect.y,1.0f,0.75f);
 }

@@ -48,7 +48,7 @@ void RabbitWidget::render () {
     rabbit->setForegroundColor(TCODColor::white);
     rabbit->setBackgroundColor(TCODColor::black);
     rabbit->printFrame(0,0,24,12,true,TCOD_BKGND_SET,"Wake up, Neo");
-    rabbit->printCenterRect(12,2,24,6,TCOD_BKGND_NONE,"The Matrix has you. Press OK to follow the white rabbit.");
+    rabbit->printRectEx(12,2,24,6,TCOD_BKGND_NONE,TCOD_CENTER,"The Matrix has you. Press OK to follow the white rabbit.");
     if (dragZone.mouseHover || isDragging) {
         rabbit->setBackgroundColor(TCODColor::lightRed);
         rabbit->rect(5,0,14,1,false,TCOD_BKGND_SET);

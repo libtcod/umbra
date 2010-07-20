@@ -16,7 +16,7 @@
 					<Add option="-g" />
 				</Compiler>
 				<Linker>
-					<Add library="..\libtcod-1.5.1\lib\libtcod-mingw-debug.a" />
+					<Add library="..\libtcod\lib\libtcod-mingw-debug.a" />
 				</Linker>
 			</Target>
 			<Target title="Demo Release WIN">
@@ -29,7 +29,7 @@
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
-					<Add library="..\libtcod-1.5.1\lib\libtcod-mingw.a" />
+					<Add library="..\libtcod\lib\libtcod-mingw.a" />
 				</Linker>
 			</Target>
 			<Target title="Demo Debug LINUX">
@@ -71,7 +71,7 @@
 					<Add option="-g" />
 				</Compiler>
 				<Linker>
-					<Add library="..\libtcod-1.5.1\lib\libtcod-mingw-debug.a" />
+					<Add library="..\libtcod\lib\libtcod-mingw-debug.a" />
 				</Linker>
 			</Target>
 			<Target title="Fovbench Release WIN">
@@ -84,7 +84,7 @@
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
-					<Add library="..\libtcod-1.5.1\lib\libtcod-mingw.a" />
+					<Add library="..\libtcod\lib\libtcod-mingw.a" />
 				</Linker>
 			</Target>
 			<Target title="Fovbench Debug LINUX">
@@ -121,7 +121,7 @@
 		<Compiler>
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
-			<Add directory="..\libtcod-1.5.1\include" />
+			<Add directory="..\libtcod\include" />
 			<Add directory="src" />
 		</Compiler>
 		<Unit filename="src\demo\credits.cpp">
