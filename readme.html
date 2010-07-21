@@ -2772,6 +2772,65 @@ virtual bool update (
 ;see also:
 :[[UmbraModule::render]]</pre>
 </div>
+<div title="UmbraPoint" modifier="Mingos" created="201007211209" modified="201007211219" changecount="4">
+<pre>The class UmbraPoint is one of the additions to the [[UmbraWidget]] that differentiate it from an [[UmbraModule]]. As the name implies, it defines the behaviour of a single point (or, more accurately, a single cell on the console).
+
+The UmbraPoint is used within every [[UmbraWidget]] to define the behaviour of 2 points: the minimise button and the close button. The method [[UmbraWidget::mouse]], which is supposed to be called in each iteration of the main application loop (see below), will automatically register mouse hover and mouse down events, which may then be used to trigger events such as a rollover, etc.
+
+!Constructor
+In order to create a point, one of two constructors may be used. The first one takes no arguments at all:
+&lt;code C++&gt;
+UmbraPoint p;
+&lt;/code&gt;
+This will create a point at the position {{{[0,0]}}} of the parent widget. The point's position can be then changed using the [[UmbraPoint::set]] method.
+
+The second constructor addresses the necessity of setting a point's position within a widget and accepts the coordinates as parametres:
+&lt;code C++&gt;
+UmbraPoint p(10,1);
+&lt;/code&gt;
+
+The mouse events are set to false initially.
+
+!Mouse events in a widget
+A widget declaration should also contain the mouse parser method declaration:
+&lt;code C++&gt;
+class MyWidget: public UmbraWidget {
+    ...
+    void mouse(TCOD_mouse_t &amp;ms);
+    ...
+};
+&lt;/code&gt;
+The problem is that the developer shouldn't be fored to think about UmbraPoint and [[UmbraRect]] mouse events updating in each widget separately. That's why [[UmbraWidget]] overrides this method as well and takes care of the mouse events for [[UmbraPoint]]s and [[UmbraRect]]s present par default in every widget.
+
+Unfortunately, this method needs to be called manually. This is done by calling [[UmbraWidget::mouse]] at the beginning of the mouse parsing method:
+&lt;code C++&gt;
+void MyWidget::mouse(TCOD_mouse_t &amp;ms) {
+    UmbraWidget::mouse(ms);
+    ...
+}
+&lt;/code&gt;
+This ensures the possibility to write custom mouse code (for instance, when defining additional elements that should react to the mouse) while at the same time retaining the functionality of the default widget elements. For more information, please refer to [[UmbraWidget::mouse]].
+
+!Setting and getting mouse events
+The UmbraPoint has two boolean members that are used to indicate the mouse status relative to the point: {{{mouseHover}}} and {{{mouseDown}}}. They are public members, so they can be set and retrieved directly:
+&lt;code C++&gt;
+UmbraPoint p;
+... //some code here
+p.mouseHover = false;
+if (p.mouseDown) doSomething();
+&lt;/code&gt;
+
+The member function [[UmbraPoint::is]] is used for detecting mouse hover - please refer to this method description for additional information.
+
+;methods:
+:[[UmbraPoint::is]]
+:[[UmbraPoint::set]]
+
+;see also:
+:[[UmbraRect]]
+:[[UmbraWidget]]
+:[[UmbraWidget::mouse]]</pre>
+</div>
 <div title="Using Umbra" modifier="Mingos" created="200910241814" modified="201003301726" changecount="23">
 <pre>#Basics
 ##[[Starting a project using Umbra]]
