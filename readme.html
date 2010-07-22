@@ -1806,7 +1806,7 @@ else return 1;
 :[[UmbraEngine::setRootDimensions]]
 :[[UmbraEngine::setWindowTitle]]</pre>
 </div>
-<div title="UmbraEngine::activateFont" modifier="Mingos" created="201007201539" modified="201007201803" changecount="11">
+<div title="UmbraEngine::activateFont" modifier="Mingos" created="201007201539" modified="201007221226" changecount="13">
 <pre>Activates a previously registered font.
 
 ;construction:
@@ -1827,10 +1827,9 @@ bool activateFont (
 :If the engine is created with the {{{registerDefaultCallbacks}}} parametre set to {{{true}}}, this method can be accessed anytime during the application runtime by pressing the page up and page down keys.
 
 ;see also:
-:[[UmbraModule::getFontDir]]
-:[[UmbraModule::getFontID]]
-:[[UmbraEngine::getCurrentFontID]]
-:[[UmbraModule::registerFont]]
+:[[UmbraEngine::getFontDir]]
+:[[UmbraEngine::getFontID]]
+:[[UmbraEngine::registerFont]]
 :[[UmbraEngine::getNbFonts]]
 :[[Font autodetection]]</pre>
 </div>
@@ -1964,6 +1963,31 @@ engine.deactivateModule(UMBRA_INTERNAL_SPEEDOMETER); //internal module ID
 ;see also:
 :[[UmbraEngine::activateModule]]</pre>
 </div>
+<div title="UmbraEngine::getFontID" modifier="Mingos" created="201007220558" modified="201007221226" changecount="4">
+<pre>Gets the ID number of the font that is currently in use.
+
+;construction:
+&lt;code C++&gt;
+int getFontID (
+);
+&lt;/code&gt;
+
+;parametres:
+:none
+
+;return value:
+:{{{int}}}: the ID number of the currently used font
+
+;remarks:
+:none
+
+;see also:
+:[[UmbraEngine::activateFont]]
+:[[UmbraEngine::getFontDir]]
+:[[UmbraEngine::registerFont]]
+:[[UmbraEngine::getNbFonts]]
+:[[Font autodetection]]</pre>
+</div>
 <div title="UmbraEngine::getInstance" modifier="Mingos" created="200911091623" modified="201007201802" changecount="5">
 <pre>Returns a pointer the the engine.
 
@@ -2027,6 +2051,31 @@ UmbraModule * mod = engine.getModule (modID); //registered user module
 UmbraModule * mod2 = engine.getModule (UMBRA_INTERNAL_SPEEDOMETER); //an internal module
 &lt;/code&gt;</pre>
 </div>
+<div title="UmbraEngine::getNbFonts" modifier="Mingos" created="201007221228" changecount="1">
+<pre>Gets the total number of registered fonts.
+
+;construction:
+&lt;code C++&gt;
+int getNbFonts (
+);
+&lt;/code&gt;
+
+;parametres:
+:none
+
+;return value:
+:{{{int}}}: the number of fonts that are currently registered and ready for use.
+
+;remarks:
+:none
+
+;see also:
+:[[UmbraEngine::activateFont]]
+:[[UmbraEngine::getFontDir]]
+:[[UmbraEngine::getFontID]]
+:[[UmbraEngine::registerFont]]
+:[[Font autodetection]]</pre>
+</div>
 <div title="UmbraEngine::initialise" modifier="Mingos" created="200911091904" modified="201007201805" changecount="4">
 <pre>Initialises the engine.
 
@@ -2057,7 +2106,7 @@ else return 1;
 ;see also:
 :[[UmbraModule::run]]</pre>
 </div>
-<div title="UmbraEngine::registerFont" modifier="Mingos" created="200911051013" modified="201007201808" changecount="10">
+<div title="UmbraEngine::registerFont" modifier="Mingos" created="200911051013" modified="201007221227" changecount="11">
 <pre>Registers a font file to be used by libtcod.
 
 ;construction:
@@ -2095,7 +2144,6 @@ engine.registerFont(32,8,&quot;./fonts/arial10x10.png&quot;, TCOD_FONT_LAYOUT_TC
 :[[UmbraEngine::activateFont]]
 :[[UmbraEngine::getFontID]]
 :[[UmbraEngine::getFontDir]]
-:[[UmbraEngine::getCurrentFontID]]
 :[[UmbraEngine::getNbFonts]]
 :[[Font autodetection]]</pre>
 </div>
