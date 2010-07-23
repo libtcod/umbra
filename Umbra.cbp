@@ -5,7 +5,7 @@
 		<Option title="Umbra" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
-		<Option virtualFolders="Umbra\;Umbra\Headers\;Umbra\Sources\;FOV Benchmark\;FOV Benchmark\Sources\;FOV Benchmark\Headers\;Umbra Demo\;Umbra Demo\Headers\;Umbra Demo\Sources\;" />
+		<Option virtualFolders="Umbra\;Umbra\Headers\;Umbra\Sources\;FOV Benchmark\;FOV Benchmark\Sources\;FOV Benchmark\Headers\;Umbra Demo\;Umbra Demo\Headers\;Umbra Demo\Sources\;Umbra Invaders\;Umbra Invaders\Sources\;Umbra Invaders\Headers\;" />
 		<Build>
 			<Target title="Demo Debug WIN">
 				<Option output="umbra-demo-debug" prefix_auto="0" extension_auto="1" />
@@ -104,6 +104,61 @@
 			</Target>
 			<Target title="Fovbench Release LINUX">
 				<Option output="fovbench-release" prefix_auto="0" extension_auto="1" />
+				<Option object_output="obj\" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+					<Add option="-Wl,-rpath,lib" />
+					<Add library="lib\libtcod.so" />
+					<Add library="lib\libtcodxx.so" />
+				</Linker>
+			</Target>
+			<Target title="Invaders Debug WIN">
+				<Option output="invaders-debug" prefix_auto="0" extension_auto="1" />
+				<Option object_output="obj\" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+				<Linker>
+					<Add library="..\libtcod\lib\libtcod-mingw-debug.a" />
+				</Linker>
+			</Target>
+			<Target title="Invaders Release WIN">
+				<Option output="invaders-release" prefix_auto="0" extension_auto="1" />
+				<Option object_output="obj\" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+					<Add library="..\libtcod\lib\libtcod-mingw.a" />
+				</Linker>
+			</Target>
+			<Target title="Invaders Debug LINUX">
+				<Option output="invaders-debug" prefix_auto="0" extension_auto="1" />
+				<Option object_output="obj\" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+				<Linker>
+					<Add option="-lefence" />
+					<Add option="-Wl,-rpath,lib" />
+					<Add library="lib\libtcod_debug.so" />
+					<Add library="lib\libtcodxx_debug.so" />
+				</Linker>
+			</Target>
+			<Target title="Invaders Release LINUX">
+				<Option output="invaders-release" prefix_auto="0" extension_auto="1" />
 				<Option object_output="obj\" />
 				<Option type="0" />
 				<Option compiler="gcc" />
@@ -249,6 +304,55 @@
 			<Option target="Fovbench Release WIN" />
 			<Option target="Fovbench Debug LINUX" />
 			<Option target="Fovbench Release LINUX" />
+		</Unit>
+		<Unit filename="src\invaders\entities.cpp">
+			<Option virtualFolder="Umbra Invaders\Sources\" />
+			<Option target="Invaders Debug WIN" />
+			<Option target="Invaders Release WIN" />
+			<Option target="Invaders Debug LINUX" />
+			<Option target="Invaders Release LINUX" />
+		</Unit>
+		<Unit filename="src\invaders\entities.hpp">
+			<Option virtualFolder="Umbra Invaders\Headers\" />
+			<Option target="Invaders Debug WIN" />
+			<Option target="Invaders Release WIN" />
+			<Option target="Invaders Debug LINUX" />
+			<Option target="Invaders Release LINUX" />
+		</Unit>
+		<Unit filename="src\invaders\gameview.cpp">
+			<Option virtualFolder="Umbra Invaders\Sources\" />
+			<Option target="Invaders Debug WIN" />
+			<Option target="Invaders Release WIN" />
+			<Option target="Invaders Debug LINUX" />
+			<Option target="Invaders Release LINUX" />
+		</Unit>
+		<Unit filename="src\invaders\gameview.hpp">
+			<Option virtualFolder="Umbra Invaders\Headers\" />
+			<Option target="Invaders Debug WIN" />
+			<Option target="Invaders Release WIN" />
+			<Option target="Invaders Debug LINUX" />
+			<Option target="Invaders Release LINUX" />
+		</Unit>
+		<Unit filename="src\invaders\main.cpp">
+			<Option virtualFolder="Umbra Invaders\Sources\" />
+			<Option target="Invaders Debug WIN" />
+			<Option target="Invaders Release WIN" />
+			<Option target="Invaders Debug LINUX" />
+			<Option target="Invaders Release LINUX" />
+		</Unit>
+		<Unit filename="src\invaders\main.hpp">
+			<Option virtualFolder="Umbra Invaders\Headers\" />
+			<Option target="Invaders Debug WIN" />
+			<Option target="Invaders Release WIN" />
+			<Option target="Invaders Debug LINUX" />
+			<Option target="Invaders Release LINUX" />
+		</Unit>
+		<Unit filename="src\invaders\utilities.hpp">
+			<Option virtualFolder="Umbra Invaders\Headers\" />
+			<Option target="Invaders Debug WIN" />
+			<Option target="Invaders Release WIN" />
+			<Option target="Invaders Debug LINUX" />
+			<Option target="Invaders Release LINUX" />
 		</Unit>
 		<Unit filename="src\umbra\callback.cpp">
 			<Option virtualFolder="Umbra\Sources\" />
