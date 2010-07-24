@@ -27,20 +27,67 @@
 
 #include "entities.hpp"
 
-Entity::Entity() {
-	removeFromList = false;
-}
+/* Entity */
+
+Entity::Entity() {}
 
 void Entity::render() {
 	TCODConsole::root->putChar(coords.x,coords.y,'*',TCOD_BKGND_NONE);
 }
 
-bool Entity::move(int sx, int sy) {
-	coords.offset(sx,sy);
+bool Entity::move(int sx, int sy, uint32 curTime) {
+	if (lastMovementTime + speed <= curTime) {
+		coords.offset(sx,sy);
+		lastMovementTime = curTime;
+	}
 	return true;
 }
 
-bool Ship::move(int sx, int sy) {
-	coords.offset(sx,sy);
+/* Ship */
+
+Ship::Ship() {
+	speed = 200;
+	shootingSpeed = 500;
+	lastMovementTime = lastShotTime = 0;
+	coords = Point(MAXX/2, MAXY-3);
+}
+
+bool Ship::move(int sx, int sy, uint32 curTime) {
+	if (lastMovementTime + speed <= curTime) {
+		coords.offset(sx,sy);
+		lastMovementTime = curTime;
+	}
 	return true;
+}
+
+void Ship::shoot(TCODList <Entity*> *entities, uint32 curTime) {
+	if (lastShotTime + shootingSpeed <= curTime) {
+		lastShotTime = curTime;
+		entities->push(new Bullet(coords));
+	}
+}
+
+void Ship::render() {
+	TCODConsole::root->printEx(coords.x,coords.y,TCOD_BKGND_NONE,TCOD_CENTER,"A\nbMd");
+}
+
+/* Bullet */
+
+Bullet::Bullet(Point p) {
+	speed = 50;
+	lastMovementTime = 0;
+	coords = p;
+}
+
+bool Bullet::move(int sx, int sy, uint32 curTime) {
+	if (lastMovementTime + speed <= curTime) {
+		if (coords.y == 0) return false;
+		coords.offset(sx,sy);
+		lastMovementTime = curTime;
+	}
+	return true;
+}
+
+void Bullet::render() {
+	TCODConsole::root->putChar(coords.x,coords.y,'|',TCOD_BKGND_NONE);
 }

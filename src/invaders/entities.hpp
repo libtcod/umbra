@@ -34,19 +34,30 @@ class Entity {
 	protected:
 		uint32 speed;
 		uint32 lastMovementTime;
-		bool removeFromList;
 	public:
 		Point coords;
-		virtual bool move(int sx, int sy);
+		virtual bool move(int sx, int sy, uint32 curTime);
 		virtual void render();
 		Entity();
 		virtual ~Entity() {}
 };
 
 class Ship: public Entity {
+	private:
+		uint32 lastShotTime;
+		uint32 shootingSpeed;
 	public:
-		Ship() { speed = 300; lastMovementTime = 0; coords = Point(MAXX/2, MAXY-1); }
-		bool move(int sx, int sy);
+		Ship();
+		bool move(int sx, int sy, uint32 curTime);
+		void render();
+		void shoot(TCODList <Entity*> *entities, uint32 curTime);
+};
+
+class Bullet: public Entity {
+	public:
+		bool move(int sx, int sy, uint32 curTime);
+		void render();
+		Bullet(Point p);
 };
 
 #endif

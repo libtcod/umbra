@@ -29,10 +29,27 @@
 #include "gameview.hpp"
 
 void GameView::keyboard(TCOD_key_t &key) {
-	if (key.vk == TCODK_LEFT) ship.move(-1,0);
-	else if (key.vk == TCODK_RIGHT) ship.move(1,0);
+	if (key.vk == TCODK_LEFT) ship.move(-1,0,elapsedTime);
+	else if (key.vk == TCODK_RIGHT) ship.move(1,0,elapsedTime);
+	else if (key.vk == TCODK_SPACE) ship.shoot(&entities,elapsedTime);
+}
+
+bool GameView::update() {
+	elapsedTime = TCODSystem::getElapsedMilli();
+	//move entities. Shots that go off the screen (move returns false) are removed.
+	Entity ** it;
+	for (it = entities.begin(); it != entities.end(); it++)
+		if ((*it)->move(0,-1,elapsedTime) == false) removeList.push(*it);
+	//eliminate the removed entities
+	for (it = removeList.begin(); it != removeList.end(); it++)
+		entities.remove(*it);
+	return true;
 }
 
 void GameView::render() {
+	TCODConsole::root->printEx(0,0,TCOD_BKGND_NONE,TCOD_LEFT,"Elapsed time: %d",elapsedTime);
 	ship.render();
+	Entity ** it;
+	for (it = entities.begin(); it != entities.end(); it++)
+		(*it)->render();
 }

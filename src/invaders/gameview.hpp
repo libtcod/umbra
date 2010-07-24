@@ -33,12 +33,14 @@
 class GameView: public UmbraModule {
 	private:
 		Ship ship;
+		uint32 elapsedTime;
+		TCODList <Entity*> entities;
+		TCODList <Entity*> removeList;
 	public:
-		bool update() { return true; }
+		bool update();
 		void render();
 		void keyboard (TCOD_key_t &key);
-		GameView() { ship = Ship(); }
-
+		GameView() { ship = Ship(); elapsedTime = 0; }
 };
 
 #endif

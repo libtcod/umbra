@@ -34,6 +34,8 @@ int main()
 {
     //set window title
     engine.setWindowTitle("Umbra Invaders");
+    //set keyboard mode
+    engine.setKeyboardMode(UMBRA_KEYBOARD_PRESSED);
     //declare modules
     engine.registerModule(new GameView());
     //activate modules
