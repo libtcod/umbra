@@ -1,6 +1,6 @@
 /*
 * Umbra
-* Copyright (c) 2009 Dominik Marczuk, Jice
+* Copyright (c) 2009 Mingos, Jice
 * All rights reserved.
 *
 * Redistribution and use in source and binary forms, with or without
@@ -10,13 +10,13 @@
 *     * Redistributions in binary form must reproduce the above copyright
 *       notice, this list of conditions and the following disclaimer in the
 *       documentation and/or other materials provided with the distribution.
-*     * The names of Dominik Marczuk or Jice may not be used to endorse or promote products
+*     * The names of Mingos or Jice may not be used to endorse or promote products
 *       derived from this software without specific prior written permission.
 *
-* THIS SOFTWARE IS PROVIDED BY DOMINIK MARCZUK & JICE ``AS IS'' AND ANY
+* THIS SOFTWARE IS PROVIDED BY MINGOS & JICE ``AS IS'' AND ANY
 * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
 * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-* DISCLAIMED. IN NO EVENT SHALL DOMINIK MARCZUK OR JICE BE LIABLE FOR ANY
+* DISCLAIMED. IN NO EVENT SHALL MINGOS OR JICE BE LIABLE FOR ANY
 * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
 * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
 * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
@@ -42,17 +42,11 @@ class UmbraModule {
 
         //setters
         inline void setFallback (int fback) { fallback = fback; } //set default fallback module's index
-        void setFadeIn (int lengthInMilli, TCODColor col = TCODColor::black); //set fade lengths in milliseconds
-        void setFadeOut (int lengthInMilli, TCODColor col = TCODColor::black); //set fade lengths in milliseconds
         void setActive (bool active);
         void setPause (bool paused);
 
         //getters
         inline int getFallback () { return fallback; }
-        inline int getFadeInLength () { return fadeInLength; }
-        inline int getFadeOutLength () { return fadeOutLength; }
-        inline TCODColor getFadeInColour () { return fadeInColour; }
-        inline TCODColor getFadeOutColour () { return fadeOutColour; }
         inline bool isPaused () { return status == UMBRA_PAUSED; }
         inline bool isActive () { return status > UMBRA_INACTIVE; }
         inline UmbraEngine * getEngine () { return UmbraEngine::getInstance(); }
@@ -70,8 +64,4 @@ class UmbraModule {
     private:
         UmbraModuleStatus status;
         int fallback; //fallback module's index
-        int fadeInLength;
-        TCODColor fadeInColour;
-        int fadeOutLength;
-        TCODColor fadeOutColour;
 };

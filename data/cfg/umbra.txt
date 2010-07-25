@@ -8,5 +8,5 @@ config {
   fontID = 2
   fullScreen = false
   debug = true
-  fontDir = "data/img"
+  fontDir = "data/img/"
 }

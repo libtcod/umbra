@@ -1,6 +1,6 @@
 /*
 * Umbra
-* Copyright (c) 2009 Dominik Marczuk, Jice
+* Copyright (c) 2009 Mingos, Jice
 * All rights reserved.
 *
 * Redistribution and use in source and binary forms, with or without
@@ -10,13 +10,13 @@
 *     * Redistributions in binary form must reproduce the above copyright
 *       notice, this list of conditions and the following disclaimer in the
 *       documentation and/or other materials provided with the distribution.
-*     * The names of Dominik Marczuk or Jice may not be used to endorse or promote products
+*     * The names of Mingos or Jice may not be used to endorse or promote products
 *       derived from this software without specific prior written permission.
 *
-* THIS SOFTWARE IS PROVIDED BY DOMINIK MARCZUK & JICE ``AS IS'' AND ANY
+* THIS SOFTWARE IS PROVIDED BY MINGOS & JICE ``AS IS'' AND ANY
 * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
 * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-* DISCLAIMED. IN NO EVENT SHALL DOMINIK MARCZUK OR JICE BE LIABLE FOR ANY
+* DISCLAIMED. IN NO EVENT SHALL MINGOS OR JICE BE LIABLE FOR ANY
 * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
 * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
 * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
@@ -32,11 +32,12 @@
 GameView::GameView() {
 	ship = Ship();
 	elapsedTime = 0;
+	alienCount = 0;
 	int i, j;
-	for (i = 10; i < MAXX-10; i += 5) for (j = 10; j < 25; j += 2)
+	for (i = 10; i < MAXX-10; i += 5) for (j = 10; j < 25; j += 2) {
 		entities.push(new Alien(Point(i,j)));
-	for (i = 0; i < MAXX; i++) for (j = 0; j < MAXY; j++)
-		alienMap[i][j] = NULL;
+		alienCount++;
+	}
 }
 
 void GameView::keyboard(TCOD_key_t &key) {
@@ -55,7 +56,6 @@ bool GameView::update() {
 			(*a)->removed = true;
 		}
 	//detect collisions
-	int i, j;
 	for (a = entities.begin(); a != entities.end(); a++) {
 		if ((*a)->type != ENTITY_BULLET)
 			continue;
