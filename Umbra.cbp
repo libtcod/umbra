@@ -347,6 +347,13 @@
 			<Option target="Invaders Debug LINUX" />
 			<Option target="Invaders Release LINUX" />
 		</Unit>
+		<Unit filename="src\invaders\utilities.cpp">
+			<Option virtualFolder="Umbra Invaders\Sources\" />
+			<Option target="Invaders Debug WIN" />
+			<Option target="Invaders Release WIN" />
+			<Option target="Invaders Debug LINUX" />
+			<Option target="Invaders Release LINUX" />
+		</Unit>
 		<Unit filename="src\invaders\utilities.hpp">
 			<Option virtualFolder="Umbra Invaders\Headers\" />
 			<Option target="Invaders Debug WIN" />

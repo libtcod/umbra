@@ -43,4 +43,15 @@ class Point {
 		Point() { x = y = 0; }
 };
 
+class Rect {
+	public:
+		int x, y, w, h;
+		inline void set(int x, int y, int w, int h) { this->x = x; this->y = y; this->w = w; this->h = h; }
+		bool offset(int sx, int sy);
+		bool checkIntersection(const Rect &r) const;
+		bool contains(const Point &p) const;
+		Rect(int x, int y, int w, int h) { set(x,y,w,h); }
+		Rect() { set(0,0,0,0); }
+};
+
 #endif

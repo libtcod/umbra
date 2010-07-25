@@ -27,6 +27,17 @@
 
 #include "main.hpp"
 #include "gameview.hpp"
+#include <stdio.h>
+
+GameView::GameView() {
+	ship = Ship();
+	elapsedTime = 0;
+	int i, j;
+	for (i = 10; i < MAXX-10; i += 5) for (j = 10; j < 25; j += 2)
+		entities.push(new Alien(Point(i,j)));
+	for (i = 0; i < MAXX; i++) for (j = 0; j < MAXY; j++)
+		alienMap[i][j] = NULL;
+}
 
 void GameView::keyboard(TCOD_key_t &key) {
 	if (key.vk == TCODK_LEFT) ship.move(-1,0,elapsedTime);
@@ -37,17 +48,36 @@ void GameView::keyboard(TCOD_key_t &key) {
 bool GameView::update() {
 	elapsedTime = TCODSystem::getElapsedMilli();
 	//move entities. Shots that go off the screen (move returns false) are removed.
-	Entity ** it;
-	for (it = entities.begin(); it != entities.end(); it++)
-		if ((*it)->move(0,-1,elapsedTime) == false) removeList.push(*it);
+	Entity **a, **b;
+	for (a = entities.begin(); a != entities.end(); a++)
+		if ((*a)->move(0,0,elapsedTime) == false) {
+			removeList.push(*a);
+			(*a)->removed = true;
+		}
+	//detect collisions
+	int i, j;
+	for (a = entities.begin(); a != entities.end(); a++) {
+		if ((*a)->type != ENTITY_BULLET)
+			continue;
+		else {
+			for (b = entities.begin(); b != entities.end(); b++) {
+				if ((*b)->type != ENTITY_ALIEN)
+					continue;
+				else if ((*b)->area.contains((*a)->coords)) {
+					if ((*a)->removed == false) removeList.push(*a);
+					if ((*b)->removed == false) removeList.push(*b);
+					(*a)->removed = (*b)->removed = true;
+				}
+			}
+		}
+	}
 	//eliminate the removed entities
-	for (it = removeList.begin(); it != removeList.end(); it++)
-		entities.remove(*it);
+	for (a = removeList.begin(); a != removeList.end(); a++)
+		entities.remove(*a);
 	return true;
 }
 
 void GameView::render() {
-	TCODConsole::root->printEx(0,0,TCOD_BKGND_NONE,TCOD_LEFT,"Elapsed time: %d",elapsedTime);
 	ship.render();
 	Entity ** it;
 	for (it = entities.begin(); it != entities.end(); it++)

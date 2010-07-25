@@ -25,20 +25,35 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#include "main.hpp"
-#include "gameview.hpp"
+#include "utilities.hpp"
 
-int main() {
-	UmbraEngine engine = UmbraEngine("data/cfg/umbra.txt");
-    //set window title
-    engine.setWindowTitle("Umbra Invaders");
-    //set keyboard mode
-    engine.setKeyboardMode(UMBRA_KEYBOARD_PRESSED);
-    //declare modules
-    engine.registerModule(new GameView());
-    //activate modules
-    engine.activateModule(MOD_GAME_VIEW);
-    //initialise and run the engine
-    if (engine.initialise()) return engine.run();
-    else return 1;
+bool Rect::offset(int sx, int sy) {
+	if ((unsigned)(x+sx) <= MAXX-1 &&
+		(unsigned)(x+w+sx) <= MAXX-1 &&
+		(unsigned)(y+sy) <= MAXY-1 &&
+		(unsigned)(y+h+sy) <= MAXY-1) {
+		x += sx;
+		y += sy;
+		return true;
+	}
+	else
+		return false;
+}
+
+bool Rect::checkIntersection(const Rect &r) const {
+	int sx = MAX(x,r.x);
+	int sy = MAX(y,r.y);
+	int ex = MIN(x+w,r.x+r.w);
+	int ey = MIN(y+h,r.y+r.h);
+	if (sx <= ex && sy <= ey)
+		return true;
+	else
+		return false;
+}
+
+bool Rect::contains(const Point &p) const {
+	if (p.x >= x && p.x < x + w && p.y >= y && p.y < y + h)
+		return true;
+	else
+		return false;
 }

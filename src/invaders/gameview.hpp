@@ -37,10 +37,11 @@ class GameView: public UmbraModule {
 		TCODList <Entity*> entities;
 		TCODList <Entity*> removeList;
 	public:
+		Entity * alienMap[MAXX][MAXY];
 		bool update();
 		void render();
-		void keyboard (TCOD_key_t &key);
-		GameView() { ship = Ship(); elapsedTime = 0; }
+		void keyboard(TCOD_key_t &key);
+		GameView();
 };
 
 #endif

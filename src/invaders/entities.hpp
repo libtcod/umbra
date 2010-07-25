@@ -35,7 +35,10 @@ class Entity {
 		uint32 speed;
 		uint32 lastMovementTime;
 	public:
+		Entity_t type;
 		Point coords;
+		Rect area;
+		bool removed;
 		virtual bool move(int sx, int sy, uint32 curTime);
 		virtual void render();
 		Entity();
@@ -58,6 +61,16 @@ class Bullet: public Entity {
 		bool move(int sx, int sy, uint32 curTime);
 		void render();
 		Bullet(Point p);
+		Bullet(Rect r);
+};
+
+class Alien: public Entity {
+	private:
+		int delta;
+	public:
+		bool move(int sx, int sy, uint32 curTime);
+		void render();
+		Alien(Point p);
 };
 
 #endif

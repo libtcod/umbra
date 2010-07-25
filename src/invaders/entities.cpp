@@ -29,7 +29,9 @@
 
 /* Entity */
 
-Entity::Entity() {}
+Entity::Entity() {
+	removed = false;
+}
 
 void Entity::render() {
 	TCODConsole::root->putChar(coords.x,coords.y,'*',TCOD_BKGND_NONE);
@@ -49,13 +51,17 @@ Ship::Ship() {
 	speed = 200;
 	shootingSpeed = 500;
 	lastMovementTime = lastShotTime = 0;
-	coords = Point(MAXX/2, MAXY-3);
+	coords = Point(MAXX/2, MAXY-4);
+	area = Rect(MAXX/2-1,MAXY-4,3,3);
+	type = ENTITY_SHIP;
 }
 
 bool Ship::move(int sx, int sy, uint32 curTime) {
 	if (lastMovementTime + speed <= curTime) {
-		coords.offset(sx,sy);
-		lastMovementTime = curTime;
+		if (area.offset(sx,sy)) {
+			coords.offset(sx,sy);
+			lastMovementTime = curTime;
+		}
 	}
 	return true;
 }
@@ -68,7 +74,7 @@ void Ship::shoot(TCODList <Entity*> *entities, uint32 curTime) {
 }
 
 void Ship::render() {
-	TCODConsole::root->printEx(coords.x,coords.y,TCOD_BKGND_NONE,TCOD_CENTER,"A\nbMd");
+	TCODConsole::root->printEx(coords.x,coords.y,TCOD_BKGND_NONE,TCOD_CENTER,"A\nbMd\n^ ^");
 }
 
 /* Bullet */
@@ -77,17 +83,60 @@ Bullet::Bullet(Point p) {
 	speed = 50;
 	lastMovementTime = 0;
 	coords = p;
+	area = Rect(p.x,p.y,1,1);
+	type = ENTITY_BULLET;
+}
+
+Bullet::Bullet(Rect r) {
+	speed = 50;
+	lastMovementTime = 0;
+	coords = Point(r.x,r.y);
+	area = r;
+	type = ENTITY_BULLET;
 }
 
 bool Bullet::move(int sx, int sy, uint32 curTime) {
 	if (lastMovementTime + speed <= curTime) {
 		if (coords.y == 0) return false;
-		coords.offset(sx,sy);
-		lastMovementTime = curTime;
+		else {
+			coords.y--;
+			area.y--;
+			lastMovementTime = curTime;
+		}
 	}
 	return true;
 }
 
 void Bullet::render() {
 	TCODConsole::root->putChar(coords.x,coords.y,'|',TCOD_BKGND_NONE);
+}
+
+/* Alien */
+
+Alien::Alien(Point p) {
+	speed = 500;
+	lastMovementTime = 0;
+	coords = p;
+	area = Rect(p.x-1,p.y,3,1);
+	delta = 1;
+	type = ENTITY_ALIEN;
+}
+
+void Alien::render() {
+	TCODConsole::root->printEx(coords.x,coords.y,TCOD_BKGND_NONE,TCOD_CENTER,"/M\\");
+}
+
+bool Alien::move(int sx, int sy, uint32 curTime) {
+	if (lastMovementTime + speed <= curTime) {
+		speed--;
+		if (!area.offset(delta,0)) {
+			delta = -delta;
+			coords.offset(0,1);
+			area.y++;
+		}
+		else
+			coords.offset(delta,0);
+		lastMovementTime = curTime;
+	}
+	return true;
 }
