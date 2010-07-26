@@ -26,6 +26,7 @@
 */
 
 #include "entities.hpp"
+#include "gameview.hpp"
 
 /* Entity */
 
@@ -114,6 +115,7 @@ void Bullet::render() {
 /* Alien */
 
 Alien::Alien(Point p) {
+	health = 1;
 	speed = 500;
 	lastMovementTime = 0;
 	coords = p;
@@ -139,4 +141,16 @@ bool Alien::move(int sx, int sy, uint32 curTime) {
 		lastMovementTime = curTime;
 	}
 	return true;
+}
+
+void Alien::hit() {
+	GameView * game = (GameView*)(UmbraEngine::getInstance()->getModule(MOD_GAME_VIEW));
+	health--;
+	if (health == 0) {
+		game->alienCount--;
+		if (!removed) {
+			removed = true;
+			game->removeList.push(this);
+		}
+	}
 }

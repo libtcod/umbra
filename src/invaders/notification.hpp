@@ -25,22 +25,27 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#include "main.hpp"
-#include "gameview.hpp"
-#include "notification.hpp"
+#ifndef _NOTIFICATION_HPP_
+#define _NOTIFICATION_HPP_
 
-int main() {
-	UmbraEngine engine = UmbraEngine("data/cfg/umbra.txt");
-    //set window title
-    engine.setWindowTitle("Umbra Invaders");
-    //set keyboard mode
-    engine.setKeyboardMode(UMBRA_KEYBOARD_PRESSED);
-    //declare modules
-    engine.registerModule(new GameView());
-    engine.registerModule(new Notification());
-    //activate modules
-    engine.activateModule(MOD_GAME_VIEW);
-    //initialise and run the engine
-    if (engine.initialise()) return engine.run();
-	else return 1;
-}
+#include "main.hpp"
+
+class QuitButton: public UmbraButton {
+	public:
+		void onMouseDown();
+};
+
+class Notification : public UmbraWidget {
+    public:
+        Notification ();
+        void mouse (TCOD_mouse_t &ms);
+        void render ();
+        QuitButton button;
+        inline void setText(const char * text) { this->text = text; }
+        TCODConsole * notification;
+	private:
+		std::string text;
+		void activate();
+};
+
+#endif

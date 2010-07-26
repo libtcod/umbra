@@ -25,22 +25,43 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#include "main.hpp"
-#include "gameview.hpp"
 #include "notification.hpp"
+#include "gameview.hpp"
 
-int main() {
-	UmbraEngine engine = UmbraEngine("data/cfg/umbra.txt");
-    //set window title
-    engine.setWindowTitle("Umbra Invaders");
-    //set keyboard mode
-    engine.setKeyboardMode(UMBRA_KEYBOARD_PRESSED);
-    //declare modules
-    engine.registerModule(new GameView());
-    engine.registerModule(new Notification());
-    //activate modules
-    engine.activateModule(MOD_GAME_VIEW);
-    //initialise and run the engine
-    if (engine.initialise()) return engine.run();
-	else return 1;
+void QuitButton::onMouseDown () {
+    UmbraEngine::getInstance()->deactivateAll();
+}
+
+Notification::Notification () {
+    notification = new TCODConsole(24,12);
+    rect.set(UmbraEngine::getInstance()->getRootWidth()/2-12,UmbraEngine::getInstance()->getRootHeight()/2-6,24,12);
+    //setDragZone(0,0,24,1);
+    button.set(this,10,7,4,3,"OK");
+}
+
+void Notification::mouse (TCOD_mouse_t &ms) {
+    UmbraWidget::mouse(ms);
+    button.mouse(ms);
+}
+
+void Notification::render () {
+    notification->setForegroundColor(TCODColor::white);
+    notification->setBackgroundColor(TCODColor::darkerAzure);
+    notification->printFrame(0,0,24,12,true,TCOD_BKGND_SET,NULL);
+    notification->printRectEx(12,2,24,6,TCOD_BKGND_NONE,TCOD_CENTER,text.c_str());
+    if (dragZone.mouseHover || isDragging) {
+        notification->setBackgroundColor(TCODColor::lightRed);
+        notification->rect(5,0,14,1,false,TCOD_BKGND_SET);
+    }
+    if (button.area.mouseHover) notification->setForegroundColor(TCODColor::lightGreen);
+    else notification->setForegroundColor(TCODColor::white);
+    button.render(notification);
+    TCODConsole::blit(notification,0,0,rect.w,rect.h,TCODConsole::root,rect.x,rect.y,1.0f,0.5f);
+}
+
+void Notification::activate() {
+	if (((GameView*)(UmbraEngine::getInstance()->getModule(MOD_GAME_VIEW)))->alienCount == 0)
+		text = "Congratulations!\nYou won!";
+	else
+		text = "Oops, you lose!\nTry again!";
 }

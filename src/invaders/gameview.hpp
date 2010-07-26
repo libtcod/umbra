@@ -31,13 +31,12 @@
 #include "entities.hpp"
 
 class GameView: public UmbraModule {
-	private:
+	public:
 		Ship ship;
 		uint32 elapsedTime;
 		TCODList <Entity*> entities;
 		TCODList <Entity*> removeList;
 		int alienCount;
-	public:
 		bool update();
 		void render();
 		void keyboard(TCOD_key_t &key);

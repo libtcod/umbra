@@ -65,8 +65,8 @@ bool GameView::update() {
 					continue;
 				else if ((*b)->area.contains((*a)->coords)) {
 					if ((*a)->removed == false) removeList.push(*a);
-					if ((*b)->removed == false) removeList.push(*b);
-					(*a)->removed = (*b)->removed = true;
+					(*a)->removed = true;
+					((Alien*)(*b))->hit();
 				}
 			}
 		}
@@ -74,6 +74,10 @@ bool GameView::update() {
 	//eliminate the removed entities
 	for (a = removeList.begin(); a != removeList.end(); a++)
 		entities.remove(*a);
+	if (alienCount == 0 || elapsedTime >= 120000) {
+		UmbraEngine::getInstance()->activateModule(MOD_NOTIFICATION);
+		setPause(true);
+	}
 	return true;
 }
 
@@ -82,4 +86,5 @@ void GameView::render() {
 	Entity ** it;
 	for (it = entities.begin(); it != entities.end(); it++)
 		(*it)->render();
+	TCODConsole::root->printEx(MAXX/2,1,TCOD_BKGND_NONE,TCOD_CENTER,"ALIENS LEFT: %03d --- TIME LEFT: %03d",alienCount,MAX(0,120-elapsedTime/1000));
 }

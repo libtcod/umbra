@@ -67,9 +67,11 @@ class Bullet: public Entity {
 class Alien: public Entity {
 	private:
 		int delta;
+		int health;
 	public:
 		bool move(int sx, int sy, uint32 curTime);
 		void render();
+		void hit();
 		Alien(Point p);
 };
 

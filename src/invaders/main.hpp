@@ -33,7 +33,7 @@
 
 #include "../umbra/umbra.hpp"
 
-enum { MOD_GAME_VIEW };
+enum { MOD_GAME_VIEW, MOD_NOTIFICATION };
 typedef enum { ENTITY_SHIP, ENTITY_BULLET, ENTITY_ALIEN, ENTITY_ALIEN_BULLET } Entity_t;
 
 #endif
