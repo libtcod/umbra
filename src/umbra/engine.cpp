@@ -66,6 +66,10 @@ void UmbraEngine::setWindowTitle (const char * title, ...) {
     windowTitle = (const char *)f;
 }
 
+void UmbraEngine::setWindowTitle (std::string title) {
+	windowTitle = title.c_str();
+}
+
 //add a module to the modules list
 int UmbraEngine::registerModule (UmbraModule * module, int fallback) {
     module->setFallback(fallback);

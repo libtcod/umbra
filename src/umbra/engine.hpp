@@ -86,6 +86,7 @@ class UmbraEngine {
 		int run (); //runs the engine
 
 		void setWindowTitle (const char * title, ...);
+		void setWindowTitle (std::string title);
 		inline void setKeyboardMode (UmbraKeyboardMode mode) { keyboardMode = mode; }
 		inline void setPaused (bool pause) { paused = pause; }
 		inline void registerCallback (UmbraCallback * cbk) {callbacks.push(cbk); }

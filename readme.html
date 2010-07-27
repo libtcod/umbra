@@ -511,20 +511,20 @@ Also see [[AdvancedOptions]]</pre>
 </div>
 <!--POST-SHADOWAREA-->
 <div id="storeArea">
-<div title="API reference" modifier="Mingos" created="200910241815" modified="201007252157" tags="api" changecount="8">
-<pre>[[Classes]]
-[[Methods]]
-[[Enums]]</pre>
+<div title="API reference" modifier="Mingos" created="200910241815" modified="201007271241" tags="api" changecount="9">
+<pre>*[[Classes]]
+*[[Methods]]
+*[[Enums]]</pre>
 </div>
 <div title="About Umbra" modifier="Mingos" created="200910241806" changecount="1">
 <pre>Umbra Engine is a general purpose engine for applications that use libtcod, mainly games. It is thought to be a &quot;module player&quot; more than anything else, meaning that it lacks any game logic or other game elements. The game/app developer will still need to write everything from scratch, but Umbra will make sure the game is divided into manageable chunks, or modules, making sure that even at advanced stages the project is manageable. Also, the engine takes control over the main game loop and screen flushing, provides a global keybindings method and lets the developer define module-specific keybindings.</pre>
 </div>
-<div title="Activating modules" modifier="Mingos" created="200911121718" modified="201007252134" tags="tutorial engine module" changecount="2">
+<div title="Activating modules" modifier="Mingos" created="200911121718" modified="201007272150" tags="tutorial module moduleStatus init" changecount="5">
 <pre>A registered module resides inside the modules list, but before the engine actually runs any of the modules from the list, the developer has to specify which one needs to be activated. Typically, a main menu, a title screen or a credits screen will be the first activated module.
 
 Module activation is extremely simple. Once a module is registered, it is given an ID number, which the developer can deduce from the order in which the modules were registered. This number can then be used to activate a module. The method that actually does the trick is [[UmbraModule::activateModule]]. Instead of the ID number, the method also accepts the module reference as an argument. In both cases, the chosen module will be put on a separate list of modules destinated for activation in the next frame. The engine should run with no problems once a module is active.</pre>
 </div>
-<div title="BSOD" modifier="Mingos" created="200911092016" modified="201007252155" tags="tutorial module internalmodule" changecount="3">
+<div title="BSOD" modifier="Mingos" created="200911092016" modified="201007272128" tags="tutorial internalModule" changecount="6">
 <pre>The BSOD is an internal module created with the sole purpose of notifying the developer that a non fatal error has occurred in the program. It is supposed to be used in conjunction with the [[UmbraError::add]] method.
 
 The BSOD is, as the name implies, a blue screen. It's not as annoying as its namesake, as it has the form of a small, semitransparent blue box that disappears a few seconds after it is displayed. Additionally, it can be moved around in case it happens to cover something important or even closed with a close button in the top right corner.
@@ -538,15 +538,15 @@ if (errorCondition) {
 &lt;/code&gt;
 Please note that this module requires the console emulator to be active, otherwise it won't be displayed. For this reason, the BSOD is only useful for displaying non fatal errors. In case a fatal error is encountered, it will typically call {{{exit(1);}}} instead of {{{displayError();}}}. The BSOD is useless in such situations, and the error message can only be retrieved from the error log saved to the disc.</pre>
 </div>
-<div title="Classes" modifier="Mingos" created="200911042330" modified="200911110111" changecount="3">
-<pre>[[UmbraEngine]]
-[[UmbraError]]
-[[UmbraModule]]
-[[UmbraPoint]]
-[[UmbraRect]]
-[[UmbraWidget]]</pre>
+<div title="Classes" modifier="Mingos" created="200911042330" modified="201007271241" tags="api class" changecount="5">
+<pre>*[[UmbraEngine]]
+*[[UmbraError]]
+*[[UmbraModule]]
+*[[UmbraPoint]]
+*[[UmbraRect]]
+*[[UmbraWidget]]</pre>
 </div>
-<div title="Creating a module" modifier="Mingos" created="200911142341" modified="201007252134" tags="tutorial module" changecount="12">
+<div title="Creating a module" modifier="Mingos" created="200911142341" modified="201007271701" tags="tutorial module" changecount="13">
 <pre>Creating a module is essentially easy. Here's the simplest way:
 &lt;code C++&gt;
 class MyModule : public UmbraModule {};
@@ -673,7 +673,7 @@ The activation custom code is very simple. It is launched only when the module i
 
 Finally, the {{{keyboard}}} parsing. It does a simple check: if the space bar is pressed, the module will be deactivated.
 
-The entire module, when registered and activated, will be enough to create a simple application that displays the credits text until 3 seconds have passed or until the keybar is pressed (whichever happens first).</pre>
+The entire module, when registered and activated, will be enough to create a simple application that displays the credits text until 3 seconds have passed or until the space bar is pressed (whichever happens first).</pre>
 </div>
 <div title="Creating a widget" modifier="Mingos" created="200911162231" modified="201007252135" tags="tutorial module widget" changecount="7">
 <pre>Creating a ''valid'' widget is as easy as creating a ''valid'' module:
@@ -795,7 +795,7 @@ else return 1;
 
 The errors are added automatically when something goes wrong inside Umbra, but the developer can also use the log to append custom error messages.</pre>
 </div>
-<div title="Fallbacks" modifier="Mingos" created="200911091937" modified="201007252135" tags="tutorial module" changecount="11">
+<div title="Fallbacks" modifier="Mingos" created="200911091937" modified="201007271701" tags="tutorial module fallback" changecount="12">
 <pre>A fallback (not to be confused with a callback) is a simple integer ID number that can be assigned to any registered module.
 
 When a module is deactivated, it can adopt one of two behaviours:
@@ -821,7 +821,7 @@ In line 02. we declare an enumeration that coincides with the ID numbers that ar
 
 How will the engine behave? The first activated module is supposedly a credits screen, which is usually displayed only during a few seconds in order to honour copyright holders (in case of Umbra, the creators of SDL, libtcod and Umbra itself would be mentioned). When it ends, usually after a specified amount of time has passed, it will give place to another screen, usually related to the game. In our small example, it is a main menu screen. When the main menu ends, it will not fall back to any module automatically, as there are usually various possibilities for the main menu to end. It may trigger the character creation screen, savegame choice screen, options screen or simply end the game. For this reason, no fallback has been specified in line 05. Had it been assigned a fallback, the main menu would always fall back to the specified module, which is not desired.</pre>
 </div>
-<div title="Font autodetection" modifier="Mingos" created="200911050951" modified="201007252133" tags="tutorial engine font" changecount="18">
+<div title="Font autodetection" modifier="Mingos" created="200911050951" modified="201007272150" tags="tutorial font init" changecount="20">
 <pre>By default Umbra will look for {{{font&lt;w&gt;x&lt;h&gt;[_&lt;layout&gt;].png}}} files in the {{{./data/img/}}} directory. You can change this directory by adding a fontDir variable in umbra.txt, for example :
 &lt;code c++&gt;
 /*
@@ -854,25 +854,923 @@ If you want a finer control on the way fonts are loaded, you can register them m
 ;see also:
 :[[Registering fonts]]</pre>
 </div>
-<div title="Initialisation versus activation" modifier="Mingos" created="200911162110" modified="201007252156" tags="tutorial module" changecount="5">
+<div title="ForEachTiddlerMacro" modifier="YourName" created="200512081501" modified="200707300922" tags="Documentation ForEachTiddlerMacro Macro" server.type="file" server.host="tiddlywiki.abego-software.de/#ForEachTiddlerPlugin" server.page.revision="200707300922">
+<pre>//~~(Part of the [[ForEachTiddlerPlugin]])~~//
+
+Create customizable lists, tables etc. for your selections of tiddlers. Specify the tiddlers to include and their order through a powerful language.
+
+''Syntax:'' 
+|&gt;|{{{&lt;&lt;}}}''forEachTiddler'' [''in'' //tiddlyWikiPath//] [''where'' //whereCondition//] [''sortBy'' //sortExpression// [''ascending'' //or// ''descending'']] [''script'' //scriptText//] [//action// [//actionParameters//]]{{{&gt;&gt;}}}|
+|//tiddlyWikiPath//|The filepath to the TiddlyWiki the macro should work on. When missing the current TiddlyWiki is used.|
+|//whereCondition//|(quoted) JavaScript boolean expression. May refer to the build-in variables {{{tiddler}}} and {{{context}}}.|
+|//sortExpression//|(quoted) JavaScript expression returning &quot;comparable&quot; objects (using '{{{&lt;}}}','{{{&gt;}}}','{{{==}}}'. May refer to the build-in variables {{{tiddler}}} and {{{context}}}.|
+|//scriptText//|(quoted) JavaScript text. Typically defines JavaScript functions that are called by the various JavaScript expressions (whereClause, sortClause, action arguments,...)|
+|//action//|The action that should be performed on every selected tiddler, in the given order. By default the actions [[addToList|AddToListAction]] and [[write|WriteAction]] are supported. When no action is specified [[addToList|AddToListAction]] is used.|
+|//actionParameters//|(action specific) parameters the action may refer while processing the tiddlers (see action descriptions for details). &lt;&lt;tiddler [[JavaScript in actionParameters]]&gt;&gt;|
+|&gt;|~~Syntax formatting: Keywords in ''bold'', optional parts in [...]. 'or' means that exactly one of the two alternatives must exist.~~|
+
+
+''Using JavaScript''
+
+To give you a lot of flexibility the [[ForEachTiddlerMacro]] uses JavaScript in its arguments. Even if you are not that familiar with JavaScript you may find forEachTiddler useful. Just have a look at the various ready-to-use [[ForEachTiddlerExamples]] and adapt them to your needs.
+
+''The Elements of the Macro''
+
+The arguments of the ForEachTiddlerMacro consist of multiple parts, each of them being optional.
+
+&lt;&lt;slider chkFETInClause [[inClause]] &quot;inClause&quot; &quot;inClause&quot;&gt;&gt;
+&lt;&lt;slider chkFETWhereClause [[whereClause]] &quot;whereClause&quot; &quot;whereClause&quot;&gt;&gt;
+&lt;&lt;slider chkFETSortClause [[sortClause]] &quot;sortClause&quot; &quot;sortClause&quot;&gt;&gt;
+&lt;&lt;slider chkFETScriptClause [[scriptClause]] &quot;scriptClause&quot; &quot;scriptClause&quot;&gt;&gt;
+&lt;&lt;slider chkFETActions [[Action Specification]] &quot;Action Specification&quot; &quot;Action Specification&quot;&gt;&gt;
+
+''Using Macros and &quot;&gt;&quot; inside the forEachTiddler Macro''
+
+You may use other macro calls into the expression, especially in the actionParameters. To avoid that the {{{&gt;&gt;}}} of such a macro call is misinterpreted as the end of the {{{&lt;&lt;forEachTiddler...&gt;&gt;}}} macro you must escape the {{{&gt;&gt;}}} of the inner macro with {{{$))}}} E.g. if you want to use {{{&lt;&lt;tiddler ...&gt;&gt;}}} inside the {{{forEachTiddler}}} macro you have to write {{{&lt;&lt;tiddler ...$))}}}.
+
+In addition it is necessary to escape single {{{&gt;}}} with the text {{{$)}}}.
+
+''Using {{{&lt;&lt;tiddler ... with: ...&gt;&gt;}}} to re-use ForEachTiddler definitions''
+
+Sometimes you may want to use a certain ForEachTiddler definition in slight variations. E.g. you may want to list either the tiddlers tagged with &quot;ToDo&quot; and in the other case with &quot;Done&quot;. To do so you may use &quot;Tiddler parameters&quot;. Here an example:
+
+Replace the variable part of the ForEachTiddler definition with $1 ($2,... $9 are supported). E.g. you may create the tiddler &quot;ListTaggedTiddlers&quot; like this
+{{{
+&lt;&lt;forEachTiddler 
+ where 
+ 'tiddler.tags.contains(&quot;$1&quot;)'
+&gt;&gt;
+}}}
+
+Now you can use the ListTaggedTiddlers for various specific tags, using the {{{&lt;&lt;tiddler ...&gt;&gt;}}} macro:
+{{{
+&lt;&lt;tiddler ListTaggedTiddlers with: &quot;systemConfig&quot;&gt;&gt;
+}}}
+{{{
+&lt;&lt;tiddler ListTaggedTiddlers with: &quot;Plugin&quot;&gt;&gt;
+}}}
+
+
+See also [[ForEachTiddlerExamples]].</pre>
+</div>
+<div title="ForEachTiddlerPlugin" modifier="UdoBorkowski" created="200512281150" modified="200704122022" tags="ForEachTiddlerMacro ForEachTiddlerProject Plugin UdoBorkowski systemConfig" server.type="file" server.host="tiddlywiki.abego-software.de/#ForEachTiddlerPlugin" server.page.revision="200704122022">
+<pre>/***
+|''Name:''|ForEachTiddlerPlugin|
+|''Version:''|1.0.8 (2007-04-12)|
+|''Source:''|http://tiddlywiki.abego-software.de/#ForEachTiddlerPlugin|
+|''Author:''|UdoBorkowski (ub [at] abego-software [dot] de)|
+|''Licence:''|[[BSD open source license (abego Software)|http://www.abego-software.de/legal/apl-v10.html]]|
+|''Copyright:''|&amp;copy; 2005-2007 [[abego Software|http://www.abego-software.de]]|
+|''TiddlyWiki:''|1.2.38+, 2.0|
+|''Browser:''|Firefox 1.0.4+; Firefox 1.5; InternetExplorer 6.0|
+!Description
+
+Create customizable lists, tables etc. for your selections of tiddlers. Specify the tiddlers to include and their order through a powerful language.
+
+''Syntax:'' 
+|&gt;|{{{&lt;&lt;}}}''forEachTiddler'' [''in'' //tiddlyWikiPath//] [''where'' //whereCondition//] [''sortBy'' //sortExpression// [''ascending'' //or// ''descending'']] [''script'' //scriptText//] [//action// [//actionParameters//]]{{{&gt;&gt;}}}|
+|//tiddlyWikiPath//|The filepath to the TiddlyWiki the macro should work on. When missing the current TiddlyWiki is used.|
+|//whereCondition//|(quoted) JavaScript boolean expression. May refer to the build-in variables {{{tiddler}}} and  {{{context}}}.|
+|//sortExpression//|(quoted) JavaScript expression returning &quot;comparable&quot; objects (using '{{{&lt;}}}','{{{&gt;}}}','{{{==}}}'. May refer to the build-in variables {{{tiddler}}} and  {{{context}}}.|
+|//scriptText//|(quoted) JavaScript text. Typically defines JavaScript functions that are called by the various JavaScript expressions (whereClause, sortClause, action arguments,...)|
+|//action//|The action that should be performed on every selected tiddler, in the given order. By default the actions [[addToList|AddToListAction]] and [[write|WriteAction]] are supported. When no action is specified [[addToList|AddToListAction]]  is used.|
+|//actionParameters//|(action specific) parameters the action may refer while processing the tiddlers (see action descriptions for details). &lt;&lt;tiddler [[JavaScript in actionParameters]]&gt;&gt;|
+|&gt;|~~Syntax formatting: Keywords in ''bold'', optional parts in [...]. 'or' means that exactly one of the two alternatives must exist.~~|
+
+See details see [[ForEachTiddlerMacro]] and [[ForEachTiddlerExamples]].
+
+!Revision history
+* v1.0.8 (2007-04-12)
+** Adapted to latest TiddlyWiki 2.2 Beta importTiddlyWiki API (introduced with changeset 2004). TiddlyWiki 2.2 Beta builds prior to changeset 2004 are no longer supported (but TiddlyWiki 2.1 and earlier, of cause)
+* v1.0.7 (2007-03-28)
+** Also support &quot;pre&quot; formatted TiddlyWikis (introduced with TW 2.2) (when using &quot;in&quot; clause to work on external tiddlers)
+* v1.0.6 (2006-09-16)
+** Context provides &quot;viewerTiddler&quot;, i.e. the tiddler used to view the macro. Most times this is equal to the &quot;inTiddler&quot;, but when using the &quot;tiddler&quot; macro both may be different.
+** Support &quot;begin&quot;, &quot;end&quot; and &quot;none&quot; expressions in &quot;write&quot; action
+* v1.0.5 (2006-02-05)
+** Pass tiddler containing the macro with wikify, context object also holds reference to tiddler containing the macro (&quot;inTiddler&quot;). Thanks to SimonBaird.
+** Support Firefox 1.5.0.1
+** Internal
+*** Make &quot;JSLint&quot; conform
+*** &quot;Only install once&quot;
+* v1.0.4 (2006-01-06)
+** Support TiddlyWiki 2.0
+* v1.0.3 (2005-12-22)
+** Features: 
+*** Write output to a file supports multi-byte environments (Thanks to Bram Chen) 
+*** Provide API to access the forEachTiddler functionality directly through JavaScript (see getTiddlers and performMacro)
+** Enhancements:
+*** Improved error messages on InternetExplorer.
+* v1.0.2 (2005-12-10)
+** Features: 
+*** context object also holds reference to store (TiddlyWiki)
+** Fixed Bugs: 
+*** ForEachTiddler 1.0.1 has broken support on win32 Opera 8.51 (Thanks to BrunoSabin for reporting)
+* v1.0.1 (2005-12-08)
+** Features: 
+*** Access tiddlers stored in separated TiddlyWikis through the &quot;in&quot; option. I.e. you are no longer limited to only work on the &quot;current TiddlyWiki&quot;.
+*** Write output to an external file using the &quot;toFile&quot; option of the &quot;write&quot; action. With this option you may write your customized tiddler exports.
+*** Use the &quot;script&quot; section to define &quot;helper&quot; JavaScript functions etc. to be used in the various JavaScript expressions (whereClause, sortClause, action arguments,...).
+*** Access and store context information for the current forEachTiddler invocation (through the build-in &quot;context&quot; object) .
+*** Improved script evaluation (for where/sort clause and write scripts).
+* v1.0.0 (2005-11-20)
+** initial version
+
+!Code
+***/
+//{{{
+
+	
+//============================================================================
+//============================================================================
+//		   ForEachTiddlerPlugin
+//============================================================================
+//============================================================================
+
+// Only install once
+if (!version.extensions.ForEachTiddlerPlugin) {
+
+if (!window.abego) window.abego = {};
+
+version.extensions.ForEachTiddlerPlugin = {
+	major: 1, minor: 0, revision: 8, 
+	date: new Date(2007,3,12), 
+	source: &quot;http://tiddlywiki.abego-software.de/#ForEachTiddlerPlugin&quot;,
+	licence: &quot;[[BSD open source license (abego Software)|http://www.abego-software.de/legal/apl-v10.html]]&quot;,
+	copyright: &quot;Copyright (c) abego Software GmbH, 2005-2007 (www.abego-software.de)&quot;
+};
+
+// For backward compatibility with TW 1.2.x
+//
+if (!TiddlyWiki.prototype.forEachTiddler) {
+	TiddlyWiki.prototype.forEachTiddler = function(callback) {
+		for(var t in this.tiddlers) {
+			callback.call(this,t,this.tiddlers[t]);
+		}
+	};
+}
+
+//============================================================================
+// forEachTiddler Macro
+//============================================================================
+
+version.extensions.forEachTiddler = {
+	major: 1, minor: 0, revision: 8, date: new Date(2007,3,12), provider: &quot;http://tiddlywiki.abego-software.de&quot;};
+
+// ---------------------------------------------------------------------------
+// Configurations and constants 
+// ---------------------------------------------------------------------------
+
+config.macros.forEachTiddler = {
+	 // Standard Properties
+	 label: &quot;forEachTiddler&quot;,
+	 prompt: &quot;Perform actions on a (sorted) selection of tiddlers&quot;,
+
+	 // actions
+	 actions: {
+		 addToList: {},
+		 write: {}
+	 }
+};
+
+// ---------------------------------------------------------------------------
+//  The forEachTiddler Macro Handler 
+// ---------------------------------------------------------------------------
+
+config.macros.forEachTiddler.getContainingTiddler = function(e) {
+	while(e &amp;&amp; !hasClass(e,&quot;tiddler&quot;))
+		e = e.parentNode;
+	var title = e ? e.getAttribute(&quot;tiddler&quot;) : null; 
+	return title ? store.getTiddler(title) : null;
+};
+
+config.macros.forEachTiddler.handler = function(place,macroName,params,wikifier,paramString,tiddler) {
+	// config.macros.forEachTiddler.traceMacroCall(place,macroName,params,wikifier,paramString,tiddler);
+
+	if (!tiddler) tiddler = config.macros.forEachTiddler.getContainingTiddler(place);
+	// --- Parsing ------------------------------------------
+
+	var i = 0; // index running over the params
+	// Parse the &quot;in&quot; clause
+	var tiddlyWikiPath = undefined;
+	if ((i &lt; params.length) &amp;&amp; params[i] == &quot;in&quot;) {
+		i++;
+		if (i &gt;= params.length) {
+			this.handleError(place, &quot;TiddlyWiki path expected behind 'in'.&quot;);
+			return;
+		}
+		tiddlyWikiPath = this.paramEncode((i &lt; params.length) ? params[i] : &quot;&quot;);
+		i++;
+	}
+
+	// Parse the where clause
+	var whereClause =&quot;true&quot;;
+	if ((i &lt; params.length) &amp;&amp; params[i] == &quot;where&quot;) {
+		i++;
+		whereClause = this.paramEncode((i &lt; params.length) ? params[i] : &quot;&quot;);
+		i++;
+	}
+
+	// Parse the sort stuff
+	var sortClause = null;
+	var sortAscending = true; 
+	if ((i &lt; params.length) &amp;&amp; params[i] == &quot;sortBy&quot;) {
+		i++;
+		if (i &gt;= params.length) {
+			this.handleError(place, &quot;sortClause missing behind 'sortBy'.&quot;);
+			return;
+		}
+		sortClause = this.paramEncode(params[i]);
+		i++;
+
+		if ((i &lt; params.length) &amp;&amp; (params[i] == &quot;ascending&quot; || params[i] == &quot;descending&quot;)) {
+			 sortAscending = params[i] == &quot;ascending&quot;;
+			 i++;
+		}
+	}
+
+	// Parse the script
+	var scriptText = null;
+	if ((i &lt; params.length) &amp;&amp; params[i] == &quot;script&quot;) {
+		i++;
+		scriptText = this.paramEncode((i &lt; params.length) ? params[i] : &quot;&quot;);
+		i++;
+	}
+
+	// Parse the action. 
+	// When we are already at the end use the default action
+	var actionName = &quot;addToList&quot;;
+	if (i &lt; params.length) {
+	   if (!config.macros.forEachTiddler.actions[params[i]]) {
+			this.handleError(place, &quot;Unknown action '&quot;+params[i]+&quot;'.&quot;);
+			return;
+		} else {
+			actionName = params[i]; 
+			i++;
+		}
+	} 
+	
+	// Get the action parameter
+	// (the parsing is done inside the individual action implementation.)
+	var actionParameter = params.slice(i);
+
+
+	// --- Processing ------------------------------------------
+	try {
+		this.performMacro({
+				place: place, 
+				inTiddler: tiddler,
+				whereClause: whereClause, 
+				sortClause: sortClause, 
+				sortAscending: sortAscending, 
+				actionName: actionName, 
+				actionParameter: actionParameter, 
+				scriptText: scriptText, 
+				tiddlyWikiPath: tiddlyWikiPath});
+
+	} catch (e) {
+		this.handleError(place, e);
+	}
+};
+
+// Returns an object with properties &quot;tiddlers&quot; and &quot;context&quot;.
+// tiddlers holds the (sorted) tiddlers selected by the parameter,
+// context the context of the execution of the macro.
+//
+// The action is not yet performed.
+//
+// @parameter see performMacro
+//
+config.macros.forEachTiddler.getTiddlersAndContext = function(parameter) {
+
+	var context = config.macros.forEachTiddler.createContext(parameter.place, parameter.whereClause, parameter.sortClause, parameter.sortAscending, parameter.actionName, parameter.actionParameter, parameter.scriptText, parameter.tiddlyWikiPath, parameter.inTiddler);
+
+	var tiddlyWiki = parameter.tiddlyWikiPath ? this.loadTiddlyWiki(parameter.tiddlyWikiPath) : store;
+	context[&quot;tiddlyWiki&quot;] = tiddlyWiki;
+	
+	// Get the tiddlers, as defined by the whereClause
+	var tiddlers = this.findTiddlers(parameter.whereClause, context, tiddlyWiki);
+	context[&quot;tiddlers&quot;] = tiddlers;
+
+	// Sort the tiddlers, when sorting is required.
+	if (parameter.sortClause) {
+		this.sortTiddlers(tiddlers, parameter.sortClause, parameter.sortAscending, context);
+	}
+
+	return {tiddlers: tiddlers, context: context};
+};
+
+// Returns the (sorted) tiddlers selected by the parameter.
+//
+// The action is not yet performed.
+//
+// @parameter see performMacro
+//
+config.macros.forEachTiddler.getTiddlers = function(parameter) {
+	return this.getTiddlersAndContext(parameter).tiddlers;
+};
+
+// Performs the macros with the given parameter.
+//
+// @param parameter holds the parameter of the macro as separate properties.
+//				  The following properties are supported:
+//
+//						place
+//						whereClause
+//						sortClause
+//						sortAscending
+//						actionName
+//						actionParameter
+//						scriptText
+//						tiddlyWikiPath
+//
+//					All properties are optional. 
+//					For most actions the place property must be defined.
+//
+config.macros.forEachTiddler.performMacro = function(parameter) {
+	var tiddlersAndContext = this.getTiddlersAndContext(parameter);
+
+	// Perform the action
+	var actionName = parameter.actionName ? parameter.actionName : &quot;addToList&quot;;
+	var action = config.macros.forEachTiddler.actions[actionName];
+	if (!action) {
+		this.handleError(parameter.place, &quot;Unknown action '&quot;+actionName+&quot;'.&quot;);
+		return;
+	}
+
+	var actionHandler = action.handler;
+	actionHandler(parameter.place, tiddlersAndContext.tiddlers, parameter.actionParameter, tiddlersAndContext.context);
+};
+
+// ---------------------------------------------------------------------------
+//  The actions 
+// ---------------------------------------------------------------------------
+
+// Internal.
+//
+// --- The addToList Action -----------------------------------------------
+//
+config.macros.forEachTiddler.actions.addToList.handler = function(place, tiddlers, parameter, context) {
+	// Parse the parameter
+	var p = 0;
+
+	// Check for extra parameters
+	if (parameter.length &gt; p) {
+		config.macros.forEachTiddler.createExtraParameterErrorElement(place, &quot;addToList&quot;, parameter, p);
+		return;
+	}
+
+	// Perform the action.
+	var list = document.createElement(&quot;ul&quot;);
+	place.appendChild(list);
+	for (var i = 0; i &lt; tiddlers.length; i++) {
+		var tiddler = tiddlers[i];
+		var listItem = document.createElement(&quot;li&quot;);
+		list.appendChild(listItem);
+		createTiddlyLink(listItem, tiddler.title, true);
+	}
+};
+
+abego.parseNamedParameter = function(name, parameter, i) {
+	var beginExpression = null;
+	if ((i &lt; parameter.length) &amp;&amp; parameter[i] == name) {
+		i++;
+		if (i &gt;= parameter.length) {
+			throw &quot;Missing text behind '%0'&quot;.format([name]);
+		}
+		
+		return config.macros.forEachTiddler.paramEncode(parameter[i]);
+	}
+	return null;
+}
+
+// Internal.
+//
+// --- The write Action ---------------------------------------------------
+//
+config.macros.forEachTiddler.actions.write.handler = function(place, tiddlers, parameter, context) {
+	// Parse the parameter
+	var p = 0;
+	if (p &gt;= parameter.length) {
+		this.handleError(place, &quot;Missing expression behind 'write'.&quot;);
+		return;
+	}
+
+	var textExpression = config.macros.forEachTiddler.paramEncode(parameter[p]);
+	p++;
+
+	// Parse the &quot;begin&quot; option
+	var beginExpression = abego.parseNamedParameter(&quot;begin&quot;, parameter, p);
+	if (beginExpression !== null) 
+		p += 2;
+	var endExpression = abego.parseNamedParameter(&quot;end&quot;, parameter, p);
+	if (endExpression !== null) 
+		p += 2;
+	var noneExpression = abego.parseNamedParameter(&quot;none&quot;, parameter, p);
+	if (noneExpression !== null) 
+		p += 2;
+
+	// Parse the &quot;toFile&quot; option
+	var filename = null;
+	var lineSeparator = undefined;
+	if ((p &lt; parameter.length) &amp;&amp; parameter[p] == &quot;toFile&quot;) {
+		p++;
+		if (p &gt;= parameter.length) {
+			this.handleError(place, &quot;Filename expected behind 'toFile' of 'write' action.&quot;);
+			return;
+		}
+		
+		filename = config.macros.forEachTiddler.getLocalPath(config.macros.forEachTiddler.paramEncode(parameter[p]));
+		p++;
+		if ((p &lt; parameter.length) &amp;&amp; parameter[p] == &quot;withLineSeparator&quot;) {
+			p++;
+			if (p &gt;= parameter.length) {
+				this.handleError(place, &quot;Line separator text expected behind 'withLineSeparator' of 'write' action.&quot;);
+				return;
+			}
+			lineSeparator = config.macros.forEachTiddler.paramEncode(parameter[p]);
+			p++;
+		}
+	}
+	
+	// Check for extra parameters
+	if (parameter.length &gt; p) {
+		config.macros.forEachTiddler.createExtraParameterErrorElement(place, &quot;write&quot;, parameter, p);
+		return;
+	}
+
+	// Perform the action.
+	var func = config.macros.forEachTiddler.getEvalTiddlerFunction(textExpression, context);
+	var count = tiddlers.length;
+	var text = &quot;&quot;;
+	if (count &gt; 0 &amp;&amp; beginExpression)
+		text += config.macros.forEachTiddler.getEvalTiddlerFunction(beginExpression, context)(undefined, context, count, undefined);
+	
+	for (var i = 0; i &lt; count; i++) {
+		var tiddler = tiddlers[i];
+		text += func(tiddler, context, count, i);
+	}
+	
+	if (count &gt; 0 &amp;&amp; endExpression)
+		text += config.macros.forEachTiddler.getEvalTiddlerFunction(endExpression, context)(undefined, context, count, undefined);
+
+	if (count == 0 &amp;&amp; noneExpression) 
+		text += config.macros.forEachTiddler.getEvalTiddlerFunction(noneExpression, context)(undefined, context, count, undefined);
+		
+
+	if (filename) {
+		if (lineSeparator !== undefined) {
+			lineSeparator = lineSeparator.replace(/\\n/mg, &quot;\n&quot;).replace(/\\r/mg, &quot;\r&quot;);
+			text = text.replace(/\n/mg,lineSeparator);
+		}
+		saveFile(filename, convertUnicodeToUTF8(text));
+	} else {
+		var wrapper = createTiddlyElement(place, &quot;span&quot;);
+		wikify(text, wrapper, null/* highlightRegExp */, context.inTiddler);
+	}
+};
+
+
+// ---------------------------------------------------------------------------
+//  Helpers
+// ---------------------------------------------------------------------------
+
+// Internal.
+//
+config.macros.forEachTiddler.createContext = function(placeParam, whereClauseParam, sortClauseParam, sortAscendingParam, actionNameParam, actionParameterParam, scriptText, tiddlyWikiPathParam, inTiddlerParam) {
+	return {
+		place : placeParam, 
+		whereClause : whereClauseParam, 
+		sortClause : sortClauseParam, 
+		sortAscending : sortAscendingParam, 
+		script : scriptText,
+		actionName : actionNameParam, 
+		actionParameter : actionParameterParam,
+		tiddlyWikiPath : tiddlyWikiPathParam,
+		inTiddler : inTiddlerParam, // the tiddler containing the &lt;&lt;forEachTiddler ...&gt;&gt; macro call.
+		viewerTiddler : config.macros.forEachTiddler.getContainingTiddler(placeParam) // the tiddler showing the forEachTiddler result
+	};
+};
+
+// Internal.
+//
+// Returns a TiddlyWiki with the tiddlers loaded from the TiddlyWiki of 
+// the given path.
+//
+config.macros.forEachTiddler.loadTiddlyWiki = function(path, idPrefix) {
+	if (!idPrefix) {
+		idPrefix = &quot;store&quot;;
+	}
+	var lenPrefix = idPrefix.length;
+	
+	// Read the content of the given file
+	var content = loadFile(this.getLocalPath(path));
+	if(content === null) {
+		throw &quot;TiddlyWiki '&quot;+path+&quot;' not found.&quot;;
+	}
+	
+	var tiddlyWiki = new TiddlyWiki();
+
+	// Starting with TW 2.2 there is a helper function to import the tiddlers
+	if (tiddlyWiki.importTiddlyWiki) {
+		if (!tiddlyWiki.importTiddlyWiki(content))
+			throw &quot;File '&quot;+path+&quot;' is not a TiddlyWiki.&quot;;
+		tiddlyWiki.dirty = false;
+		return tiddlyWiki;
+	}
+	
+	// The legacy code, for TW &lt; 2.2
+	
+	// Locate the storeArea div's
+	var posOpeningDiv = content.indexOf(startSaveArea);
+	var posClosingDiv = content.lastIndexOf(endSaveArea);
+	if((posOpeningDiv == -1) || (posClosingDiv == -1)) {
+		throw &quot;File '&quot;+path+&quot;' is not a TiddlyWiki.&quot;;
+	}
+	var storageText = content.substr(posOpeningDiv + startSaveArea.length, posClosingDiv);
+	
+	// Create a &quot;div&quot; element that contains the storage text
+	var myStorageDiv = document.createElement(&quot;div&quot;);
+	myStorageDiv.innerHTML = storageText;
+	myStorageDiv.normalize();
+	
+	// Create all tiddlers in a new TiddlyWiki
+	// (following code is modified copy of TiddlyWiki.prototype.loadFromDiv)
+	var store = myStorageDiv.childNodes;
+	for(var t = 0; t &lt; store.length; t++) {
+		var e = store[t];
+		var title = null;
+		if(e.getAttribute)
+			title = e.getAttribute(&quot;tiddler&quot;);
+		if(!title &amp;&amp; e.id &amp;&amp; e.id.substr(0,lenPrefix) == idPrefix)
+			title = e.id.substr(lenPrefix);
+		if(title &amp;&amp; title !== &quot;&quot;) {
+			var tiddler = tiddlyWiki.createTiddler(title);
+			tiddler.loadFromDiv(e,title);
+		}
+	}
+	tiddlyWiki.dirty = false;
+
+	return tiddlyWiki;
+};
+
+
+	
+// Internal.
+//
+// Returns a function that has a function body returning the given javaScriptExpression.
+// The function has the parameters:
+// 
+//	 (tiddler, context, count, index)
+//
+config.macros.forEachTiddler.getEvalTiddlerFunction = function (javaScriptExpression, context) {
+	var script = context[&quot;script&quot;];
+	var functionText = &quot;var theFunction = function(tiddler, context, count, index) { return &quot;+javaScriptExpression+&quot;}&quot;;
+	var fullText = (script ? script+&quot;;&quot; : &quot;&quot;)+functionText+&quot;;theFunction;&quot;;
+	return eval(fullText);
+};
+
+// Internal.
+//
+config.macros.forEachTiddler.findTiddlers = function(whereClause, context, tiddlyWiki) {
+	var result = [];
+	var func = config.macros.forEachTiddler.getEvalTiddlerFunction(whereClause, context);
+	tiddlyWiki.forEachTiddler(function(title,tiddler) {
+		if (func(tiddler, context, undefined, undefined)) {
+			result.push(tiddler);
+		}
+	});
+	return result;
+};
+
+// Internal.
+//
+config.macros.forEachTiddler.createExtraParameterErrorElement = function(place, actionName, parameter, firstUnusedIndex) {
+	var message = &quot;Extra parameter behind '&quot;+actionName+&quot;':&quot;;
+	for (var i = firstUnusedIndex; i &lt; parameter.length; i++) {
+		message += &quot; &quot;+parameter[i];
+	}
+	this.handleError(place, message);
+};
+
+// Internal.
+//
+config.macros.forEachTiddler.sortAscending = function(tiddlerA, tiddlerB) {
+	var result = 
+		(tiddlerA.forEachTiddlerSortValue == tiddlerB.forEachTiddlerSortValue) 
+			? 0
+			: (tiddlerA.forEachTiddlerSortValue &lt; tiddlerB.forEachTiddlerSortValue)
+			   ? -1 
+			   : +1; 
+	return result;
+};
+
+// Internal.
+//
+config.macros.forEachTiddler.sortDescending = function(tiddlerA, tiddlerB) {
+	var result = 
+		(tiddlerA.forEachTiddlerSortValue == tiddlerB.forEachTiddlerSortValue) 
+			? 0
+			: (tiddlerA.forEachTiddlerSortValue &lt; tiddlerB.forEachTiddlerSortValue)
+			   ? +1 
+			   : -1; 
+	return result;
+};
+
+// Internal.
+//
+config.macros.forEachTiddler.sortTiddlers = function(tiddlers, sortClause, ascending, context) {
+	// To avoid evaluating the sortClause whenever two items are compared 
+	// we pre-calculate the sortValue for every item in the array and store it in a 
+	// temporary property (&quot;forEachTiddlerSortValue&quot;) of the tiddlers.
+	var func = config.macros.forEachTiddler.getEvalTiddlerFunction(sortClause, context);
+	var count = tiddlers.length;
+	var i;
+	for (i = 0; i &lt; count; i++) {
+		var tiddler = tiddlers[i];
+		tiddler.forEachTiddlerSortValue = func(tiddler,context, undefined, undefined);
+	}
+
+	// Do the sorting
+	tiddlers.sort(ascending ? this.sortAscending : this.sortDescending);
+
+	// Delete the temporary property that holds the sortValue.	
+	for (i = 0; i &lt; tiddlers.length; i++) {
+		delete tiddlers[i].forEachTiddlerSortValue;
+	}
+};
+
+
+// Internal.
+//
+config.macros.forEachTiddler.trace = function(message) {
+	displayMessage(message);
+};
+
+// Internal.
+//
+config.macros.forEachTiddler.traceMacroCall = function(place,macroName,params) {
+	var message =&quot;&lt;&lt;&quot;+macroName;
+	for (var i = 0; i &lt; params.length; i++) {
+		message += &quot; &quot;+params[i];
+	}
+	message += &quot;&gt;&gt;&quot;;
+	displayMessage(message);
+};
+
+
+// Internal.
+//
+// Creates an element that holds an error message
+// 
+config.macros.forEachTiddler.createErrorElement = function(place, exception) {
+	var message = (exception.description) ? exception.description : exception.toString();
+	return createTiddlyElement(place,&quot;span&quot;,null,&quot;forEachTiddlerError&quot;,&quot;&lt;&lt;forEachTiddler ...&gt;&gt;: &quot;+message);
+};
+
+// Internal.
+//
+// @param place [may be null]
+//
+config.macros.forEachTiddler.handleError = function(place, exception) {
+	if (place) {
+		this.createErrorElement(place, exception);
+	} else {
+		throw exception;
+	}
+};
+
+// Internal.
+//
+// Encodes the given string.
+//
+// Replaces 
+//	 &quot;$))&quot; to &quot;&gt;&gt;&quot;
+//	 &quot;$)&quot; to &quot;&gt;&quot;
+//
+config.macros.forEachTiddler.paramEncode = function(s) {
+	var reGTGT = new RegExp(&quot;\\$\\)\\)&quot;,&quot;mg&quot;);
+	var reGT = new RegExp(&quot;\\$\\)&quot;,&quot;mg&quot;);
+	return s.replace(reGTGT, &quot;&gt;&gt;&quot;).replace(reGT, &quot;&gt;&quot;);
+};
+
+// Internal.
+//
+// Returns the given original path (that is a file path, starting with &quot;file:&quot;)
+// as a path to a local file, in the systems native file format.
+//
+// Location information in the originalPath (i.e. the &quot;#&quot; and stuff following)
+// is stripped.
+// 
+config.macros.forEachTiddler.getLocalPath = function(originalPath) {
+	// Remove any location part of the URL
+	var hashPos = originalPath.indexOf(&quot;#&quot;);
+	if(hashPos != -1)
+		originalPath = originalPath.substr(0,hashPos);
+	// Convert to a native file format assuming
+	// &quot;file:///x:/path/path/path...&quot; - pc local file --&gt; &quot;x:\path\path\path...&quot;
+	// &quot;file://///server/share/path/path/path...&quot; - FireFox pc network file --&gt; &quot;\\server\share\path\path\path...&quot;
+	// &quot;file:///path/path/path...&quot; - mac/unix local file --&gt; &quot;/path/path/path...&quot;
+	// &quot;file://server/share/path/path/path...&quot; - pc network file --&gt; &quot;\\server\share\path\path\path...&quot;
+	var localPath;
+	if(originalPath.charAt(9) == &quot;:&quot;) // pc local file
+		localPath = unescape(originalPath.substr(8)).replace(new RegExp(&quot;/&quot;,&quot;g&quot;),&quot;\\&quot;);
+	else if(originalPath.indexOf(&quot;file://///&quot;) === 0) // FireFox pc network file
+		localPath = &quot;\\\\&quot; + unescape(originalPath.substr(10)).replace(new RegExp(&quot;/&quot;,&quot;g&quot;),&quot;\\&quot;);
+	else if(originalPath.indexOf(&quot;file:///&quot;) === 0) // mac/unix local file
+		localPath = unescape(originalPath.substr(7));
+	else if(originalPath.indexOf(&quot;file:/&quot;) === 0) // mac/unix local file
+		localPath = unescape(originalPath.substr(5));
+	else // pc network file
+		localPath = &quot;\\\\&quot; + unescape(originalPath.substr(7)).replace(new RegExp(&quot;/&quot;,&quot;g&quot;),&quot;\\&quot;);	
+	return localPath;
+};
+
+// ---------------------------------------------------------------------------
+// Stylesheet Extensions (may be overridden by local StyleSheet)
+// ---------------------------------------------------------------------------
+//
+setStylesheet(
+	&quot;.forEachTiddlerError{color: #ffffff;background-color: #880000;}&quot;,
+	&quot;forEachTiddler&quot;);
+
+//============================================================================
+// End of forEachTiddler Macro
+//============================================================================
+
+
+//============================================================================
+// String.startsWith Function
+//============================================================================
+//
+// Returns true if the string starts with the given prefix, false otherwise.
+//
+version.extensions[&quot;String.startsWith&quot;] = {major: 1, minor: 0, revision: 0, date: new Date(2005,11,20), provider: &quot;http://tiddlywiki.abego-software.de&quot;};
+//
+String.prototype.startsWith = function(prefix) {
+	var n =  prefix.length;
+	return (this.length &gt;= n) &amp;&amp; (this.slice(0, n) == prefix);
+};
+
+
+
+//============================================================================
+// String.endsWith Function
+//============================================================================
+//
+// Returns true if the string ends with the given suffix, false otherwise.
+//
+version.extensions[&quot;String.endsWith&quot;] = {major: 1, minor: 0, revision: 0, date: new Date(2005,11,20), provider: &quot;http://tiddlywiki.abego-software.de&quot;};
+//
+String.prototype.endsWith = function(suffix) {
+	var n = suffix.length;
+	return (this.length &gt;= n) &amp;&amp; (this.right(n) == suffix);
+};
+
+
+//============================================================================
+// String.contains Function
+//============================================================================
+//
+// Returns true when the string contains the given substring, false otherwise.
+//
+version.extensions[&quot;String.contains&quot;] = {major: 1, minor: 0, revision: 0, date: new Date(2005,11,20), provider: &quot;http://tiddlywiki.abego-software.de&quot;};
+//
+String.prototype.contains = function(substring) {
+	return this.indexOf(substring) &gt;= 0;
+};
+
+//============================================================================
+// Array.indexOf Function
+//============================================================================
+//
+// Returns the index of the first occurance of the given item in the array or 
+// -1 when no such item exists.
+//
+// @param item [may be null]
+//
+version.extensions[&quot;Array.indexOf&quot;] = {major: 1, minor: 0, revision: 0, date: new Date(2005,11,20), provider: &quot;http://tiddlywiki.abego-software.de&quot;};
+//
+Array.prototype.indexOf = function(item) {
+	for (var i = 0; i &lt; this.length; i++) {
+		if (this[i] == item) {
+			return i;
+		}
+	}
+	return -1;
+};
+
+//============================================================================
+// Array.contains Function
+//============================================================================
+//
+// Returns true when the array contains the given item, otherwise false. 
+//
+// @param item [may be null]
+//
+version.extensions[&quot;Array.contains&quot;] = {major: 1, minor: 0, revision: 0, date: new Date(2005,11,20), provider: &quot;http://tiddlywiki.abego-software.de&quot;};
+//
+Array.prototype.contains = function(item) {
+	return (this.indexOf(item) &gt;= 0);
+};
+
+//============================================================================
+// Array.containsAny Function
+//============================================================================
+//
+// Returns true when the array contains at least one of the elements 
+// of the item. Otherwise (or when items contains no elements) false is returned.
+//
+version.extensions[&quot;Array.containsAny&quot;] = {major: 1, minor: 0, revision: 0, date: new Date(2005,11,20), provider: &quot;http://tiddlywiki.abego-software.de&quot;};
+//
+Array.prototype.containsAny = function(items) {
+	for(var i = 0; i &lt; items.length; i++) {
+		if (this.contains(items[i])) {
+			return true;
+		}
+	}
+	return false;
+};
+
+
+//============================================================================
+// Array.containsAll Function
+//============================================================================
+//
+// Returns true when the array contains all the items, otherwise false.
+// 
+// When items is null false is returned (even if the array contains a null).
+//
+// @param items [may be null] 
+//
+version.extensions[&quot;Array.containsAll&quot;] = {major: 1, minor: 0, revision: 0, date: new Date(2005,11,20), provider: &quot;http://tiddlywiki.abego-software.de&quot;};
+//
+Array.prototype.containsAll = function(items) {
+	for(var i = 0; i &lt; items.length; i++) {
+		if (!this.contains(items[i])) {
+			return false;
+		}
+	}
+	return true;
+};
+
+
+} // of &quot;install only once&quot;
+
+// Used Globals (for JSLint) ==============
+// ... DOM
+/*global 	document */
+// ... TiddlyWiki Core
+/*global 	convertUnicodeToUTF8, createTiddlyElement, createTiddlyLink, 
+			displayMessage, endSaveArea, hasClass, loadFile, saveFile, 
+			startSaveArea, store, wikify */
+//}}}
+
+
+/***
+!Licence and Copyright
+Copyright (c) abego Software ~GmbH, 2005 ([[www.abego-software.de|http://www.abego-software.de]])
+
+Redistribution and use in source and binary forms, with or without modification,
+are permitted provided that the following conditions are met:
+
+Redistributions of source code must retain the above copyright notice, this
+list of conditions and the following disclaimer.
+
+Redistributions in binary form must reproduce the above copyright notice, this
+list of conditions and the following disclaimer in the documentation and/or other
+materials provided with the distribution.
+
+Neither the name of abego Software nor the names of its contributors may be
+used to endorse or promote products derived from this software without specific
+prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot; AND ANY
+EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT
+SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED
+TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
+DAMAGE.
+***/
+
+</pre>
+</div>
+<div title="Initialisation versus activation" modifier="Mingos" created="200911162110" modified="201007271722" tags="tutorial module" changecount="6">
 <pre>The [[UmbraModule]] provides two virtual methods which can be overridden in a custom module. These are [[UmbraModule::initialise]] and [[UmbraModule::activate]]. The difference between the two might seem a bit blurry, so let's have a closer look at what they do.
 !Initialisation
-
 The [[UmbraModule::initialise]] method is run only once per module in the entire execution time of the application. In fact, for some modules, it might never be run, but in this case, the module simply never gets activated. What we need to bear in mind is that the method will be run only when the module is activated ''for the first time''. Every subsequent activation will not trigger initialisation anymore.
 
 What's the practical use of this feature? The initialisation might as well be handled in the constructor, one might remark. The answer is simple: the module might depend on information that's not available at the moment the constructor is run. Sure, in most cases it won't. But what if it does? Well, that's when this method can provide a delayed initialisation or a &quot;second constructor&quot;.
 !Activation
-
 The activation of a module consists essentially of putting the module on the activation list, and commencing to run it, starting from the subsequent frame (or main loop iteration). During activation, it might be necessary to run some sort of custom code. This is when [[UmbraModule::activate]] comes in. It is run once per module activation.
 
 A simple example of its practical use would be a module with a timeout, such as the [[BSOD]]. During the activation of the [[BSOD]], the module needs to check and store the elapsed time from application start. This value is set every time the module is activated in order to know when it's supposed to be deactivated. Until it's actually deactivated, the value will not change. The effect is a timeout: the module deactivates itself X time after activation.
 
 Paired with [[UmbraModule::activate]] is also [[UmbraModule::deactivate]]. In case a module needs to run some special code upon deactivation, it's enough to override this method.</pre>
-</div>
-<div title="Internal modules" modifier="Mingos" created="200911082358" modified="201007252155" tags="tutorial module internalmodule" changecount="5">
-<pre>Internal modules are modules that come integrated with Umbra. They are widgets intended for program diagnostics. The ones you will most commonly use are the [[Speed-o-meter]] and the [[BSOD]]. These modules are automatically instantiated, so they will consume some memory, but they needn't be used if it is not your wish. They do not consume any CPU power until they are activated.
-
-Internal modules are widgets that can be activated in a number of ways. For instance, the [[Speed-o-meter]] will commonly have a keybinding tied to it, as it's a fast and reliable way of assessing how well the program performs on a given hardware. The [[BSOD]] will rather be tied to the act of reporting an error and won't be triggered by a key or a combination thereof.</pre>
 </div>
 <div title="MainMenu" modifier="Mingos" created="200910241817" modified="200910272028" changecount="2">
 <pre>[[About Umbra]]
@@ -880,59 +1778,26 @@ Internal modules are widgets that can be activated in a number of ways. For inst
 [[API reference]]
 [[Credits]]</pre>
 </div>
-<div title="Methods" modifier="Mingos" created="200911042331" modified="201007252250" changecount="11">
-<pre>[[UmbraEngine::activateFont]]
-[[UmbraEngine::activateModule]]
-[[UmbraEngine::deactivateAll]]
-[[UmbraEngine::deactivateModule]]
-[[UmbraEngine::getFontDir]]
-[[UmbraEngine::getFontID]]
-[[UmbraEngine::getInstance]]
-[[UmbraEngine::getKeyboardMode]]
-[[UmbraEngine::getModule]]
-[[UmbraEngine::getNbFonts]]
-[[UmbraEngine::getRootHeight]]
-[[UmbraEngine::getRootWidth]]
-[[UmbraEngine::initialise]]
-[[UmbraEngine::registerFont]]
-[[UmbraEngine::registerModule]]
-[[UmbraEngine::run]]
-[[UmbraEngine::setKeybinding]]
-[[UmbraEngine::setKeyboardMode]]
-[[UmbraEngine::setRootDimensions]]
-[[UmbraEngine::setWindowTitle]]
-
-[[UmbraError::add]]
-[[UmbraError::fileExists]]
-[[UmbraError::getLastMessage]]
-[[UmbraError::getMessage]]
-[[UmbraError::getNbErrors]]
-
-[[UmbraModule::initialise]]
-[[UmbraModule::keyboard]]
-[[UmbraModule::mouse]]
-[[UmbraModule::render]]
-[[UmbraModule::setActive]]
-[[UmbraModule::setPause]]
-[[UmbraModule::update]]
-
-[[UmbraPoint::is]]
-[[UmbraPoint::set]]
-
-[[UmbraRect::isInside]]
-[[UmbraRect::set]]
-[[UmbraRect::setPos]]
-[[UmbraRect::setSize]]
-
-[[UmbraWidget::mouse]]
-[[UmbraWidget::setDragZone]]</pre>
+<div title="Methods" modifier="Mingos" created="200911042331" modified="201007271719" tags="api method" changecount="36">
+<pre>!~UmbraEngine
+&lt;&lt;tiddler UmbraEngineMethods&gt;&gt;
+!~UmbraError
+&lt;&lt;tiddler UmbraErrorMethods&gt;&gt;
+!~UmbraModule
+&lt;&lt;tiddler UmbraModuleMethods&gt;&gt;
+!~UmbraPoint
+&lt;&lt;tiddler UmbraPointMethods&gt;&gt;
+!~UmbraRect
+&lt;&lt;tiddler UmbraRectMethods&gt;&gt;
+!~UmbraWidget
+&lt;&lt;tiddler UmbraWidgetMethods&gt;&gt;</pre>
 </div>
 <div title="Mingos" modifier="Mingos" created="200910241825" modified="201007252151" changecount="5">
 <pre>One of the developers of this humble engine. Please visit my websites for more details about what I do.
 *http://www.umbraprojekt.pl/
 *http://umbrarumregnum.110mb.com/</pre>
 </div>
-<div title="PageTemplate" modifier="TiddlyThemes" created="200701130013" modified="200708091512" tags="MonochromeTheme" server.type="file" server.host="tiddlythemes.com/empties/Monochrome.html" server.page.revision="200708091512">
+<div title="PageTemplate" modifier="Mingos" created="200701130013" modified="201007271456" tags="MonochromeTheme" server.type="file" server.host="tiddlythemes.com/empties/Monochrome.html" server.page.revision="200708091512" changecount="10">
 <pre>&lt;div id='header' class='header' macro='gradient vert   #555555       #3b3b3b '&gt;
         &lt;div class='siteTitle' refresh='content' tiddler='SiteTitle'&gt;&lt;/div&gt;
         &lt;span id='topMenu' refresh='content' tiddler='MainMenu'&gt;&lt;/span&gt;
@@ -948,7 +1813,7 @@ Internal modules are widgets that can be activated in a number of ways. For inst
 &lt;/div&gt;
 &lt;!--}}}--&gt;</pre>
 </div>
-<div title="Referencing the engine" modifier="Mingos" created="200911110037" modified="201007252130" tags="tutorial engine referencing" changecount="13">
+<div title="Referencing the engine" modifier="Mingos" created="200911110037" modified="201007271423" tags="tutorial engine engineReference" changecount="14">
 <pre>Since the engine is the basic and most important class in all Umbra-powered applications, it is obvious that it needs to be referenced across the code. There are three ways of achieving this:
 #Via a global variable,
 #Via a static engine instance getter,
@@ -991,14 +1856,14 @@ class MyModule : public UmbraModule {
 &lt;/code&gt;
 Please note that [[UmbraWidget]] inherits [[UmbraModule]] and thus the [[UmbraModule::getEngine]] method is also available inside widgets.</pre>
 </div>
-<div title="Registering fonts" modifier="Mingos" created="200911112244" modified="201007252132" tags="tutorial engine font" changecount="2">
+<div title="Registering fonts" modifier="Mingos" created="200911112244" modified="201007272149" tags="tutorial font init" changecount="4">
 <pre>As with the modules, registering a font &quot;tells&quot; the engine that there is a font file ready to be used. It has nothing to do with actually using the font.
 
 Registering a font can be done using [[UmbraEngine::registerFont]] method. It is necessary to specify the font file, as well as the number of columns and rows. Optionally, the layout can also be specified, although this is not necessary for fonts that use the default TCOD layout.
 
 Once the fonts are registered, the engine will be able to choose the correct font file to load.</pre>
 </div>
-<div title="Registering modules" modifier="Mingos" created="200911112149" modified="201007252132" tags="tutorial engine module" changecount="2">
+<div title="Registering modules" modifier="Mingos" created="200911112149" modified="201007272149" tags="tutorial module init" changecount="4">
 <pre>Registering a module is basically &quot;telling&quot; the engine that a module has been instantiated and that you would like to make it useable. Registering a module can be done by calling [[UmbraEngine::registerModule]] method.
 
 Note that you may both instantiate the module before calling [[UmbraEngine::registerModule]] and pass the method a reference to the module, or you may simply instantiate the module inside the method's argument.
@@ -1028,15 +1893,15 @@ Bear in mind that this method accepts printf-like text formatting. Ultimately, y
 <div title="Scautura" modifier="Scautura" created="200911111208" changecount="1">
 <pre>Proofreader. Nothing more.</pre>
 </div>
-<div title="SideBarOptions" modifier="Mingos" created="200701130013" modified="201007252153" tags="LewcidOrangeTheme" server.type="file" server.host="tiddlythemes.com/empties/LewcidOrange.html" server.page.revision="200708091512" changecount="2">
+<div title="SideBarOptions" modifier="Mingos" created="200701130013" modified="201007271238" tags="LewcidOrangeTheme" server.type="file" server.host="tiddlythemes.com/empties/LewcidOrange.html" server.page.revision="200708091512" changecount="5">
 <pre>&lt;&lt;search&gt;&gt;&lt;&lt;closeAll&gt;&gt;&lt;&lt;saveChanges&gt;&gt;&lt;&lt;slider chkSliderOptionsPanel OptionsPanel 'options »' 'Change TiddlyWiki advanced options'&gt;&gt;</pre>
 </div>
-<div title="SideBarTabs" modifier="Mingos" created="201007252144" server.type="file" server.host="tiddlythemes.com/empties/Monochrome.html" changecount="1">
+<div title="SideBarTabs" modifier="Mingos" created="201007252144" modified="201007271447" server.type="file" server.host="tiddlythemes.com/empties/Monochrome.html" changecount="2">
 <pre>&lt;&lt;tabs txtMainTab &quot;Tags&quot; &quot;All tags&quot; TabTags &quot;Timeline&quot; &quot;Timeline&quot; TabTimeline &quot;All&quot; &quot;All tiddlers&quot; TabAll &quot;More&quot; &quot;More lists&quot; TabMore&gt;&gt;</pre>
 </div>
-<div title="SideBarWG" modifier="TiddlyThemes" created="200701130013" modified="200708091512" tags="LewcidOrangeTheme" server.type="file" server.host="tiddlythemes.com/empties/LewcidOrange.html" server.page.revision="200708091512">
+<div title="SideBarWG" modifier="Mingos" created="200701130013" modified="201007271445" tags="LewcidOrangeTheme" server.type="file" server.host="tiddlythemes.com/empties/LewcidOrange.html" server.page.revision="200708091512" changecount="1">
 <pre>/***
-This CSS by DaveBirss.
+This CSS by ~DaveBirss.
 ***/
 /*{{{*/
 
@@ -1175,10 +2040,10 @@ This CSS by DaveBirss.
 <div title="SiteTitle" modifier="Mingos" created="200910241741" modified="200911112227" changecount="3">
 <pre>Umbra</pre>
 </div>
-<div title="Speed-o-meter" modifier="Mingos" created="201003301739" modified="201007252155" tags="tutorial module internalmodule" changecount="10">
+<div title="Speed-o-meter" modifier="Mingos" created="201003301739" modified="201007272129" tags="tutorial internalModule" changecount="16">
 <pre>The Speed-o-meter, or &quot;Speedo&quot;, is a benchmarking tool. It removes the frames per second limit so that the usage of the CPU core running the main program thread can go up to 100%. It also displays a small window with a graph depicting the time spent on various calculations:
-* ''update'' - time spent inside your active modules' [[UmbraModule::update|update]] method,
-* ''render'' - time spent inside your active modules' [[UmbraModule::render|render()]] method,
+* ''update'' - time spent inside your active modules' [[update()|UmbraModule::update]] method,
+* ''render'' - time spent inside your active modules' [[render()|UmbraModule::render]] method,
 * ''system'' - the time spent on &quot;system calls&quot; (everything not belonging to the above two).
 Apart fromt this information, Speedo will also tell you how long it took to render the last frame (in milliseconds - constant values of 40ms and above should be considered a warning, especially on a fast CPU) and how many frames per second your program manages to render (if this value is much higher than your usual frames per second limit, you have no performance issues).
 
@@ -1188,7 +2053,7 @@ If UmbraEngine is initialised with the additional callbacks enabled (see [[Umbra
 
 Please remember to use a code profiler, such as gprof, to profile your code. Speedo is not a profiler, it can merely inform you of possible performance issues, but will not identify any bottlenecks in the program.</pre>
 </div>
-<div title="Starting a project using Umbra" modifier="Mingos" created="201003301731" modified="201007252129" tags="tutorial basics" changecount="5">
+<div title="Starting a project using Umbra" modifier="Mingos" created="201003301731" modified="201007272139" tags="tutorial basics init" changecount="6">
 <pre>Umbra is not a library, but a collection of C++ code files. As such, absolutely no linking is required to start using Umbra.
 
 What is necessary, however, is adding the code that comes with Umbra to your project. Since you're not likely to want to modify Umbra files, save in some corner cases where you might need a higher grade of customisation, you are advised to place Umbra files in a separate directory so that they don't distract you from your own code.
@@ -1199,7 +2064,7 @@ Once you have done that, all you need to do to be able to start using Umbra is i
 &lt;/code&gt;
 Umbra requires libtcod to run, so it already includes it, and therefore you are not required to include it separately.</pre>
 </div>
-<div title="StyleSheet" modifier="Mingos" created="200701130013" modified="201007202109" tags="MonochromeTheme" server.type="file" server.host="tiddlythemes.com/empties/Monochrome.html" server.page.revision="200708091512" changecount="3">
+<div title="StyleSheet" modifier="Mingos" created="200701130013" modified="201007271038" tags="MonochromeTheme" server.type="file" server.host="tiddlythemes.com/empties/Monochrome.html" server.page.revision="200708091512" changecount="5">
 <pre>[[StyleSheetSyntaxHighlighter]]
 
 /*{{{*/
@@ -1231,7 +2096,7 @@ color: #ccc; margin-right:2em;margin-left:0.5em;
 
 #displayArea {margin-left:1.35em; margin-right:17.65em; margin-top:0.5em; padding-top:1em; padding-bottom:10px;}
 
-.tiddler {background:#454545; margin-bottom:20px; padding:1em 2em 1em 2em;}
+.tiddler {background:#454545; margin-bottom:20px; padding:1em 2em 1em 2em; -moz-border-radius: 10px; -webkit-border-radius: 10px; border-radius: 10px; }
 
 a, a:hover{
 color:#fff;
@@ -1267,6 +2132,7 @@ border-color: #3B3B3B;
 .tagging, .tagged {
 border: 1px solid #555;
 background-color: 	#444;
+-moz-border-radius: 10px; -webkit-border-radius: 10px; border-radius: 10px;
 }
 
 .selected .tagging, .selected .tagged {
@@ -1683,18 +2549,7 @@ There needs to be one and only one instance of the engine, no more, no less. Aft
 
 Once the initialisation is successful, the engine can be run. Running the engine initiates the main program loop. In it, modules are executed, activated and deactivated, mouse and keyboard input is read and so on. This is when the program is actually executed.</pre>
 </div>
-<div title="Things to do before initialising the engine" modifier="Mingos" created="200911112124" modified="201007252131" tags="tutorial engine" changecount="3">
-<pre>A freshly instantiated engine is as good as no engine at all. It will probably refuse to initialise, and even if it doesn't, it will instantly close itself as soon as it is run. That's why certain things should be done before initialising the engine.
-
-First of all, the engine will need modules to run. Without them, the application will close itself. Writing the modules in question isn't enough, one also needs to inform the engine of their existence by registering them.
-
-At least one of the registered modules will also need to be activated, as even a bunch of registered modules will result in an application that instantly closes itself if there's not a single active module to run.
-
-Fonts can be registered as well, although in certain circumstances this is not mandatory.
-
-More actions can be performed as well, although they are optional.</pre>
-</div>
-<div title="Umbra Hello World" modifier="Mingos" created="200911082305" modified="201007252129" tags="tutorial basics" changecount="16">
+<div title="Umbra Hello World" modifier="Mingos" created="200911082305" modified="201007272139" tags="tutorial basics init" changecount="17">
 <pre>Let's begin with source code for a //Hello world// program. First, let's create the following {{{main.hpp}}} file:
 &lt;code C++&gt;
 #include &quot;umbra.hpp&quot; //assumes its search directory is known
@@ -1731,48 +2586,35 @@ After implementing the method in {{{main.cpp}}}, we can finally write the heart 
 
 Finally, we reach the point where the module is registered and active, and the only missing thing is running the engine. First, we need to initialise it, and if the initialisation is successful, run the engine. That's it, this is the code that powers a &quot;Hello world&quot; program made with Umbra.</pre>
 </div>
-<div title="UmbraEngine" modifier="Mingos" created="200910241822" modified="201007252158" tags="api class engine" changecount="54">
+<div title="UmbraEngine" modifier="Mingos" created="200910241822" modified="201007271240" tags="api class engine" changecount="57">
 <pre>The class UmbraEngine contains the heart of Umbra. An instance of UmbraEngine needs to be created in order for Umbra to become alive:
-
 &lt;code C++&gt;
 UmbraEngine engine;
 &lt;/code&gt;
-
 Umbra will look for its {{{umbra.txt}}} configuration file in {{{./data/cfg/}}} by default. If you want it in another directory, use this syntax ;
-
 &lt;code C++&gt;
 UmbraEngine engine(&quot;./config&quot;);
 &lt;/code&gt;
-
 Then, several [[UmbraModule]]s need to be declared. The modules are assigned unique id numbers. The first registered module has {{{id=0}}}, the second one has {{{id=1}}} and so on. Make sure you can refer to those modules in some way, for instance, by creating an enumeration with unique names. The registerModule function also returns the registered module id.
-
 &lt;code C++&gt;
 engine.registerModule(new Credits());
 &lt;/code&gt;
-
 You can also register a module with a fallback module that will be automatically activated when the current module is deactivated (when its update function returns {{{false}}}):
-
 &lt;code C++&gt;
 int mainMenuId = engine.registerModule(new MainMenu());
 engine.registerModule(new Credits(), mainMenuId);
 &lt;/code&gt;
-
 Then you have to activate at least one module, the game starting screen.
-
 &lt;code C++&gt;
 engine.activateModule(mainMenuId);
 &lt;/code&gt;
-
 Finally, the engine is initialised and run:
-
 &lt;code C++&gt;
 if (engine.init()) return engine.run();
 else return 1;
 &lt;/code&gt;
-
 The [[UmbraEngine::initialise]] method actually creates the game window. The [[UmbraEngine::run]] method contains the main game loop, which exits when all modules are deactivated.
 See [[Font autodetection]] for details about how font are loaded by Umbra.
-
 &lt;code C++&gt;
 UmbraEngine engine;
 engine.registerModule(new Credits());
@@ -1782,53 +2624,34 @@ engine.activateModule(mainMenuId);
 if (engine.init()) return engine.run();
 else return 1;
 &lt;/code&gt;
-
 ;Methods:
-:[[UmbraEngine::activateFont]]
-:[[UmbraEngine::activateModule]]
-:[[UmbraEngine::deactivateAll]]
-:[[UmbraEngine::deactivateModule]]
-:[[UmbraEngine::getFontDir]]
-:[[UmbraEngine::getFontID]]
-:[[UmbraEngine::getInstance]]
-:[[UmbraEngine::getKeyboardMode]]
-:[[UmbraEngine::getModule]]
-:[[UmbraEngine::getNbFonts]]
-:[[UmbraEngine::getRootHeight]]
-:[[UmbraEngine::getRootWidth]]
-:[[UmbraEngine::initialise]]
-:[[UmbraEngine::registerFont]]
-:[[UmbraEngine::registerModule]]
-:[[UmbraEngine::run]]
-:[[UmbraEngine::setKeybinding]]
-:[[UmbraEngine::setKeyboardMode]]
-:[[UmbraEngine::setRootDimensions]]
-:[[UmbraEngine::setWindowTitle]]</pre>
+&lt;&lt;tiddler UmbraEngineMethods&gt;&gt;</pre>
 </div>
-<div title="UmbraEngine::activateFont" modifier="Mingos" created="201007201539" modified="201007252158" tags="api method engine font" changecount="16">
-<pre>Activates a previously registered font.
-
-;construction:
+<div title="UmbraEngine::activateFont" modifier="Mingos" created="201007201539" modified="201007271605" tags="api method engineClass font" changecount="38">
+<pre>!Description
+Activates a previously registered font.
+!Construction
 &lt;code C++&gt;
 bool activateFont (
     int shift = 0
 );
 &lt;/code&gt;
+!Parametres
+*{{{int shift}}}: a value of 0 will cause no effect at all. This is the default value, so specifying none will also cause no effect. A positive value will switch to the next font in the registered fonts list. A negative value will switch to the previous font in the registered fonts list.
+!Return value
+{{{bool}}}: {{{true}}} if the requested font could be activated, {{{false}}} otherwise.
+!Remarks:
+This method will reinitialise the root console.
+If the engine is created with the {{{registerDefaultCallbacks}}} parametre set to {{{true}}}, this method can be accessed anytime during the application runtime by pressing the page up and page down keys.
+!See also
+&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;font&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;font&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;font&quot;,&quot;tutorial&quot;])'&gt;&gt;
 
-;parametres:
-:{{{int shift}}}: a value of 0 will cause no effect at all. This is the default value, so specifying none will also cause no effect. A positive value will switch to the next font in the registered fonts list. A negative value will switch to the previous font in the registered fonts list.
-
-;return value:
-:{{{bool}}}: {{{true}}} if the requested font could be activated, {{{false}}} otherwise.
-
-;remarks:
-:This method will reinitialise the root console.
-:If the engine is created with the {{{registerDefaultCallbacks}}} parametre set to {{{true}}}, this method can be accessed anytime during the application runtime by pressing the page up and page down keys.</pre>
+</pre>
 </div>
-<div title="UmbraEngine::activateModule" modifier="Mingos" created="200911081445" modified="201007252159" tags="api method engine module" changecount="11">
-<pre>Puts a module on the activation list. It will be activated in the next main game loop iteration (next frame).
-
-;construction:
+<div title="UmbraEngine::activateModule" modifier="Mingos" created="200911081445" modified="201007272150" tags="api method engineClass module moduleStatus init" changecount="22">
+<pre>!Description
+Puts a module on the activation list. It will be activated in the next main game loop iteration (next frame).
+!Construction
 &lt;code C++&gt;
 void activateModule (
     int moduleId
@@ -1842,19 +2665,13 @@ void activateModule (
     UmbraInternalModuleID id
 );
 &lt;/code&gt;
-
-;parametres:
-:{{{int moduleId}}} - the ID number of a module, returned by the [[UmbraEngine::registerModule]] method.
-:{{{UmbraModule * mod}}} - pointer to a module, returned by the [[UmbraEngine::getModule]] methods.
-:{{{UmbraInternalModuleID id}}} - the ID number of an internal module, as defined in the [[UmbraInternalModuleID]] enum.
-
-;return value:
-:{{{void}}}
-
-;remarks:
-:You may use three ways of specifying a module: either specify the integer user module ID, pass a reference to the module in question, or specify an internal module ID.
-
-;example:
+!Parametres
+*{{{int moduleId}}} - the ID number of a module, returned by the [[UmbraEngine::registerModule]] method.
+*{{{UmbraModule * mod}}} - pointer to a module, returned by the [[UmbraEngine::getModule]] methods.
+*{{{UmbraInternalModuleID id}}} - the ID number of an internal module, as defined in the [[UmbraInternalModuleID]] enum.
+!Remarks:
+You may use three ways of specifying a module: either specify the integer user module ID, pass a reference to the module in question, or specify an internal module ID.
+!Example:
 &lt;code c++&gt;
 //module IDs
 enum {
@@ -1869,29 +2686,20 @@ engine.activateModule(MOD_CREDITS); //user module ID
 engine.activateModule(mod); //module reference
 engine.activateModule(UMBRA_INTERNAL_SPEEDOMETER); //internal module ID
 &lt;/code&gt;
-
-;see also:
-:[[UmbraEngine::deactivateModule]]</pre>
+!See also
+&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;moduleStatus&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;moduleStatus&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;moduleStatus&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
 </div>
-<div title="UmbraEngine::deactivateAll" modifier="Mingos" created="200911082255" modified="201007252159" tags="api method engine module" changecount="6">
-<pre>Deactivates all active modules in order to end the program.
-
-;construction:
+<div title="UmbraEngine::deactivateAll" modifier="Mingos" created="200911082255" modified="201007271606" tags="api method engineClass module moduleStatus" changecount="14">
+<pre>!Description
+Deactivates all active modules in order to end the program.
+!Construction
 &lt;code C++&gt;
 void deactivateAll (
 );
 &lt;/code&gt;
-
-;parametres:
-:none
-
-;return value:
-:{{{void}}}
-
-;remarks:
-:If the program is supposed to end, calling this method will deactivate all modules and end the main program loop.
-
-;example:
+!Remarks
+If the program is supposed to end, calling this method will deactivate all modules and thus end the main program loop.
+!Example
 &lt;code c++&gt;
 class MyModule : public UmbraModule {
     ...
@@ -1900,14 +2708,13 @@ class MyModule : public UmbraModule {
     }
 };
 &lt;/code&gt;
-
-;see also:
-:[[UmbraEngine::deactivateModule]]</pre>
+!See also
+&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;moduleStatus&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;moduleStatus&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;moduleStatus&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
 </div>
-<div title="UmbraEngine::deactivateModule" modifier="Mingos" created="200911081458" modified="201007252159" tags="api method engine module" changecount="12">
-<pre>Puts a module on the deactivation list. It will be deactivated in the next main game loop iteration (next frame).
-
-;construction:
+<div title="UmbraEngine::deactivateModule" modifier="Mingos" created="200911081458" modified="201007271606" tags="api method engineClass module moduleStatus" changecount="17">
+<pre>!Description
+Puts a module on the deactivation list. It will be deactivated in the next main game loop iteration (next frame).
+!Construction
 &lt;code C++&gt;
 void deactivateModule (
     int moduleId
@@ -1921,19 +2728,13 @@ void deactivateModule (
     UmbraInternalModuleID id
 );
 &lt;/code&gt;
-
-;parametres:
-:{{{int moduleId}}} - the ID number of a module, returned by the [[UmbraEngine::registerModule]] method.
-:{{{UmbraModule * mod}}} - pointer to a module, returned by the [[UmbraEngine::getModule]] methods.
-:{{{UmbraInternalModuleID id}}} - the ID number of an internal module, as defined in the [[UmbraInternalModuleID]] enum.
-
-;return value:
-:{{{void}}}
-
-;remarks:
-:You may use three ways of specifying a module: either specify the integer user module ID, pass a reference to the module in question, or specify an internal module ID.
-
-;example:
+!Parametres
+*{{{int moduleId}}} - the ID number of a module, returned by the [[UmbraEngine::registerModule]] method.
+*{{{UmbraModule * mod}}} - pointer to a module, returned by the [[UmbraEngine::getModule]] methods.
+*{{{UmbraInternalModuleID id}}} - the ID number of an internal module, as defined in the [[UmbraInternalModuleID]] enum.
+!Remarks
+You may use three ways of specifying a module: either specify the integer user module ID, pass a reference to the module in question, or specify an internal module ID.
+!Example
 &lt;code c++&gt;
 //module IDs
 enum {
@@ -1951,114 +2752,78 @@ engine.deactivateModule(MOD_CREDITS); //user module ID
 engine.deactivateModule(mod); //module reference
 engine.deactivateModule(UMBRA_INTERNAL_SPEEDOMETER); //internal module ID
 &lt;/code&gt;
-
-;see also:
-:[[UmbraEngine::activateModule]]</pre>
+!See also
+&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;moduleStatus&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;moduleStatus&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;moduleStatus&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
 </div>
-<div title="UmbraEngine::getFontDir" modifier="Mingos" created="201007252102" modified="201007252159" tags="api method engine font" changecount="4">
-<pre>Retrieves the path to the directory where font files are stored.
-
-;construction:
+<div title="UmbraEngine::getFontDir" modifier="Mingos" created="201007252102" modified="201007271606" tags="api method engineClass font" changecount="9">
+<pre>!Description
+Retrieves the path to the directory where font files are stored.
+!Construction
 &lt;code C++&gt;
 const char * getFontDir (
 );
 &lt;/code&gt;
-
-;parametres:
-:none
-
-;return value:
-:{{{const char*}}}: the path to the font directory.
-
-;remarks:
-:The path will be relative to the application's working directory. For instance, if the working directory is {{{/home/mingos/Documents/umbra/}}} and the font files are kept in {{{/home/mingos/Documents/umbra/data/img/}}}, this method will return {{{/data/img/}}}.
-
-;see also:
-:[[UmbraEngine::activateFont]]
-:[[UmbraEngine::getFontID]]
-:[[UmbraEngine::registerFont]]
-:[[UmbraEngine::getNbFonts]]
-:[[Font autodetection]]</pre>
+!Return value
+{{{const char*}}}: the path to the font directory.
+!Remarks
+The path will be relative to the application's working directory. For instance, if the working directory is {{{/home/mingos/Documents/umbra/}}} and the font files are kept in {{{/home/mingos/Documents/umbra/data/img/}}}, this method will return {{{/data/img/}}}.
+!See also
+&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;font&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;font&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;font&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
 </div>
-<div title="UmbraEngine::getFontID" modifier="Mingos" created="201007220558" modified="201007252159" tags="api method engine font" changecount="6">
-<pre>Gets the ID number of the font that is currently in use.
-
-;construction:
+<div title="UmbraEngine::getFontID" modifier="Mingos" created="201007220558" modified="201007271606" tags="api method engineClass font" changecount="8">
+<pre>!Description
+Gets the ID number of the font that is currently in use.
+!Construction
 &lt;code C++&gt;
 int getFontID (
 );
 &lt;/code&gt;
-
-;parametres:
-:none
-
-;return value:
-:{{{int}}}: the ID number of the currently used font
-
-;remarks:
-:none
-
-;see also:
-:[[UmbraEngine::activateFont]]
-:[[UmbraEngine::getFontDir]]
-:[[UmbraEngine::registerFont]]
-:[[UmbraEngine::getNbFonts]]
-:[[Font autodetection]]</pre>
+!Parametres
+none
+!Return value
+{{{int}}}: the ID number of the currently used font
+!See also
+&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;font&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;font&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;font&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
 </div>
-<div title="UmbraEngine::getInstance" modifier="Mingos" created="200911091623" modified="201007252159" tags="api method engine referencing" changecount="8">
-<pre>Returns a pointer the the engine.
-
-;construction:
+<div title="UmbraEngine::getInstance" modifier="Mingos" created="200911091623" modified="201007272125" tags="api method engineClass engineReference" changecount="17">
+<pre>!Description
+Returns a pointer the the engine.
+!Construction
 &lt;code C++&gt;
 static UmbraEngine * getInstance (
 );
 &lt;/code&gt;
-
-;parametres:
-:none
-
-;return value:
-:{{{UmbraEngine*}}}: a pointer to the engine
-
-;remarks:
-:Since modules aren't aware of the engine, this static method hands them a possibility to access the engine's methods.
-:This method is static, so it can be called without having to use the engine instance's name.
-
-;example:
+!Return value
+{{{UmbraEngine*}}}: a pointer to the engine.
+!Remarks
+Since modules aren't intrinsically aware of the engine, this static method hands them a possibility to access the engine's methods.
+This method is static, so it can be called without having to use the engine instance's name.
+It can be called from anywhere in the code.
+!Example:
 &lt;code c++&gt;
 UmbraEngine engine;
 UmbraEngine::getInstance()-&gt;registerFont(32,8,&quot;data/img/font10x10.png&quot;);
 &lt;/code&gt;
-
-;see also:
-:[[UmbraModule::getEngine]]
-:[[UmbraCallback::getEngine]]</pre>
+!See also
+&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;engineReference&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;engineReference&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;engineReference&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
 </div>
-<div title="UmbraEngine::getKeyboardMode" modifier="Mingos" created="201007252205" tags="api method engine keyboard keyboardmode" changecount="1">
-<pre>Retrieves the currently used keyboard mode (the way the engine reacts to keyboard events).
-
-;construction:
+<div title="UmbraEngine::getKeyboardMode" modifier="Mingos" created="201007252205" modified="201007272135" tags="api method engineClass keyboard keyboardMode" changecount="5">
+<pre>!Description
+Retrieves the currently used keyboard mode (the way the engine reacts to keyboard events).
+!Construction
 &lt;code C++&gt;
 UmbraKeyboardMode getKeyboardMode (
 );
 &lt;/code&gt;
-
-;parametres:
-:none
-
-;return value:
-:{{{UmbraKeyboardMode}}}: the keyboard mode, as defined in the [[UmbraKeyboardMode]] enum.
-
-;remarks:
-:none
-
-;see also:
-:[[UmbraEngine::getKeyboardMode]]</pre>
+!Return value
+{{{UmbraKeyboardMode}}}: the keyboard mode, as defined in the [[UmbraKeyboardMode]] enum.
+!See also
+&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;keyboard&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;keyboard&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;keyboard&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
 </div>
-<div title="UmbraEngine::getModule" modifier="Mingos" created="200911081506" modified="201007252200" tags="api method engine module" changecount="7">
-<pre>retrieves a reference to the module with the ID passed in the argument.
-
-;construction:
+<div title="UmbraEngine::getModule" modifier="Mingos" created="200911081506" modified="201007271607" tags="api method engineClass module moduleReference" changecount="13">
+<pre>!Description
+Retrieves a reference to the module with the ID passed in the argument.
+!Construction
 &lt;code C++&gt;
 UmbraModule *  getModule (
     int moduleId
@@ -2068,71 +2833,54 @@ UmbraModule * getModule (
     UmbraInternalModuleID id
 );
 &lt;/code&gt;
-
-;parametres:
-:{{{int moduleId}}}: the ID number of a module, returned by the [[UmbraEngine::registerModule]] method.
-:{{{UmbraInternalModuleID id}}}: the ID number of an internal module, as defined in the [[UmbraInternalModuleID]] enum.
-
-;return value:
-:{{{UmbraModule*}}}: reference to the UmbraModule object with the specified ID
-
-;remarks:
-:Both user modules (integer ID) and internal modules (UmbraInternalModuleID) can be retrieved that way.
-:Modules need to be registered to be retrieved. They needn't be active or even initialised.
-
-;example:
+!Parametres
+*{{{int moduleId}}}: the ID number of a module, returned by the [[UmbraEngine::registerModule]] method.
+*{{{UmbraInternalModuleID id}}}: the ID number of an internal module, as defined in the [[UmbraInternalModuleID]] enum.
+!Return value
+{{{UmbraModule*}}}: reference to the UmbraModule object with the specified ID
+!Remarks
+Both user modules (integer ID) and internal modules (UmbraInternalModuleID) can be retrieved that way.
+Modules need to be registered to be retrieved. They needn't be active or even initialised.
+!Example
 &lt;code C++&gt;
 const int modID = 0;
 UmbraEngine engine;
 engine.registerModule (new Module(), modID);
 UmbraModule * mod = engine.getModule (modID); //registered user module
 UmbraModule * mod2 = engine.getModule (UMBRA_INTERNAL_SPEEDOMETER); //an internal module
-&lt;/code&gt;</pre>
+&lt;/code&gt;
+!See also
+&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;moduleReference&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;moduleReference&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;moduleReference&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
 </div>
-<div title="UmbraEngine::getNbFonts" modifier="Mingos" created="201007221228" modified="201007252200" tags="api method engine font" changecount="3">
-<pre>Gets the total number of registered fonts.
-
-;construction:
+<div title="UmbraEngine::getNbFonts" modifier="Mingos" created="201007221228" modified="201007272117" tags="api method engineClass font" changecount="8">
+<pre>!Description
+Gets the total number of registered fonts.
+!Construction
 &lt;code C++&gt;
 int getNbFonts (
 );
 &lt;/code&gt;
-
-;parametres:
-:none
-
-;return value:
-:{{{int}}}: the number of fonts that are currently registered and ready for use.
-
-;remarks:
-:none
-
-;see also:
-:[[UmbraEngine::activateFont]]
-:[[UmbraEngine::getFontDir]]
-:[[UmbraEngine::getFontID]]
-:[[UmbraEngine::registerFont]]
-:[[Font autodetection]]</pre>
+!Return value
+{{{int}}}: the number of fonts that are currently registered and ready for use.
+!See also
+&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;font&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;font&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;font&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
 </div>
-<div title="UmbraEngine::initialise" modifier="Mingos" created="200911091904" modified="201007252200" tags="api method engine" changecount="6">
-<pre>Initialises the engine.
-
-;construction:
+<div title="UmbraEngine::initialise" modifier="Mingos" created="200911091904" modified="201007272203" tags="api method engine engineClass init" changecount="13">
+<pre>!Description
+Initialises the engine.
+!Construction
 &lt;code C++&gt;
 bool initialise (
+    TCOD_renderer_t renderer = TCOD_RENDERER_SDL
 );
 &lt;/code&gt;
-
-;parametres:
-:none
-
-;return value:
-:{{{boolean}}}: {{{true}}} if the engine has been initialised successfully, {{{false}}} otherwise.
-
-;remarks:
+!Parametres
+*{{{TCOD_renderer_t renderer}}}: the renderer libtcod should use. For a list of available renderers, please refer to [[libtcod documentation|http://doryen.eptalys.net/data/libtcod/doc/1.5.1/html2/console_init_root.html?c=false&amp;cpp=true&amp;cs=false&amp;py=false&amp;lua=false]]. Defaults to SDL.
+!Return value
+{{{bool}}}: {{{true}}} if the engine has been initialised successfully, {{{false}}} otherwise.
+!Remarks
 :In order to start running, the engine needs to be initialised first.
-
-;example:
+!Example
 &lt;code c++&gt;
 UmbraEngine engine;
 engine.registerModule(new MyModule());
@@ -2140,14 +2888,13 @@ engine.activateModule(0);
 if (engine.initialise()) return engine.run();
 else return 1;
 &lt;/code&gt;
-
-;see also:
-:[[UmbraModule::run]]</pre>
+!See also
+&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;engine&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;engine&quot;,&quot;engineClass&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;engine&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
 </div>
-<div title="UmbraEngine::registerFont" modifier="Mingos" created="200911051013" modified="201007252200" tags="api method engine font" changecount="13">
-<pre>Registers a font file to be used by libtcod.
-
-;construction:
+<div title="UmbraEngine::registerFont" modifier="Mingos" created="200911051013" modified="201007272138" tags="api method engineClass font init" changecount="22">
+<pre>!Description
+Registers a font file to be used by libtcod.
+!Construction
 &lt;code C++&gt;
 void UmbraEngine::registerFont (
     int columns, 
@@ -2156,87 +2903,65 @@ void UmbraEngine::registerFont (
     int flags
 );
 &lt;/code&gt;
-
-;parametres:
-:{{{int columns}}}: the number of columns in the font image file
-:{{{int rows}}}: the number of rown int the font image file
-:{{{const char * filename}}}: the name of the file containing the font image
-:{{{int flags}}}: the flags that should be used to register the font. Please refer to ''libtcod'' documentation to check the available flags.
-
-;return value:
-:{{{void}}}
-
-;remarks:
-:If you don't want Umbra to use [[Font autodetection]], you have to register your font(s) manually before initialising the engine.
-:Use this method to register each font, ordered smallest to biggest. The parameters are the same as in libtcod's setCustomFont method. See libtcod documentation for details.
-:Each registered font is assigned an id, starting with 0 and incrementing. The user can change the font by pressing pageUp or pageDown (by default). You can know what font is currently used with [[UmbraEngine::getCurrentFontID]].
-
-;example:
+!Parametres
+*{{{int columns}}}: the number of columns in the font image file
+*{{{int rows}}}: the number of rown int the font image file
+*{{{const char * filename}}}: the name of the file containing the font image
+*{{{int flags}}}: the flags that should be used to register the font. Please refer to [[libtcod documentation|http://doryen.eptalys.net/data/libtcod/doc/1.5.0/console/console_set_bitmap_font_size.html]] to check the available flags.
+!Remarks
+If you don't want Umbra to use [[Font autodetection]], you have to register your font(s) manually before initialising the engine.
+Use this method to register each font, ordered smallest to biggest. The parametres are the same as in libtcod's {{{setCustomFont}}} method. See libtcod documentation for details.
+Each registered font is assigned an ID, starting with 0 and incrementing. The user can change the font by pressing pageUp or pageDown (by default). You can know what font is currently used with [[UmbraEngine::getFontID]].
+!Example:
 &lt;code C++&gt;
 UmbraEngine engine;
 engine.registerFont(32,8,&quot;./fonts/arial8x8.png&quot;, TCOD_FONT_LAYOUT_TCOD|TCOD_FONT_GREYSCALE);
 engine.registerFont(32,8,&quot;./fonts/arial10x10.png&quot;, TCOD_FONT_LAYOUT_TCOD|TCOD_FONT_GREYSCALE);
 &lt;/code&gt;
-
-;see also
-:[[UmbraEngine::activateFont]]
-:[[UmbraEngine::getFontID]]
-:[[UmbraEngine::getFontDir]]
-:[[UmbraEngine::getNbFonts]]
-:[[Font autodetection]]</pre>
+!See also
+&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;font&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;font&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;font&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
 </div>
-<div title="UmbraEngine::registerModule" modifier="Mingos" created="200911091644" modified="201007252200" tags="api method engine module" changecount="10">
-<pre>Registers a user defined module for future activation.
-
-;construction:
+<div title="UmbraEngine::registerModule" modifier="Mingos" created="200911091644" modified="201007272138" tags="api method engineClass module fallback init" changecount="16">
+<pre>!Description
+Registers a user defined module for future activation.
+!Construction
 &lt;code C++&gt;
 int registerModule (
     UmbraModule * module,
     int fallback = (-1)
 );
 &lt;/code&gt;
-
-;parametre:
-:{{{UmbraModule * module}}}: a pointer to the module to be registered.
-:{{{int fallback}}}: ID number of the module to be activated once the registered one is deactivated (module fallback). A value of -1 sets the fallback off. Specifying no value also sets the fallback off.
-
-;return value:
-:{{{int}}}: the registered module's ID number.
-
-;remarks:
-:The method requires the creation of a pointer to a module. The easiest way to achieve this is to call the {{{new}}} operator inside the method's argument.
-:The method registers the newly created module for further use and assigns it an ID number. This number is generated automatically: the first registered module gets ID 0, the next is assigned 1, then 2, and so on, progressively. It is always wise to control the order in which the modules are registered.
-:The second argument is optional. It is a module ID that will be activated once the currently registered module is deactivated. If no fallback ID is specified, no modules will be activated after deactivating the one currently registered.
-
-;example:
-&lt;code c++&gt;
+!Parametres
+*{{{UmbraModule * module}}}: a pointer to the module to be registered.
+*{{{int fallback}}}: ID number of the module to be activated once the registered one is deactivated (module fallback). A value of -1 sets the fallback off. Specifying no value also sets the fallback off.
+!Return value
+{{{int}}}: the registered module's ID number.
+!Remarks
+The method requires the creation of a pointer to a module. The easiest way to achieve this is to call the {{{new}}} operator inside the method's argument.
+The method registers the newly created module for further use and assigns it an ID number. This number is generated automatically: the first registered module gets ID 0, the next is assigned 1, then 2, and so on, progressively. It is always wise to control the order in which the modules are registered.
+The second argument is optional. It is a module ID that will be activated once the currently registered module is deactivated. If no fallback ID is specified, no modules will be activated after deactivating the one currently registered.
+!Example
+&lt;code C++&gt;
 UmbraEngine engine;
 int mod1 = engine.registerModule(new MyModule()); //mod1 = 0
 int mod2 = engine.registerModule(new MyModule2(),mod1); //mod2 = 1; falls back to the previous one
 &lt;/code&gt;
-
-;see also:
-:[[Fallbacks]]</pre>
+!See also
+&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;module&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;module&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;module&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
 </div>
-<div title="UmbraEngine::run" modifier="Mingos" created="200911111442" modified="201007252200" tags="api method engine" changecount="6">
-<pre>Initiates the main game loop, effectively running the application.
-
-;construction:
+<div title="UmbraEngine::run" modifier="Mingos" created="200911111442" modified="201007272131" tags="api method engine engineClass" changecount="10">
+<pre>!Description
+Initiates the main game loop, effectively running the application.
+!Construction
 &lt;code C++&gt;
 int run (
 );
 &lt;/code&gt;
-
-;parametres:
-:none
-
-;return value:
-:{{{int}}}: 0 on successful exit or other number on abnormal termination. In case a nonzero value is returned, you should check the error log, as it will probably contain the description of what caused the error.
-
-;remarks:
-:The engine needs to be run to initiate the application's main loop. The engine needs to be instantiated and successfully initialised before it can be run.
-
-;example:
+!Return value
+{{{int}}}: 0 on successful exit or other number on abnormal termination. In case a nonzero value is returned, the error log will probably contain the description of what caused the error.
+!Remarks
+The engine needs to be run to initiate the application's main loop. The engine needs to be instantiated and successfully initialised before it can be run.
+!Example
 &lt;code c++&gt;
 UmbraEngine engine;  
 engine.registerModule (new MyModule());
@@ -2247,53 +2972,43 @@ if (engine.initialise()) {
 else
     return 1;
 &lt;/code&gt;
-
-;see also:
-:[[UmbraEngine::initialise]]</pre>
+!See also
+&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;engine&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;engine&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;engine&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
 </div>
-<div title="UmbraEngine::setKeyboardMode" modifier="Mingos" created="201007252116" modified="201007252201" tags="api method engine keyboard keyboardmode" changecount="3">
-<pre>Sets the keyboard mode (the way the engine reacts to keyboard events).
-
-;construction:
+<div title="UmbraEngine::setKeyboardMode" modifier="Mingos" created="201007252116" modified="201007272135" tags="api method engineClass keyboard keyboardMode" changecount="8">
+<pre>!Description
+Sets the keyboard mode (the way the engine reacts to keyboard events).
+!Construction
 &lt;code C++&gt;
 void setKeyboardMode (
     UmbraKeyboardMode mode
 );
 &lt;/code&gt;
-
-;parametres:
-:{{{UmbraKeyboardMode mode}}}: keyboard mode, as defined en the UmbraKeyboardMode enum.
-
-;return value:
-:{{{void}}}
-
-;remarks:
-:none
-
-;see also:
-:[[UmbraEngine::getKeyboardMode]]</pre>
+!Parametres
+*{{{UmbraKeyboardMode mode}}}: keyboard mode, as defined en the UmbraKeyboardMode enum.
+!See also
+&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;keyboard&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;keyboard&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;keyboard&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
 </div>
-<div title="UmbraEngine::setWindowTitle" modifier="Mingos" created="201003302007" modified="201007252201" tags="api method engine" changecount="8">
-<pre>Sets the game window title.
-
-;construction:
+<div title="UmbraEngine::setWindowTitle" modifier="Mingos" created="201003302007" modified="201007272137" tags="api method engineClass init" changecount="11">
+<pre>!Description
+Sets the game window title.
+!Construction
 &lt;code C++&gt;
 void setWindowTitle (
     const char * title,
     ...
 );
+
+void setWindowTitle (
+    std::string title
+);
 &lt;/code&gt;
-
-;parametres:
-:{{{const char * title}}}: the string containing the window's title. Uses {{{printf}}}-like formatting.
-
-;return value:
-:{{{void}}}
-
-;remarks:
-:This method should be used prior to calling [[UmbraEngine::initialise]]. Should the title change afterwards, the change will be seen only after calling [[UmbraEngine::reinitialise]].
-
-;example:
+!Parametres
+*{{{const char * title}}}: the string containing the window's title. Uses {{{printf}}}-like formatting.
+*{{{std::string title}}}: the string containing the window's title.
+!Remarks
+This method should be used prior to calling [[UmbraEngine::initialise]]. Should the title change afterwards, the change will be seen only after calling [[UmbraEngine::reinitialise]].
+!Example
 &lt;code C++&gt;
 UmbraEngine engine;  
 engine.registerModule(new MyModule());  
@@ -2303,29 +3018,48 @@ if (engine.initialise()) return engine.run();
 else return 1;
 }
 &lt;/code&gt;
-
-;see also:
-:[[UmbraEngine::initialise]]
-:[[UmbraEngine::reinitialise]]</pre>
+!See also
+&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;init&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;init&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;init&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
 </div>
-<div title="UmbraError" modifier="Mingos" created="201003301723" modified="201007252158" tags="api class error" changecount="5">
+<div title="UmbraEngineMethods" modifier="Mingos" created="201007271125" modified="201007272205" tags="methodlist" changecount="8">
+<pre>*[[UmbraEngine::activateFont]]
+*[[UmbraEngine::activateModule]]
+*[[UmbraEngine::deactivateAll]]
+*[[UmbraEngine::deactivateModule]]
+*[[UmbraEngine::displayError]]
+*[[UmbraEngine::getFontDir]]
+*[[UmbraEngine::getFontID]]
+*[[UmbraEngine::getInstance]]
+*[[UmbraEngine::getKeyboardMode]]
+*[[UmbraEngine::getModule]]
+*[[UmbraEngine::getNbFonts]]
+*[[UmbraEngine::getPaused]]
+*[[UmbraEngine::getRootHeight]]
+*[[UmbraEngine::getRootWidth]]
+*[[UmbraEngine::initialise]]
+*[[UmbraEngine::registerFont]]
+*[[UmbraEngine::registerModule]]
+*[[UmbraEngine::reinitialise]]
+*[[UmbraEngine::run]]
+*[[UmbraEngine::setKeybinding]]
+*[[UmbraEngine::setKeyboardMode]]
+*[[UmbraEngine::setPaused]]
+*[[UmbraEngine::setRootDimensions]]
+*[[UmbraEngine::setWindowTitle]]</pre>
+</div>
+<div title="UmbraError" modifier="Mingos" created="201003301723" modified="201007271242" tags="api class error" changecount="7">
 <pre>UmbraError is a static class that does not take part in handling game itself. As its name implies, it is there to handle errors and aid in preventing the occurrence of errors. It is essentially a list of all logged errors, which you can use for debugging.
 
 UmbraError has five public methods, all of which you are welcome to call at any point in your program. These are:
-* [[UmbraError::add]] adds a new error to the list and displays it on stderr
-* [[UmbraError::fileExists]] checks whether a file exists in the specified location
-* [[UmbraError::getLastMessage]] retrieves the last logged error
-* [[UmbraError::getMessage]] retrieves any message, providing you know at which position it was logged
-* [[UmbraError::getNbErrors]] retrieves the total number of logged errors
-
+&lt;&lt;tiddler UmbraErrorMethods&gt;&gt;
 Umbra uses this class internally in many situations to notify you of any possible mistakes, such as trying to load a module that hasn't been initialised yet. The last logged message can be displayed on {{{stderr}}} (default behaviour), but if Umbra is in debug mode, it will also activate a warning prompt, humorously called the [[BSOD]].
 
 Should any error be logged during the program execution, an error log file called {{{errorlog.txt}}} will be created in the program's execution directory for your review. Please remember to read it if there are any issues, as it may contain indications regarding what you can do to repair the issue.</pre>
 </div>
-<div title="UmbraError::add" modifier="Mingos" created="201003301902" modified="201007252201" tags="api method error" changecount="11">
-<pre>Appends an error message to the error list in the log.
-
-;construction:
+<div title="UmbraError::add" modifier="Mingos" created="201003301902" modified="201007272254" tags="api method error" changecount="16">
+<pre>!Description
+Appends an error message to the error list in the log.
+!Construction
 &lt;code C++&gt;
 static int add (
     const char * errStr,
@@ -2336,18 +3070,15 @@ static int add (
     std::string errStr
 );
 &lt;/code&gt;
-
-;parametres:
-:{{{const char * errStr}}}: the string contaning the error message. The string uses {{{printf}}}-like formatting.
-:{{{std::string errStr}}}: the string contaning the error message.
-
-;return value:
+!Parametres
+*{{{const char * errStr}}}: the string contaning the error message. The string uses {{{printf}}}-like formatting.
+*{{{std::string errStr}}}: the string contaning the error message.
+!Return value
 :{{{int}}}: error ID number in the error log.
-
-;remarks:
-:Using this method will append an error the the error log, display it on stderr (typically, the console) and ensure that the error log is saved to a text file.
-
-;example:
+!Remarks
+Using this method will append an error the the error log, display it on {{{stderr}}} (typically, the console) and ensure that the error log is saved to a text file.
+The returned ID number may be used to retrieve the error later using [[UmbraError::getMessage]].
+!Example
 &lt;code C++&gt;
 if (errorCondition) {
     UmbraError::add(&quot;Oh my God, I'm an error!&quot;);
@@ -2355,43 +3086,47 @@ if (errorCondition) {
     std::string err = &quot;STL is good for error reporting too!&quot;;
     UmbraError::add(err);
 }
-&lt;/code&gt;</pre>
+&lt;/code&gt;
+!See also
+&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;error&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;error&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;error&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
 </div>
-<div title="UmbraError::fileExists" modifier="Mingos" created="201003301940" modified="201007252201" tags="api method error" changecount="7">
-<pre>Checks whether a given file exists.
-
-;construction:
+<div title="UmbraError::fileExists" modifier="Mingos" created="201003301940" modified="201007272255" tags="api method error" changecount="9">
+<pre>!Description
+Checks whether a given file exists.
+!Construction
 &lt;code C++&gt;
 static bool fileExists (
     const char * filename,
     ...
 );
 &lt;/code&gt;
-
-;parametres:
-:{{{const char * filename}}}: the name of the file whose existence needs to be confirmed. The string accepts a {{{printf}}}-like formatting.
-
-;return value:
-:{{{bool}}}: {{{true}}} if the specified file exists, {{{false}}} otherwise.
-
-;remarks:
+!Parametres
+*{{{const char * filename}}}: the name of the file whose existence needs to be confirmed. The string accepts {{{printf}}}-like formatting.
+!Return value
+{{{bool}}}: {{{true}}} if the specified file exists, {{{false}}} otherwise.
+!Remarks
 :This method is best used to prevent crashes due to a missing file. Useful for confirming the existence of data and configuration files.
-
-;example:
+!Example
 &lt;code C++&gt;
 if (!UmbraError::fileExists(&quot;my/directory/missingfile.txt&quot;)) {
     UmbraError::add(&quot;The file is missing!&quot;);
     exit(1);
 }
 &lt;/code&gt;
-
-;see also:
-:[[UmbraError::add]]</pre>
+!See also
+&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;error&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;error&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;error&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
 </div>
-<div title="UmbraInternalModuleID" modifier="Mingos" created="200911081536" modified="201007252207" tags="api enum module internalmodule" changecount="9">
-<pre>ID numbers for all internal modules available in Umbra.
-
-;enumeration:
+<div title="UmbraErrorMethods" modifier="Mingos" created="201007271141" modified="201007271252" tags="methodlist" changecount="3">
+<pre>*[[UmbraError::add]]
+*[[UmbraError::fileExists]]
+*[[UmbraError::getLastMessage]]
+*[[UmbraError::getMessage]]
+*[[UmbraError::getNbErrors]]</pre>
+</div>
+<div title="UmbraInternalModuleID" modifier="Mingos" created="200911081536" modified="201007271729" tags="api enum module internalModule moduleReference" changecount="13">
+<pre>!Description
+ID numbers for all internal modules available in Umbra.
+!Construction
 &lt;code C++&gt;
 enum UmbraInternalModuleID {
     UMBRA_INTERNAL_SPEEDOMETER,
@@ -2399,26 +3134,22 @@ enum UmbraInternalModuleID {
     UMBRA_INTERNAL_MAX
 };
 &lt;/code&gt;
-
-;values:
-:{{{UMBRA_INTERNAL_SPEEDOMETER}}}
-::The Speed-o-meter widget.
-:{{{UMBRA_INTERNAL_BSOD}}}
-::The error notification widget.
-:{{{UMBRA_INTERNAL_MAX}}}
-::Total number of internal modules available.
-
-;example:
+!Values
+*{{{UMBRA_INTERNAL_SPEEDOMETER}}}: The Speed-o-meter widget.
+*{{{UMBRA_INTERNAL_BSOD}}}: The error notification widget.
+*{{{UMBRA_INTERNAL_MAX}}}: Total number of internal modules available.
+!Example
 &lt;code C++&gt;
 UmbraEngine engine;
 engine.activateModule(UMBRA_INTERNAL_SPEEDOMETER);
 &lt;/code&gt;
-
-;see also:
+!See also:
 :[[UmbraEngine::displayError]]</pre>
 </div>
-<div title="UmbraKeyboardMode" modifier="Mingos" created="201007252205" modified="201007252212" tags="api enum keyboardmode" changecount="4">
-<pre>;enumeration:
+<div title="UmbraKeyboardMode" modifier="Mingos" created="201007252205" modified="201007271728" tags="api enum keyboard keyboardMode" changecount="7">
+<pre>!Description
+Keyboard modes are the ways in which Umbra reacts to keyboard input.
+!Construction
 &lt;code C++&gt;
 enum UmbraKeyboardMode {
     UMBRA_KEYBOARD_WAIT,
@@ -2428,20 +3159,14 @@ enum UmbraKeyboardMode {
     UMBRA_KEYBOARD_PRESSED_RELEASED
 };
 &lt;/code&gt;
-
-;values:
-:{{{UMBRA_KEYBOARD_WAIT}}}
-::Main loop only executes after some keyboard input has been detected (for turn-based games).
-:{{{UMBRA_KEYBOARD_WAIT_NOFLUSH}}}
-::Same as above, but without flushing the keyboard events.
-:{{{UMBRA_KEYBOARD_RELEASED}}}
-::React only to key release events.
-:{{{UMBRA_KEYBOARD_PRESSED}}}
-::React only to key press events.
-:{{{UMBRA_KEYBOARD_PRESSED_RELEASED}}}
-::React to both key press and key release events.</pre>
+!Values
+*{{{UMBRA_KEYBOARD_WAIT}}}: Main loop only executes after some keyboard input has been detected (for turn-based games).
+*{{{UMBRA_KEYBOARD_WAIT_NOFLUSH}}}: Same as above, but without flushing the keyboard events.
+*{{{UMBRA_KEYBOARD_RELEASED}}}: React only to key release events.
+*{{{UMBRA_KEYBOARD_PRESSED}}}: React only to key press events.
+*{{{UMBRA_KEYBOARD_PRESSED_RELEASED}}}: React to both key press and key release events.</pre>
 </div>
-<div title="UmbraModule" modifier="Mingos" created="200910241828" modified="201007252249" tags="api class module" changecount="37">
+<div title="UmbraModule" modifier="Mingos" created="200910241828" modified="201007271200" tags="api class module" changecount="38">
 <pre>UmbraModule is a single &quot;chunk&quot; of the game, with its own renderer and keybindings. It might be the main menu, the character creation screen, the overworld view, the trading screen or whatever might need a separate view. Modules might also be sub-screens like dialogs or widgets (the inventory dialog for example). Finally, modules can be some non-visual game logic one might want to easily enable or disable. In that case, it's only necessary override the {{{update()}}} method and leave an empty {{{render()}}} method.
 
 By default, an activated module will do nothing. It will simply stay there in memory until it's deactivated. Features can be added to it to it by overriding some of its methods:
@@ -2461,172 +3186,116 @@ The main Umbra game loop has 3 phases:
 * During the render phase, [[UmbraModule::render]] is called for each active module.
 
 ;Methods:
-:[[UmbraModule::activate]]
-:[[UmbraModule::deactivate]]
-:[[UmbraModule::getEngine]]
-:[[UmbraModule::getFallback]]
-:[[UmbraModule::getPriority]]
-:[[UmbraModule::getStatus]]
-:[[UmbraModule::initialise]]
-:[[UmbraModule::isActive]]
-:[[UmbraModule::isPaused]]
-:[[UmbraModule::keyboard]]
-:[[UmbraModule::mouse]]
-:[[UmbraModule::pause]]
-:[[UmbraModule::render]]
-:[[UmbraModule::resume]]
-:[[UmbraModule::setActive]]
-:[[UmbraModule::setFallback]]
-:[[UmbraModule::setPause]]
-:[[UmbraModule::update]]</pre>
+&lt;&lt;tiddler UmbraModuleMethods&gt;&gt;</pre>
 </div>
-<div title="UmbraModule::activate" modifier="Mingos" created="201003312325" modified="201004011559" changecount="6">
-<pre>May contain custom code executed upon module activation.
-
-;construction:
+<div title="UmbraModule::activate" modifier="Mingos" created="201003312325" modified="201007272143" tags="api method module moduleClass autoCalling" changecount="13">
+<pre>!Description
+Custom code executed upon module activation.
+!Construction
 &lt;code C++&gt;
 virtual void activate (
-    void
 );
 &lt;/code&gt;
-
-;return value:
-:none (void)
-
-;remarks:
-:This method will be called automatically whenever the module containing it is activated. It cannot be called manually.
-:It will typically contain code such as the activation of other modules (for instance, main game view may internally activate a message log).
-
-;see also:
-:[[UmbraModule::deactivate]]
-:[[UmbraModule::setActive]]
-:[[UmbraModule::pause]]
-:[[UmbraModule::resume]]</pre>
+!Remarks
+This method will be called automatically whenever the module containing it is activated. It cannot be called manually.
+It will typically contain code such as the activation of other modules (for instance, main game view may internally activate a message log).
+!See also
+&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;autoCalling&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;autoCalling&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;autoCalling&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
 </div>
-<div title="UmbraModule::deactivate" modifier="Mingos" created="201003312327" modified="201004011538" changecount="4">
-<pre>May contain custom code executed upon module deactivation.
-
-;construction:
+<div title="UmbraModule::deactivate" modifier="Mingos" created="201003312327" modified="201007272256" tags="api method module moduleClass autoCalling" changecount="11">
+<pre>!Description
+Custom code executed upon module deactivation.
+!Construction
 &lt;code C++&gt;
 virtual void deactivate (
-    void
 );
 &lt;/code&gt;
-
-;return value:
-:none (void)
-
-;remarks:
-:This method will be called automatically whenever the module containing it is deactivated. It cannot be called manually.
-:It will typically contain code such as the deactivation of other modules (for instance, main game view may internally deactivate a message log).
-
-;see also:
-:[[UmbraModule::activate]]
-:[[UmbraModule::setActive]]
-:[[UmbraModule::pause]]
-:[[UmbraModule::resume]]</pre>
+!Remarks
+This method will be called automatically whenever the module containing it is deactivated. It cannot be called manually.
+It will typically contain code such as the deactivation of other modules (for instance, main game view may internally deactivate a message log).
+!See also
+&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;autoCalling&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;autoCalling&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;autoCalling&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
 </div>
-<div title="UmbraModule::getEngine" modifier="Mingos" created="201004021259" modified="201004021300" changecount="3">
-<pre>Gets a pointer to the engine.
-
-;construction:
+<div title="UmbraModule::getEngine" modifier="Mingos" created="201004021259" modified="201007272300" tags="api method moduleClass engine engineReference" changecount="12">
+<pre>!Description
+Provides a pointer to the engine.
+!Construction
 &lt;code C++&gt;
-UmbraEngine * UmbraModule::getEngine (
-    void
+UmbraEngine * getEngine (
 );
 &lt;/code&gt;
-
-;return value:
-:{{{UmbraEngine*}}}: a pointer to the engine.
-
-;remarks:
-:This method is included in the {{{UmbraModule}}} to make communication with the game engine easier. Using it enables you to call the engine's methods from within the module (for instance, module activation).
-
-;see also:
-:[[UmbraEngine::getInstance]]
-</pre>
+!Return value
+{{{UmbraEngine*}}}: a pointer to the engine.
+!Remarks:
+This method is included in the {{{UmbraModule}}} to make communication with the game engine easier. Using it enables you to call the engine's methods from within the module (for instance, module activation).
+!Example
+&lt;code C++&gt;
+void MyModule::keyboard (TCOD_ket_t &amp;key) {
+    if (key.vk == TCODK_ESCAPE) {
+        getEngine()-&gt;deactivateAll();
+    }
+}
+&lt;/code&gt;
+!See also
+&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;engineReference&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;engineReference&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;engineReference&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
 </div>
-<div title="UmbraModule::initialise" modifier="Mingos" created="201003312342" modified="201007252201" tags="api method module" changecount="6">
-<pre>Custom code executed at module initialisation.
-
-;construction:
+<div title="UmbraModule::initialise" modifier="Mingos" created="201003312342" modified="201007272256" tags="api method module moduleClass autoCalling" changecount="12">
+<pre>!Description
+Custom code executed at module initialisation.
+!Construction
 &lt;code C++&gt;
 virtual void initialise (
 );
 &lt;/code&gt;
-
-;parametres:
-:none
-
-;return value:
-:{{{void}}}
-
-;remarks:
-:This method will be called automatically when the module is activated for the first time. It shall be called once and only once.
-:It may contain any code, typically some resource allocation which cannot be done in the module's constructor.
-:Should memory be allocated in this method, it is wise to deallocate it in the destructor.
-
-;see also:
-:[[UmbraModule::setActive]]</pre>
+!Remarks
+This method will be called automatically when the module is activated for the first time. It shall be called once and only once.
+It may contain any code, typically some resource allocation which cannot be done in the module's constructor.
+Should memory be allocated in this method, it is wise to deallocate it in the destructor.
+!See also
+&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;autoCalling&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;autoCalling&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;autoCalling&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
 </div>
-<div title="UmbraModule::isActive" modifier="Mingos" created="201004011546" changecount="1">
-<pre>Checks whether the module is active.
-
-;construction:
+<div title="UmbraModule::isActive" modifier="Mingos" created="201004011546" modified="201007272300" tags="api method moduleClass moduleStatus" changecount="7">
+<pre>!Description
+Checks whether the module is active.
+!Construction
 &lt;code C++&gt;
 bool isActive (
-    void
 );
 &lt;/code&gt;
-
-;return value:
-:boolean: {{{true}}} if the module is active, {{{false}}} otherwise.
-
-;remarks:
-
-;see also:
-:[[UmbraModule::setActive]]</pre>
+!Return value
+{{{bool}}}: {{{true}}} if the module is active, {{{false}}} otherwise.
+!See also
+&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;moduleStatus&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;moduleStatus&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;moduleStatus&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
 </div>
-<div title="UmbraModule::isPaused" modifier="Mingos" created="201004011545" modified="201004011545" changecount="2">
-<pre>Checks whether the module is paused.
-
-;construction:
+<div title="UmbraModule::isPaused" modifier="Mingos" created="201004011545" modified="201007272300" tags="api module methodClass moduleStatus" changecount="8">
+<pre>!Description
+Checks whether the module is paused.
+!Construction
 &lt;code C++&gt;
 bool isPaused (
-    void
 );
 &lt;/code&gt;
-
-;return value:
-:boolean: {{{true}}} if the module is paused, {{{false}}} otherwise.
-
-;remarks:
-
-;see also:
-:[[UmbraModule::setPause]]</pre>
+!Return value:
+{{{bool}}}: {{{true}}} if the module is paused, {{{false}}} otherwise.
+!See also
+&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;moduleStatus&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;moduleStatus&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;moduleStatus&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
 </div>
-<div title="UmbraModule::keyboard" modifier="Mingos" created="201003312316" modified="201007252202" tags="api method module keyboard" changecount="8">
-<pre>Handles keyboard input.
-
-;construction:
+<div title="UmbraModule::keyboard" modifier="Mingos" created="201003312316" modified="201007272257" tags="api method moduleClass keyboard input autoCalling" changecount="12">
+<pre>!Description
+Handles keyboard input.
+!Construction
 &lt;code C++&gt;
 virtual void keyboard (
     TCOD_key_t &amp;key
 );
 &lt;/code&gt;
-
-;parametres:
+!Parametres
 :{{{TCOD_key_t &amp;key}}}: address of the {{{TCOD_key_t}}} variable, catching keyboard input.
-
-;return value:
-:{{{void}}}
-
-;remarks:
-:This method will be called automatically each frame. It shouldn't be called manually, but rather overloaded in each module.
-:You should put only what's relevant to the given module in this method. Each module may react to different keybindings.
-:It is a good idea to zero the {{{key}}} variable out in case a relevant keystroke is detected so that modules with a lower priority don't parse the same keystroke again.
-
-;example:
+!Remarks
+This method will be called automatically each frame. It shouldn't be called manually, but rather overloaded in each module.
+You should put only what's relevant to the given module in this method. Each module may react to different keybindings.
+It is a good idea to zero the {{{key}}} variable out in case a relevant keystroke is detected so that modules with a lower priority don't parse the same keystroke again.
+!Example:
 &lt;code C++&gt;
 void MyModule::keyboard (TCOD_key_t &amp;key) {
     if (key.vk == TCODK_SPACE) {
@@ -2635,31 +3304,24 @@ void MyModule::keyboard (TCOD_key_t &amp;key) {
     }
 }
 &lt;/code&gt;
-
-;see also:
-:[[UmbraModule::mouse]]</pre>
+!See also
+&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;input&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;input&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;input&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
 </div>
-<div title="UmbraModule::mouse" modifier="Mingos" created="201003312321" modified="201007252202" tags="api method module mouse" changecount="6">
-<pre>Handles mouse input.
-
-;construction:
+<div title="UmbraModule::mouse" modifier="Mingos" created="201003312321" modified="201007272259" tags="api method moduleClass mouse input autoCalling" changecount="11">
+<pre>!Description
+Handles mouse input.
+!Construction
 &lt;code C++&gt;
 virtual void mouse (
     TCOD_mouse_t &amp;ms
 );
 &lt;/code&gt;
-
-;parametres:
-:{{{TCOD_mouse_t &amp;ms}}}: address of the {{{TCOD_mouse_t}}} variable that collects mouse events.
-
-;return value:
-:{{{void}}}
-
-;remarks:
-:This method will be called automatically each frame. It shouldn't be called manually, but rather overloaded in each module.
-:It is a good idea to zero the {{{ms}}} variable out in case some relevant input (usually a click in a given area) is parsed, otherwise modules with a lower priority will try to parse the same input.
-
-;example:
+!Parametres
+*{{{TCOD_mouse_t &amp;ms}}}: address of the {{{TCOD_mouse_t}}} variable that collects mouse events.
+!Remarks
+This method will be called automatically each frame. It shouldn't be called manually, but rather overloaded in each module.
+It is a good idea to zero the {{{ms}}} variable out in case some relevant input (usually a click in a given area) is parsed, otherwise modules with a lower priority will try to parse the same input.
+!Example:
 &lt;code C++&gt;
 void MyModule::mouse (TCOD_mouse_t &amp;ms) {
     if (ms.lbutton) {
@@ -2668,169 +3330,149 @@ void MyModule::mouse (TCOD_mouse_t &amp;ms) {
     }
 }
 &lt;/code&gt;
-
-;see also:
-:[[UmbraModule::keyboard]]</pre>
+!See also
+&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;input&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;input&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;input&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
 </div>
-<div title="UmbraModule::pause" modifier="Mingos" created="201003312330" modified="201004011541" changecount="4">
-<pre>May contain custom code executed upon module pausing.
-
-;construction:
+<div title="UmbraModule::pause" modifier="Mingos" created="201003312330" modified="201007272256" tags="api method module moduleClass autoCalling" changecount="11">
+<pre>!Description
+Custom code executed upon module pausing.
+!Construction
 &lt;code C++&gt;
 virtual void pause (
-    void
 );
 &lt;/code&gt;
-
-;return value:
-:none (void)
-
-;remarks:
-:This method will be called automatically whenever the module containing it is paused. It cannot be called manually.
-:It may contain any code, for instance, pausing the background music.
-
-;see also:
-:[[UmbraModule::setPause]]
-:[[UmbraModule::activate]]
-:[[UmbraModule::deactivate]]
-:[[UmbraModule::resume]]</pre>
+!Remarks
+This method will be called automatically whenever the module containing it is paused. It cannot be called manually.
+It may contain any code, for instance, pausing the background music.
+!See also
+&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;autoCalling&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;autoCalling&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;autoCalling&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
 </div>
-<div title="UmbraModule::render" modifier="Mingos" created="201003312308" modified="201007252202" tags="api method module render" changecount="6">
-<pre>Handles rendering on the screen.
-
-;construction:
+<div title="UmbraModule::render" modifier="Mingos" created="201003312308" modified="201007271937" tags="api method moduleClass render" changecount="8">
+<pre>!Description
+Handles module rendering on the screen.
+!Construction
 &lt;code C++&gt;
 virtual void render (
 );
 &lt;/code&gt;
-
-;parametres:
-:none
-
-;return value:
-:{{{void}}}
-
-;remarks:
-:This method will be called automatically each frame. It shouldn't be called manually, but rather overloaded in each module.
-
-;see also:
-:[[UmbraModule::update]]</pre>
+!Remarks
+This method will be called automatically each frame. It shouldn't be called manually, but rather overloaded in each module.</pre>
 </div>
-<div title="UmbraModule::resume" modifier="Mingos" created="201003312331" modified="201004011541" changecount="3">
-<pre>May contain custom code executed upon module unpausing.
-
-;construction:
+<div title="UmbraModule::resume" modifier="Mingos" created="201003312331" modified="201007272256" tags="api method module moduleClass autoCalling" changecount="10">
+<pre>!Description
+Custom code executed upon module unpausing.
+!Construction
 &lt;code C++&gt;
 virtual void resume (
     void
 );
 &lt;/code&gt;
-
-;return value:
-:none (void)
-
-;remarks:
-:This method will be called automatically whenever the module containing it is unpaused. It cannot be called manually.
-:It may contain any code, for instance, unpausing the background music.
-
-;see also:
-:[[UmbraModule::setPause]]
-:[[UmbraModule::activate]]
-:[[UmbraModule::deactivate]]
-:[[UmbraModule::pause]]</pre>
+!Remarks
+This method will be called automatically whenever the module containing it is unpaused. It cannot be called manually.
+It may contain any code, for instance, unpausing the background music.
+!See also
+&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;autoCalling&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;autoCalling&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;autoCalling&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
 </div>
-<div title="UmbraModule::setActive" modifier="Mingos" created="201004011536" modified="201007252202" tags="api method module" changecount="5">
-<pre>Activates or deactivates the module.
-
-;construction:
+<div title="UmbraModule::setActive" modifier="Mingos" created="201004011536" modified="201007272301" tags="api method moduleClass moduleStatus" changecount="10">
+<pre>!Description
+Activates or deactivates the module.
+!Construction
 &lt;code C++&gt;
 void setActive (
     bool active
 );
 &lt;/code&gt;
-
-;parametres
-:{{{bool active}}}: a value of {{{true}}} tells the method to activate the module. A value of {{{false}}} deactivates the module.
-
-;return value:
-:{{{void}}}
-
-;remarks:
-:Note that when a module is activated or deactivated, [[UmbraModule::activate]] or [[UmbraModule::deactivate]], respectively, are called in the following iteration of the main application loop.
-
-;see also:
-:[[UmbraModule::isActive]]
-:[[UmbraModule::activate]]
-:[[UmbraModule::deactivate]]</pre>
+!Parametres
+*{{{bool active}}}: a value of {{{true}}} tells the method to activate the module. A value of {{{false}}} deactivates the module.
+!Remarks
+Note that when a module is activated or deactivated, [[UmbraModule::activate]] or [[UmbraModule::deactivate]], respectively, are called in the following iteration of the main application loop.
+!See also
+&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;moduleStatus&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;moduleStatus&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;moduleStatus&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
 </div>
-<div title="UmbraModule::setFallback" modifier="Mingos" created="201004011604" changecount="1">
-<pre>Sets the fallback module.
-
-;construction:
+<div title="UmbraModule::setFallback" modifier="Mingos" created="201004011604" modified="201007272301" tags="api method module moduleClass fallback" changecount="6">
+<pre>!Description
+Sets the fallback module (the module that will be activated when the current one is deactivated).
+!Construction
 &lt;code C++&gt;
 void setFallback (
     int fback
 );
 &lt;/code&gt;
-
-;return value:
-:none (void)
-
-;remarks:
-:When the module is deactivated, the module with ID number specified as the argument to {{{UmbraModule::setFallback}}} will be activated.
-:The ID number of the fallback module is the number returned by [[UmbraEngine::registerModule]].
-
-;see also:
-:[[UmbraModule::getFallback]]
-:[[UmbraEngine::registerModule]]</pre>
+!Parametres
+*{{{int fback}}}: the ID number of the fallback module. 
+!Remarks
+When the module is deactivated, the module with ID number specified as the argument to {{{UmbraModule::setFallback}}} will be activated.
+The ID number of the fallback module is the number returned by [[UmbraEngine::registerModule]].
+!See also
+&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;fallback&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;fallback&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;fallback&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
 </div>
-<div title="UmbraModule::setPause" modifier="Mingos" created="201004011543" modified="201007252202" tags="api method module" changecount="5">
-<pre>Pauses or unpauses the module.
-
-;construction:
+<div title="UmbraModule::setPause" modifier="Mingos" created="201004011543" modified="201007271830" tags="api method moduleClass moduleStatus" changecount="12">
+<pre>!Description
+Pauses or unpauses the module.
+!Construction
 &lt;code C++&gt;
 void setPause (
     bool paused
 );
 &lt;/code&gt;
-
-;parametres
-:{{{bool paused}}}: {{{true}}} pauses the module, {{{false}}} unpauses it.
-
-;return value:
-:{{{void}}}
-
-;remarks:
-:Note that when a module is paused or unpaused, [[UmbraModule::pause]] or [[UmbraModule::resume]], respectively, are called in the following iteration of the main application loop.
-
-;see also:
-:[[UmbraModule::isPaused]]
-:[[UmbraModule::pause]]
-:[[UmbraModule::resume]]</pre>
+!Parametres
+{{{bool paused}}}: {{{true}}} pauses the module, {{{false}}} unpauses it.
+!Remarks
+Note that when a module is paused or unpaused, [[UmbraModule::pause]] or [[UmbraModule::resume]], respectively, are called in the following iteration of the main application loop.</pre>
 </div>
-<div title="UmbraModule::update" modifier="Mingos" created="200911121749" modified="201007252202" tags="api method module update" changecount="7">
-<pre>Updates the module's internal logic.
-
-;construction:
+<div title="UmbraModule::update" modifier="Mingos" created="200911121749" modified="201007271825" tags="api method module moduleClass update" changecount="9">
+<pre>!Description
+Updates the module's internal logic.
+!Construction
 &lt;code C++&gt;
 virtual bool update (
 );
 &lt;/code&gt;
-
-;parametres:
-:none
-
-;return value:
-:{{{bool}}}: the method is expected to return {{{true}}} if the module should remain active in the next main loop iteration, {{{false}}} if it should be deactivated.
-
-;remarks:
+!Return value
+{{{bool}}}: the method is expected to return {{{true}}} if the module should remain active in the next main loop iteration, {{{false}}} if it should be deactivated.
+!Remarks
 :This method will be called automatically each frame. It shouldn't be called manually, but rather overloaded in each module.
-:The developer is expected to adhere to the rules concerning the return value. Making the method return a value of {{{false}}} will deactivate the module.
-
-;see also:
-:[[UmbraModule::render]]</pre>
+:The developer is expected to adhere to the rules concerning the return value. Making the method return a value of {{{false}}} will deactivate the module.</pre>
 </div>
-<div title="UmbraPoint" modifier="Mingos" created="201007211209" modified="201007252254" tags="api class point mouse" changecount="10">
+<div title="UmbraModuleMethods" modifier="Mingos" created="201007271154" modified="201007271251" tags="methodlist" changecount="3">
+<pre>*[[UmbraModule::activate]]
+*[[UmbraModule::deactivate]]
+*[[UmbraModule::getEngine]]
+*[[UmbraModule::getFallback]]
+*[[UmbraModule::getPriority]]
+*[[UmbraModule::getStatus]]
+*[[UmbraModule::initialise]]
+*[[UmbraModule::isActive]]
+*[[UmbraModule::isPaused]]
+*[[UmbraModule::keyboard]]
+*[[UmbraModule::mouse]]
+*[[UmbraModule::pause]]
+*[[UmbraModule::render]]
+*[[UmbraModule::resume]]
+*[[UmbraModule::setActive]]
+*[[UmbraModule::setFallback]]
+*[[UmbraModule::setPause]]
+*[[UmbraModule::update]]</pre>
+</div>
+<div title="UmbraModuleStatus" modifier="Mingos" created="201007271045" modified="201007271728" tags="api enum module moduleStatus" changecount="6">
+<pre>!Description
+Identifiers for various module states.
+!Construction
+&lt;code C++&gt;
+enum UmbraModuleStatus {
+    UMBRA_UNINITIALISED,
+    UMBRA_INACTIVE,
+    UMBRA_ACTIVE,
+    UMBRA_PAUSED
+};
+&lt;/code&gt;
+!Values
+*{{{UMBRA_UNINITIALISED}}}: Modules that haven't yet been initialised will have this state.
+*{{{UMBRA_INACTIVE}}}: After initialisation, this status is applied to the modules. It's also applied when a module is deactivated.
+*{{{UMBRA_ACTIVE}}}: When a module is activated, it will have this state.
+*{{{UMBRA_PAUSED}}}: An active module, if paused, will be marked with this status.</pre>
+</div>
+<div title="UmbraPoint" modifier="Mingos" created="201007211209" modified="201007271250" tags="api class point mouse" changecount="13">
 <pre>The class UmbraPoint is one of the additions to the [[UmbraWidget]] that differentiate it from an [[UmbraModule]]. As the name implies, it defines the behaviour of a single point (or, more accurately, a single cell on the console).
 
 The UmbraPoint is used within every [[UmbraWidget]] to define the behaviour of 2 points: the minimise button and the close button. The method [[UmbraWidget::mouse]], which is supposed to be called in each iteration of the main application loop (see below), will automatically register mouse hover and mouse down events, which may then be used to trigger events such as a rollover, etc.
@@ -2845,7 +3487,6 @@ The second constructor addresses the necessity of setting a point's position wit
 &lt;code C++&gt;
 UmbraPoint p(10,1);
 &lt;/code&gt;
-
 The mouse events are set to false initially.
 !Mouse events in a widget
 A widget declaration should also contain the mouse parser method declaration:
@@ -2874,19 +3515,29 @@ UmbraPoint p;
 p.mouseHover = false;
 if (p.mouseDown) doSomething();
 &lt;/code&gt;
-
 The member function [[UmbraPoint::is]] is used for detecting mouse hover - please refer to this method description for additional information.
-
 ;methods:
-:[[UmbraPoint::is]]
-:[[UmbraPoint::set]]
-
+&lt;&lt;tiddler UmbraPointMethods&gt;&gt;
 ;see also:
 :[[UmbraRect]]
 :[[UmbraWidget]]
 :[[UmbraWidget::mouse]]</pre>
 </div>
-<div title="Using Umbra" modifier="Mingos" created="200910241814" modified="201007252156" tags="tutorial" changecount="24">
+<div title="UmbraPointMethods" modifier="Mingos" created="201007271204" modified="201007271251" tags="methodlist" changecount="3">
+<pre>*[[UmbraPoint::is]]
+*[[UmbraPoint::set]]</pre>
+</div>
+<div title="UmbraRectMethods" modifier="Mingos" created="201007271236" modified="201007271251" tags="methodlist" changecount="2">
+<pre>*[[UmbraRect::isInside]]
+*[[UmbraRect::set]]
+*[[UmbraRect::setPos]]
+*[[UmbraRect::setSize]]</pre>
+</div>
+<div title="UmbraWidgetMethods" modifier="Mingos" created="201007271238" modified="201007271251" tags="methodlist" changecount="3">
+<pre>*[[UmbraWidget::mouse]]
+*[[UmbraWidget::setDragZone]]</pre>
+</div>
+<div title="Using Umbra" modifier="Mingos" created="200910241814" modified="201007272148" tags="tutorial" changecount="28">
 <pre>#Basics
 ##[[Starting a project using Umbra]]
 ##[[Umbra Hello World]]
@@ -2894,7 +3545,7 @@ The member function [[UmbraPoint::is]] is used for detecting mouse hover - pleas
 ##[[The engine]]
 ##[[Referencing the engine]]
 ##[[Engine instantiation versus initialisation]]
-##[[Things to do before initialising the engine]]
+##Things to do before initialising the engine
 ###[[Registering modules]]
 ###[[Registering fonts]]
 ###[[Font autodetection]]
@@ -2905,12 +3556,16 @@ The member function [[UmbraPoint::is]] is used for detecting mouse hover - pleas
 ##[[Creating a module]]
 ##[[Fallbacks]]
 ##[[Creating a widget]]
-##[[Internal modules]]
+##Internal modules
 ###[[Speed-o-meter]]
 ###[[BSOD]]
 ##[[Accessing modules and widgets]]
 ##[[Initialisation versus activation]]
 ##[[Module priority]]
+##Input handling
+###[[Keyboard input]]
+###[[Mouse input in modules]]
+###[[Mouse input in widgets]]
 #Callbacks
 ##[[What are callbacks]]
 ##[[Creating callbacks]]

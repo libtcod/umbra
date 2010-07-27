@@ -25,19 +25,6 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-class UmbraRect {
-	public:
-        int x,y,w,h;
-        bool mouseHover;
-        bool mouseDown;
-        UmbraRect (): x(0),y(0),w(0),h(0),mouseHover(false) {}
-        UmbraRect (int x, int y, int w, int h): x(x),y(y),w(w),h(h),mouseHover(false) {}
-        inline void setPos (int x, int y) { this->x=x; this->y=y; }
-        inline void setSize (int w, int h) { this->w=w;this->h=h; }
-        inline void set (int x, int y, int w, int h) { setPos(x,y); setSize(w,h); }
-        inline bool isInside (int px, int py) { return px >= x && px < x+w && py >= y && py < y+h; }
-};
-
 class UmbraPoint {
     public:
         int x, y;
@@ -49,6 +36,19 @@ class UmbraPoint {
         inline bool is (int px, int py) { return px == x && py == y; }
 };
 
+class UmbraRect {
+	public:
+        int x,y,w,h;
+        bool mouseHover;
+        bool mouseDown;
+        UmbraRect (): x(0),y(0),w(0),h(0),mouseHover(false) {}
+        UmbraRect (int x, int y, int w, int h): x(x),y(y),w(w),h(h),mouseHover(false) {}
+        inline void setPos (int x, int y) { this->x=x; this->y=y; }
+        inline void setSize (int w, int h) { this->w=w;this->h=h; }
+        inline void set (int x, int y, int w, int h) { setPos(x,y); setSize(w,h); }
+        inline bool isInside (int px, int py) { return px >= x && px < x+w && py >= y && py < y+h; }
+        inline bool isInside (const UmbraPoint &p) { return p.x >= x && p.x < x+w && p.y >= y && p.y < y+h; }
+};
 
 class UmbraWidget : public UmbraModule {
     friend class UmbraCheckbox;
