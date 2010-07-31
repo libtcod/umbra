@@ -516,15 +516,28 @@ Also see [[AdvancedOptions]]</pre>
 *[[Methods]]
 *[[Enums]]</pre>
 </div>
-<div title="About Umbra" modifier="Mingos" created="200910241806" changecount="1">
-<pre>Umbra Engine is a general purpose engine for applications that use libtcod, mainly games. It is thought to be a &quot;module player&quot; more than anything else, meaning that it lacks any game logic or other game elements. The game/app developer will still need to write everything from scratch, but Umbra will make sure the game is divided into manageable chunks, or modules, making sure that even at advanced stages the project is manageable. Also, the engine takes control over the main game loop and screen flushing, provides a global keybindings method and lets the developer define module-specific keybindings.</pre>
+<div title="About Umbra" modifier="Mingos" created="200910241806" modified="201007310110" changecount="14">
+<pre>Umbra Engine is a general purpose engine for applications that use libtcod, mainly games. It is thought to be a &quot;module player&quot; more than anything else, meaning that it lacks any game logic or other game elements. The game/app developer will still need to write everything from scratch, but Umbra will make sure the game is divided into manageable chunks, or modules, making sure that even at advanced stages the project is manageable. Also, the engine takes control over the main game loop and screen flushing, provides a global keybindings method and lets the developer define module-specific keybindings.
+
+Umbra is released under the BSD licence and thus may be freely used by anyone for any purpose. The licence text is as follows:
+
+!!Umbra
+''Copyright (c) 2009, 2010 Mingos, Jice''
+''All rights reserved.''
+
+Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
+* Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+* Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
+* The names of Mingos or Jice may not be used to endorse or promote products derived from this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY MINGOS &amp; JICE &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL MINGOS OR JICE BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</pre>
 </div>
 <div title="Activating modules" modifier="Mingos" created="200911121718" modified="201007272150" tags="tutorial module moduleStatus init" changecount="5">
 <pre>A registered module resides inside the modules list, but before the engine actually runs any of the modules from the list, the developer has to specify which one needs to be activated. Typically, a main menu, a title screen or a credits screen will be the first activated module.
 
 Module activation is extremely simple. Once a module is registered, it is given an ID number, which the developer can deduce from the order in which the modules were registered. This number can then be used to activate a module. The method that actually does the trick is [[UmbraModule::activateModule]]. Instead of the ID number, the method also accepts the module reference as an argument. In both cases, the chosen module will be put on a separate list of modules destinated for activation in the next frame. The engine should run with no problems once a module is active.</pre>
 </div>
-<div title="BSOD" modifier="Mingos" created="200911092016" modified="201007272128" tags="tutorial internalModule" changecount="6">
+<div title="BSOD" modifier="Mingos" created="200911092016" modified="201007302137" tags="tutorial internalModule error" changecount="7">
 <pre>The BSOD is an internal module created with the sole purpose of notifying the developer that a non fatal error has occurred in the program. It is supposed to be used in conjunction with the [[UmbraError::add]] method.
 
 The BSOD is, as the name implies, a blue screen. It's not as annoying as its namesake, as it has the form of a small, semitransparent blue box that disappears a few seconds after it is displayed. Additionally, it can be moved around in case it happens to cover something important or even closed with a close button in the top right corner.
@@ -2755,6 +2768,17 @@ engine.deactivateModule(UMBRA_INTERNAL_SPEEDOMETER); //internal module ID
 !See also
 &lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;moduleStatus&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;moduleStatus&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;moduleStatus&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
 </div>
+<div title="UmbraEngine::displayError" modifier="Mingos" created="201007302135" modified="201007302137" tags="api method engineClass error" changecount="2">
+<pre>!Description
+Displays a [[BSOD]] with the last error in the [[error log|Error log]].
+!Construction
+&lt;code C++&gt;
+void displayError (
+);
+&lt;/code&gt;
+!See also
+&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;error&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;error&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;error&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
+</div>
 <div title="UmbraEngine::getFontDir" modifier="Mingos" created="201007252102" modified="201007271606" tags="api method engineClass font" changecount="9">
 <pre>!Description
 Retrieves the path to the directory where font files are stored.
@@ -2770,7 +2794,7 @@ The path will be relative to the application's working directory. For instance, 
 !See also
 &lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;font&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;font&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;font&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
 </div>
-<div title="UmbraEngine::getFontID" modifier="Mingos" created="201007220558" modified="201007271606" tags="api method engineClass font" changecount="8">
+<div title="UmbraEngine::getFontID" modifier="Mingos" created="201007220558" modified="201007302347" tags="api method engineClass font" changecount="9">
 <pre>!Description
 Gets the ID number of the font that is currently in use.
 !Construction
@@ -2778,8 +2802,6 @@ Gets the ID number of the font that is currently in use.
 int getFontID (
 );
 &lt;/code&gt;
-!Parametres
-none
 !Return value
 {{{int}}}: the ID number of the currently used font
 !See also
@@ -2865,7 +2887,33 @@ int getNbFonts (
 !See also
 &lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;font&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;font&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;font&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
 </div>
-<div title="UmbraEngine::initialise" modifier="Mingos" created="200911091904" modified="201007272203" tags="api method engine engineClass init" changecount="13">
+<div title="UmbraEngine::getRootHeight" modifier="Mingos" created="201007302351" tags="api method engineClass engineSettings" changecount="1">
+<pre>!Description
+Gets the height of the root console.
+!Construction
+&lt;code C++&gt;
+int getRootHeight (
+);
+&lt;/code&gt;
+!Return value
+{{{int}}}: the height of the root console in cells.
+!See also
+&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;engineSettings&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;engineSettings&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;engineSettings&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
+</div>
+<div title="UmbraEngine::getRootWidth" modifier="Mingos" created="201007310015" tags="api method engineClass engineSettings" changecount="1">
+<pre>!Description
+Gets the width of the root console.
+!Construction
+&lt;code C++&gt;
+int getRootWidth (
+);
+&lt;/code&gt;
+!Return value
+{{{int}}}: the width of the root console in cells.
+!See also
+&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;engineSettings&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;engineSettings&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;engineSettings&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
+</div>
+<div title="UmbraEngine::initialise" modifier="Mingos" created="200911091904" modified="201007310022" tags="api method engine engineClass init" changecount="15">
 <pre>!Description
 Initialises the engine.
 !Construction
@@ -2879,7 +2927,7 @@ bool initialise (
 !Return value
 {{{bool}}}: {{{true}}} if the engine has been initialised successfully, {{{false}}} otherwise.
 !Remarks
-:In order to start running, the engine needs to be initialised first.
+The engine needs to be initialised before registering any modules and fonts. It cannot run if it is not initialised.
 !Example
 &lt;code c++&gt;
 UmbraEngine engine;
@@ -2890,6 +2938,19 @@ else return 1;
 &lt;/code&gt;
 !See also
 &lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;engine&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;engine&quot;,&quot;engineClass&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;engine&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
+</div>
+<div title="UmbraEngine::isPaused" modifier="Mingos" created="201007302343" modified="201007302351" tags="api method engineClass engineSettings" changecount="4">
+<pre>!Description
+Checks whether the engine is paused or not.
+!Construction
+&lt;code C++&gt;
+bool isPaused (
+);
+&lt;/code&gt;
+!Return value
+{{{bool}}}: {{{true}}} if the engine is paused, {{{false}}} otherwise.
+!See also
+&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;engineSettings&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;engineSettings&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;engineSettings&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
 </div>
 <div title="UmbraEngine::registerFont" modifier="Mingos" created="200911051013" modified="201007272138" tags="api method engineClass font init" changecount="22">
 <pre>!Description
@@ -2949,6 +3010,22 @@ int mod2 = engine.registerModule(new MyModule2(),mod1); //mod2 = 1; falls back t
 !See also
 &lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;module&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;module&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;module&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
 </div>
+<div title="UmbraEngine::reinitialise" modifier="Mingos" created="201007310024" tags="api method engine engineClass init" changecount="1">
+<pre>!Description
+Reinitialises the engine.
+!Construction
+&lt;code C++&gt;
+void reinitialise (
+    TCOD_renderer_t renderer = TCOD_RENDERER_SDL
+);
+&lt;/code&gt;
+!Parametres
+*{{{TCOD_renderer_t renderer}}}: the renderer libtcod should use. For a list of available renderers, please refer to [[libtcod documentation|http://doryen.eptalys.net/data/libtcod/doc/1.5.1/html2/console_init_root.html?c=false&amp;cpp=true&amp;cs=false&amp;py=false&amp;lua=false]]. Defaults to SDL.
+!Remarks
+Reinitialising the engine is necessary when some changes are made to the engine settings that do not take effect until the root console is closed and initialised anew.
+!See also
+&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;engine&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;engine&quot;,&quot;engineClass&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;engine&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
+</div>
 <div title="UmbraEngine::run" modifier="Mingos" created="200911111442" modified="201007272131" tags="api method engine engineClass" changecount="10">
 <pre>!Description
 Initiates the main game loop, effectively running the application.
@@ -2989,6 +3066,38 @@ void setKeyboardMode (
 !See also
 &lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;keyboard&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;keyboard&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;keyboard&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
 </div>
+<div title="UmbraEngine::setPause" modifier="Mingos" created="201007310112" tags="api method engineClass engineSettings" changecount="1">
+<pre>!Description
+Pauses or unpauses the engine.
+!Construction
+&lt;code C++&gt;
+void setPause (
+    bool pause
+);
+&lt;/code&gt;
+!Parametres
+*{{{bool pause}}}: {{{true}}} will pause the engine, while {{{false}}} will unpause it.
+!See also
+&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;engineSettings&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;engineSettings&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;engineSettings&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
+</div>
+<div title="UmbraEngine::setRootDimensions" modifier="Mingos" created="201007310018" modified="201007310019" tags="api method engineClass engineSettings" changecount="2">
+<pre>!Description
+Gets the height of the root console.
+!Construction
+&lt;code C++&gt;
+static void setRootDimensions (
+    int w,
+    int h
+);
+&lt;/code&gt;
+!Parametres
+*{{{int w}}}: root console width in cells
+*{{{int h}}}: root console height in cells
+!Remarks
+Calling this method will [[reinitialise|UmbraEngine::reinitialise]] the engine.
+!See also
+&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;engineSettings&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;engineSettings&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;engineSettings&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
+</div>
 <div title="UmbraEngine::setWindowTitle" modifier="Mingos" created="201003302007" modified="201007272137" tags="api method engineClass init" changecount="11">
 <pre>!Description
 Sets the game window title.
@@ -3021,7 +3130,7 @@ else return 1;
 !See also
 &lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;init&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;init&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;init&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
 </div>
-<div title="UmbraEngineMethods" modifier="Mingos" created="201007271125" modified="201007272205" tags="methodlist" changecount="8">
+<div title="UmbraEngineMethods" modifier="Mingos" created="201007271125" modified="201007302343" tags="methodlist" changecount="11">
 <pre>*[[UmbraEngine::activateFont]]
 *[[UmbraEngine::activateModule]]
 *[[UmbraEngine::deactivateAll]]
@@ -3033,17 +3142,17 @@ else return 1;
 *[[UmbraEngine::getKeyboardMode]]
 *[[UmbraEngine::getModule]]
 *[[UmbraEngine::getNbFonts]]
-*[[UmbraEngine::getPaused]]
 *[[UmbraEngine::getRootHeight]]
 *[[UmbraEngine::getRootWidth]]
 *[[UmbraEngine::initialise]]
+*[[UmbraEngine::isPaused]]
 *[[UmbraEngine::registerFont]]
 *[[UmbraEngine::registerModule]]
 *[[UmbraEngine::reinitialise]]
 *[[UmbraEngine::run]]
 *[[UmbraEngine::setKeybinding]]
 *[[UmbraEngine::setKeyboardMode]]
-*[[UmbraEngine::setPaused]]
+*[[UmbraEngine::setPause]]
 *[[UmbraEngine::setRootDimensions]]
 *[[UmbraEngine::setWindowTitle]]</pre>
 </div>

@@ -88,7 +88,7 @@ class UmbraEngine {
 		void setWindowTitle (const char * title, ...);
 		void setWindowTitle (std::string title);
 		inline void setKeyboardMode (UmbraKeyboardMode mode) { keyboardMode = mode; }
-		inline void setPaused (bool pause) { paused = pause; }
+		inline void setPause (bool pause) { paused = pause; }
 		inline void registerCallback (UmbraCallback * cbk) {callbacks.push(cbk); }
 
 		// register a module for activation next frame, either by id or reference
@@ -102,7 +102,7 @@ class UmbraEngine {
 		//deactivate all modules (the program will end normally)
 		void deactivateAll ();
 
-		inline bool getPaused () { return paused; }
+		inline bool isPaused () { return paused; }
 		inline UmbraKeyboardMode getKeyboardMode () { return keyboardMode; }
 		inline UmbraModule * getModule (int moduleId) { return (moduleId < 0 || moduleId >= modules.size() ? NULL : modules.get(moduleId)); }
 		inline UmbraModule * getModule (UmbraInternalModuleID id) { return (id < 0 || id >= UMBRA_INTERNAL_MAX ? NULL : internalModules[id]); }
