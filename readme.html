@@ -511,13 +511,15 @@ Also see [[AdvancedOptions]]</pre>
 </div>
 <!--POST-SHADOWAREA-->
 <div id="storeArea">
-<div title="API reference" modifier="Mingos" created="200910241815" modified="201007271241" tags="api" changecount="9">
+<div title="API reference" modifier="Mingos" created="200910241815" modified="201008020040" tags="api" changecount="11">
 <pre>*[[Classes]]
 *[[Methods]]
-*[[Enums]]</pre>
+*[[Callbacks]]
+*[[Enums]]
+*[[Defines]]</pre>
 </div>
-<div title="About Umbra" modifier="Mingos" created="200910241806" modified="201007310110" changecount="14">
-<pre>Umbra Engine is a general purpose engine for applications that use libtcod, mainly games. It is thought to be a &quot;module player&quot; more than anything else, meaning that it lacks any game logic or other game elements. The game/app developer will still need to write everything from scratch, but Umbra will make sure the game is divided into manageable chunks, or modules, making sure that even at advanced stages the project is manageable. Also, the engine takes control over the main game loop and screen flushing, provides a global keybindings method and lets the developer define module-specific keybindings.
+<div title="About Umbra" modifier="Mingos" created="200910241806" modified="201008020000" changecount="15">
+<pre>Umbra Engine is a general purpose engine for applications that use libtcod, mainly games. It is thought to be a &quot;module player&quot; more than anything else, meaning that it lacks any game logic or other game elements. The game/app developer will still need to write everything from scratch, but Umbra will make sure the game is divided into manageable chunks, or modules. Also, the engine takes control over the main game loop and screen flushing, provides a global keybindings method and lets the developer define module-specific keybindings.
 
 Umbra is released under the BSD licence and thus may be freely used by anyone for any purpose. The licence text is as follows:
 
@@ -551,13 +553,25 @@ if (errorCondition) {
 &lt;/code&gt;
 Please note that this module requires the console emulator to be active, otherwise it won't be displayed. For this reason, the BSOD is only useful for displaying non fatal errors. In case a fatal error is encountered, it will typically call {{{exit(1);}}} instead of {{{displayError();}}}. The BSOD is useless in such situations, and the error message can only be retrieved from the error log saved to the disc.</pre>
 </div>
-<div title="Classes" modifier="Mingos" created="200911042330" modified="201007271241" tags="api class" changecount="5">
+<div title="Callbacks" modifier="Mingos" created="201008020041" modified="201008020059" tags="api callback" changecount="4">
+<pre>There are several predefined callbacks in Umbra:
+*[[UmbraCallbackFontDown]]
+*[[UmbraCallbackFontUp]]
+*[[UmbraCallbackFullscreen]]
+*[[UmbraCallbackPause]]
+*[[UmbraCallbackQuit]]
+*[[UmbraCallbackScreenshot]]
+*[[UmbraCallbackSpeedometer]]</pre>
+</div>
+<div title="Classes" modifier="Mingos" created="200911042330" modified="201008020015" tags="api class" changecount="6">
 <pre>*[[UmbraEngine]]
-*[[UmbraError]]
 *[[UmbraModule]]
+*[[UmbraWidget]]
+*[[UmbraCallback]]
+*[[UmbraKey]]
 *[[UmbraPoint]]
 *[[UmbraRect]]
-*[[UmbraWidget]]</pre>
+*[[UmbraError]]</pre>
 </div>
 <div title="Creating a module" modifier="Mingos" created="200911142341" modified="201007271701" tags="tutorial module" changecount="13">
 <pre>Creating a module is essentially easy. Here's the simplest way:
@@ -764,6 +778,17 @@ In the above code snippet, {{{speed}}} is the offscreen console the widget uses.
 </div>
 <div title="DefaultTiddlers" modifier="Mingos" created="200910241745" modified="200910241818" changecount="2">
 <pre>[[About Umbra]]</pre>
+</div>
+<div title="Defines" modifier="Mingos" created="201008020021" modified="201008020031" tags="api define" changecount="5">
+<pre>There are few defines in Umbra:
+;{{{UMBRA_TITLE}}}
+:the string {{{&quot;Umbra Engine&quot;}}}
+;{{{UMBRA_VERSION}}}
+:the string containing the version of Umbra that's being used. Umbra uses Ubuntu-style versioning (e.g., version {{{10.07}}} has been released in July 2010).
+;{{{UMBRA_STATUS}}}
+:the string containing the status of the Umbra build that's being used, e.g. {{{&quot;Alpha&quot;}}}.
+;{{{UMBRA_LICENCE}}}
+:the string containing the licence text, as quoted [[here|About Umbra]]. You are encouraged to display it somewhere in your application.</pre>
 </div>
 <div title="Displaying an error" modifier="Mingos" created="200911111643" modified="201007252156" tags="tutorial error" changecount="2">
 <pre>The errors that have been appended to the log using the method [[UmbraError::add]] can be displayed in a variety of ways.
@@ -1791,26 +1816,30 @@ Paired with [[UmbraModule::activate]] is also [[UmbraModule::deactivate]]. In ca
 [[API reference]]
 [[Credits]]</pre>
 </div>
-<div title="Methods" modifier="Mingos" created="200911042331" modified="201007271719" tags="api method" changecount="36">
+<div title="Methods" modifier="Mingos" created="200911042331" modified="201008020010" tags="api method" changecount="38">
 <pre>!~UmbraEngine
 &lt;&lt;tiddler UmbraEngineMethods&gt;&gt;
-!~UmbraError
-&lt;&lt;tiddler UmbraErrorMethods&gt;&gt;
 !~UmbraModule
 &lt;&lt;tiddler UmbraModuleMethods&gt;&gt;
+!~UmbraWidget
+&lt;&lt;tiddler UmbraWidgetMethods&gt;&gt;
+!~UmbraCallback
+&lt;&lt;tiddler UmbraCallbackMethods&gt;&gt;
+!~UmbraKey
+&lt;&lt;tiddler UmbraKeyMethods&gt;&gt;
 !~UmbraPoint
 &lt;&lt;tiddler UmbraPointMethods&gt;&gt;
 !~UmbraRect
 &lt;&lt;tiddler UmbraRectMethods&gt;&gt;
-!~UmbraWidget
-&lt;&lt;tiddler UmbraWidgetMethods&gt;&gt;</pre>
+!~UmbraError
+&lt;&lt;tiddler UmbraErrorMethods&gt;&gt;</pre>
 </div>
 <div title="Mingos" modifier="Mingos" created="200910241825" modified="201007252151" changecount="5">
 <pre>One of the developers of this humble engine. Please visit my websites for more details about what I do.
 *http://www.umbraprojekt.pl/
 *http://umbrarumregnum.110mb.com/</pre>
 </div>
-<div title="PageTemplate" modifier="Mingos" created="200701130013" modified="201007271456" tags="MonochromeTheme" server.type="file" server.host="tiddlythemes.com/empties/Monochrome.html" server.page.revision="200708091512" changecount="10">
+<div title="PageTemplate" modifier="Mingos" created="200701130013" modified="201008020035" server.type="file" server.host="tiddlythemes.com/empties/Monochrome.html" server.page.revision="200708091512" changecount="11">
 <pre>&lt;div id='header' class='header' macro='gradient vert   #555555       #3b3b3b '&gt;
         &lt;div class='siteTitle' refresh='content' tiddler='SiteTitle'&gt;&lt;/div&gt;
         &lt;span id='topMenu' refresh='content' tiddler='MainMenu'&gt;&lt;/span&gt;
@@ -1906,13 +1935,13 @@ Bear in mind that this method accepts printf-like text formatting. Ultimately, y
 <div title="Scautura" modifier="Scautura" created="200911111208" changecount="1">
 <pre>Proofreader. Nothing more.</pre>
 </div>
-<div title="SideBarOptions" modifier="Mingos" created="200701130013" modified="201007271238" tags="LewcidOrangeTheme" server.type="file" server.host="tiddlythemes.com/empties/LewcidOrange.html" server.page.revision="200708091512" changecount="5">
+<div title="SideBarOptions" modifier="Mingos" created="200701130013" modified="201008020033" server.type="file" server.host="tiddlythemes.com/empties/LewcidOrange.html" server.page.revision="200708091512" changecount="6">
 <pre>&lt;&lt;search&gt;&gt;&lt;&lt;closeAll&gt;&gt;&lt;&lt;saveChanges&gt;&gt;&lt;&lt;slider chkSliderOptionsPanel OptionsPanel 'options »' 'Change TiddlyWiki advanced options'&gt;&gt;</pre>
 </div>
 <div title="SideBarTabs" modifier="Mingos" created="201007252144" modified="201007271447" server.type="file" server.host="tiddlythemes.com/empties/Monochrome.html" changecount="2">
 <pre>&lt;&lt;tabs txtMainTab &quot;Tags&quot; &quot;All tags&quot; TabTags &quot;Timeline&quot; &quot;Timeline&quot; TabTimeline &quot;All&quot; &quot;All tiddlers&quot; TabAll &quot;More&quot; &quot;More lists&quot; TabMore&gt;&gt;</pre>
 </div>
-<div title="SideBarWG" modifier="Mingos" created="200701130013" modified="201007271445" tags="LewcidOrangeTheme" server.type="file" server.host="tiddlythemes.com/empties/LewcidOrange.html" server.page.revision="200708091512" changecount="1">
+<div title="SideBarWG" modifier="Mingos" created="200701130013" modified="201008020034" server.type="file" server.host="tiddlythemes.com/empties/LewcidOrange.html" server.page.revision="200708091512" changecount="2">
 <pre>/***
 This CSS by ~DaveBirss.
 ***/
@@ -2077,7 +2106,7 @@ Once you have done that, all you need to do to be able to start using Umbra is i
 &lt;/code&gt;
 Umbra requires libtcod to run, so it already includes it, and therefore you are not required to include it separately.</pre>
 </div>
-<div title="StyleSheet" modifier="Mingos" created="200701130013" modified="201007271038" tags="MonochromeTheme" server.type="file" server.host="tiddlythemes.com/empties/Monochrome.html" server.page.revision="200708091512" changecount="5">
+<div title="StyleSheet" modifier="Mingos" created="200701130013" modified="201008020035" server.type="file" server.host="tiddlythemes.com/empties/Monochrome.html" server.page.revision="200708091512" changecount="6">
 <pre>[[StyleSheetSyntaxHighlighter]]
 
 /*{{{*/
@@ -2598,6 +2627,21 @@ One of the methods we can define and implement is {{{void render (void)}}}. This
 After implementing the method in {{{main.cpp}}}, we can finally write the heart of our program. First thing we need to do is to create an instance of [[UmbraEngine]], conveniently called {{{engine}}}. Lines 09. and 10. are crucial for the engine to start running. The first one creates an instance of our {{{HelloWorld}}} class and registers it as a module inside the engine. The next line makes the engine activate the newly registered module. The argument we pass it is an integer value of 0 - this is the ID that our module was assigned. Please refer to [[UmbraModule::registerModule]] for more details on how module ID numbers are assigned.
 
 Finally, we reach the point where the module is registered and active, and the only missing thing is running the engine. First, we need to initialise it, and if the initialisation is successful, run the engine. That's it, this is the code that powers a &quot;Hello world&quot; program made with Umbra.</pre>
+</div>
+<div title="UmbraCallbackScreenshot" modifier="Mingos" created="201008020101" modified="201008020109" tags="api callback" changecount="4">
+<pre>!Description
+Saves a screenshot.
+!Keybinding
+{{{PrtSc}}}
+!Action
+&lt;code C++&gt;
+TCODSystem::saveScreenshot(NULL);
+&lt;/code&gt;
+!Remarks
+Registered automatically if default callbacks are enabled during engine initialisation. If not, it can be registered manually:
+&lt;code C++&gt;
+UmbraEngine::getInstance()-&gt;registerCallback(new UmbraCallbackScreenshot());
+&lt;/code&gt;</pre>
 </div>
 <div title="UmbraEngine" modifier="Mingos" created="200910241822" modified="201007271240" tags="api class engine" changecount="57">
 <pre>The class UmbraEngine contains the heart of Umbra. An instance of UmbraEngine needs to be created in order for Umbra to become alive:
@@ -3130,7 +3174,7 @@ else return 1;
 !See also
 &lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;init&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;init&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;init&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
 </div>
-<div title="UmbraEngineMethods" modifier="Mingos" created="201007271125" modified="201007302343" tags="methodlist" changecount="11">
+<div title="UmbraEngineMethods" modifier="Mingos" created="201007271125" modified="201008020004" tags="methodlist" changecount="13">
 <pre>*[[UmbraEngine::activateFont]]
 *[[UmbraEngine::activateModule]]
 *[[UmbraEngine::deactivateAll]]
@@ -3146,11 +3190,11 @@ else return 1;
 *[[UmbraEngine::getRootWidth]]
 *[[UmbraEngine::initialise]]
 *[[UmbraEngine::isPaused]]
+*[[UmbraEngine::registerCallback]]
 *[[UmbraEngine::registerFont]]
 *[[UmbraEngine::registerModule]]
 *[[UmbraEngine::reinitialise]]
 *[[UmbraEngine::run]]
-*[[UmbraEngine::setKeybinding]]
 *[[UmbraEngine::setKeyboardMode]]
 *[[UmbraEngine::setPause]]
 *[[UmbraEngine::setRootDimensions]]
@@ -3646,7 +3690,7 @@ The member function [[UmbraPoint::is]] is used for detecting mouse hover - pleas
 <pre>*[[UmbraWidget::mouse]]
 *[[UmbraWidget::setDragZone]]</pre>
 </div>
-<div title="Using Umbra" modifier="Mingos" created="200910241814" modified="201007272148" tags="tutorial" changecount="28">
+<div title="Using Umbra" modifier="Mingos" created="200910241814" modified="201008020038" tags="tutorial" changecount="30">
 <pre>#Basics
 ##[[Starting a project using Umbra]]
 ##[[Umbra Hello World]]
@@ -3677,14 +3721,22 @@ The member function [[UmbraPoint::is]] is used for detecting mouse hover - pleas
 ###[[Mouse input in widgets]]
 #Callbacks
 ##[[What are callbacks]]
-##[[Creating callbacks]]
-##[[Using callbacks]]
+##[[Creating a callback]]
+##[[Using a callback]]
+##[[Internal callbacks]]
 #Errors
 ##[[Error log]]
 ##[[Reporting an error]]
 ##[[Displaying an error]]
 
 Please read the [[API reference]] for details on how everything works.</pre>
+</div>
+<div title="What are callbacks" modifier="Mingos" created="201008020014" modified="201008020039" tags="tutorial callback" changecount="4">
+<pre>Callbacks are basically global keybindings. The engine provides a listener that will listen to all the registered callbacks and trigger a custom action for each callback in case the listener determines its keybinding has been used.
+
+In order to use a callback, an object of type [[UmbraCallback]] will need to be [[created|Creating a callback]] and [[registered|Using a callback]] in the engine.
+
+Please check the list of [[predefined callbacks|Callbacks]] to see whether the keybinding you would like to create hasn't been created already.</pre>
 </div>
 <div title="What is a module" modifier="Mingos" created="200911121549" modified="201007252134" tags="tutorial module" changecount="5">
 <pre>From the general point of view, a module is a &quot;chunk&quot; of an application that can be clearly separated from the others. For instance, a single screen, such as a menu or a credits screen, will typically be a module. The developer should understand a module as ''a class derived from [[UmbraModule]]'', ie, one that inherits [[UmbraModule]].
