@@ -40,7 +40,7 @@ void Demo::initialise () {
 }
 
 bool Demo::update () {
-    if (isActive()) {
+    if (getActive()) {
         int i, j;
         for (i = 0; i < getEngine()->getRootWidth(); i++) for (j = 0; j < getEngine()->getRootHeight(); j++) {
             float f[2];

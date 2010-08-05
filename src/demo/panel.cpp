@@ -73,7 +73,7 @@ bool Panel::update () {
         posx = MAX(posx,(-width)+1);
         rect.set(posx,posy,width,height);
     }
-    return isActive();
+    return getActive();
 }
 
 void Panel::mouse (TCOD_mouse_t &ms) {

@@ -180,14 +180,14 @@ void UmbraEngine::activateModule (UmbraInternalModuleID id) {
 
 // public function registering the module for activation next frame, by reference
 void UmbraEngine::activateModule(UmbraModule *module) {
-    if (module != NULL && ! module->isActive()) {
+    if (module != NULL && ! module->getActive()) {
         toActivate.push(module);
     }
 }
 
 // the internal function actually putting a module in active list
 void UmbraEngine::doActivateModule( UmbraModule *mod ) {
-    if (! mod->isActive() ) {
+    if (! mod->getActive() ) {
         mod->setActive(true);
 		// insert the module at the right pos, sorted by priority
 		int idx = 0;
@@ -218,7 +218,7 @@ void UmbraEngine::deactivateModule (UmbraInternalModuleID id) {
 
 // register the module for deactivation by reference
 void UmbraEngine::deactivateModule(UmbraModule *module) {
-    if (module != NULL && module->isActive()) {
+    if (module != NULL && module->getActive()) {
         toDeactivate.push(module);
         module->setActive(false);
     }
@@ -301,14 +301,14 @@ int UmbraEngine::run () {
         }
         mouse = TCODMouse::getStatus();
         keyboard(key);
-        long startTime=TCODSystem::getElapsedMilli();
+        uint32 startTime=TCODSystem::getElapsedMilli();
 		// update all active modules by priority order
 	    for (UmbraModule ** mod = activeModules.begin(); mod != activeModules.end(); mod++) {
-	        if (!(*mod)->isPaused()) {
+	        if (!(*mod)->getPause()) {
 	            // handle input
 	            (*mod)->keyboard(key);
 	            (*mod)->mouse(mouse);
-	            if (!(*mod)->update() || !(*mod)->isActive()) {
+	            if (!(*mod)->update() || !(*mod)->getActive()) {
 	                UmbraModule *module=*mod;
 	                int fallback=module->getFallback();
 	                // deactivate module
@@ -317,7 +317,7 @@ int UmbraEngine::run () {
 	                if (fallback != -1) {
 	                    // register fallback for activation
 	                    UmbraModule *fallbackModule = modules.get(fallback);
-	                    if (fallbackModule != NULL && !fallbackModule->isActive()) toActivate.push(fallbackModule);
+	                    if (fallbackModule != NULL && !fallbackModule->getActive()) toActivate.push(fallbackModule);
 	                }
 	            }
 	        }
@@ -331,7 +331,7 @@ int UmbraEngine::run () {
 	        (*mod)->render();
 	    }
         long renderTime=TCODSystem::getElapsedMilli() - startTime - updateTime;
-        if ( internalModules[UMBRA_INTERNAL_SPEEDOMETER]->isActive() ) {
+        if ( internalModules[UMBRA_INTERNAL_SPEEDOMETER]->getActive() ) {
             ((UmbraModSpeed *)internalModules[UMBRA_INTERNAL_SPEEDOMETER])->setTimes(updateTime,renderTime);
         }
         //flush the screen
@@ -351,6 +351,7 @@ void UmbraEngine::keyboard (TCOD_key_t &key) {
 
     for (UmbraCallback ** cbk = callbacks.begin(); cbk != callbacks.end(); cbk++) {
         if ((*cbk)->evaluate(k)) {
+            (*cbk)->action();
             val = true;
             break;
         }
@@ -376,7 +377,7 @@ void UmbraEngine::registerInternalModule (UmbraInternalModuleID id, UmbraModule 
 
 void UmbraEngine::displayError () {
     if (UmbraConfig::debug && TCODConsole::root != NULL) {
-        if (internalModules[UMBRA_INTERNAL_BSOD]->isActive())
+        if (internalModules[UMBRA_INTERNAL_BSOD]->getActive())
             toDeactivate.push(internalModules[UMBRA_INTERNAL_BSOD]);
         toActivate.push(internalModules[UMBRA_INTERNAL_BSOD]);
     }

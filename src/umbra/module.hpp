@@ -36,7 +36,7 @@ class UmbraModule {
         virtual void initialise (); // allocate resources. called only once
 
         virtual void render () { } //render the module on the root console
-        virtual bool update () { return isActive(); } //update the module's logic
+        virtual bool update () { return getActive(); } //update the module's logic
         virtual void keyboard (TCOD_key_t &key) { } //module-specific keyboard
         virtual void mouse (TCOD_mouse_t &ms) { } //module-specific mouse
 
@@ -47,8 +47,8 @@ class UmbraModule {
 
         //getters
         inline int getFallback () { return fallback; }
-        inline bool isPaused () { return status == UMBRA_PAUSED; }
-        inline bool isActive () { return status > UMBRA_INACTIVE; }
+        inline bool getPause () { return status == UMBRA_PAUSED; }
+        inline bool getActive () { return status > UMBRA_INACTIVE; }
         inline UmbraEngine * getEngine () { return UmbraEngine::getInstance(); }
 		inline int getPriority() { return priority; }
 		inline UmbraModuleStatus getStatus () { return status; }

@@ -59,7 +59,7 @@ void MatrixLead::render (uint32 time) {
 bool Matrix::update () {
     if (!MatrixLead::random) MatrixLead::random = new TCODRandom();
     if (MatrixLead::random->getInt(0,3) == 0) leads.push(new MatrixLead());
-    return isActive();
+    return getActive();
 }
 
 void Matrix::render () {

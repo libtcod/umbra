@@ -55,16 +55,7 @@ enum UmbraKeyboardMode {
 	UMBRA_KEYBOARD_PRESSED_RELEASED
 };
 
-enum UmbraKeybinding {
-	UMBRA_KEYBINDING_QUIT,
-	UMBRA_KEYBINDING_FULLSCREEN,
-	UMBRA_KEYBINDING_SCREENSHOT,
-	UMBRA_KEYBINDING_FONT_UP,
-	UMBRA_KEYBINDING_FONT_DOWN,
-	UMBRA_KEYBINDING_PAUSE,
-	UMBRA_KEYBINDING_SPEEDOMETER,
-	UMBRA_KEYBINDING_MAX
-};
+
 
 enum UmbraInternalModuleID {
 	UMBRA_INTERNAL_SPEEDOMETER,
@@ -102,7 +93,7 @@ class UmbraEngine {
 		//deactivate all modules (the program will end normally)
 		void deactivateAll ();
 
-		inline bool isPaused () { return paused; }
+		inline bool getPause () { return paused; }
 		inline UmbraKeyboardMode getKeyboardMode () { return keyboardMode; }
 		inline UmbraModule * getModule (int moduleId) { return (moduleId < 0 || moduleId >= modules.size() ? NULL : modules.get(moduleId)); }
 		inline UmbraModule * getModule (UmbraInternalModuleID id) { return (id < 0 || id >= UMBRA_INTERNAL_MAX ? NULL : internalModules[id]); }

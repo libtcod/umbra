@@ -511,8 +511,9 @@ Also see [[AdvancedOptions]]</pre>
 </div>
 <!--POST-SHADOWAREA-->
 <div id="storeArea">
-<div title="DefaultTiddlers" modifier="jice" created="200910291727" modified="200912021102" changecount="39">
-<pre>[[Widget hierarchy]]
+<div title="DefaultTiddlers" modifier="Mingos" created="200910291727" modified="201008041908" changecount="40">
+<pre>[[deactivateAll() bug]]
+[[Widget hierarchy]]
 [[Update taking its time]]
 [[Faders]]
 [[Widget persistence]]</pre>
@@ -1240,6 +1241,9 @@ The keybindings method in the engine scans the whole list and compares the input
 &gt; Ok now I finally understand why you didn't get the listener stuff : because they were completely wrong... damn, I must sleep more. :D
 &gt; So yeah, I agree with you except the class should be called UmbraCallback instead of UmbraCustomKeycode because it can be used in a wide range of situations, not only global keybinding (widgets callback in mind...).
 </pre>
+</div>
+<div title="deactivateAll() bug" modifier="Mingos" created="201008041909" changecount="1">
+<pre>{{{UmbraEngine::deactivateAll()}}} fails to close an application when the active modules have fallbacks. The fallbacks are activated upon module deactivation and the application continues.</pre>
 </div>
 <div title="default keybindings" modifier="Mingos" created="200910311323" modified="200911010253" tags="done" changecount="12">
 <pre>At the moment, keybindings are fixed, ie, alt+f4 closes the app, pgup uses the previous font, pgdn uses the next font, prtscr saves a screenshot, alt+enter toggles fullscreen.

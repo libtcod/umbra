@@ -26,13 +26,14 @@
 */
 
 class UmbraCallback {
+    friend class UmbraEngine;
     public:
         UmbraCallback () {}
         virtual ~UmbraCallback () {}
+	protected:
+		UmbraKey key;
         void setKeybinding (TCOD_keycode_t vk, char c, bool alt, bool ctrl, bool shift) { key.vk=vk; key.c=c; key.alt=alt; key.ctrl=ctrl; key.shift=shift; }
-        virtual inline bool evaluate (UmbraKey k) { if (k == key) {action(); return true;} else return false; }
-        UmbraKey key;
-    protected:
+        virtual inline bool evaluate (UmbraKey k) { if (k == key) return true; else return false; }
         virtual void action () = 0;
         inline UmbraEngine * getEngine () { return UmbraEngine::getInstance(); }
 };
@@ -43,9 +44,9 @@ class UmbraCallback {
 class UmbraCallbackQuit : public UmbraCallback {
     public:
         UmbraCallbackQuit ();
-        ~UmbraCallbackQuit () {}
-        inline bool evaluate (UmbraKey k) {if (k == key || k == key2) {action(); return true;} else return false; }
-        UmbraKey key2;
+	private:
+		UmbraKey key2;
+        inline bool evaluate (UmbraKey k) { if (k == key || k == key2) return true; else return false; }
         void action ();
 };
 
@@ -53,7 +54,7 @@ class UmbraCallbackQuit : public UmbraCallback {
 class UmbraCallbackFullscreen : public UmbraCallback {
     public:
         UmbraCallbackFullscreen ();
-        ~UmbraCallbackFullscreen () {}
+	private:
         void action ();
 };
 
@@ -61,7 +62,7 @@ class UmbraCallbackFullscreen : public UmbraCallback {
 class UmbraCallbackScreenshot : public UmbraCallback {
     public:
         UmbraCallbackScreenshot ();
-        ~UmbraCallbackScreenshot () {}
+	private:
         void action ();
 };
 
@@ -69,7 +70,7 @@ class UmbraCallbackScreenshot : public UmbraCallback {
 class UmbraCallbackFontUp : public UmbraCallback {
     public:
         UmbraCallbackFontUp ();
-        ~UmbraCallbackFontUp () {}
+	private:
         void action ();
 };
 
@@ -77,7 +78,7 @@ class UmbraCallbackFontUp : public UmbraCallback {
 class UmbraCallbackFontDown : public UmbraCallback {
     public:
         UmbraCallbackFontDown ();
-        ~UmbraCallbackFontDown () {}
+	private:
         void action ();
 };
 
@@ -85,7 +86,7 @@ class UmbraCallbackFontDown : public UmbraCallback {
 class UmbraCallbackPause : public UmbraCallback {
     public:
         UmbraCallbackPause ();
-        ~UmbraCallbackPause () {}
+	private:
         void action ();
 };
 
@@ -93,6 +94,6 @@ class UmbraCallbackPause : public UmbraCallback {
 class UmbraCallbackSpeedometer : public UmbraCallback {
     public:
         UmbraCallbackSpeedometer ();
-        ~UmbraCallbackSpeedometer () {}
+	private:
         void action ();
 };

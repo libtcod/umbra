@@ -30,7 +30,7 @@
 //quit program
 UmbraCallbackQuit::UmbraCallbackQuit () {
     key2.assign(TCODK_F4,0,true,false,false);
-    key.assign(TCODK_CHAR,'q',false,true,true);
+    key.assign(TCODK_CHAR,'q',false,true,false);
 }
 
 void UmbraCallbackQuit::action () {
@@ -79,7 +79,7 @@ UmbraCallbackPause::UmbraCallbackPause () {
 }
 
 void UmbraCallbackPause::action () {
-    getEngine()->setPaused(!getEngine()->getPaused());
+    getEngine()->setPause(!getEngine()->getPause());
 }
 
 //pause the program
@@ -88,10 +88,10 @@ UmbraCallbackSpeedometer::UmbraCallbackSpeedometer () {
 }
 
 void UmbraCallbackSpeedometer::action () {
-    if (getEngine()->getModule(UMBRA_INTERNAL_SPEEDOMETER)->isActive()) {
-        getEngine()->deactivateModule(UMBRA_INTERNAL_SPEEDOMETER);
-    }
-    else {
-        getEngine()->activateModule(UMBRA_INTERNAL_SPEEDOMETER);
-    }
+	if (getEngine()->getModule(UMBRA_INTERNAL_SPEEDOMETER)->getActive()) {
+		getEngine()->deactivateModule(UMBRA_INTERNAL_SPEEDOMETER);
+	}
+	else {
+		getEngine()->activateModule(UMBRA_INTERNAL_SPEEDOMETER);
+	}
 }
