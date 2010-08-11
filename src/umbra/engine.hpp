@@ -55,20 +55,24 @@ enum UmbraKeyboardMode {
 	UMBRA_KEYBOARD_PRESSED_RELEASED
 };
 
-
-
 enum UmbraInternalModuleID {
 	UMBRA_INTERNAL_SPEEDOMETER,
 	UMBRA_INTERNAL_BSOD,
 	UMBRA_INTERNAL_MAX
 };
 
+enum UmbraRegisterCallbackFlag {
+	UMBRA_REGISTER_NONE       = 0x00000000,
+	UMBRA_REGISTER_DEFAULT    = 0x00000001,
+	UMBRA_REGISTER_ADDITIONAL = 0x00000010,
+	UMBRA_REGISTER_ALL        = 0x11111111
+};
+
 //the main engine
 class UmbraEngine {
 	public:
 		UmbraEngine (const char *fileName = "data/cfg/umbra.txt",
-		            bool registerDefaultCallbacks = true,
-		            bool registerAdditionalCallbacks = false); //constructor
+		             UmbraRegisterCallbackFlag flag = UMBRA_REGISTER_DEFAULT); //constructor
 
 		int registerModule (UmbraModule * module, int fallback = (-1)); //add a module to the modules list. returns id
 		void registerFont (int columns, int rows, const char * filename, int flags = TCOD_FONT_LAYOUT_TCOD);
@@ -95,8 +99,8 @@ class UmbraEngine {
 
 		inline bool getPause () { return paused; }
 		inline UmbraKeyboardMode getKeyboardMode () { return keyboardMode; }
-		inline UmbraModule * getModule (int moduleId) { return (moduleId < 0 || moduleId >= modules.size() ? NULL : modules.get(moduleId)); }
-		inline UmbraModule * getModule (UmbraInternalModuleID id) { return (id < 0 || id >= UMBRA_INTERNAL_MAX ? NULL : internalModules[id]); }
+		inline UmbraModule * getModule (int moduleId) { return (moduleId < 0 || moduleId >= modules.size() ? NULL: modules.get(moduleId)); }
+		inline UmbraModule * getModule (UmbraInternalModuleID id) { return (id < 0 || id >= UMBRA_INTERNAL_MAX ? NULL: internalModules[id]); }
 		inline static UmbraEngine * getInstance () { if (engineInstance == NULL) engineInstance = new UmbraEngine(); return engineInstance; }
 
 		void displayError ();

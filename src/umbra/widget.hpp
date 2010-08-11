@@ -50,7 +50,7 @@ class UmbraRect {
         inline bool isInside (const UmbraPoint &p) { return p.x >= x && p.x < x+w && p.y >= y && p.y < y+h; }
 };
 
-class UmbraWidget : public UmbraModule {
+class UmbraWidget: public UmbraModule {
     friend class UmbraCheckbox;
     friend class UmbraButton;
     public :

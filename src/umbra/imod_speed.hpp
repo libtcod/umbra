@@ -25,7 +25,7 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-class UmbraModSpeed : public UmbraWidget {
+class UmbraModSpeed: public UmbraWidget {
     public:
         UmbraModSpeed ();
         bool update ();

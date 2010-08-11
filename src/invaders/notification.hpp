@@ -35,7 +35,7 @@ class QuitButton: public UmbraButton {
 		void onMouseDown();
 };
 
-class Notification : public UmbraWidget {
+class Notification: public UmbraWidget {
     public:
         Notification ();
         void mouse (TCOD_mouse_t &ms);

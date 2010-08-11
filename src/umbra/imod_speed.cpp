@@ -31,7 +31,7 @@
 #define MAXIMISED_MODE_HEIGHT 8
 #define TIMEBAR_LENGTH (MAXIMISED_MODE_WIDTH-4)*2
 
-UmbraModSpeed::UmbraModSpeed () : cumulatedElapsed(0.0f), updateTime(0.0f), renderTime(0.0f),
+UmbraModSpeed::UmbraModSpeed (): cumulatedElapsed(0.0f), updateTime(0.0f), renderTime(0.0f),
     updatePer(0),renderPer(0),sysPer(0),isMinimised(false) {
     speed = new TCODConsole(MAXIMISED_MODE_WIDTH,MAXIMISED_MODE_HEIGHT);
     rect.set((getEngine()->getRootWidth()/2)-15,(getEngine()->getRootHeight()/2)-3,30,MAXIMISED_MODE_HEIGHT);

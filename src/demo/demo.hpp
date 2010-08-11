@@ -28,7 +28,7 @@
 #ifndef MODULE_DEMO_HPP
 #define MODULE_DEMO_HPP
 
-class Demo : public UmbraModule {
+class Demo: public UmbraModule {
     public:
         Demo ();
         void initialise ();

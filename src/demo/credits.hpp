@@ -28,7 +28,7 @@
 #ifndef CREDITS_HPP
 #define CREDITS_HPP
 
-class Credits : public UmbraWidget {
+class Credits: public UmbraWidget {
     public:
         Credits ();
         void initialise ();

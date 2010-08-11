@@ -27,7 +27,7 @@
 
 #include "main.hpp"
 
-UmbraEngine engine = UmbraEngine("data/cfg/umbra.txt",true,true);
+UmbraEngine engine = UmbraEngine("data/cfg/umbra.txt",UMBRA_REGISTER_ALL);
 
 int main()
 {

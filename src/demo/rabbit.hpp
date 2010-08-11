@@ -28,13 +28,13 @@
 #ifndef RABBIT_HPP
 #define RABBIT_HPP
 
-class RabbitButton : public UmbraButton {
+class RabbitButton: public UmbraButton {
     public:
         //RabbitButton ();
         void onMouseDown ();
 };
 
-class RabbitWidget : public UmbraWidget {
+class RabbitWidget: public UmbraWidget {
     public:
         RabbitWidget ();
         void mouse (TCOD_mouse_t &ms);

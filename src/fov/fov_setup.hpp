@@ -25,7 +25,7 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-class FovSetup : public UmbraModule {
+class FovSetup: public UmbraModule {
     public:
         FovSetup();
         bool update ();

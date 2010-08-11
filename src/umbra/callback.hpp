@@ -32,7 +32,6 @@ class UmbraCallback {
         virtual ~UmbraCallback () {}
 	protected:
 		UmbraKey key;
-        void setKeybinding (TCOD_keycode_t vk, char c, bool alt, bool ctrl, bool shift) { key.vk=vk; key.c=c; key.alt=alt; key.ctrl=ctrl; key.shift=shift; }
         virtual inline bool evaluate (UmbraKey k) { if (k == key) return true; else return false; }
         virtual void action () = 0;
         inline UmbraEngine * getEngine () { return UmbraEngine::getInstance(); }
@@ -41,7 +40,7 @@ class UmbraCallback {
 //Internal callbacks:
 
 //quit game
-class UmbraCallbackQuit : public UmbraCallback {
+class UmbraCallbackQuit: public UmbraCallback {
     public:
         UmbraCallbackQuit ();
 	private:
@@ -51,7 +50,7 @@ class UmbraCallbackQuit : public UmbraCallback {
 };
 
 //switch fullscreen
-class UmbraCallbackFullscreen : public UmbraCallback {
+class UmbraCallbackFullscreen: public UmbraCallback {
     public:
         UmbraCallbackFullscreen ();
 	private:
@@ -59,7 +58,7 @@ class UmbraCallbackFullscreen : public UmbraCallback {
 };
 
 //save screenshot
-class UmbraCallbackScreenshot : public UmbraCallback {
+class UmbraCallbackScreenshot: public UmbraCallback {
     public:
         UmbraCallbackScreenshot ();
 	private:
@@ -67,7 +66,7 @@ class UmbraCallbackScreenshot : public UmbraCallback {
 };
 
 //font up
-class UmbraCallbackFontUp : public UmbraCallback {
+class UmbraCallbackFontUp: public UmbraCallback {
     public:
         UmbraCallbackFontUp ();
 	private:
@@ -75,7 +74,7 @@ class UmbraCallbackFontUp : public UmbraCallback {
 };
 
 //switch font down
-class UmbraCallbackFontDown : public UmbraCallback {
+class UmbraCallbackFontDown: public UmbraCallback {
     public:
         UmbraCallbackFontDown ();
 	private:
@@ -83,7 +82,7 @@ class UmbraCallbackFontDown : public UmbraCallback {
 };
 
 //pause the program
-class UmbraCallbackPause : public UmbraCallback {
+class UmbraCallbackPause: public UmbraCallback {
     public:
         UmbraCallbackPause ();
 	private:
@@ -91,7 +90,7 @@ class UmbraCallbackPause : public UmbraCallback {
 };
 
 //pause the program
-class UmbraCallbackSpeedometer : public UmbraCallback {
+class UmbraCallbackSpeedometer: public UmbraCallback {
     public:
         UmbraCallbackSpeedometer ();
 	private:

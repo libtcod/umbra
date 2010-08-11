@@ -40,7 +40,7 @@ class MatrixLead {
 };
 
 
-class Matrix : public UmbraModule {
+class Matrix: public UmbraModule {
     public:
         bool update ();
         void render ();

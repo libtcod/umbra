@@ -27,7 +27,7 @@
 
 #include "umbra.hpp"
 
-UmbraModule::UmbraModule () : priority(1),status(UMBRA_UNINITIALISED),
+UmbraModule::UmbraModule (): priority(1),status(UMBRA_UNINITIALISED),
     fallback(-1) {
 }
 

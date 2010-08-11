@@ -25,7 +25,7 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-class FOV : public UmbraModule {
+class FOV: public UmbraModule {
     public:
         FOV ();
         void initialise (); //used to choose a seed that will be restored upon each activation

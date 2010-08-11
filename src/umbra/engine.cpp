@@ -33,7 +33,7 @@ TCOD_renderer_t UmbraEngine::renderer = TCOD_RENDERER_SDL;
 UmbraEngine * UmbraEngine::engineInstance = NULL;
 
 //constructor
-UmbraEngine::UmbraEngine (const char *fileName, bool registerDefaultCallbacks, bool registerAdditionalCallbacks): keyboardMode(UMBRA_KEYBOARD_RELEASED) {
+UmbraEngine::UmbraEngine (const char *fileName, UmbraRegisterCallbackFlag flag): keyboardMode(UMBRA_KEYBOARD_RELEASED) {
     //load configuration variables
     UmbraConfig::load(fileName);
 
@@ -44,7 +44,7 @@ UmbraEngine::UmbraEngine (const char *fileName, bool registerDefaultCallbacks, b
     registerInternalModule(UMBRA_INTERNAL_SPEEDOMETER,new UmbraModSpeed());
     registerInternalModule(UMBRA_INTERNAL_BSOD,new UmbraModBSOD());
     //register default callbacks
-    if (registerDefaultCallbacks) {
+    if (flag & UMBRA_REGISTER_DEFAULT) {
         registerCallback(new UmbraCallbackQuit());
         registerCallback(new UmbraCallbackFullscreen());
         registerCallback(new UmbraCallbackScreenshot());
@@ -52,7 +52,7 @@ UmbraEngine::UmbraEngine (const char *fileName, bool registerDefaultCallbacks, b
         registerCallback(new UmbraCallbackFontDown());
         registerCallback(new UmbraCallbackPause());
     }
-    if (registerAdditionalCallbacks) {
+    if (flag & UMBRA_REGISTER_ADDITIONAL) {
         registerCallback(new UmbraCallbackSpeedometer());
     }
 }

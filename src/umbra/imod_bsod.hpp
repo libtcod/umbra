@@ -25,7 +25,7 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-class UmbraModBSOD : public UmbraWidget {
+class UmbraModBSOD: public UmbraWidget {
     public:
         UmbraModBSOD ();
         bool update ();
