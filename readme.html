@@ -511,11 +511,12 @@ Also see [[AdvancedOptions]]</pre>
 </div>
 <!--POST-SHADOWAREA-->
 <div id="storeArea">
-<div title="API reference" modifier="Mingos" created="200910241815" modified="201008020040" tags="api" changecount="11">
+<div title="API reference" modifier="Mingos" created="200910241815" modified="201008111238" tags="api" changecount="12">
 <pre>*[[Classes]]
 *[[Methods]]
 *[[Callbacks]]
 *[[Enums]]
+*[[Flags]]
 *[[Defines]]</pre>
 </div>
 <div title="About Umbra" modifier="Mingos" created="200910241806" modified="201008020000" changecount="15">
@@ -563,6 +564,19 @@ Please note that this module requires the console emulator to be active, otherwi
 *[[UmbraCallbackScreenshot]]
 *[[UmbraCallbackSpeedometer]]</pre>
 </div>
+<div title="Change log" modifier="Mingos" created="201008111354" modified="201008111410" tags="changeLog" changecount="9">
+<pre>&lt;&lt;tiddler ChangeLogSymbols&gt;&gt;
+!!!Umbra 10.09 Alpha, 19-September-2010
+|!Category|!Committed on|!Change|!Committed by|
+|NEW|19-sep-2010|First official release of Umbra Engine|Mingos &amp; Jice|</pre>
+</div>
+<div title="ChangeLogSymbols" modifier="Mingos" created="201008111356" modified="201008111409" tags="changeLog" changecount="7">
+<pre>|!Symbol|!Meaning|
+|NEW|new feature|
+|REM|removed feature|
+|API|changed feature and/or API break|
+|BUG|bug fix|</pre>
+</div>
 <div title="Classes" modifier="Mingos" created="200911042330" modified="201008050916" tags="api class" changecount="8">
 <pre>*[[UmbraEngine]]
 *[[UmbraModule]]
@@ -573,7 +587,7 @@ Please note that this module requires the console emulator to be active, otherwi
 *[[UmbraRect]]
 *[[UmbraError]]</pre>
 </div>
-<div title="Creating a callback" modifier="Mingos" created="201008040033" modified="201008040059" tags="tutorial callback" changecount="5">
+<div title="Creating a callback" modifier="Mingos" created="201008040033" modified="201008111220" tags="tutorial callback" changecount="6">
 <pre>!Creating a basic callback
 In order to create a callback, it is necessary to create a class that will hold the callback-specific information. It needs to inherit the base callback class, [[UmbraCallback]]. The most basic callback declaration would be this:
 &lt;code C++&gt;
@@ -598,7 +612,7 @@ Note that overriding the {{{action}}} method is mandatory. Please refer to the [
 !Creating a more complex callback
 There's another method that can be overridden in the [[UmbraCallback]] mother class: {{{evaluate}}}. It's the method that is invoked every main loop iteration and serves the purpose of comparing the keyboard input with the keystroke the callback listens to. The [[UmbraCallbackQuit]] does exactly that, as it needs to listen to two different key combinations:
 &lt;code C++&gt;
-class UmbraCallbackQuit : public UmbraCallback {
+class UmbraCallbackQuit: public UmbraCallback {
     public:
         UmbraCallbackQuit ();
     private:
@@ -796,7 +810,7 @@ speed-&gt;putChar(closeButton.x,closeButton.y,'X',TCOD_BKGND_SET);
 &lt;/code&gt;
 In the above code snippet, {{{speed}}} is the offscreen console the widget uses. Note that {{{mouseHover}}} variable is used to determine the colour of the button character.</pre>
 </div>
-<div title="Credits" modifier="Mingos" created="200910272033" modified="201007252150" changecount="14">
+<div title="Credits" modifier="Mingos" created="200910272033" modified="201008111414" changecount="15">
 <pre>The following people had a say in the creation of Umbra:
 
 ;[[Mingos]]
@@ -810,6 +824,9 @@ In the above code snippet, {{{speed}}} is the offscreen console the widget uses.
 :The developer of The Way of Fallen and the creator of the original engine concept Umbra is based on.
 ;[[Scautura]]
 :Documentation proofreading - thanks a million, mate!</pre>
+</div>
+<div title="DeactivateAll() failing with fallbacks" modifier="Mingos" created="201008111315" modified="201008111413" tags="issueTracker bug open" changecount="3">
+<pre>[[UmbraEngine::deactivateAll]] fails to close an application when the active modules have fallbacks. The fallbacks are activated upon module deactivation and the application continues.</pre>
 </div>
 <div title="DefaultTiddlers" modifier="Mingos" created="200910241745" modified="200910241818" changecount="2">
 <pre>[[About Umbra]]</pre>
@@ -834,7 +851,7 @@ If only the last message is of interest, but for some reason BSOD use is not an 
 
 Any other message can be retrieved as well using the [[UmbraError::getMessage]] method. You can specify the message index you wish to retrieve. In case you don't know how many errors have been registered so far, you can always check this with [[UmbraError::getNbErrors]].</pre>
 </div>
-<div title="Engine instantiation versus initialisation" modifier="Mingos" created="200911111512" modified="201007252130" tags="tutorial engine" changecount="4">
+<div title="Engine instantiation versus initialisation" modifier="Mingos" created="200911111512" modified="201008111257" tags="tutorial engine" changecount="5">
 <pre>The difference between the two concepts is very important. The engine needs to be instantiated in order to become available at all, but in order to run it also needs to be configured.
 
 !Instantiation
@@ -847,7 +864,7 @@ The above line of code ''instantiates'' the engine, ie, creates an instance of t
 When the engine is instantiated, its constructor assigns the engine's variables initial values and, if the developer requests it, also activates default [[callbacks|What are callbacks]]. A freshly instantiated engine is not useable yet.
 
 !Initialisation
-After instantiating the engine, it is configured according to the developer's needs. Modules are registered, and so are fonts, and finally at least one module is activated. Additional configuration possibilities exist as well. See [[Things to do before initialising the engine]] for more details on this subject.
+After instantiating the engine, it is configured according to the developer's needs. Modules are registered, and so are fonts, and finally at least one module is activated. Additional configuration possibilities exist as well. See the [[things to do before initialising the engine|Using Umbra]] for more details on this subject.
 
 As soon as the engine is properly configured, it can be initialised. The initialisation is a simple process, yet it relies on the initial configuration. The configuration file is loaded, and information contained therein is used to launch the main application window (libtcod console). At least one font needs to be registered in order to launch the console. If none have been registered, the engine will look in the fonts directory specified in the configuration file and try to automatically register font files with the correct naming pattern. See [[Font autodetection]] for details.
 
@@ -892,6 +909,9 @@ int main () {
 In line 02. we declare an enumeration that coincides with the ID numbers that are assigned to registered modules (see [[UmbraEngine::registerModule]] for details). In line 04. we register a module called Credits. It is assigned a fallback {{{MOD_MAINMENU}}}. In the next line, another module is registered, called Menu, but without a falback. Finally, in line 06., the module with ID {{{MOD_CREDITS}}} is activated.
 
 How will the engine behave? The first activated module is supposedly a credits screen, which is usually displayed only during a few seconds in order to honour copyright holders (in case of Umbra, the creators of SDL, libtcod and Umbra itself would be mentioned). When it ends, usually after a specified amount of time has passed, it will give place to another screen, usually related to the game. In our small example, it is a main menu screen. When the main menu ends, it will not fall back to any module automatically, as there are usually various possibilities for the main menu to end. It may trigger the character creation screen, savegame choice screen, options screen or simply end the game. For this reason, no fallback has been specified in line 05. Had it been assigned a fallback, the main menu would always fall back to the specified module, which is not desired.</pre>
+</div>
+<div title="Flags" modifier="Mingos" created="201008111239" modified="201008111239" changecount="2">
+<pre>*[[UmbraRegisterCallbackFlag]]</pre>
 </div>
 <div title="Font autodetection" modifier="Mingos" created="200911050951" modified="201007272150" tags="tutorial font init" changecount="20">
 <pre>By default Umbra will look for {{{font&lt;w&gt;x&lt;h&gt;[_&lt;layout&gt;].png}}} files in the {{{./data/img/}}} directory. You can change this directory by adding a fontDir variable in umbra.txt, for example :
@@ -1844,10 +1864,43 @@ A simple example of its practical use would be a module with a timeout, such as 
 
 Paired with [[UmbraModule::activate]] is also [[UmbraModule::deactivate]]. In case a module needs to run some special code upon deactivation, it's enough to override this method.</pre>
 </div>
-<div title="MainMenu" modifier="Mingos" created="200910241817" modified="200910272028" changecount="2">
+<div title="Internal callbacks" modifier="Mingos" created="201008111256" tags="tutorial callback" changecount="1">
+<pre>Umbra has a couple of predefined callbacks. You can see the full list [[here|Callbacks]].
+
+These are the internal callbacks, which can be registered automatically, providing the engine is initialised with a [[flag|UmbraRegisterCallbackFlag]] that enables this. They can also be registered manually - please refer to the individual callbacks in order to check how they can be registered.</pre>
+</div>
+<div title="Issue tracker" modifier="Mingos" created="201008111302" modified="201008111306" tags="issueTracker" changecount="4">
+<pre>*[[Bug reports|Issue tracker: bugs]]
+*[[RFEs|Issue tracker: RFEs]]
+!Open issues
+!!Bugs
+&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;issueTracker&quot;,&quot;bug&quot;,&quot;open&quot;])'&gt;&gt;
+!!~RFEs
+&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;issueTracker&quot;,&quot;RFE&quot;,&quot;open&quot;])'&gt;&gt;
+!Closed issues
+!!Bugs
+&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;issueTracker&quot;,&quot;bug&quot;,&quot;closed&quot;])'&gt;&gt;
+!!~RFEs
+&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;issueTracker&quot;,&quot;bug&quot;,&quot;closed&quot;])'&gt;&gt;</pre>
+</div>
+<div title="Issue tracker: RFEs" modifier="Mingos" created="201008111303" modified="201008111306" tags="issueTracker RFE" changecount="3">
+<pre>!Open ~RFEs
+&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;issueTracker&quot;,&quot;RFE&quot;,&quot;open&quot;])'&gt;&gt;
+!Closed ~RFEs
+&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;issueTracker&quot;,&quot;RFE&quot;,&quot;closed&quot;])'&gt;&gt;</pre>
+</div>
+<div title="Issue tracker: bugs" modifier="Mingos" created="201008111303" modified="201008111307" tags="issueTracker bug" changecount="4">
+<pre>!Open bugs
+&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;issueTracker&quot;,&quot;bug&quot;,&quot;open&quot;])'&gt;&gt;
+!Closed bugs
+&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;issueTracker&quot;,&quot;bug&quot;,&quot;closed&quot;])'&gt;&gt;</pre>
+</div>
+<div title="MainMenu" modifier="Mingos" created="200910241817" modified="201008111259" changecount="3">
 <pre>[[About Umbra]]
 [[Using Umbra]]
 [[API reference]]
+[[Issue tracker]]
+[[Change log]]
 [[Credits]]</pre>
 </div>
 <div title="Methods" modifier="Mingos" created="200911042331" modified="201008020010" tags="api method" changecount="38">
@@ -1969,8 +2022,23 @@ Bear in mind that this method accepts printf-like text formatting. Ultimately, y
 <div title="Scautura" modifier="Scautura" created="200911111208" changecount="1">
 <pre>Proofreader. Nothing more.</pre>
 </div>
-<div title="SideBarOptions" modifier="Mingos" created="200701130013" modified="201008020033" server.type="file" server.host="tiddlythemes.com/empties/LewcidOrange.html" server.page.revision="200708091512" changecount="6">
-<pre>&lt;&lt;search&gt;&gt;&lt;&lt;closeAll&gt;&gt;&lt;&lt;saveChanges&gt;&gt;&lt;&lt;slider chkSliderOptionsPanel OptionsPanel 'options »' 'Change TiddlyWiki advanced options'&gt;&gt;</pre>
+<div title="SideBarOptions" modifier="Mingos" created="200701130013" modified="201008111353" server.type="file" server.host="tiddlythemes.com/empties/LewcidOrange.html" server.page.revision="200708091512" changecount="15">
+<pre>&lt;&lt;closeAll&gt;&gt;
+&lt;&lt;saveChanges&gt;&gt;
+&lt;&lt;newTiddler&gt;&gt;
+&lt;&lt;newTiddler
+ label:&quot;new bug report&quot;
+ tag:&quot;issueTracker&quot;
+ tag:&quot;bug&quot;
+ tag:&quot;open&quot;
+&gt;&gt;
+&lt;&lt;newTiddler
+ label:&quot;new RFE&quot;
+ tag:&quot;issueTracker&quot;
+ tag:&quot;RFE&quot;
+ tag:&quot;open&quot;
+&gt;&gt;
+&lt;&lt;slider chkSliderOptionsPanel OptionsPanel 'options »' 'Change TiddlyWiki advanced options'&gt;&gt;</pre>
 </div>
 <div title="SideBarTabs" modifier="Mingos" created="201007252144" modified="201007271447" server.type="file" server.host="tiddlythemes.com/empties/Monochrome.html" changecount="2">
 <pre>&lt;&lt;tabs txtMainTab &quot;Tags&quot; &quot;All tags&quot; TabTags &quot;Timeline&quot; &quot;Timeline&quot; TabTimeline &quot;All&quot; &quot;All tiddlers&quot; TabAll &quot;More&quot; &quot;More lists&quot; TabMore&gt;&gt;</pre>
@@ -2671,7 +2739,7 @@ This class contains a pure virtual method and thus cannot be instantiated withou
 !Methods
 &lt;&lt;tiddler UmbraCallbackMethods&gt;&gt;</pre>
 </div>
-<div title="UmbraCallback::action" modifier="Mingos" created="201008050951" modified="201008050956" tags="api method callback" changecount="2">
+<div title="UmbraCallback::action" modifier="Mingos" created="201008050951" modified="201008111309" tags="api method callback autoCalling" changecount="4">
 <pre>!Description
 Contains custom code, executed when the callback listener detects the keystroke it listens to.
 !Construction
@@ -2679,10 +2747,43 @@ Contains custom code, executed when the callback listener detects the keystroke 
 virtual void action (
 ) = 0;
 &lt;/code&gt;
-!Remarks:
+!Remarks
 This method is declared as pure virtual, thus it is mandatory to override it. It should never be called manually, as the engine will take care of calling it when it's necessary to do so.
 !See also
 &lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;callback&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;callback&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;callback&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
+</div>
+<div title="UmbraCallback::evaluate" modifier="Mingos" created="201008111208" modified="201008111309" tags="api method callback autoCalling" changecount="2">
+<pre>!Description
+Custom code for the callback listener, evaluating whether the keystroke it catches matches the keystroke it is supposed to be listening to.
+!Construction
+&lt;code C++&gt;
+virtual bool evaluate (
+    UmbraKey k
+);
+&lt;/code&gt;
+!Parametres
+*{{{UmbraKey k}}}: the keystroke the listener will compare with what it is listening to. This is passed automatically by the engine.
+!Return value
+{{{bool}}}: {{{true}}} if the keystroke matches the one(s) the callback listens to, {{{false}}} otherwise.
+!Remarks
+This method is called automatically by the engine. It should not be overlodaded unless the callback should listen to something unusual, such as two different keystrokes.
+!See also
+&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;callback&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;callback&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;callback&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
+</div>
+<div title="UmbraCallback::getEngine" modifier="Mingos" created="201008111211" modified="201008111212" tags="api method callback engineReference" changecount="3">
+<pre>!Description
+Provides a pointer to the engine.
+!Construction
+&lt;code C++&gt;
+UmbraCallback * getEngine (
+);
+&lt;/code&gt;
+!Return value
+{{{UmbraEngine *}}}: a pointer to the engine.
+!Remarks:
+This method is included in the {{{UmbraCallback}}} to make communication with the game engine easier. Using it enables you to call the engine's methods from within the module (for instance, module activation).
+!See also
+&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;engineReference&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;engineReference&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;engineReference&quot;,&quot;tutorial&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;callback&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;callback&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;callback&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
 </div>
 <div title="UmbraCallbackFontDown" modifier="Mingos" created="201008050832" modified="201008050951" tags="api callback internalCallback" changecount="2">
 <pre>!Description
@@ -2731,11 +2832,10 @@ Registered automatically if default callbacks are enabled during engine initiali
 UmbraEngine::getInstance()-&gt;registerCallback(new UmbraCallbackFullscreen());
 &lt;/code&gt;</pre>
 </div>
-<div title="UmbraCallbackMethods" modifier="Mingos" created="201008050917" tags="methodlist" changecount="1">
+<div title="UmbraCallbackMethods" modifier="Mingos" created="201008050917" modified="201008111215" tags="methodlist" changecount="2">
 <pre>*[[UmbraCallback::action]]
 *[[UmbraCallback::evaluate]]
-*[[UmbraCallback::getEngine]]
-*[[UmbraCallback::setKeybinding]]</pre>
+*[[UmbraCallback::getEngine]]</pre>
 </div>
 <div title="UmbraCallbackPause" modifier="Mingos" created="201008050827" modified="201008050952" tags="api callback internalCallback" changecount="2">
 <pre>!Description
@@ -3154,6 +3254,27 @@ else return 1;
 &lt;/code&gt;
 !See also
 &lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;engine&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;engine&quot;,&quot;engineClass&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;engine&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
+</div>
+<div title="UmbraEngine::registerCallback" modifier="Mingos" created="201008111159" tags="api method engineClass init callback" changecount="1">
+<pre>!Description
+Registers a callback, creating an active listener.
+!Construction
+&lt;code C++&gt;
+void registerCallback (
+    UmbraCallback * cbk
+);
+&lt;/code&gt;
+!Parametres
+*{{{UmbraCallback * cbk}}}: a pointer to a callback.
+!Remarks
+In order to be registered, a callback needs to be [[created|Creating a callback]]. It can be instantiated using the {{{new}}} operator inside the method's argument.
+!Example
+&lt;code C++&gt;
+UmbraEngine engine;
+engine.registerCallback(new MyCallback());
+&lt;/code&gt;
+!See also
+&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;callback&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;callback&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;callback&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
 </div>
 <div title="UmbraEngine::registerFont" modifier="Mingos" created="200911051013" modified="201007272138" tags="api method engineClass font init" changecount="22">
 <pre>!Description
@@ -3846,6 +3967,28 @@ The member function [[UmbraPoint::is]] is used for detecting mouse hover - pleas
 *[[UmbraRect::setPos]]
 *[[UmbraRect::setSize]]</pre>
 </div>
+<div title="UmbraRegisterCallbackFlag" modifier="Mingos" created="201008111252" tags="api flag callback engine" changecount="1">
+<pre>!Description
+Flags that control which internal callbacks should be registered during engine initialisation.
+!Construction
+&lt;code C++&gt;
+enum UmbraRegisterCallbackFlag {
+    UMBRA_REGISTER_NONE       = 0x00000000,
+    UMBRA_REGISTER_DEFAULT    = 0x00000001,
+    UMBRA_REGISTER_ADDITIONAL = 0x00000010,
+    UMBRA_REGISTER_ALL        = 0x11111111
+};
+&lt;/code&gt;
+!Values
+*{{{UMBRA_REGISTER_NONE}}}: Register no callbacks.
+*{{{UMBRA_REGISTER_DEFAULT}}}: Register only the default callbacks: quit, save screenshot, font switcher, pause and toggle fullscreen. This is the default flag in [[UmbraEngine]] constructor.
+*{{{UMBRA_REGISTER_ADDITIONAL}}}: Register additional callback: Speed-o-meter.
+*{{{UMBRA_REGISTER_ALL}}}: Register all internal callbacks.
+!Example
+&lt;code C++&gt;
+UmbraEngine engine = UmbraEngine(&quot;data/cfg/umbra.txt&quot;,UMBRA_REGISTER_ALL);
+&lt;/code&gt;</pre>
+</div>
 <div title="UmbraWidgetMethods" modifier="Mingos" created="201007271238" modified="201007271251" tags="methodlist" changecount="3">
 <pre>*[[UmbraWidget::mouse]]
 *[[UmbraWidget::setDragZone]]</pre>
@@ -3890,6 +4033,13 @@ The member function [[UmbraPoint::is]] is used for detecting mouse hover - pleas
 ##[[Displaying an error]]
 
 Please read the [[API reference]] for details on how everything works.</pre>
+</div>
+<div title="Using a callback" modifier="Mingos" created="201008111219" tags="tutorial callback" changecount="1">
+<pre>Once a callback is [[created|Creating a callback]], starting to use it is extremely easy. The callback only needs to be registered in the engine:
+&lt;code C++&gt;
+UmbraEngine::getInstance()-&gt;registerCallback(new MyCallback());
+&lt;/code&gt;
+Starting from this point, the callback is active and listens to the incoming keystrokes.</pre>
 </div>
 <div title="What are callbacks" modifier="Mingos" created="201008020014" modified="201008020039" tags="tutorial callback" changecount="4">
 <pre>Callbacks are basically global keybindings. The engine provides a listener that will listen to all the registered callbacks and trigger a custom action for each callback in case the listener determines its keybinding has been used.
