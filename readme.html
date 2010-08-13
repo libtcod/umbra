@@ -2770,12 +2770,12 @@ This method is called automatically by the engine. It should not be overlodaded 
 !See also
 &lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;callback&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;callback&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;callback&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
 </div>
-<div title="UmbraCallback::getEngine" modifier="Mingos" created="201008111211" modified="201008111212" tags="api method callback engineReference" changecount="3">
+<div title="UmbraCallback::getEngine" modifier="Mingos" created="201008111211" modified="201008111845" tags="api method callback engineReference" changecount="4">
 <pre>!Description
 Provides a pointer to the engine.
 !Construction
 &lt;code C++&gt;
-UmbraCallback * getEngine (
+UmbraEngine * getEngine (
 );
 &lt;/code&gt;
 !Return value
@@ -2943,6 +2943,39 @@ else return 1;
 !Methods
 &lt;&lt;tiddler UmbraEngineMethods&gt;&gt;</pre>
 </div>
+<div title="UmbraEngine::UmbraEngine" modifier="Mingos" created="201008111830" modified="201008111840" tags="api method engineClass constructor" changecount="2">
+<pre>!Description
+Constructor for the engine.
+!Construction
+&lt;code C++&gt;
+UmbraEngine (
+    const char *fileName = &quot;data/cfg/umbra.txt&quot;,
+    UmbraRegisterCallbackFlag flag = UMBRA_REGISTER_DEFAULT
+);
+&lt;/code&gt;
+!Parametres
+*{{{const char *fileName}}}: the string containing the file name (with path) to Umbra's configuration file. Defaults to {{{&quot;data/cfg/umbra.txt&quot;}}}.
+*{{{UmbraRegisterCallbackFlag flag}}}: the flag, as defined in [[UmbraRegisterCallbackFlag]], telling the engine which [[internal callbacks|Internal callbacks]] should be registered.
+!Remarks
+Before being initialised, the engine needs to be instantiated. The constructor may take 2, 1 or no arguments, as they both have default values.
+!Example
+&lt;code C++&gt;
+//use default values
+UmbraEngine engine;
+&lt;/code&gt;
+&lt;code C++&gt;
+//specify the config file, but leave callbacks at default
+UmbraEngine engine(&quot;path/to/config/file.txt&quot;);
+&lt;/code&gt;
+&lt;code C++&gt;
+//specify which callbacks to register, but leave path at default
+UmbraEngine engine(UMBRA_REGISTER_ALL);
+&lt;/code&gt;
+&lt;code C++&gt;
+//specify everything explicitly
+UmbraEngine engine(&quot;path/to/config/file.txt&quot;,UMBRA_REGISTER_ALL);
+&lt;/code&gt;</pre>
+</div>
 <div title="UmbraEngine::activateFont" modifier="Mingos" created="201007201539" modified="201007271605" tags="api method engineClass font" changecount="38">
 <pre>!Description
 Activates a previously registered font.
@@ -2964,7 +2997,7 @@ If the engine is created with the {{{registerDefaultCallbacks}}} parametre set t
 
 </pre>
 </div>
-<div title="UmbraEngine::activateModule" modifier="Mingos" created="200911081445" modified="201007272150" tags="api method engineClass module moduleStatus init" changecount="22">
+<div title="UmbraEngine::activateModule" modifier="Mingos" created="200911081445" modified="201008111840" tags="api method engineClass module moduleStatus init" changecount="23">
 <pre>!Description
 Puts a module on the activation list. It will be activated in the next main game loop iteration (next frame).
 !Construction
@@ -2972,11 +3005,13 @@ Puts a module on the activation list. It will be activated in the next main game
 void activateModule (
     int moduleId
 );
-
+&lt;/code&gt;
+&lt;code C++&gt;
 void activateModule (
     UmbraModule * mod
 );
-
+&lt;/code&gt;
+&lt;code C++&gt;
 void activateModule (
     UmbraInternalModuleID id
 );
@@ -3027,7 +3062,7 @@ class MyModule : public UmbraModule {
 !See also
 &lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;moduleStatus&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;moduleStatus&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;moduleStatus&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
 </div>
-<div title="UmbraEngine::deactivateModule" modifier="Mingos" created="200911081458" modified="201007271606" tags="api method engineClass module moduleStatus" changecount="17">
+<div title="UmbraEngine::deactivateModule" modifier="Mingos" created="200911081458" modified="201008111841" tags="api method engineClass module moduleStatus" changecount="18">
 <pre>!Description
 Puts a module on the deactivation list. It will be deactivated in the next main game loop iteration (next frame).
 !Construction
@@ -3035,11 +3070,13 @@ Puts a module on the deactivation list. It will be deactivated in the next main 
 void deactivateModule (
     int moduleId
 );
-
+&lt;/code&gt;
+&lt;code C++&gt;
 void deactivateModule (
     UmbraModule * mod
 );
-
+&lt;/code&gt;
+&lt;code C++&gt;
 void deactivateModule (
     UmbraInternalModuleID id
 );
@@ -3422,7 +3459,7 @@ Calling this method will [[reinitialise|UmbraEngine::reinitialise]] the engine.
 !See also
 &lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;engineSettings&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;engineSettings&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;engineSettings&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
 </div>
-<div title="UmbraEngine::setWindowTitle" modifier="Mingos" created="201003302007" modified="201007272137" tags="api method engineClass init" changecount="11">
+<div title="UmbraEngine::setWindowTitle" modifier="Mingos" created="201003302007" modified="201008111842" tags="api method engineClass init" changecount="12">
 <pre>!Description
 Sets the game window title.
 !Construction
@@ -3431,7 +3468,8 @@ void setWindowTitle (
     const char * title,
     ...
 );
-
+&lt;/code&gt;
+&lt;code C++&gt;
 void setWindowTitle (
     std::string title
 );
@@ -3454,7 +3492,7 @@ else return 1;
 !See also
 &lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;init&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;init&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;init&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
 </div>
-<div title="UmbraEngineMethods" modifier="Mingos" created="201007271125" modified="201008031451" tags="methodlist" changecount="14">
+<div title="UmbraEngineMethods" modifier="Mingos" created="201007271125" modified="201008111830" tags="methodlist" changecount="15">
 <pre>*[[UmbraEngine::activateFont]]
 *[[UmbraEngine::activateModule]]
 *[[UmbraEngine::deactivateAll]]
@@ -3478,7 +3516,8 @@ else return 1;
 *[[UmbraEngine::setKeyboardMode]]
 *[[UmbraEngine::setPause]]
 *[[UmbraEngine::setRootDimensions]]
-*[[UmbraEngine::setWindowTitle]]</pre>
+*[[UmbraEngine::setWindowTitle]]
+*[[UmbraEngine::UmbraEngine]]</pre>
 </div>
 <div title="UmbraError" modifier="Mingos" created="201003301723" modified="201008050920" tags="api class error" changecount="10">
 <pre>~UmbraError is a static class that does not take part in handling game itself. As its name implies, it is there to handle errors and aid in preventing the occurrence of errors. It is essentially a list of all logged errors, which you can use for debugging.
@@ -3491,7 +3530,7 @@ Should any error be logged during the program execution, an error log file calle
 !Methods
 &lt;&lt;tiddler UmbraErrorMethods&gt;&gt;</pre>
 </div>
-<div title="UmbraError::add" modifier="Mingos" created="201003301902" modified="201007272254" tags="api method error" changecount="16">
+<div title="UmbraError::add" modifier="Mingos" created="201003301902" modified="201008111846" tags="api method error" changecount="18">
 <pre>!Description
 Appends an error message to the error list in the log.
 !Construction
@@ -3500,7 +3539,8 @@ static int add (
     const char * errStr,
     ...
 );
-
+&lt;/code&gt;
+&lt;code C++&gt;
 static int add (
     std::string errStr
 );
@@ -3580,6 +3620,94 @@ engine.activateModule(UMBRA_INTERNAL_SPEEDOMETER);
 &lt;/code&gt;
 !See also:
 :[[UmbraEngine::displayError]]</pre>
+</div>
+<div title="UmbraKey" modifier="Mingos" created="201008112301" modified="201008132310" tags="api class callback" changecount="5">
+<pre>The ~UmbraKey class serves the sole purpose of recording a key combination in an easy and readable way. It stores the information necessary to represent any simple keystroke combination, such as {{{alt}}} + {{{enter}}}, etc.
+
+Objects of this type are used inside the [[UmbraCallback]].
+!Keystroke comparison
+~UmbraKey provides a way to compare two keystroke combinations using a single overloaded operator:
+&lt;code C++&gt;
+UmbraKey k1(TCODK_ENTER,0,true,false,false);
+UmbraKey k2(TCODK_F4,0,true,false,false);
+UmbraKey k3(TCODK_F4,0,true,false,false);
+if (k1 == k2) std::cout &lt;&lt; &quot;Same!&quot; &lt;&lt; std::endl;
+else std::cout &lt;&lt; &quot;Different!&quot; &lt;&lt; std::endl;
+if (k2 == k3) std::cout &lt;&lt; &quot;Same!&quot; &lt;&lt; std::endl;
+else std::cout &lt;&lt; &quot;Different!&quot; &lt;&lt; std::endl;
+//output:
+//Different!
+//Same!
+&lt;/code&gt;</pre>
+</div>
+<div title="UmbraKey::UmbraKey" modifier="Mingos" created="201008112308" modified="201008112314" tags="api method keyClass constructor" changecount="3">
+<pre>!Description
+Constructor for a keystroke object.
+!Construction
+&lt;code C++&gt;
+UmbraKey () {
+    vk = TCODK_NONE;
+    c = 0;
+    alt = false;
+    ctrl = false;
+    shift = false;
+}
+&lt;/code&gt;
+&lt;code C++&gt;
+UmbraKey (TCOD_keycode_t vk, char c, bool alt, bool ctrl, bool shift) {
+    this-&gt;vk = vk;
+    this-&gt;c = c;
+    this-&gt;alt = alt;
+    this-&gt;ctrl = ctrl;
+    this-&gt;shift = shift;
+}
+&lt;/code&gt;
+!Parametres
+*{{{TCOD_keycode_t vk}}}: a key code, as defined in [[libtcod documentation|http://doryen.eptalys.net/data/libtcod/doc/1.5.0/console/keycode_t.html]]
+*{{{char c}}}: a printable character. A value of {{{0}}} means &quot;no character&quot;.
+*{{{bool alt}}}: {{{true}}} for {{{alt}}} key pressed, {{{false}}} otherwise.
+*{{{bool ctrl}}}: {{{true}}} for {{{ctrl}}} key pressed, {{{false}}} otherwise.
+*{{{bool shift}}}: {{{true}}} for {{{shift}}} key pressed, {{{false}}} otherwise.
+!Example
+&lt;code C++&gt;
+//alt + enter
+UmbraKey key(TCODK_ENTER,0,true,false,false);
+&lt;/code&gt;</pre>
+</div>
+<div title="UmbraKey::assign" modifier="Mingos" created="201008132308" modified="201008132320" tags="api method keyClass" changecount="3">
+<pre>!Description
+Stores a keystroke combination.
+!Construction
+&lt;code C++&gt;
+void assign (
+    TCOD_keycode_t vk,
+    char c,
+    bool alt,
+    bool ctrl,
+    bool shift
+);
+&lt;/code&gt;
+&lt;code C++&gt;
+void assign (
+    UmbraKey k1
+);
+&lt;/code&gt;
+!Parametres
+*{{{TCOD_keycode_t vk}}}: a key code, as defined in [[libtcod documentation|http://doryen.eptalys.net/data/libtcod/doc/1.5.0/console/keycode_t.html]]
+*{{{char c}}}: a printable character. A value of {{{0}}} means &quot;no character&quot;.
+*{{{bool alt}}}: {{{true}}} for {{{alt}}} key pressed, {{{false}}} otherwise.
+*{{{bool ctrl}}}: {{{true}}} for {{{ctrl}}} key pressed, {{{false}}} otherwise.
+*{{{bool shift}}}: {{{true}}} for {{{shift}}} key pressed, {{{false}}} otherwise.
+!Remarks
+Should it be necessary to copy the contents of one UmbraKey object to another, it is best to use the overloaded {{{=}}} operator:
+&lt;code C++&gt;
+UmbraKey key1(TCODK_ENTER,0,true,false,false);
+UmbraKey key2 = key1;
+&lt;/code&gt;</pre>
+</div>
+<div title="UmbraKeyMethods" modifier="Mingos" created="201008111915" tags="methodlist" changecount="1">
+<pre>*[[UmbraKey::assign]]
+*[[UmbraKey::UmbraKey]]</pre>
 </div>
 <div title="UmbraKeyboardMode" modifier="Mingos" created="201007252205" modified="201007271728" tags="api enum keyboard keyboardMode" changecount="7">
 <pre>!Description
@@ -3686,7 +3814,20 @@ void MyModule::keyboard (TCOD_ket_t &amp;key) {
 !See also
 &lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;engineReference&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;engineReference&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;engineReference&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
 </div>
-<div title="UmbraModule::getPause" modifier="Mingos" created="201004011545" modified="201008031451" tags="api module methodClass moduleStatus" changecount="9">
+<div title="UmbraModule::getFallback" modifier="Mingos" created="201008111852" modified="201008111854" tags="api method moduleClass fallback" changecount="2">
+<pre>!Description
+Fetched the ID number of the module's fallback.
+!Construction
+&lt;code C++&gt;
+int getFallback (
+);
+&lt;/code&gt;
+!Return value:
+{{{int}}}: fallback module's ID number. In case there is no fallback, the method will return (-1).
+!See also
+&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;fallback&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;fallback&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;fallback&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
+</div>
+<div title="UmbraModule::getPause" modifier="Mingos" created="201004011545" modified="201008111853" tags="api module moduleClass moduleStatus" changecount="10">
 <pre>!Description
 Checks whether the module is paused.
 !Construction
@@ -3696,6 +3837,32 @@ bool getPause (
 &lt;/code&gt;
 !Return value:
 {{{bool}}}: {{{true}}} if the module is paused, {{{false}}} otherwise.
+!See also
+&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;moduleStatus&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;moduleStatus&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;moduleStatus&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
+</div>
+<div title="UmbraModule::getPriority" modifier="Mingos" created="201008111904" tags="api method moduleClass priority" changecount="1">
+<pre>!Description
+Checks whether the module is active.
+!Construction
+&lt;code C++&gt;
+int getPriority (
+);
+&lt;/code&gt;
+!Return value
+{{{int}}}: The module's priority.
+!See also
+&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;priority&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;priority&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;moduleStatus&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
+</div>
+<div title="UmbraModule::getStatus" modifier="Mingos" created="201008111909" tags="api method moduleClass moduleStatus" changecount="1">
+<pre>!Description
+Retrieves the module's current status.
+!Construction
+&lt;code C++&gt;
+UmbraModuleStatus getStatus (
+);
+&lt;/code&gt;
+!Return value:
+{{{UmbraModuleStatus}}}: the module's current status. The values are defined in the [[UmbraModuleStatus]] enum.
 !See also
 &lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;moduleStatus&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;moduleStatus&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;moduleStatus&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
 </div>
@@ -3781,7 +3948,7 @@ It may contain any code, for instance, pausing the background music.
 !See also
 &lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;autoCalling&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;autoCalling&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;autoCalling&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
 </div>
-<div title="UmbraModule::render" modifier="Mingos" created="201003312308" modified="201007271937" tags="api method moduleClass render" changecount="8">
+<div title="UmbraModule::render" modifier="Mingos" created="201003312308" modified="201008111844" tags="api method moduleClass render autoCalling" changecount="9">
 <pre>!Description
 Handles module rendering on the screen.
 !Construction
@@ -3854,7 +4021,7 @@ void setPause (
 !Remarks
 Note that when a module is paused or unpaused, [[UmbraModule::pause]] or [[UmbraModule::resume]], respectively, are called in the following iteration of the main application loop.</pre>
 </div>
-<div title="UmbraModule::update" modifier="Mingos" created="200911121749" modified="201007271825" tags="api method module moduleClass update" changecount="9">
+<div title="UmbraModule::update" modifier="Mingos" created="200911121749" modified="201008111844" tags="api method module moduleClass autoCalling" changecount="11">
 <pre>!Description
 Updates the module's internal logic.
 !Construction
@@ -3906,7 +4073,7 @@ enum UmbraModuleStatus {
 *{{{UMBRA_ACTIVE}}}: When a module is activated, it will have this state.
 *{{{UMBRA_PAUSED}}}: An active module, if paused, will be marked with this status.</pre>
 </div>
-<div title="UmbraPoint" modifier="Mingos" created="201007211209" modified="201008050919" tags="api class point mouse" changecount="14">
+<div title="UmbraPoint" modifier="Mingos" created="201007211209" modified="201008132300" tags="api class point mouse" changecount="16">
 <pre>The class UmbraPoint is one of the additions to the [[UmbraWidget]] that differentiate it from an [[UmbraModule]]. As the name implies, it defines the behaviour of a single point (or, more accurately, a single cell on the console).
 
 The UmbraPoint is used within every [[UmbraWidget]] to define the behaviour of 2 points: the minimise button and the close button. The method [[UmbraWidget::mouse]], which is supposed to be called in each iteration of the main application loop (see below), will automatically register mouse hover and mouse down events, which may then be used to trigger events such as a rollover, etc.
@@ -3931,7 +4098,7 @@ class MyWidget: public UmbraWidget {
     ...
 };
 &lt;/code&gt;
-The problem is that the developer shouldn't be fored to think about UmbraPoint and [[UmbraRect]] mouse events updating in each widget separately. That's why [[UmbraWidget]] overrides this method as well and takes care of the mouse events for [[UmbraPoint]]s and [[UmbraRect]]s present par default in every widget.
+The problem is that the developer shouldn't be forced to think about UmbraPoint and [[UmbraRect]] mouse events updating in each widget separately. That's why [[UmbraWidget]] overrides this method as well and takes care of the mouse events for [[UmbraPoint]]s and [[UmbraRect]]s present par default in every widget.
 
 Unfortunately, this method needs to be called manually. This is done by calling [[UmbraWidget::mouse]] at the beginning of the mouse parsing method:
 &lt;code C++&gt;
@@ -3953,13 +4120,47 @@ The member function [[UmbraPoint::is]] is used for detecting mouse hover - pleas
 !Methods
 &lt;&lt;tiddler UmbraPointMethods&gt;&gt;
 !See also
-:[[UmbraRect]]
-:[[UmbraWidget]]
-:[[UmbraWidget::mouse]]</pre>
+[[UmbraRect]]
+[[UmbraWidget]]
+[[UmbraWidget::mouse]]</pre>
 </div>
 <div title="UmbraPointMethods" modifier="Mingos" created="201007271204" modified="201007271251" tags="methodlist" changecount="3">
 <pre>*[[UmbraPoint::is]]
 *[[UmbraPoint::set]]</pre>
+</div>
+<div title="UmbraRect" modifier="Mingos" created="201008132227" modified="201008132301" tags="api class rect mouse" changecount="8">
+<pre>UmbraRect is one of the additions to UmbraWidget, along with UmbraPoint. It defines a rectangle as well as interactions with the mouse cursor and an UmbraPoint. Every UmbraWidget includes two UmbraRect objects: the [[widget area|Widget area]] and the [[drag zone|Drag zone]].
+!Constructor
+UmbraRect takes four arguments in the constructor: the [x,y] coordinates of the top left corner, the width and the height. It can be instantiated like this:
+&lt;code C++&gt;
+UmbraRect rectangle(0,0,UmbraEngine::getInstance-&gt;getRootWidth(),UmbraEngine::getInstance-&gt;getRootHeight());
+&lt;/code&gt;
+The above code will, of course, create a rectangle that occupies the entire root console's area.
+
+Calling the constructor with no arguments will create a rectangle object as well, but all values default to 0 and thus require to be set manually, for instance using [[UmbraRect::set]].
+!Mouse events
+In case of the rectangles present in an UmbraWidget par default, the mouse events are interpreted automatically, provided the widget's [[UmbraWidget::mouse]] is overridden correctly. For other uses, it is possible to check whether the mouse cursor is within the rectangle using [[UmbraRect::isInside]]. The generalised code may look like this:
+&lt;code C++&gt;
+SomeClass::mouse(TCOD_mouse_t &amp;ms) {
+    if (rectangle.isInside(ms.cx,ms,cy) {
+        rectangle.mouseHover = true;
+        if (ms.lbutton) rectangle.mouseDown = true;
+        else rectangle.mouseDown = false;
+    }
+    else rectangle.mouseHover = rectangle.mouseDown = false;
+}
+&lt;/code&gt;
+Using code that's functionally equivalent to the example above makes it possible to use the {{{mouseHover}}} and {{{mouseDown}}} public members of the UmbraRect class:
+&lt;code C++&gt;
+if (rectangle.mouseHover) doSomething();
+if (rectangle.mouseDown) doSomethingMore();
+&lt;/code&gt;
+!Methods
+&lt;&lt;tiddler UmbraRectMethods&gt;&gt;
+!See also
+[[UmbraPoint]]
+[[UmbraWidget]]
+[[UmbraWidget::mouse]]</pre>
 </div>
 <div title="UmbraRectMethods" modifier="Mingos" created="201007271236" modified="201007271251" tags="methodlist" changecount="2">
 <pre>*[[UmbraRect::isInside]]
@@ -3993,7 +4194,7 @@ UmbraEngine engine = UmbraEngine(&quot;data/cfg/umbra.txt&quot;,UMBRA_REGISTER_A
 <pre>*[[UmbraWidget::mouse]]
 *[[UmbraWidget::setDragZone]]</pre>
 </div>
-<div title="Using Umbra" modifier="Mingos" created="200910241814" modified="201008020038" tags="tutorial" changecount="30">
+<div title="Using Umbra" modifier="Mingos" created="200910241814" modified="201008132228" tags="tutorial" changecount="31">
 <pre>#Basics
 ##[[Starting a project using Umbra]]
 ##[[Umbra Hello World]]
@@ -4022,6 +4223,9 @@ UmbraEngine engine = UmbraEngine(&quot;data/cfg/umbra.txt&quot;,UMBRA_REGISTER_A
 ###[[Keyboard input]]
 ###[[Mouse input in modules]]
 ###[[Mouse input in widgets]]
+####[[Minimise and close buttons]]
+####[[Widget area]]
+####[[Drag zone]]
 #Callbacks
 ##[[What are callbacks]]
 ##[[Creating a callback]]

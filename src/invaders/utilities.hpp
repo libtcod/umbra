@@ -39,8 +39,8 @@ class Point {
 		bool operator == (const Point &p) const { return this->x == p.x && this->y == p.y; }
 		bool operator != (const Point &p) const { return this->x != p.x || this->y != p.y; }
 		//ctors
-		Point(int x, int y) { this->x = x; this->y = y; }
-		Point() { x = y = 0; }
+		Point(int x, int y) { set(x,y); }
+		Point(): x(0), y(0);
 };
 
 class Rect {
@@ -51,7 +51,7 @@ class Rect {
 		bool checkIntersection(const Rect &r) const;
 		bool contains(const Point &p) const;
 		Rect(int x, int y, int w, int h) { set(x,y,w,h); }
-		Rect() { set(0,0,0,0); }
+		Rect(): x(0), y(0), w(0), h(0);
 };
 
 #endif

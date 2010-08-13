@@ -40,7 +40,7 @@ const char * UmbraConfig::fontDir = NULL;
 
 void UmbraConfig::load (const char *fileName) {
     static bool loaded = false;
-    if (loaded && strcmp(UmbraConfig::fileName, fileName) == 0 ) return;
+    if (loaded && strcmp(UmbraConfig::fileName, fileName) == 0) return;
     TCODParser parser;
 
     UmbraConfig::fileName = strdup(fileName);

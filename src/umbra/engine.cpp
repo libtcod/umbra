@@ -98,7 +98,7 @@ struct TmpFontData {
     int size;
 };
 #define MAX_FONTS 16
-bool UmbraEngine::registerFonts( void ) {
+bool UmbraEngine::registerFonts () {
     // if fonts registered by the user, do nothing
     if ( getNbFonts() > 0 ) return true;
     TmpFontData dat[MAX_FONTS];

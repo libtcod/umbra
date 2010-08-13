@@ -27,7 +27,7 @@
 
 #include "umbra.hpp"
 
-UmbraWidget::UmbraWidget( void ): mousex(-1),mousey(-1),
+UmbraWidget::UmbraWidget(): mousex(-1),mousey(-1),
 	canDrag(false),isDragging(false) {
 }
 
