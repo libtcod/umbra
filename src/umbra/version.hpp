@@ -29,7 +29,7 @@
 #define UMBRA_VERSION_HPP
 
 #define UMBRA_TITLE "Umbra Engine"
-#define UMBRA_VERSION "10.07"
+#define UMBRA_VERSION "10.08"
 #define UMBRA_STATUS "Alpha"
 
 #endif

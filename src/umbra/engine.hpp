@@ -37,9 +37,7 @@ class UmbraKey {
 		UmbraKey (): vk(TCODK_NONE),c(0),alt(false),ctrl(false),shift(false) {}
 		UmbraKey (TCOD_keycode_t vk, char c, bool alt, bool ctrl, bool shift): vk(vk),c(c),alt(alt),ctrl(ctrl),shift(shift) {}
 		inline void assign (TCOD_keycode_t vk, char c, bool alt, bool ctrl, bool shift) { this->vk=vk; this->c=c; this->alt=alt; this->ctrl=ctrl; this->shift=shift; }
-		inline void assign (const UmbraKey &k1) { memcpy (this, &k1, sizeof(UmbraKey)); }
 		inline bool operator == (const UmbraKey &k1) { return memcmp (this, &k1, sizeof(UmbraKey)) == 0; }
-		inline void operator = (const UmbraKey &k1) { memcpy (this, &k1, sizeof(UmbraKey)); }
 	private:
 		TCOD_keycode_t vk;
 		char c;

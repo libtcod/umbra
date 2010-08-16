@@ -511,9 +511,10 @@ Also see [[AdvancedOptions]]</pre>
 </div>
 <!--POST-SHADOWAREA-->
 <div id="storeArea">
-<div title="API reference" modifier="Mingos" created="200910241815" modified="201008111238" tags="api" changecount="12">
+<div title="API reference" modifier="Mingos" created="200910241815" modified="201008152255" tags="api" changecount="13">
 <pre>*[[Classes]]
 *[[Methods]]
+*[[Operators]]
 *[[Callbacks]]
 *[[Enums]]
 *[[Flags]]
@@ -831,12 +832,12 @@ In the above code snippet, {{{speed}}} is the offscreen console the widget uses.
 <div title="DefaultTiddlers" modifier="Mingos" created="200910241745" modified="200910241818" changecount="2">
 <pre>[[About Umbra]]</pre>
 </div>
-<div title="Defines" modifier="Mingos" created="201008020021" modified="201008020031" tags="api define" changecount="5">
+<div title="Defines" modifier="Mingos" created="201008020021" modified="201008152322" tags="api define" changecount="6">
 <pre>There are few defines in Umbra:
 ;{{{UMBRA_TITLE}}}
 :the string {{{&quot;Umbra Engine&quot;}}}
 ;{{{UMBRA_VERSION}}}
-:the string containing the version of Umbra that's being used. Umbra uses Ubuntu-style versioning (e.g., version {{{10.07}}} has been released in July 2010).
+:the string containing the version of Umbra that's being used. Umbra uses Ubuntu-style versioning (e.g., version {{{10.09}}} has been released in September 2010).
 ;{{{UMBRA_STATUS}}}
 :the string containing the status of the Umbra build that's being used, e.g. {{{&quot;Alpha&quot;}}}.
 ;{{{UMBRA_LICENCE}}}
@@ -1926,6 +1927,11 @@ These are the internal callbacks, which can be registered automatically, providi
 *http://www.umbraprojekt.pl/
 *http://umbrarumregnum.110mb.com/</pre>
 </div>
+<div title="Operators" modifier="Mingos" created="201008152255" modified="201008152352" changecount="16">
+<pre>[[UmbraKey::operator ==]]
+[[UmbraPoint::operator ==]]
+[[UmbraRect::operator [] ]]</pre>
+</div>
 <div title="PageTemplate" modifier="Mingos" created="200701130013" modified="201008020035" server.type="file" server.host="tiddlythemes.com/empties/Monochrome.html" server.page.revision="200708091512" changecount="11">
 <pre>&lt;div id='header' class='header' macro='gradient vert   #555555       #3b3b3b '&gt;
         &lt;div class='siteTitle' refresh='content' tiddler='SiteTitle'&gt;&lt;/div&gt;
@@ -2785,7 +2791,7 @@ This method is included in the {{{UmbraCallback}}} to make communication with th
 !See also
 &lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;engineReference&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;engineReference&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;engineReference&quot;,&quot;tutorial&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;callback&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;callback&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;callback&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
 </div>
-<div title="UmbraCallbackFontDown" modifier="Mingos" created="201008050832" modified="201008050951" tags="api callback internalCallback" changecount="2">
+<div title="UmbraCallbackFontDown" modifier="Mingos" created="201008050832" modified="201008152346" tags="api callback internalCallback font" changecount="3">
 <pre>!Description
 Activates previous font from the fonts list.
 !Keybinding
@@ -2801,7 +2807,7 @@ Registered automatically if default callbacks are enabled during engine initiali
 UmbraEngine::getInstance()-&gt;registerCallback(new UmbraCallbackFontDown());
 &lt;/code&gt;</pre>
 </div>
-<div title="UmbraCallbackFontUp" modifier="Mingos" created="201008050831" modified="201008050951" tags="api callback internalCallback" changecount="2">
+<div title="UmbraCallbackFontUp" modifier="Mingos" created="201008050831" modified="201008152346" tags="api callback internalCallback font" changecount="3">
 <pre>!Description
 Activates next font from the fonts list.
 !Keybinding
@@ -3674,7 +3680,7 @@ UmbraKey (TCOD_keycode_t vk, char c, bool alt, bool ctrl, bool shift) {
 UmbraKey key(TCODK_ENTER,0,true,false,false);
 &lt;/code&gt;</pre>
 </div>
-<div title="UmbraKey::assign" modifier="Mingos" created="201008132308" modified="201008132320" tags="api method keyClass" changecount="3">
+<div title="UmbraKey::assign" modifier="Mingos" created="201008132308" modified="201008152229" tags="api method keyClass" changecount="4">
 <pre>!Description
 Stores a keystroke combination.
 !Construction
@@ -3687,11 +3693,6 @@ void assign (
     bool shift
 );
 &lt;/code&gt;
-&lt;code C++&gt;
-void assign (
-    UmbraKey k1
-);
-&lt;/code&gt;
 !Parametres
 *{{{TCOD_keycode_t vk}}}: a key code, as defined in [[libtcod documentation|http://doryen.eptalys.net/data/libtcod/doc/1.5.0/console/keycode_t.html]]
 *{{{char c}}}: a printable character. A value of {{{0}}} means &quot;no character&quot;.
@@ -3699,7 +3700,7 @@ void assign (
 *{{{bool ctrl}}}: {{{true}}} for {{{ctrl}}} key pressed, {{{false}}} otherwise.
 *{{{bool shift}}}: {{{true}}} for {{{shift}}} key pressed, {{{false}}} otherwise.
 !Remarks
-Should it be necessary to copy the contents of one UmbraKey object to another, it is best to use the overloaded {{{=}}} operator:
+Should it be necessary to copy the contents of one UmbraKey object to another, it is best to use the {{{=}}} operator:
 &lt;code C++&gt;
 UmbraKey key1(TCODK_ENTER,0,true,false,false);
 UmbraKey key2 = key1;
@@ -4124,9 +4125,95 @@ The member function [[UmbraPoint::is]] is used for detecting mouse hover - pleas
 [[UmbraWidget]]
 [[UmbraWidget::mouse]]</pre>
 </div>
-<div title="UmbraPointMethods" modifier="Mingos" created="201007271204" modified="201007271251" tags="methodlist" changecount="3">
+<div title="UmbraPoint::UmbraPoint" modifier="Mingos" created="201008160000" modified="201008160001" tags="api method point constructor" changecount="2">
+<pre>!Description
+Constructor for a point object.
+!Construction
+&lt;code C++&gt;
+UmbraPoint () {
+    x = 0;
+    y = 0;
+    mouseHover = false;
+}
+&lt;/code&gt;
+&lt;code C++&gt;
+UmbraPoint (int x, int y) {
+    this-&gt;x = x;
+    this-&gt;y = y;
+    mouseHover = false;
+}
+&lt;/code&gt;
+!Parametres
+*{{{int x}}}: the X coordinate of a point
+*{{{int y}}}: the Y coordinate of a point
+!Example
+&lt;code C++&gt;
+UmbraPoint p1;
+UmbraPoint p2(10,20);
+&lt;/code&gt;</pre>
+</div>
+<div title="UmbraPoint::is" modifier="Mingos" created="201008152221" modified="201008152336" tags="api method point" changecount="6">
+<pre>!Description
+Checks whether a given set of coordinates match those of an UmbraPoint object.
+!Construction
+&lt;code C++&gt;
+bool is (
+    int px,
+    int py
+);
+&lt;/code&gt;
+!Parametres
+*{{{int px}}}: the X coordinate to be checked
+*{{{int py}}}: the Y coordinate to be checked
+!Return value
+{{{bool}}}: {{{true}}} if the coordinates match those of the UmbraPoint object, {{{false}}} otherwise.
+!Remarks:
+This method is typically used to check whether the mouse cursor is hovering over a given point.
+Should it be necessary to check the coordinates of two UmbraPoint instances against one another, [[UmbraPoint::operator ==]] provides that functionality.
+!See also
+&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;point&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;point&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;point&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
+</div>
+<div title="UmbraPoint::operator ==" modifier="Mingos" created="201008152339" modified="201008152341" tags="api operator point" changecount="5">
+<pre>!Description
+Compares the coordinates of two UmbraPoint instances.
+!Remarks
+It only takes the coordinates into consideration. Mouse events are ignored.
+!Example
+&lt;code C++&gt;
+UmbraPoint p1(10,20), p2(10,20), p3(11,21);
+printf(&quot;p1 == p2? %s\n&quot;, p1 == p2 ? &quot;true&quot; : &quot;false&quot;);
+printf(&quot;p1 == p3? %s\n&quot;, p1 == p3 ? &quot;true&quot; : &quot;false&quot;);
+&lt;/code&gt;
+!!!Output
+{{{p1 == p2? true}}}
+{{{p1 == p3? false}}}</pre>
+</div>
+<div title="UmbraPoint::set" modifier="Mingos" created="201008152328" modified="201008152332" tags="api method point" changecount="3">
+<pre>!Description
+Sets the coordinates of an UmbraPoint object.
+!Construction
+&lt;code C++&gt;
+void set (
+    int x,
+    int y
+);
+&lt;/code&gt;
+!Parametres
+*{{{int x}}}: the X coordinate to be assigned
+*{{{int y}}}: the Y coordinate to be assigned
+!Remarks:
+Should it be necessary to copy an UmbraPoint instance, the {{{=}}} operator can be used:
+&lt;code C++&gt;
+UmbraPoint p1(10,20);
+UmbraPoint p2 = p1;
+&lt;/code&gt;
+!See also
+&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;point&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;point&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;point&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
+</div>
+<div title="UmbraPointMethods" modifier="Mingos" created="201007271204" modified="201008152348" tags="methodlist" changecount="4">
 <pre>*[[UmbraPoint::is]]
-*[[UmbraPoint::set]]</pre>
+*[[UmbraPoint::set]]
+*[[UmbraPoint::UmbraPoint]]</pre>
 </div>
 <div title="UmbraRect" modifier="Mingos" created="201008132227" modified="201008132301" tags="api class rect mouse" changecount="8">
 <pre>UmbraRect is one of the additions to UmbraWidget, along with UmbraPoint. It defines a rectangle as well as interactions with the mouse cursor and an UmbraPoint. Every UmbraWidget includes two UmbraRect objects: the [[widget area|Widget area]] and the [[drag zone|Drag zone]].
@@ -4162,11 +4249,12 @@ if (rectangle.mouseDown) doSomethingMore();
 [[UmbraWidget]]
 [[UmbraWidget::mouse]]</pre>
 </div>
-<div title="UmbraRectMethods" modifier="Mingos" created="201007271236" modified="201007271251" tags="methodlist" changecount="2">
+<div title="UmbraRectMethods" modifier="Mingos" created="201007271236" modified="201008152348" tags="methodlist" changecount="3">
 <pre>*[[UmbraRect::isInside]]
 *[[UmbraRect::set]]
 *[[UmbraRect::setPos]]
-*[[UmbraRect::setSize]]</pre>
+*[[UmbraRect::setSize]]
+*[[UmbraRect::UmbraRect]]</pre>
 </div>
 <div title="UmbraRegisterCallbackFlag" modifier="Mingos" created="201008111252" tags="api flag callback engine" changecount="1">
 <pre>!Description
