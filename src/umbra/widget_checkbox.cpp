@@ -71,10 +71,13 @@ void UmbraCheckbox::mouse (TCOD_mouse_t &ms) {
 void UmbraCheckbox::render (TCODConsole * con) {
     if (!visible)
         return;
+    TCODColor col=con->getForegroundColor();
+    con->setForegroundColor(area.mouseHover ? TCODColor::white : TCODColor::lighterBlue);
     if (checked)
         con->putChar(area.x,area.y,TCOD_CHAR_CHECKBOX_SET,TCOD_BKGND_NONE);
     else
         con->putChar(area.x,area.y,TCOD_CHAR_CHECKBOX_UNSET,TCOD_BKGND_NONE);
     if (!tag.empty())
         con->printRectEx(area.x+2, area.y, area.w-2, area.h, TCOD_BKGND_NONE, TCOD_LEFT, tag.c_str());
+    con->setForegroundColor(col);
 }

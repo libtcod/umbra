@@ -27,15 +27,23 @@
 
 #include "main.hpp"
 
+// map rendering colors
+static TCODColor darkWall(0,0,100);
+static TCODColor lightWall(130,110,50);
+static TCODColor darkGround(50,50,150);
+static TCODColor lightGround(200,180,50);
+
 FovTest* FovTest::getTest(int algoNum,int testNum) {
 	// test factory
 	FovTest *ret=NULL;
 	switch(testNum) {
 		case FOV_TEST_PILLAR1 : ret=new FovPillar1(); break;
 		case FOV_TEST_PILLAR2 : ret=new FovPillar2(); break;
+		case FOV_TEST_PILLAR3 : ret=new FovPillar3(); break;
 		case FOV_TEST_CORNER1 : ret=new FovCorner1(); break;
 		case FOV_TEST_CORNER2 : ret=new FovCorner2(); break;
-		default:break; 
+		case FOV_TEST_DIAGONAL : ret=new FovDiagonal(); break;
+		default:break;
 	}
 	if ( ret == NULL ) return ret; // not implemented
 	ret->algoNum=algoNum;
@@ -50,10 +58,6 @@ void FovTest::run() {
 }
 
 void FovTest::render(TCODConsole *con,int x, int y) {
-	static TCODColor darkWall(0,0,100);
-	static TCODColor lightWall(130,110,50);
-	static TCODColor darkGround(50,50,150);
-	static TCODColor lightGround(200,180,50);
 	for (int mx=0; mx < map->getWidth(); mx++ ) {
 		for (int my=0; my < map->getHeight(); my++ ) {
 			 if ( playerx==mx && playery==my) {
@@ -66,7 +70,7 @@ void FovTest::render(TCODConsole *con,int x, int y) {
 					col = infov ? lightGround:darkGround;
 				} else {
 					col = infov ? lightWall:darkWall;
-				}  
+				}
 			 	con->putCharEx(x+mx,y+my,' ', TCODColor::white,col);
 			 }
 		}
@@ -95,6 +99,13 @@ void FovPillar2::initialise() {
 	playery=3;
 }
 
+void FovPillar3::initialise() {
+	FovPillar1::initialise();
+	// same as pillar 1. only the player pos changes
+	playerx=4;
+	playery=4;
+}
+
 void FovCorner1::initialise() {
 	// build a T junction corridor
 	map = new TCODMap(15,11);
@@ -105,4 +116,41 @@ void FovCorner1::initialise() {
 	playerx=7;
 	playery=6;
 }
+
+void FovCorner2::initialise() {
+    FovCorner1::initialise();
+    result = new bool[15];
+}
+
+void FovCorner2::render(TCODConsole *con,int x, int y) {
+	for (int mx=0; mx < map->getWidth(); mx++ ) {
+		for (int my=0; my < map->getHeight(); my++ ) {
+            TCODColor col;
+            if ( my != 5 ) col=map->isTransparent(mx,my) ? darkGround : darkWall;
+            else col = result[mx] ? lightGround:darkGround;
+            con->putCharEx(x+mx,y+my,mx == playerx && my ==playery ? '@' : ' ', TCODColor::white,col);
+		}
+	}
+}
+
+void FovCorner2::execute() {
+    // compute fov from each cell in the corridor and see if player is visible
+    for (int x=0; x < 15; x++) {
+        map->computeFov(x,5,0,true,(TCOD_fov_algorithm_t)algoNum);
+        result[x] = map->isInFov(playerx,playery);
+    }
+}
+
+void FovDiagonal::initialise() {
+	// build a diagonal wall
+	map = new TCODMap(11,11);
+	map->clear(true,true);
+	for (int x=0; x < 11; x++) map->setProperties(x,x,false,false);
+	// player against the wall
+	playerx=6;
+	playery=5;
+}
+
+
+
 

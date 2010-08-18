@@ -68,7 +68,10 @@ void UmbraButton::mouse (TCOD_mouse_t &ms) {
 void UmbraButton::render (TCODConsole * con) {
     if (!visible)
         return;
+    TCODColor col=con->getForegroundColor();
+    con->setForegroundColor(area.mouseHover ? TCODColor::white : TCODColor::lighterBlue);
     con->printFrame(area.x,area.y,area.w,area.h,false,TCOD_BKGND_NONE,NULL);
     if (!tag.empty())
         con->printRectEx(area.x+(area.w/2),area.y+(area.h/2),area.w-2,area.h-2,TCOD_BKGND_NONE,TCOD_CENTER,tag.c_str());
+    con->setForegroundColor(col);
 }

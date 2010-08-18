@@ -42,9 +42,27 @@ const char *fovnames[NB_FOV_ALGORITHMS] = {
 	"Permissive-8",
 	"MRPAS",
 };
+
+const char *fovShortNames[NB_FOV_ALGORITHMS] = {
+	"BASIC",
+	"DIAMOND",
+	"SHADOW",
+	"PERM-0",
+	"PERM-1",
+	"PERM-2",
+	"PERM-3",
+	"PERM-4",
+	"PERM-5",
+	"PERM-6",
+	"PERM-7",
+	"PERM-8",
+	"MRPAS",
+};
+
 const char *testnames[FOV_NB_TESTS] = {
 	"Pillar 1",
 	"Pillar 2",
+	"Pillar 3",
 	"Corner peeking 1",
 	"Corner peeking 2",
 	"Diagonal walls",
@@ -54,47 +72,94 @@ const char *testnames[FOV_NB_TESTS] = {
 	"Speed on outdoor map",
 };
 
+const char *testShortNames[FOV_NB_TESTS] = {
+	"PILLAR1",
+	"PILLAR2",
+	"PILLAR3",
+	"CORNER1",
+	"CORNER2",
+	"DIAGONAL",
+	"SYMMETRY",
+	"PRF-EMPTY",
+	"PRF-FULL",
+	"PRF-OUTDOOR",
+};
+
 FovSetup::FovSetup () {
 }
 
 bool FovSetup::update () {
 	if (running) {
+	    // run the next available test
 		FovTest *nextTest=testsToRun.pop();
 		nextTest->initialise();
-		nextTest->run();		
-		finishedTests.push(nextTest);	
-		if ( testsToRun.isEmpty() ) running=false;	
+		nextTest->run();
+		finishedTests.push(nextTest);
+		if ( testsToRun.isEmpty() ) {
+		    // all tests are finished
+		    running=false;
+		    // create the result tabs
+		    int x=0;
+            for (int j=0; j <FOV_NB_TESTS; j++) {
+                if ( testCkb[j].checked ) {
+                    tabs.push(new UmbraButton(this,x,20,strlen(testShortNames[j])+2,3,testShortNames[j]));
+                    x += strlen(testShortNames[j])+2;
+                }
+            }
+		}
 	}
     return true;
 }
 
 void FovSetup::initialise() {
-
+    int y=2;
 	for (int i=0; i < NB_FOV_ALGORITHMS; i++) {
-		algoCkb[i].set(this,2,2+i*2,strlen(fovnames[i])+2,1,fovnames[i]);
+		algoCkb[i].set(this,2,y,strlen(fovnames[i])+2,1,fovnames[i]);
+		y++;
+		if (i < FOV_PERMISSIVE_0 || i >= FOV_PERMISSIVE_8 ) y++;
 	}
+	y=2;
 	for (int i=0; i < FOV_NB_TESTS; i++) {
-		testCkb[i].set(this,40,2+i*2,strlen(testnames[i])+2,1,testnames[i]);
+		if ( i == FOV_TEST_SPEED_EMPTY ) y++;
+		testCkb[i].set(this,40,y,strlen(testnames[i])+2,1,testnames[i]);
+		y++;
 	}
-	go.set(this,39,23,10,3,"GO");
+	go.set(this,39,14,10,3,"GO");
 	running=false;
 }
 
 void FovSetup::render () {
+    // render the menu
+    TCODConsole::root->print(2,0,"Algorithms to test");
+    for (int i=0; i < NB_FOV_ALGORITHMS; i++) {
+        algoCkb[i].render(TCODConsole::root);
+    }
+    TCODConsole::root->print(40,0,"Tests to run");
+    for (int i=0; i < FOV_NB_TESTS; i++) {
+        testCkb[i].render(TCODConsole::root);
+    }
+    go.render(TCODConsole::root);
+    // render the tabs (if any)
+    for ( UmbraButton **it=tabs.begin(); it != tabs.end(); it++) {
+        (*it)->render(TCODConsole::root);
+    }
 	if (! running ) {
-		// render the menu
-		TCODConsole::root->print(2,0,"Algorithms to test");
-		for (int i=0; i < NB_FOV_ALGORITHMS; i++) {
-			algoCkb[i].render(TCODConsole::root);
-		}
-		TCODConsole::root->print(40,0,"Tests to run");
-		for (int i=0; i < FOV_NB_TESTS; i++) {
-			testCkb[i].render(TCODConsole::root);
-		}
-		go.render(TCODConsole::root);
-		if ( finishedTests.size() == 1 ) {
-			// render the last executed test if there was only 1
-			finishedTests.peek()->render(TCODConsole::root,0,30);
+		if ( finishedTests.size() > 0 ) {
+			// render the last executed tests for test curTestResult
+			int tx=0,ty=24, th=0;
+			for (FovTest **it=finishedTests.begin(); it != finishedTests.end(); it++) {
+			    if ( (*it)->testNum != curTestResult ) continue;
+                if ( tx +(*it)->map->getWidth() >= TCODConsole::root->getWidth() ) {
+                    tx=0;
+                    ty+=th+1;
+                    th=0;
+                }
+                (*it)->render(TCODConsole::root,tx,ty);
+                TCODConsole::root->printEx(tx+(*it)->map->getWidth()/2,ty-1,TCOD_BKGND_NONE,TCOD_CENTER,
+                                           "%s",fovShortNames[(*it)->algoNum]);
+                tx+=(*it)->map->getWidth()+1;
+                if ((*it)->map->getHeight()>th) th=(*it)->map->getHeight();
+			}
 		}
 	} else {
 		// render remaining tests counter
@@ -104,18 +169,37 @@ void FovSetup::render () {
 
 void FovSetup::mouse (TCOD_mouse_t &ms) {
 	if (! running) {
+	    // update the UI
 		// count the number of algos and tests selected
 		int nbTests=0;
 		int nbAlgos = 0;
 		for (int i=0; i < NB_FOV_ALGORITHMS; i++) {
 			algoCkb[i].mouse(ms);
 			if ( algoCkb[i].checked ) nbAlgos++;
-		} 
+		}
 		for (int i=0; i < FOV_NB_TESTS; i++) {
 			testCkb[i].mouse(ms);
 			if ( testCkb[i].checked ) nbTests++;
 		}
 		go.mouse(ms);
+		// update the tabs
+		int tabnum=0;
+		for ( UmbraButton **it=tabs.begin(); it != tabs.end(); it++, tabnum++) {
+            (*it)->mouse(ms);
+            if ( (*it)->area.mouseDown ) {
+                // tab <tabnum> pressed. retrieve the corresponding test
+                int testTab=0;
+                for (int i=0; i < FOV_NB_TESTS; i++) {
+                    if ( testCkb[i].checked ) {
+                        if ( testTab == tabnum) {
+                            // tabnum correspond to test i
+                            curTestResult=i;
+                            break;
+                        } else testTab++;
+                    }
+                }
+            }
+        }
 		nbTests = nbTests * nbAlgos;
 		if (nbTests > 0 ) {
 			// if at least 1 algo and 1 test selected, click go to launch
@@ -124,11 +208,13 @@ void FovSetup::mouse (TCOD_mouse_t &ms) {
 				// launching...
 				testsToRun.clear();
 				finishedTests.clear();
+				tabs.clearAndDelete();
+				curTestResult=0;
 				// create the list of tests to run
-				for (int i=0; i < NB_FOV_ALGORITHMS; i++) {
-					if ( algoCkb[i].checked ) {
-						for (int j=0; j < FOV_NB_TESTS; j++) {
-							if ( testCkb[j].checked ) {
+                for (int j=FOV_NB_TESTS-1; j >= 0; j--) {
+                    if ( testCkb[j].checked ) {
+                        for (int i=NB_FOV_ALGORITHMS-1; i >= 0; i--) {
+                            if ( algoCkb[i].checked ) {
 								FovTest *test=FovTest::getTest(i,j);
 								if ( test != NULL ) testsToRun.push(test);
 							}

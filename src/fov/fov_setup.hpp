@@ -28,6 +28,7 @@
 enum {
 	FOV_TEST_PILLAR1,
 	FOV_TEST_PILLAR2,
+	FOV_TEST_PILLAR3,
 	FOV_TEST_CORNER1,
 	FOV_TEST_CORNER2,
 	FOV_TEST_DIAGONAL,
@@ -56,6 +57,8 @@ class FovSetup: public UmbraWidget {
     	bool running; // we are currently running tests
     	TCODList<FovTest *>testsToRun;
     	TCODList<FovTest *>finishedTests;
+    	TCODList<UmbraButton *>tabs;
+    	int curTestResult;
 };
 
 

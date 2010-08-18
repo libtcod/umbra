@@ -263,20 +263,6 @@
 			<Option target="Demo Debug LINUX" />
 			<Option target="Demo Release LINUX" />
 		</Unit>
-		<Unit filename="src\fov\fov.cpp">
-			<Option virtualFolder="FOV Benchmark\Sources\" />
-			<Option target="Fovbench Debug WIN" />
-			<Option target="Fovbench Release WIN" />
-			<Option target="Fovbench Debug LINUX" />
-			<Option target="Fovbench Release LINUX" />
-		</Unit>
-		<Unit filename="src\fov\fov.hpp">
-			<Option virtualFolder="FOV Benchmark\Headers\" />
-			<Option target="Fovbench Debug WIN" />
-			<Option target="Fovbench Release WIN" />
-			<Option target="Fovbench Debug LINUX" />
-			<Option target="Fovbench Release LINUX" />
-		</Unit>
 		<Unit filename="src\fov\fov_setup.cpp">
 			<Option virtualFolder="FOV Benchmark\Sources\" />
 			<Option target="Fovbench Debug WIN" />
@@ -285,6 +271,20 @@
 			<Option target="Fovbench Release LINUX" />
 		</Unit>
 		<Unit filename="src\fov\fov_setup.hpp">
+			<Option virtualFolder="FOV Benchmark\Headers\" />
+			<Option target="Fovbench Debug WIN" />
+			<Option target="Fovbench Release WIN" />
+			<Option target="Fovbench Debug LINUX" />
+			<Option target="Fovbench Release LINUX" />
+		</Unit>
+		<Unit filename="src\fov\fov_test.cpp">
+			<Option virtualFolder="FOV Benchmark\Sources\" />
+			<Option target="Fovbench Debug WIN" />
+			<Option target="Fovbench Release WIN" />
+			<Option target="Fovbench Debug LINUX" />
+			<Option target="Fovbench Release LINUX" />
+		</Unit>
+		<Unit filename="src\fov\fov_test.hpp">
 			<Option virtualFolder="FOV Benchmark\Headers\" />
 			<Option target="Fovbench Debug WIN" />
 			<Option target="Fovbench Release WIN" />

@@ -33,14 +33,14 @@ public :
 	virtual void initialise() = 0;
 	void run();
 	TCODMap *map;
-	virtual void render(TCODConsole *con,int x, int y); 	
+	virtual void render(TCODConsole *con,int x, int y);
 	float time; // length of the execution of run function in seconds
 protected :
 	float t0;
 	int playerx,playery;
-	inline void startCounter() {t0=TCODSystem::getElapsedSeconds();}	
+	inline void startCounter() {t0=TCODSystem::getElapsedSeconds();}
 	inline void stopCounter() {time=TCODSystem::getElapsedSeconds()-t0;}
-	virtual void execute();	
+	virtual void execute();
 };
 
 class FovPillar1 : public FovTest {
@@ -52,6 +52,10 @@ class FovPillar2 : public FovPillar1 {
 	void initialise();
 };
 
+class FovPillar3 : public FovPillar1 {
+	void initialise();
+};
+
 class FovCorner1 : public FovTest {
 public :
 	void initialise();
@@ -59,6 +63,14 @@ public :
 
 class FovCorner2 : public FovCorner1 {
 public :
-//	void initialise();
+    void initialise();
+    void render(TCODConsole *con,int x, int y);
+protected :
+	void execute();
+	bool *result; // array of cell where the player is visible
 };
 
+class FovDiagonal : public FovTest {
+public :
+	void initialise();
+};
