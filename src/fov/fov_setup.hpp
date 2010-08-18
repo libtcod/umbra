@@ -25,14 +25,37 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-class FovSetup: public UmbraModule {
+enum {
+	FOV_TEST_PILLAR1,
+	FOV_TEST_PILLAR2,
+	FOV_TEST_CORNER1,
+	FOV_TEST_CORNER2,
+	FOV_TEST_DIAGONAL,
+	FOV_TEST_SYMMETRY,
+	FOV_TEST_SPEED_EMPTY,
+	FOV_TEST_SPEED_FULL,
+	FOV_TEST_SPEED_OUTDOOR,
+	// todo add speed indoor
+	FOV_NB_TESTS
+};
+
+extern const char *fovnames[NB_FOV_ALGORITHMS];
+extern const char *testnames[FOV_NB_TESTS];
+
+class FovSetup: public UmbraWidget {
     public:
         FovSetup();
         bool update ();
         void render ();
-        void keyboard (TCOD_key_t &key);
-
+        void mouse (TCOD_mouse_t &ms);
+        void initialise();
     private:
+    	UmbraCheckbox algoCkb[NB_FOV_ALGORITHMS];
+    	UmbraCheckbox testCkb[FOV_NB_TESTS];
+    	UmbraButton go;
+    	bool running; // we are currently running tests
+    	TCODList<FovTest *>testsToRun;
+    	TCODList<FovTest *>finishedTests;
 };
 
 

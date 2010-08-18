@@ -1,0 +1,84 @@
+# umbra mingw makefile
+# run "make -f makefile-linux debug" for debug version
+# run "make -f makefile-linux release" for release version
+SRCDIR=src
+LIBTCODDIR=../svn-libtcod
+CPP=mingw32-g++
+UPX=../mak/upx.exe
+
+CFLAGS=$(FLAGS) -I$(LIBTCODDIR)/include -Wall
+
+$(TEMP)/umbra/debug/%.o : $(SRCDIR)/umbra/%.cpp
+	$(CPP) $(CFLAGS) -g -o $@ -c $< 
+$(TEMP)/umbra/release/%.o : $(SRCDIR)/umbra/%.cpp
+	$(CPP) $(CFLAGS) -DNDEBUG -O2 -s -o $@ -c $< 
+$(TEMP)/fov/debug/%.o : $(SRCDIR)/fov/%.cpp
+	$(CPP) $(CFLAGS) -g -o $@ -c $< 
+$(TEMP)/fov/release/%.o : $(SRCDIR)/fov/%.cpp
+	$(CPP) $(CFLAGS) -DNDEBUG -O2 -s -o $@ -c $< 
+
+OBJS_UMBRA_DEBUG= \
+	$(TEMP)/umbra/debug/callback.o \
+	$(TEMP)/umbra/debug/config.o \
+	$(TEMP)/umbra/debug/engine.o \
+	$(TEMP)/umbra/debug/error.o \
+	$(TEMP)/umbra/debug/font.o \
+	$(TEMP)/umbra/debug/imod_bsod.o \
+	$(TEMP)/umbra/debug/imod_speed.o \
+	$(TEMP)/umbra/debug/module.o \
+	$(TEMP)/umbra/debug/widget.o \
+	$(TEMP)/umbra/debug/widget_button.o \
+	$(TEMP)/umbra/debug/widget_checkbox.o 
+
+OBJS_DEBUG= \
+	$(TEMP)/fov/debug/fov.o \
+	$(TEMP)/fov/debug/fov_setup.o \
+	$(TEMP)/fov/debug/fov_test.o \
+	$(TEMP)/fov/debug/main.o 
+
+OBJS_RELEASE= \
+	$(TEMP)/umbra/release/callback.o \
+	$(TEMP)/umbra/release/config.o \
+	$(TEMP)/umbra/release/engine.o \
+	$(TEMP)/umbra/release/error.o \
+	$(TEMP)/umbra/release/font.o \
+	$(TEMP)/umbra/release/imod_bsod.o \
+	$(TEMP)/umbra/release/imod_speed.o \
+	$(TEMP)/umbra/release/module.o \
+	$(TEMP)/umbra/release/widget.o \
+	$(TEMP)/umbra/release/widget_button.o \
+	$(TEMP)/umbra/release/widget_checkbox.o \
+	$(TEMP)/fov/release/fov.o \
+	$(TEMP)/fov/release/fov_setup.o \
+	$(TEMP)/fov/release/fov_test.o \
+	$(TEMP)/fov/release/main.o 
+
+all : debug release
+
+debug : fovtc_debug.exe
+
+release : fovtc.exe
+
+$(TEMP)/umbra/debug :
+	\mkdir -p $@
+	
+$(TEMP)/umbra/release :
+	\mkdir -p $@
+
+$(TEMP)/fov/debug :
+	\mkdir -p $@
+	
+$(TEMP)/fov/release :
+	\mkdir -p $@
+	
+fovtc.exe : $(TEMP)/fov/release $(TEMP)/umbra/release $(OBJS_RELEASE)
+	$(CPP) $(OBJS_RELEASE) -o $@ -L$(LIBTCODDIR)/lib -ltcod-mingw -mwindows
+
+fovtc_debug.exe : $(TEMP)/fov/debug $(TEMP)/umbra/debug $(OBJS_UMBRA_DEBUG) $(OBJS_DEBUG) 
+	$(CPP) $(OBJS_UMBRA_DEBUG) $(OBJS_DEBUG) -o $@ -L$(LIBTCODDIR)/lib -ltcod-mingw-debug -mwindows
+
+clean :
+	\rm -f $(OBJS_RELEASE) fovtc.exe $(OBJS_DEBUG) fovtc_debug.exe 
+
+cleanall : clean
+	\rm -f $(OBJS_UMBRA_DEBUG)

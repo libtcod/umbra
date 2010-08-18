@@ -25,21 +25,40 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#include "main.hpp"
+class FovTest {
+public :
+	int algoNum;
+	int testNum;
+	static FovTest* getTest(int algoNum,int testNum);
+	virtual void initialise() = 0;
+	void run();
+	TCODMap *map;
+	virtual void render(TCODConsole *con,int x, int y); 	
+	float time; // length of the execution of run function in seconds
+protected :
+	float t0;
+	int playerx,playery;
+	inline void startCounter() {t0=TCODSystem::getElapsedSeconds();}	
+	inline void stopCounter() {time=TCODSystem::getElapsedSeconds()-t0;}
+	virtual void execute();	
+};
 
-UmbraEngine engine;
+class FovPillar1 : public FovTest {
+public :
+	void initialise();
+};
 
-enum { MOD_SETUP, MOD_RESULT };
+class FovPillar2 : public FovPillar1 {
+	void initialise();
+};
 
-int main() {
-    //set window title
-    engine.setWindowTitle("Umbra FOV Torture Chamber v"FOVTC_VERSION);
-    //declare modules
-    engine.registerModule(new FovSetup());
-    //activate modules
-    engine.activateModule(MOD_SETUP);
-    //initialise and run the engine
-    if (engine.initialise()) return engine.run();
-    else return 1;
-}
+class FovCorner1 : public FovTest {
+public :
+	void initialise();
+};
+
+class FovCorner2 : public FovCorner1 {
+public :
+//	void initialise();
+};
 

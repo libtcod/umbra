@@ -28,7 +28,10 @@
 #define _MAIN_HPP
 
 #include "../umbra/umbra.hpp"
+#include "fov_test.hpp"
 #include "fov_setup.hpp"
+
+#define FOVTC_VERSION "0.1"
 
 extern UmbraEngine engine;
 

@@ -1,0 +1,98 @@
+[Config]
+Compilator.SaveAll=0
+Compilator.Capture=0
+Compilator.HideOutput=0
+Compilator.LogType=0
+DefaultCPIndex=0
+LogtoEnd=1
+DontOpen=0
+AbsolutePath=0
+FileFormat=0
+ProjectFilesOnly=0
+[Project tree]
+pspad
+	+Répertoire
+		+umbra
+			src\umbra\widget_checkbox.hpp
+			src\umbra\widget_checkbox.cpp
+			src\umbra\widget_button.hpp
+			src\umbra\widget_button.cpp
+			src\umbra\widget.hpp
+			src\umbra\widget.cpp
+			src\umbra\version.hpp
+			src\umbra\umbra.hpp
+			src\umbra\module.hpp
+			src\umbra\module.cpp
+			src\umbra\imod_speed.hpp
+			src\umbra\imod_speed.cpp
+			src\umbra\imod_bsod.hpp
+			src\umbra\imod_bsod.cpp
+			src\umbra\font.hpp
+			src\umbra\font.cpp
+			src\umbra\error.hpp
+			src\umbra\error.cpp
+			src\umbra\engine.hpp
+			src\umbra\engine.cpp
+			src\umbra\config.hpp
+			src\umbra\config.cpp
+			src\umbra\callback.hpp
+			src\umbra\callback.cpp
+		makefile-mingw
+		src\fov\main.hpp
+		src\fov\main.cpp
+		src\fov\fov_setup.hpp
+		src\fov\fov_setup.cpp
+		src\fov\fov_test.hpp
+		src\fov\fov_test.cpp
+[Open project files]
+0=src\fov\main.cpp
+1=src\umbra\engine.hpp
+2=src\fov\fov_setup.cpp
+3=..\svn-libtcod\include\fov_types.h
+4=src\fov\fov_setup.hpp
+5=src\fov\main.hpp
+6=..\svn-libtcod\include\console.hpp
+7=src\umbra\module.hpp
+8=src\fov\fov_test.hpp
+9=src\fov\fov_test.cpp
+10=..\svn-libtcod\include\fov.hpp
+11=..\svn-libtcod\samples\samples_cpp.cpp
+[Selected Project Files]
+Main=
+Selected=src\fov\fov_setup.cpp
+[src\fov\main.cpp]
+TopLine=13
+Caret=55,36
+[src\umbra\engine.hpp]
+TopLine=49
+Caret=71,74
+[src\fov\fov_setup.cpp]
+TopLine=107
+Caret=27,126
+[..\svn-libtcod\include\fov_types.h]
+TopLine=13
+Caret=19,51
+[src\fov\fov_setup.hpp]
+TopLine=17
+Caret=1,44
+[src\fov\main.hpp]
+TopLine=1
+Caret=1,32
+[..\svn-libtcod\include\console.hpp]
+TopLine=535
+Caret=28,581
+[src\umbra\module.hpp]
+TopLine=9
+Caret=17,39
+[src\fov\fov_test.hpp]
+TopLine=22
+Caret=41,41
+[src\fov\fov_test.cpp]
+TopLine=22
+Caret=51,40
+[..\svn-libtcod\include\fov.hpp]
+TopLine=66
+Caret=1,253
+[..\svn-libtcod\samples\samples_cpp.cpp]
+TopLine=387
+Caret=49,412
