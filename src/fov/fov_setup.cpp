@@ -1,6 +1,6 @@
 /*
 * Umbra
-* Copyright (c) 2009 Mingos, Jice
+* Copyright (c) 2009, 2010 Mingos, Jice
 * All rights reserved.
 *
 * Redistribution and use in source and binary forms, with or without
@@ -60,29 +60,29 @@ const char *fovShortNames[NB_FOV_ALGORITHMS] = {
 };
 
 const char *testnames[FOV_NB_TESTS] = {
-	"Pillar 1",
-	"Pillar 2",
-	"Pillar 3",
-	"Corner peeking 1",
-	"Corner peeking 2",
+	"Pillar, orthogonal",
+	"Pillar, away",
+	"Pillar, diagonal",
+	"Corner peeking: T-junction",
+	"Corner peeking: corridor",
 	"Diagonal walls",
 	"Symmetry",
-	"Speed on empty map",
-	"Speed on full map",
-	"Speed on outdoor map",
+	"Speed, empty map",
+	"Speed, full map",
+	"Speed, outdoor map",
 };
 
 const char *testShortNames[FOV_NB_TESTS] = {
-	"PILLAR1",
-	"PILLAR2",
-	"PILLAR3",
-	"CORNER1",
-	"CORNER2",
-	"DIAGONAL",
+	"PILLAR-ORTH",
+	"PILLAR-AWAY",
+	"PILLAR-DIAG",
+	"CORNER-T-J",
+	"CORNER-CORR",
+	"DIAGONAL-WL",
 	"SYMMETRY",
-	"PRF-EMPTY",
-	"PRF-FULL",
-	"PRF-OUTDOOR",
+	"SPEED-EMPTY",
+	"SPEED-FULL",
+	"SPEED-OUTDR",
 };
 
 FovSetup::FovSetup () {

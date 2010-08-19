@@ -43,7 +43,7 @@ DAMAGE.
 <!--}}}-->
 
 <!--PRE-HEAD-END-->
-<title> Umbra - a generic engine for libtcod-based applications </title>
+<title> Umbra - powering libtcod-based applications </title>
 <style id="styleArea" type="text/css">
 #saveTest {display:none;}
 #messageArea {display:none;}
@@ -511,14 +511,16 @@ Also see [[AdvancedOptions]]</pre>
 </div>
 <!--POST-SHADOWAREA-->
 <div id="storeArea">
-<div title="API reference" modifier="Mingos" created="200910241815" modified="201008152255" tags="api" changecount="13">
-<pre>*[[Classes]]
-*[[Methods]]
-*[[Operators]]
-*[[Callbacks]]
-*[[Enums]]
-*[[Flags]]
-*[[Defines]]</pre>
+<div title="API reference" modifier="Mingos" created="200910241815" modified="201008190945" tags="api" changecount="15">
+<pre>&lt;&lt;tabs api
+    &quot;Classes&quot; &quot;Classes&quot; [[Classes]]
+    &quot;Methods&quot; &quot;Methods&quot; [[Methods]]
+    &quot;Operators&quot; &quot;Operators&quot; [[Operators]]
+    &quot;Callbacks&quot; &quot;Callbacks&quot; [[Callbacks]]
+    &quot;Enums&quot; &quot;Enums&quot; [[Enums]]
+    &quot;Flags&quot; &quot;Flags&quot; [[Flags]]
+    &quot;Defines&quot; &quot;Defines&quot; [[Defines]]
+&gt;&gt;</pre>
 </div>
 <div title="About Umbra" modifier="Mingos" created="200910241806" modified="201008020000" changecount="15">
 <pre>Umbra Engine is a general purpose engine for applications that use libtcod, mainly games. It is thought to be a &quot;module player&quot; more than anything else, meaning that it lacks any game logic or other game elements. The game/app developer will still need to write everything from scratch, but Umbra will make sure the game is divided into manageable chunks, or modules. Also, the engine takes control over the main game loop and screen flushing, provides a global keybindings method and lets the developer define module-specific keybindings.
@@ -555,9 +557,8 @@ if (errorCondition) {
 &lt;/code&gt;
 Please note that this module requires the console emulator to be active, otherwise it won't be displayed. For this reason, the BSOD is only useful for displaying non fatal errors. In case a fatal error is encountered, it will typically call {{{exit(1);}}} instead of {{{displayError();}}}. The BSOD is useless in such situations, and the error message can only be retrieved from the error log saved to the disc.</pre>
 </div>
-<div title="Callbacks" modifier="Mingos" created="201008020041" modified="201008020059" tags="api callback" changecount="4">
-<pre>There are several predefined callbacks in Umbra:
-*[[UmbraCallbackFontDown]]
+<div title="Callbacks" modifier="Mingos" created="201008020041" modified="201008191016" tags="api callback" changecount="5">
+<pre>*[[UmbraCallbackFontDown]]
 *[[UmbraCallbackFontUp]]
 *[[UmbraCallbackFullscreen]]
 *[[UmbraCallbackPause]]
@@ -578,15 +579,17 @@ Please note that this module requires the console emulator to be active, otherwi
 |API|changed feature and/or API break|
 |BUG|bug fix|</pre>
 </div>
-<div title="Classes" modifier="Mingos" created="200911042330" modified="201008050916" tags="api class" changecount="8">
-<pre>*[[UmbraEngine]]
-*[[UmbraModule]]
-*[[UmbraWidget]]
-*[[UmbraCallback]]
-*[[UmbraKey]]
-*[[UmbraPoint]]
-*[[UmbraRect]]
-*[[UmbraError]]</pre>
+<div title="Classes" modifier="Mingos" created="200911042330" modified="201008190947" tags="api class" changecount="10">
+<pre>&lt;&lt;tabs methods
+    &quot;UmbraEngine&quot; &quot;UmbraEngine&quot; [[UmbraEngine]]
+    &quot;UmbraModule&quot; &quot;UmbraModule&quot; [[UmbraModule]]
+    &quot;UmbraWidget&quot; &quot;UmbraWidget&quot; [[UmbraWidget]]
+    &quot;UmbraCallback&quot; &quot;UmbraCallback&quot; [[UmbraCallback]]
+    &quot;UmbraKey&quot; &quot;UmbraKey&quot; [[UmbraKey]]
+    &quot;UmbraPoint&quot; &quot;UmbraPoint&quot; [[UmbraPoint]]
+    &quot;UmbraRect&quot; &quot;UmbraRect&quot; [[UmbraRect]]
+    &quot;UmbraError&quot; &quot;UmbraError&quot; [[UmbraError]]
+&gt;&gt;</pre>
 </div>
 <div title="Creating a callback" modifier="Mingos" created="201008040033" modified="201008111220" tags="tutorial callback" changecount="6">
 <pre>!Creating a basic callback
@@ -875,10 +878,10 @@ if (engine.initialise()) return engine.run();
 else return 1;
 &lt;/code&gt;</pre>
 </div>
-<div title="Enums" modifier="Mingos" created="200911042341" modified="201008031453" changecount="3">
-<pre>[[UmbraInternalModuleID]]
-[[UmbraKeyboardMode]]
-[[UmbraModuleStatus]]</pre>
+<div title="Enums" modifier="Mingos" created="200911042341" modified="201008171136" changecount="4">
+<pre>*[[UmbraInternalModuleID]]
+*[[UmbraKeyboardMode]]
+*[[UmbraModuleStatus]]</pre>
 </div>
 <div title="Error log" modifier="Mingos" created="200911111602" modified="201007252156" tags="tutorial error" changecount="2">
 <pre>The error log is a list of error messages registered throughout a single run of the application. Errors can be appended to that list, and each time an error is reported, it will be sent to stderr (in case of console-based applications, stderr is the system console) and also to a text file {{{errorlog.txt}}} located in the application's working directory.
@@ -1904,37 +1907,33 @@ These are the internal callbacks, which can be registered automatically, providi
 [[Change log]]
 [[Credits]]</pre>
 </div>
-<div title="Methods" modifier="Mingos" created="200911042331" modified="201008020010" tags="api method" changecount="38">
-<pre>!~UmbraEngine
-&lt;&lt;tiddler UmbraEngineMethods&gt;&gt;
-!~UmbraModule
-&lt;&lt;tiddler UmbraModuleMethods&gt;&gt;
-!~UmbraWidget
-&lt;&lt;tiddler UmbraWidgetMethods&gt;&gt;
-!~UmbraCallback
-&lt;&lt;tiddler UmbraCallbackMethods&gt;&gt;
-!~UmbraKey
-&lt;&lt;tiddler UmbraKeyMethods&gt;&gt;
-!~UmbraPoint
-&lt;&lt;tiddler UmbraPointMethods&gt;&gt;
-!~UmbraRect
-&lt;&lt;tiddler UmbraRectMethods&gt;&gt;
-!~UmbraError
-&lt;&lt;tiddler UmbraErrorMethods&gt;&gt;</pre>
+<div title="Methods" modifier="Mingos" created="200911042331" modified="201008171122" tags="api method" changecount="42">
+<pre>&lt;&lt;tabs methods
+    &quot;UmbraEngine&quot; &quot;UmbraEngine methods&quot; [[UmbraEngineMethods]]
+    &quot;UmbraModule&quot; &quot;UmbraModule methods&quot; [[UmbraModuleMethods]]
+    &quot;UmbraWidget&quot; &quot;UmbraWidget methods&quot; [[UmbraWidgetMethods]]
+    &quot;UmbraCallback&quot; &quot;UmbraCallback methods&quot; [[UmbraCallbackMethods]]
+    &quot;UmbraKey&quot; &quot;UmbraKey methods&quot; [[UmbraKeyMethods]]
+    &quot;UmbraPoint&quot; &quot;UmbraPoint methods&quot; [[UmbraPointMethods]]
+    &quot;UmbraRect&quot; &quot;UmbraRect methods&quot; [[UmbraRectMethods]]
+    &quot;UmbraError&quot; &quot;UmbraError methods&quot; [[UmbraErrorMethods]]
+&gt;&gt;</pre>
 </div>
 <div title="Mingos" modifier="Mingos" created="200910241825" modified="201007252151" changecount="5">
 <pre>One of the developers of this humble engine. Please visit my websites for more details about what I do.
 *http://www.umbraprojekt.pl/
 *http://umbrarumregnum.110mb.com/</pre>
 </div>
-<div title="Operators" modifier="Mingos" created="201008152255" modified="201008152352" changecount="16">
-<pre>[[UmbraKey::operator ==]]
-[[UmbraPoint::operator ==]]
-[[UmbraRect::operator [] ]]</pre>
+<div title="Operators" modifier="Mingos" created="201008152255" modified="201008191017" tags="api operator" changecount="33">
+<pre>*[[UmbraKey::operator ==]]
+*[[UmbraPoint::operator ==]]</pre>
 </div>
-<div title="PageTemplate" modifier="Mingos" created="200701130013" modified="201008020035" server.type="file" server.host="tiddlythemes.com/empties/Monochrome.html" server.page.revision="200708091512" changecount="11">
+<div title="PageTemplate" modifier="Mingos" created="200701130013" modified="201008171336" server.type="file" server.host="tiddlythemes.com/empties/Monochrome.html" server.page.revision="200708091512" changecount="18">
 <pre>&lt;div id='header' class='header' macro='gradient vert   #555555       #3b3b3b '&gt;
-        &lt;div class='siteTitle' refresh='content' tiddler='SiteTitle'&gt;&lt;/div&gt;
+        &lt;div class='siteTitle'&gt;
+                &lt;div class='siteTitleInner' refresh='content' tiddler='SiteTitle'&gt;&lt;/div&gt;
+                &lt;div class='siteSubtitleInner' refresh='content' tiddler='SiteSubtitle'&gt;&lt;/div&gt;
+        &lt;/div&gt;
         &lt;span id='topMenu' refresh='content' tiddler='MainMenu'&gt;&lt;/span&gt;
 &lt;/div&gt;
 
@@ -2184,10 +2183,10 @@ This CSS by ~DaveBirss.
 #sidebar {color:#999;}
 /*}}}*/</pre>
 </div>
-<div title="SiteSubtitle" modifier="Mingos" created="200910241742" changecount="1">
-<pre>a generic engine for libtcod-based applications</pre>
+<div title="SiteSubtitle" modifier="Mingos" created="200910241742" modified="201008191015" changecount="3">
+<pre>powering libtcod-based applications</pre>
 </div>
-<div title="SiteTitle" modifier="Mingos" created="200910241741" modified="200911112227" changecount="3">
+<div title="SiteTitle" modifier="Mingos" created="200910241741" modified="201008171331" changecount="5">
 <pre>Umbra</pre>
 </div>
 <div title="Speed-o-meter" modifier="Mingos" created="201003301739" modified="201007272129" tags="tutorial internalModule" changecount="16">
@@ -2214,7 +2213,7 @@ Once you have done that, all you need to do to be able to start using Umbra is i
 &lt;/code&gt;
 Umbra requires libtcod to run, so it already includes it, and therefore you are not required to include it separately.</pre>
 </div>
-<div title="StyleSheet" modifier="Mingos" created="200701130013" modified="201008020035" server.type="file" server.host="tiddlythemes.com/empties/Monochrome.html" server.page.revision="200708091512" changecount="6">
+<div title="StyleSheet" modifier="Mingos" created="200701130013" modified="201008190950" server.type="file" server.host="tiddlythemes.com/empties/Monochrome.html" server.page.revision="200708091512" changecount="53">
 <pre>[[StyleSheetSyntaxHighlighter]]
 
 /*{{{*/
@@ -2231,16 +2230,27 @@ body {background:#3B3B3B; color:#C3C3C3; font:12px Verdana, Helvetica, sans-seri
  }
 
 .siteTitle {
-padding-top:5px;
+padding-top: 32px;
+padding-bottom: 32px;
 float:left;
 font-family: 'Trebuchet MS' sans-serif;
 font-weight: bold;
-font-size: 32px;
-color: #ccc; margin-right:2em;margin-left:0.5em;
+font-size: 48px;
+color: #ccc; margin-right:1em;margin-left:0.5em;
+}
+
+.siteTitleInner {
+    margin-bottom: -8px;
+}
+
+.siteSubtitleInner {
+    font-size: 12px;
+    font-weight: normal;
+    border-top: 2px solid #ccc;
 }
 
 #topMenu br {display:none;}
-#topMenu a, #topMenu .tiddlyLink, #topMenu .button {margin:0em; color:#666; padding:15px 15px 10px 15px;padding-top:1.6em;border:none; border-right: 1px solid #666;float:left;}
+#topMenu a, #topMenu .tiddlyLink, #topMenu .button {margin:0em; color:#666; padding: 92px 15px 15px 15px; border:none; border-right: 1px solid #666;float:left;}
 #topMenu {border-left: 1px solid #666;  float:left;margin:0;}
 #topMenu a:hover {color:#ccc; background:#3b3b3b;}
 
@@ -2273,7 +2283,7 @@ border-color: #3B3B3B;
 .subtitle, .subtitle a { color: #777; font-size: 0.95em;margin:0.2em;}
 .shadow .title{color:#777;}
 
-.toolbar {font-size:90%;}
+.toolbar {font-size:90%; margin-bottom: 5px;}
 .selected .toolbar a {color:#666;border:0;}
 .selected .toolbar a:hover {color:#999; background:transparent;border:0;}
 
@@ -2452,6 +2462,46 @@ h3 {font-size: 14px;}
 
 a.tiddlyLinkExisting, a.tiddlyLinkExisting:hover {
     font-weight: bold;
+}
+
+.viewer .tabset {
+    padding: 12px 0px;
+}
+
+.viewer a.tab {
+    padding: 10px 5px;
+    border-top-right-radius: 10px; -moz-border-radius-topright: 10px; -webkit-border-top-right-radius: 10px;
+    border: 2px solid #888888;
+    font-size: 80%;
+}
+
+.viewer .tabContents {
+    background: #383838;
+    color: #C3C3C3;
+}
+
+.viewer ul {
+    list-style: none;
+}
+
+.viewer ul li {
+    padding-left: 20px;
+    margin-bottom: 3px;
+    background: url(data:image/png;base64,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) left top no-repeat transparent;
+}
+
+#tiddlerDisplay .title {
+    padding-left: 40px;
+    padding-top: 15px;
+    border-top: 3px solid #666666;
+    background: url(data:image/png;base64,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%3D) left bottom no-repeat #505050;
+}
+
+#tiddlerDisplay .subtitle { background: #505050; padding: 5px 40px; margin: 0 0 10px 0; border-bottom: 3px solid #666666; }
+
+.siteTitle {
+    padding-left: 32px;
+    background: url(data:image/png;base64,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) left center no-repeat;
 }</pre>
 </div>
 <div title="StyleSheetSyntaxHighlighter" modifier="Mingos" created="200904132302" modified="201007202130" server.type="file" server.host="dl.getdropbox.com/u/52078/Notes/Notes.html" server.page.revision="200904132302" changecount="3">
@@ -3706,6 +3756,22 @@ UmbraKey key1(TCODK_ENTER,0,true,false,false);
 UmbraKey key2 = key1;
 &lt;/code&gt;</pre>
 </div>
+<div title="UmbraKey::operator ==" modifier="Mingos" created="201008160956" modified="201008160957" tags="api operator keyClass" changecount="2">
+<pre>!Description
+Compares the keystrokes stored in two instances of the UmbraKey class.
+!Example
+&lt;code C++&gt;
+UmbraKey k1(TCODK_ENTER,0,true,false,false);
+UmbraKey k2 = k1;
+UmbraKey k3(TCODK_F4,0,true,false,false);
+printf(&quot;k1 == k2? %s\n&quot;, k1 == k2 ? &quot;true&quot; : &quot;false&quot;);
+printf(&quot;k2 == k3? %s\n&quot;, k2 == k3 ? &quot;true&quot; : &quot;false&quot;);
+&lt;/code&gt;
+!!!Output
+{{{k1 == k2? true}}}
+{{{k2 == k3? false}}}
+</pre>
+</div>
 <div title="UmbraKeyMethods" modifier="Mingos" created="201008111915" tags="methodlist" changecount="1">
 <pre>*[[UmbraKey::assign]]
 *[[UmbraKey::UmbraKey]]</pre>
@@ -4249,8 +4315,139 @@ if (rectangle.mouseDown) doSomethingMore();
 [[UmbraWidget]]
 [[UmbraWidget::mouse]]</pre>
 </div>
-<div title="UmbraRectMethods" modifier="Mingos" created="201007271236" modified="201008152348" tags="methodlist" changecount="3">
-<pre>*[[UmbraRect::isInside]]
+<div title="UmbraRect::UmbraRect" modifier="Mingos" created="201008171106" tags="api method rect constructor" changecount="1">
+<pre>!Description
+Constructor for a rectangle object.
+!Construction
+&lt;code C++&gt;
+UmbraRect () {
+    x = 0;
+    y = 0;
+    w = 0;
+    h = 0;
+    mouseHover = false;
+}
+&lt;/code&gt;
+&lt;code C++&gt;
+UmbraRect (int x, int y, int w, int h) {
+    this-&gt;x = x;
+    this-&gt;y = y;
+    this-&gt;w = w;
+    this-&gt;h = h;
+    mouseHover = false;
+}
+&lt;/code&gt;
+!Parametres
+*{{{int x}}}: the X coordinate of the rectangle's top left corner
+*{{{int y}}}: the Y coordinate of the rectangle's top left corner
+*{{{int w}}}: the rectangle's width
+*{{{int h}}}: the rectangle's height
+!Example
+&lt;code C++&gt;
+UmbraRect r1;
+UmbraRect r2(10,20,5,10);
+&lt;/code&gt;</pre>
+</div>
+<div title="UmbraRect::contains" modifier="Mingos" created="201008161317" modified="201008161336" tags="api method rect" changecount="6">
+<pre>!Description
+Checks whether a given set of coordinates or UmbraPoint instance are within a rectangle.
+!Construction
+&lt;code C++&gt;
+bool contains (
+    int px,
+    int py
+);
+&lt;/code&gt;
+&lt;code C++&gt;
+bool contains (
+    const UmbraPoint &amp;p
+);
+&lt;/code&gt;
+!Parametres
+*{{{int px}}}: the X coordinate to be checked
+*{{{int py}}}: the Y coordinate to be checked
+*{{{const UmbraPoint &amp;p}}}: an instance of UmbraPoint to be checked
+!Return value
+{{{bool}}}: {{{true}}} if the coordinates are within the rectangle, {{{false}}} otherwise.
+!Remarks:
+This method is typically used to check whether the mouse cursor is hovering over a given rectangle.
+!Example
+&lt;code C++&gt;
+UmbraPoint p1(10,10), p2(20,20);
+UmbraRect r(5,5,10,10);
+printf(&quot;%s, %s, %s, %s\n&quot;,
+    r.contains(p1) ? &quot;true&quot; : &quot;false&quot;,
+    r.contains(p2) ? &quot;true&quot; : &quot;false&quot;,
+    r.contains(12,12),
+    r.contains(18,18)
+);
+&lt;/code&gt;
+!!!Output
+{{{true, false, true, false}}}
+!See also
+&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;rect&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;rect&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;rect&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
+</div>
+<div title="UmbraRect::set" modifier="Mingos" created="201008161338" modified="201008171053" tags="api method rect" changecount="2">
+<pre>!Description
+Sets the top left corner's coordinates, as well as the width and the height of a rectangle.
+!Construction
+&lt;code C++&gt;
+void set (
+    int x,
+    int y,
+    int w,
+    int h
+);
+&lt;/code&gt;
+!Parametres
+*{{{int x}}}: the X coordinate of the rectangle's top left corner
+*{{{int y}}}: the Y coordinate of the rectangle's top left corner
+*{{{int w}}}: the rectangle's width
+*{{{int h}}}: the rectangle's height
+!Remarks:
+Should it be necessary to only resize a rectangle, it's more convenient to use [[UmbraRect::setSize]].
+In case the rectangle only needs to be moved to a different position, without resizing it, it's best to use [[UmbraRect::setPos]].
+!See also
+&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;rect&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;rect&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;rect&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
+</div>
+<div title="UmbraRect::setPos" modifier="Mingos" created="201008171055" tags="api method rect" changecount="1">
+<pre>!Description
+Moves the rectangle to a different position.
+!Construction
+&lt;code C++&gt;
+void setPos (
+    int x,
+    int y
+);
+&lt;/code&gt;
+!Parametres
+*{{{int x}}}: the X coordinate of the rectangle's top left corner
+*{{{int y}}}: the Y coordinate of the rectangle's top left corner
+!Remarks:
+This method only changes the rectangle's position (or, more precisely, its top left corner's position), but does not resize it.
+!See also
+&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;rect&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;rect&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;rect&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
+</div>
+<div title="UmbraRect::setSize" modifier="Mingos" created="201008171103" tags="api method rect" changecount="1">
+<pre>!Description
+Resizes a rectangle.
+!Construction
+&lt;code C++&gt;
+void setSize (
+    int w,
+    int h
+);
+&lt;/code&gt;
+!Parametres
+*{{{int w}}}: the rectangle's new width
+*{{{int h}}}: the rectangle's new height
+!Remarks:
+This method only resizes a rectangle, leaving its top left corner at the same position it was at before.
+!See also
+&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;rect&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;rect&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;rect&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
+</div>
+<div title="UmbraRectMethods" modifier="Mingos" created="201007271236" modified="201008161258" tags="methodlist" changecount="4">
+<pre>*[[UmbraRect::contains]]
 *[[UmbraRect::set]]
 *[[UmbraRect::setPos]]
 *[[UmbraRect::setSize]]

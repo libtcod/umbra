@@ -1,6 +1,6 @@
 /*
 * Umbra
-* Copyright (c) 2009 Mingos, Jice
+* Copyright (c) 2009, 2010 Mingos, Jice
 * All rights reserved.
 *
 * Redistribution and use in source and binary forms, with or without
@@ -24,6 +24,7 @@
 * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
+
 #ifndef _MAIN_HPP
 #define _MAIN_HPP
 

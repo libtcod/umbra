@@ -1,6 +1,6 @@
 /*
 * Umbra
-* Copyright (c) 2009 Mingos, Jice
+* Copyright (c) 2009, 2010 Mingos, Jice
 * All rights reserved.
 *
 * Redistribution and use in source and binary forms, with or without
@@ -38,8 +38,8 @@ void UmbraWidget::mouse(TCOD_mouse_t &ms) {
 	//check if the mouse is hovering over a button/rectangle
 	minimiseButton.mouseHover = minimiseButton.is(mousex,mousey);
 	closeButton.mouseHover = closeButton.is(mousex,mousey);
-	dragZone.mouseHover = dragZone.isInside(mousex,mousey);
-	rect.mouseHover = rect.isInside(ms.cx,ms.cy);
+	dragZone.mouseHover = dragZone.contains(mousex,mousey);
+	rect.mouseHover = rect.contains(ms.cx,ms.cy);
 	//check whether the mouse is down on a button
 	if (ms.lbutton && minimiseButton.mouseHover) minimiseButton.mouseDown = true;
 	else minimiseButton.mouseDown = false;
@@ -47,7 +47,7 @@ void UmbraWidget::mouse(TCOD_mouse_t &ms) {
 	else closeButton.mouseDown = false;
 	//deal with dragging
 	if (canDrag) {
-        if (ms.lbutton && !isDragging && dragZone.isInside(mousex,mousey)) {
+        if (ms.lbutton && !isDragging && dragZone.contains(mousex,mousey)) {
             isDragging = true;
             dragx = mousex;
             dragy = mousey; // position where the widget is drag

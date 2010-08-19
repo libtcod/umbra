@@ -1,6 +1,6 @@
 /*
 * Umbra
-* Copyright (c) 2009 Mingos, Jice
+* Copyright (c) 2009, 2010 Mingos, Jice
 * All rights reserved.
 *
 * Redistribution and use in source and binary forms, with or without
@@ -54,7 +54,7 @@ void UmbraCheckbox::set (UmbraWidget * parent, int x, int y, int w, int h, const
 void UmbraCheckbox::mouse (TCOD_mouse_t &ms) {
     if (!visible)
         return;
-    if (area.isInside(ms.cx-parent->rect.x, ms.cy-parent->rect.y)) {
+    if (area.contains(ms.cx-parent->rect.x, ms.cy-parent->rect.y)) {
         area.mouseHover = true;
         onMouseOver();
     }

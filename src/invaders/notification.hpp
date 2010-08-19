@@ -1,6 +1,6 @@
 /*
 * Umbra
-* Copyright (c) 2009 Mingos, Jice
+* Copyright (c) 2009, 2010 Mingos, Jice
 * All rights reserved.
 *
 * Redistribution and use in source and binary forms, with or without

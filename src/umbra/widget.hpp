@@ -1,6 +1,6 @@
 /*
 * Umbra
-* Copyright (c) 2009 Mingos, Jice
+* Copyright (c) 2009, 2010 Mingos, Jice
 * All rights reserved.
 *
 * Redistribution and use in source and binary forms, with or without
@@ -47,9 +47,8 @@ class UmbraRect {
         inline void setPos (int x, int y) { this->x=x; this->y=y; }
         inline void setSize (int w, int h) { this->w=w;this->h=h; }
         inline void set (int x, int y, int w, int h) { setPos(x,y); setSize(w,h); }
-        inline bool isInside (int px, int py) { return px >= x && px < x+w && py >= y && py < y+h; }
-        inline bool isInside (const UmbraPoint &p) { return p.x >= x && p.x < x+w && p.y >= y && p.y < y+h; }
-        inline bool operator [] (const UmbraPoint &p) { return p.x >= x && p.x < x+w && p.y >= y && p.y < y+h; }
+        inline bool contains (int px, int py) { return px >= x && px < x+w && py >= y && py < y+h; }
+        inline bool contains (const UmbraPoint &p) { return p.x >= x && p.x < x+w && p.y >= y && p.y < y+h; }
 };
 
 class UmbraWidget: public UmbraModule {
