@@ -35,13 +35,13 @@ public :
 	TCODMap *map;
 	virtual void getRenderSize(int *w, int *h);
 	virtual void render(TCODConsole *con,int x, int y);
-	float time; // length of the execution of run function in seconds
 	static TCODRandom rng; // random number generator
 protected :
 	float t0;
+	float lastRunTime; // length of the execution of run function in seconds
 	int playerx,playery;
 	inline void startCounter() {t0=TCODSystem::getElapsedSeconds();}
-	inline void stopCounter() {time=TCODSystem::getElapsedSeconds()-t0;}
+	inline void stopCounter() {lastRunTime=TCODSystem::getElapsedSeconds()-t0;}
 	virtual void execute();
 	void buildOutdoorMap();
 };
@@ -88,3 +88,23 @@ protected :
 	int nbErrFromPlayer,nbErrToPlayer,nbFovCells;
 };
 
+class FovSpeedEmpty : public FovTest {
+public :
+	void initialise();
+	void getRenderSize(int *w, int *h);
+    void render(TCODConsole *con,int x, int y);
+protected :
+	void execute();
+	int nbRuns;
+	bool randomPos;
+};
+
+class FovSpeedFull : public FovSpeedEmpty {
+public :
+	void initialise();
+};
+
+class FovSpeedOutdoor : public FovSpeedEmpty {
+public :
+	void initialise();
+};

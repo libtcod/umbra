@@ -46,6 +46,9 @@ FovTest* FovTest::getTest(int algoNum,int testNum) {
 		case FOV_TEST_CORNER2 : ret=new FovCorner2(); break;
 		case FOV_TEST_DIAGONAL : ret=new FovDiagonal(); break;
 		case FOV_TEST_SYMMETRY : ret=new FovSymmetry(); break;
+		case FOV_TEST_SPEED_EMPTY : ret=new FovSpeedEmpty(); break;
+		case FOV_TEST_SPEED_FULL : ret=new FovSpeedFull(); break;
+		case FOV_TEST_SPEED_OUTDOOR : ret=new FovSpeedOutdoor(); break;
 		default:break;
 	}
 	if ( ret == NULL ) return ret; // not implemented
@@ -173,16 +176,16 @@ void FovDiagonal::initialise() {
 	playery=5;
 }
 
+#define NB_SYMMETRY_TESTS 20
 void FovSymmetry::initialise() {
-	// build a 60x60 outdoor map
+	// create a 60x60 map. it's built in the execute function
 	map = new TCODMap(60,60);
 	playerx=playery=30;
 }
 
 void FovSymmetry::execute() {
 	// test on 20 different maps
-	#define NB_SYMMETRY_TESTS 20
-	nbFovCells=map->getWidth()*map->getHeight();
+	nbFovCells=0;
 	nbErrFromPlayer=0;
 	nbErrToPlayer=0;
 	for (int i=0; i < NB_SYMMETRY_TESTS; i++) {
@@ -201,6 +204,7 @@ void FovSymmetry::execute() {
 				// compute the fov from x,y and see if the player is in fov
 				map2.computeFov(x,y,0,true,(TCOD_fov_algorithm_t)algoNum);
 				if ( map->isInFov(x,y) ) {
+					nbFovCells++;
 					if ( ! map2.isInFov(playerx,playery) ) {
 						// player can see x,y but x,y cannot see player
 						nbErrFromPlayer++;
@@ -224,4 +228,65 @@ void FovSymmetry::getRenderSize(int *w, int *h) {
 void FovSymmetry::render(TCODConsole *con,int x, int y) {
 	float errorRate=(float)(nbErrFromPlayer+nbErrToPlayer)/nbFovCells;
 	con->print(x,y,"%.2g%% (%d+%d/%d)",errorRate*100,nbErrFromPlayer,nbErrToPlayer,nbFovCells);
+}
+
+void FovSpeedEmpty::initialise() {
+	// empty map
+	map=new TCODMap(60,60);
+	map->clear(true,true);
+	nbRuns=0;
+	randomPos=true;
+}
+
+void FovSpeedEmpty::getRenderSize(int *w, int *h) {
+	*w=40;
+	*h=1;	
+}
+
+void FovSpeedEmpty::render(TCODConsole *con,int x, int y) {
+	float timePerCall=lastRunTime/nbRuns;
+	con->print(x,y,"%.2g ms",timePerCall*1000);
+}
+
+void FovSpeedEmpty::execute() {
+	uint32 t0=TCODSystem::getElapsedMilli(),t1=t0;
+	do {
+		if ( randomPos ) {
+			// find a random position (not inside a wall!)
+			playerx=rng.getInt(0,map->getWidth()-1);
+			playery=rng.getInt(0,map->getHeight()-1);
+			while (!map->isTransparent(playerx,playery) ) {
+				playerx++; 
+				if ( playerx == map->getWidth() ) {
+					playerx=0;
+					playery++;
+					if ( playery==map->getHeight() ) playery=0;
+				}
+			}
+		}
+		map->computeFov(playerx,playery,0,true,(TCOD_fov_algorithm_t)algoNum);
+		if ( nbRuns % 100 == 0 ) {
+			// don't recompute every run. it could affect the total time
+			t1=TCODSystem::getElapsedMilli();
+		}
+		nbRuns++;
+	} while (t1-t0 < 5000); // run for at least 5 seconds
+}
+
+void FovSpeedFull::initialise() {
+	// full map
+	map=new TCODMap(60,60);
+	map->clear(false,false);
+	playerx=playery=30;
+	map->setProperties(playerx,playery,true,true);
+	nbRuns=0;
+	randomPos=false;	
+}
+
+void FovSpeedOutdoor::initialise() {
+	// build a 60x60 outdoor map
+	map = new TCODMap(60,60);
+	buildOutdoorMap();
+	randomPos=true;
+	nbRuns=0;
 }
