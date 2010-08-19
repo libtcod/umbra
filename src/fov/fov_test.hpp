@@ -33,14 +33,17 @@ public :
 	virtual void initialise() = 0;
 	void run();
 	TCODMap *map;
+	virtual void getRenderSize(int *w, int *h);
 	virtual void render(TCODConsole *con,int x, int y);
 	float time; // length of the execution of run function in seconds
+	static TCODRandom rng; // random number generator
 protected :
 	float t0;
 	int playerx,playery;
 	inline void startCounter() {t0=TCODSystem::getElapsedSeconds();}
 	inline void stopCounter() {time=TCODSystem::getElapsedSeconds()-t0;}
 	virtual void execute();
+	void buildOutdoorMap();
 };
 
 class FovPillar1 : public FovTest {
@@ -74,3 +77,14 @@ class FovDiagonal : public FovTest {
 public :
 	void initialise();
 };
+
+class FovSymmetry : public FovTest {
+public :
+	void initialise();
+	void getRenderSize(int *w, int *h);
+    void render(TCODConsole *con,int x, int y);
+protected :
+	void execute();
+	int nbErrFromPlayer,nbErrToPlayer,nbFovCells;
+};
+

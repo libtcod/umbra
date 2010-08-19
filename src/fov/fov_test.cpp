@@ -33,6 +33,8 @@ static TCODColor lightWall(130,110,50);
 static TCODColor darkGround(50,50,150);
 static TCODColor lightGround(200,180,50);
 
+TCODRandom FovTest::rng;
+
 FovTest* FovTest::getTest(int algoNum,int testNum) {
 	// test factory
 	FovTest *ret=NULL;
@@ -43,6 +45,7 @@ FovTest* FovTest::getTest(int algoNum,int testNum) {
 		case FOV_TEST_CORNER1 : ret=new FovCorner1(); break;
 		case FOV_TEST_CORNER2 : ret=new FovCorner2(); break;
 		case FOV_TEST_DIAGONAL : ret=new FovDiagonal(); break;
+		case FOV_TEST_SYMMETRY : ret=new FovSymmetry(); break;
 		default:break;
 	}
 	if ( ret == NULL ) return ret; // not implemented
@@ -57,7 +60,13 @@ void FovTest::run() {
 	stopCounter();
 }
 
+void FovTest::getRenderSize(int *w, int *h) {
+	*w=map->getWidth();		
+	*h=map->getHeight();		
+}
+
 void FovTest::render(TCODConsole *con,int x, int y) {
+	// standard fov renderer (same as in libtcod's samples)
 	for (int mx=0; mx < map->getWidth(); mx++ ) {
 		for (int my=0; my < map->getHeight(); my++ ) {
 			 if ( playerx==mx && playery==my) {
@@ -80,6 +89,18 @@ void FovTest::render(TCODConsole *con,int x, int y) {
 void FovTest::execute() {
 	map->computeFov(playerx,playery,0,true,(TCOD_fov_algorithm_t)algoNum);
 }
+
+void FovTest::buildOutdoorMap() {
+	// empty map with 10% random 1x1 pillars
+	int nbCells = map->getWidth()*map->getHeight();
+	map->clear(true,true);
+	for (int i=0; i < nbCells/10; i++) {
+		int x=rng.getInt(0,map->getWidth()-1);
+		int y=rng.getInt(0,map->getHeight()-1);
+		map->setProperties(x,y,false,false);
+	}
+}
+
 
 void FovPillar1::initialise() {
 	// build an empty map with a single pillar at the center
@@ -123,6 +144,7 @@ void FovCorner2::initialise() {
 }
 
 void FovCorner2::render(TCODConsole *con,int x, int y) {
+	// render cells that can see the player at the T junction
 	for (int mx=0; mx < map->getWidth(); mx++ ) {
 		for (int my=0; my < map->getHeight(); my++ ) {
             TCODColor col;
@@ -151,6 +173,55 @@ void FovDiagonal::initialise() {
 	playery=5;
 }
 
+void FovSymmetry::initialise() {
+	// build a 60x60 outdoor map
+	map = new TCODMap(60,60);
+	playerx=playery=30;
+}
 
+void FovSymmetry::execute() {
+	// test on 20 different maps
+	#define NB_SYMMETRY_TESTS 20
+	nbFovCells=map->getWidth()*map->getHeight();
+	nbErrFromPlayer=0;
+	nbErrToPlayer=0;
+	for (int i=0; i < NB_SYMMETRY_TESTS; i++) {
+		buildOutdoorMap();
+		map->setProperties(playerx,playery,true,true); // in case there's a pillar at player's position
+		
+		// create a copy of the map for reverse fov
+		TCODMap map2(60,60);
+		map2.copy(map);
+		// compute the fov from the player point of view
+		map->computeFov(playerx,playery,0,true,(TCOD_fov_algorithm_t)algoNum);
+		// compute the reverse fov
+		for (int x=0; x < map->getWidth(); x++) {
+			for ( int y=0; y < map->getHeight(); y++) {
+				if (x == playerx && y == playery) continue;
+				// compute the fov from x,y and see if the player is in fov
+				map2.computeFov(x,y,0,true,(TCOD_fov_algorithm_t)algoNum);
+				if ( map->isInFov(x,y) ) {
+					if ( ! map2.isInFov(playerx,playery) ) {
+						// player can see x,y but x,y cannot see player
+						nbErrFromPlayer++;
+					}
+				} else if ( map2.isInFov(playerx,playery) ) {
+					// player cannot see x,y but x,y sees the player
+					nbErrToPlayer++;
+				}
+			}
+		}
+	}
+	nbErrFromPlayer/=NB_SYMMETRY_TESTS;
+	nbErrToPlayer/=NB_SYMMETRY_TESTS;
+}
 
+void FovSymmetry::getRenderSize(int *w, int *h) {
+	*w=40;		
+	*h=1;		
+}
 
+void FovSymmetry::render(TCODConsole *con,int x, int y) {
+	float errorRate=(float)(nbErrFromPlayer+nbErrToPlayer)/nbFovCells;
+	con->print(x,y,"%.2g%% (%d+%d/%d)",errorRate*100,nbErrFromPlayer,nbErrToPlayer,nbFovCells);
+}

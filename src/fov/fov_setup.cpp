@@ -92,6 +92,8 @@ bool FovSetup::update () {
 	if (running) {
 	    // run the next available test
 		FovTest *nextTest=testsToRun.pop();
+		// restore the rng so that all tests are done in the same conditions
+		FovTest::rng.restore(rngBackup);
 		nextTest->initialise();
 		nextTest->run();
 		finishedTests.push(nextTest);
@@ -126,6 +128,8 @@ void FovSetup::initialise() {
 	}
 	go.set(this,39,14,10,3,"GO");
 	running=false;
+	// save the test rng to be able to restore it
+	rngBackup = FovTest::rng.save();
 }
 
 void FovSetup::render () {
@@ -145,25 +149,36 @@ void FovSetup::render () {
     }
 	if (! running ) {
 		if ( finishedTests.size() > 0 ) {
-			// render the last executed tests for test curTestResult
-			int tx=0,ty=24, th=0;
+			// render the last executed tests for the current tab
+			int tx=0,ty=24, th=0,w,h;
 			for (FovTest **it=finishedTests.begin(); it != finishedTests.end(); it++) {
+				// skip tests not belonging to current tab
 			    if ( (*it)->testNum != curTestResult ) continue;
-                if ( tx +(*it)->map->getWidth() >= TCODConsole::root->getWidth() ) {
+			    // find a suitable position to render the test result
+                (*it)->getRenderSize(&w,&h);
+                if ( tx + w >= TCODConsole::root->getWidth() ) {
                     tx=0;
                     ty+=th+1;
                     th=0;
                 }
+                if (h>th) th=h; // th is the max height of the current line of results
+                if ( h > 1 ) {
+	                // display the algo short name on top of the test result
+	                TCODConsole::root->printEx(tx+w/2,ty-1,TCOD_BKGND_NONE,TCOD_CENTER,
+	                                           "%s",fovShortNames[(*it)->algoNum]);
+	            } else {
+	            	// single line result : display at the right of the algo name
+	                TCODConsole::root->print(tx,ty,"%s:",fovShortNames[(*it)->algoNum]);
+	                tx+=strlen(fovShortNames[(*it)->algoNum])+2;
+				}
+                // display the result
                 (*it)->render(TCODConsole::root,tx,ty);
-                TCODConsole::root->printEx(tx+(*it)->map->getWidth()/2,ty-1,TCOD_BKGND_NONE,TCOD_CENTER,
-                                           "%s",fovShortNames[(*it)->algoNum]);
-                tx+=(*it)->map->getWidth()+1;
-                if ((*it)->map->getHeight()>th) th=(*it)->map->getHeight();
+                tx+=w+1;
 			}
 		}
 	} else {
 		// render remaining tests counter
-		TCODConsole::root->print(30,35,"Remaining tests : %d / %d", testsToRun.size(), testsToRun.size()+finishedTests.size());
+		TCODConsole::root->print(30,35,"Running test %d / %d...", finishedTests.size()+1, testsToRun.size()+finishedTests.size());
 	}
 }
 
@@ -209,10 +224,10 @@ void FovSetup::mouse (TCOD_mouse_t &ms) {
 				testsToRun.clear();
 				finishedTests.clear();
 				tabs.clearAndDelete();
-				curTestResult=0;
 				// create the list of tests to run
                 for (int j=FOV_NB_TESTS-1; j >= 0; j--) {
                     if ( testCkb[j].checked ) {
+                    	curTestResult=j;
                         for (int i=NB_FOV_ALGORITHMS-1; i >= 0; i--) {
                             if ( algoCkb[i].checked ) {
 								FovTest *test=FovTest::getTest(i,j);

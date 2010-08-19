@@ -59,6 +59,7 @@ class FovSetup: public UmbraWidget {
     	TCODList<FovTest *>finishedTests;
     	TCODList<UmbraButton *>tabs;
     	int curTestResult;
+    	TCODRandom *rngBackup; // saved rng
 };
 
 
