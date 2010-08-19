@@ -6,6 +6,11 @@
 var version = {title: "TiddlyWiki", major: 2, minor: 5, revision: 3, date: new Date("Aug 18, 2009"), extensions: {}};
 //]]>
 </script>
+    <!--[if lte IE 7]>
+      <script>
+        alert("You are using an old version of M$IE. Please update it (or use a *decent* browser) for best Umbra documentation browsing experience!")
+      </script>
+    <![endif]-->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="copyright" content="
 TiddlyWiki created by Jeremy Ruston, (jeremy [at] osmosoft [dot] com)
@@ -1873,31 +1878,35 @@ Paired with [[UmbraModule::activate]] is also [[UmbraModule::deactivate]]. In ca
 
 These are the internal callbacks, which can be registered automatically, providing the engine is initialised with a [[flag|UmbraRegisterCallbackFlag]] that enables this. They can also be registered manually - please refer to the individual callbacks in order to check how they can be registered.</pre>
 </div>
-<div title="Issue tracker" modifier="Mingos" created="201008111302" modified="201008111306" tags="issueTracker" changecount="4">
-<pre>*[[Bug reports|Issue tracker: bugs]]
-*[[RFEs|Issue tracker: RFEs]]
-!Open issues
-!!Bugs
-&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;issueTracker&quot;,&quot;bug&quot;,&quot;open&quot;])'&gt;&gt;
-!!~RFEs
-&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;issueTracker&quot;,&quot;RFE&quot;,&quot;open&quot;])'&gt;&gt;
-!Closed issues
-!!Bugs
-&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;issueTracker&quot;,&quot;bug&quot;,&quot;closed&quot;])'&gt;&gt;
-!!~RFEs
-&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;issueTracker&quot;,&quot;bug&quot;,&quot;closed&quot;])'&gt;&gt;</pre>
+<div title="Issue tracker" modifier="Mingos" created="201008111302" modified="201008191746" tags="issueTracker" changecount="8">
+<pre>&lt;&lt;tabs api
+    &quot;Bug reports&quot; &quot;Bug reports&quot; [[IssueTrackerBugs]]
+    &quot;RFEs&quot; &quot;Requests for enhancement&quot; [[IssueTrackerRfes]]
+&gt;&gt;</pre>
 </div>
-<div title="Issue tracker: RFEs" modifier="Mingos" created="201008111303" modified="201008111306" tags="issueTracker RFE" changecount="3">
-<pre>!Open ~RFEs
-&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;issueTracker&quot;,&quot;RFE&quot;,&quot;open&quot;])'&gt;&gt;
-!Closed ~RFEs
-&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;issueTracker&quot;,&quot;RFE&quot;,&quot;closed&quot;])'&gt;&gt;</pre>
+<div title="IssueTrackerBugs" modifier="Mingos" created="201008111303" modified="201008191749" tags="issueTracker bug" changecount="8">
+<pre>&lt;&lt;tabs bugs
+    &quot;Open&quot; &quot;Open bugs&quot; [[IssueTrackerBugsOpen]]
+    &quot;Closed&quot; &quot;Closed bugs&quot; [[IssueTrackerBugsClosed]]
+&gt;&gt;</pre>
 </div>
-<div title="Issue tracker: bugs" modifier="Mingos" created="201008111303" modified="201008111307" tags="issueTracker bug" changecount="4">
-<pre>!Open bugs
-&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;issueTracker&quot;,&quot;bug&quot;,&quot;open&quot;])'&gt;&gt;
-!Closed bugs
-&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;issueTracker&quot;,&quot;bug&quot;,&quot;closed&quot;])'&gt;&gt;</pre>
+<div title="IssueTrackerBugsClosed" modifier="Mingos" created="201008191747" tags="issueTracker bug closedBugs" changecount="1">
+<pre>&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;issueTracker&quot;,&quot;bug&quot;,&quot;closed&quot;])'&gt;&gt;</pre>
+</div>
+<div title="IssueTrackerBugsOpen" modifier="Mingos" created="201008191745" modified="201008191745" tags="issueTracker bug openBugs" changecount="3">
+<pre>&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;issueTracker&quot;,&quot;bug&quot;,&quot;open&quot;])'&gt;&gt;</pre>
+</div>
+<div title="IssueTrackerRfes" modifier="Mingos" created="201008111303" modified="201008191751" tags="issueTracker RFE" changecount="6">
+<pre>&lt;&lt;tabs rfes
+    &quot;Open&quot; &quot;Open RFEs&quot; [[IssueTrackerRfesOpen]]
+    &quot;Closed&quot; &quot;Closed RFEs&quot; [[IssueTrackerRfesClosed]]
+&gt;&gt;</pre>
+</div>
+<div title="IssueTrackerRfesClosed" modifier="Mingos" created="201008191750" tags="issueTracker RFE closedRFE" changecount="1">
+<pre>&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;issueTracker&quot;,&quot;RFE&quot;,&quot;closed&quot;])'&gt;&gt;</pre>
+</div>
+<div title="IssueTrackerRfesOpen" modifier="Mingos" created="201008191749" tags="issueTracker RFE openRFE" changecount="1">
+<pre>&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;issueTracker&quot;,&quot;RFE&quot;,&quot;open&quot;])'&gt;&gt;</pre>
 </div>
 <div title="MainMenu" modifier="Mingos" created="200910241817" modified="201008111259" changecount="3">
 <pre>[[About Umbra]]
@@ -3575,10 +3584,10 @@ else return 1;
 *[[UmbraEngine::setWindowTitle]]
 *[[UmbraEngine::UmbraEngine]]</pre>
 </div>
-<div title="UmbraError" modifier="Mingos" created="201003301723" modified="201008050920" tags="api class error" changecount="10">
-<pre>~UmbraError is a static class that does not take part in handling game itself. As its name implies, it is there to handle errors and aid in preventing the occurrence of errors. It is essentially a list of all logged errors, which you can use for debugging.
+<div title="UmbraError" modifier="Mingos" created="201003301723" modified="201008191705" tags="api class error" changecount="11">
+<pre>~UmbraError is a class that does not take part in handling game itself. As its name implies, it is there to handle errors and aid in preventing the occurrence of errors. It is essentially a list of all logged errors, which you can use for debugging.
 
-~UmbraError has five public methods, all of which you are welcome to call at any point in your program.
+~UmbraError has five public methods, all of which are static. You are welcome to call them at any point in your program.
 
 Umbra uses this class internally in many situations to notify you of any possible mistakes, such as trying to load a module that hasn't been initialised yet. The last logged message can be displayed on {{{stderr}}} (default behaviour), but if Umbra is in debug mode, it will also activate a warning prompt, humorously called the [[BSOD]].
 
@@ -3586,7 +3595,7 @@ Should any error be logged during the program execution, an error log file calle
 !Methods
 &lt;&lt;tiddler UmbraErrorMethods&gt;&gt;</pre>
 </div>
-<div title="UmbraError::add" modifier="Mingos" created="201003301902" modified="201008111846" tags="api method error" changecount="18">
+<div title="UmbraError::add" modifier="Mingos" created="201003301902" modified="201008191718" tags="api method error" changecount="19">
 <pre>!Description
 Appends an error message to the error list in the log.
 !Construction
@@ -3605,7 +3614,7 @@ static int add (
 *{{{const char * errStr}}}: the string contaning the error message. The string uses {{{printf}}}-like formatting.
 *{{{std::string errStr}}}: the string contaning the error message.
 !Return value
-:{{{int}}}: error ID number in the error log.
+{{{int}}}: error ID number in the error log.
 !Remarks
 Using this method will append an error the the error log, display it on {{{stderr}}} (typically, the console) and ensure that the error log is saved to a text file.
 The returned ID number may be used to retrieve the error later using [[UmbraError::getMessage]].
@@ -3647,6 +3656,75 @@ if (!UmbraError::fileExists(&quot;my/directory/missingfile.txt&quot;)) {
 !See also
 &lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;error&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;error&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;error&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
 </div>
+<div title="UmbraError::getLastMessage" modifier="Mingos" created="201008191716" modified="201008191723" tags="api method error" changecount="4">
+<pre>!Description
+Retrieves the last error message that has been placed in the message log.
+!Construction
+&lt;code C++&gt;
+static const char * getLastMessage (
+);
+&lt;/code&gt;
+!Return value
+{{{const char *}}}: The error message of the last logged error.
+!Remarks
+If there are no errors in the log, this method will return the string {{{&quot;No errors registered.&quot;}}}. Otherwise, the last error log message is returned.
+!Example
+&lt;code C++&gt;
+int err = UmbraError::getNbErrors();
+if (err &gt; 0)
+    std::cout &lt;&lt; UmbraError::getLastMessage() &lt;&lt; std::endl;
+&lt;/code&gt;
+!See also
+&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;error&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;error&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;error&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
+</div>
+<div title="UmbraError::getMessage" modifier="Mingos" created="201008191723" modified="201008191725" tags="api method error" changecount="2">
+<pre>!Description
+Retrieves an error message that has been placed in the message log under the specified index position.
+!Construction
+&lt;code C++&gt;
+static const char * getMessage (
+    int idx
+);
+&lt;/code&gt;
+!Parametres
+*{{{int idx}}}: The index number of the message in the log.
+!Return value
+{{{const char *}}}: The error message of the requested error.
+!Remarks
+Should an invalid index be specified, this method will return the string {{{&quot;Requested wrong error index.&quot;}}}.
+!Example
+&lt;code C++&gt;
+int err = UmbraError::getNbErrors();
+if (err &gt; 0) {
+    int i;
+    for (i = 0; i &lt; err; i++)
+        std::cout &lt;&lt; UmbraError::getMessage(i) &lt;&lt; std::endl;
+}
+&lt;/code&gt;
+!See also
+&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;error&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;error&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;error&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
+</div>
+<div title="UmbraError::getNbErrors" modifier="Mingos" created="201008191714" modified="201008191718" tags="api method error" changecount="4">
+<pre>!Description
+Retrieves the number of errors that have been placed in the error log from the application's start.
+!Construction
+&lt;code C++&gt;
+static int getNbErrors (
+);
+&lt;/code&gt;
+!Return value
+{{{int}}}: number of errors that have been logged so far.
+!Example
+&lt;code C++&gt;
+int err = UmbraError::getNbErrors();
+if (err &gt; 0)
+    std::cout &lt;&lt; err &lt;&lt; &quot; errors have been encountered so far.&quot; &lt;&lt; std::endl;
+else
+    std::cout &lt;&lt; &quot;No errors so far, you lucky bastard!&quot; &lt;&lt; std::endl;
+&lt;/code&gt;
+!See also
+&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;error&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;error&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;error&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
+</div>
 <div title="UmbraErrorMethods" modifier="Mingos" created="201007271141" modified="201007271252" tags="methodlist" changecount="3">
 <pre>*[[UmbraError::add]]
 *[[UmbraError::fileExists]]
@@ -3677,7 +3755,7 @@ engine.activateModule(UMBRA_INTERNAL_SPEEDOMETER);
 !See also:
 :[[UmbraEngine::displayError]]</pre>
 </div>
-<div title="UmbraKey" modifier="Mingos" created="201008112301" modified="201008132310" tags="api class callback" changecount="5">
+<div title="UmbraKey" modifier="Mingos" created="201008112301" modified="201008191658" tags="api class callback" changecount="6">
 <pre>The ~UmbraKey class serves the sole purpose of recording a key combination in an easy and readable way. It stores the information necessary to represent any simple keystroke combination, such as {{{alt}}} + {{{enter}}}, etc.
 
 Objects of this type are used inside the [[UmbraCallback]].
@@ -3691,10 +3769,10 @@ if (k1 == k2) std::cout &lt;&lt; &quot;Same!&quot; &lt;&lt; std::endl;
 else std::cout &lt;&lt; &quot;Different!&quot; &lt;&lt; std::endl;
 if (k2 == k3) std::cout &lt;&lt; &quot;Same!&quot; &lt;&lt; std::endl;
 else std::cout &lt;&lt; &quot;Different!&quot; &lt;&lt; std::endl;
-//output:
-//Different!
-//Same!
-&lt;/code&gt;</pre>
+&lt;/code&gt;
+!!!Output:
+{{{Different!}}}
+{{{Same!}}}</pre>
 </div>
 <div title="UmbraKey::UmbraKey" modifier="Mingos" created="201008112308" modified="201008112314" tags="api method keyClass constructor" changecount="3">
 <pre>!Description
@@ -4140,7 +4218,7 @@ enum UmbraModuleStatus {
 *{{{UMBRA_ACTIVE}}}: When a module is activated, it will have this state.
 *{{{UMBRA_PAUSED}}}: An active module, if paused, will be marked with this status.</pre>
 </div>
-<div title="UmbraPoint" modifier="Mingos" created="201007211209" modified="201008132300" tags="api class point mouse" changecount="16">
+<div title="UmbraPoint" modifier="Mingos" created="201007211209" modified="201008191659" tags="api class point mouse" changecount="17">
 <pre>The class UmbraPoint is one of the additions to the [[UmbraWidget]] that differentiate it from an [[UmbraModule]]. As the name implies, it defines the behaviour of a single point (or, more accurately, a single cell on the console).
 
 The UmbraPoint is used within every [[UmbraWidget]] to define the behaviour of 2 points: the minimise button and the close button. The method [[UmbraWidget::mouse]], which is supposed to be called in each iteration of the main application loop (see below), will automatically register mouse hover and mouse down events, which may then be used to trigger events such as a rollover, etc.
@@ -4187,9 +4265,9 @@ The member function [[UmbraPoint::is]] is used for detecting mouse hover - pleas
 !Methods
 &lt;&lt;tiddler UmbraPointMethods&gt;&gt;
 !See also
-[[UmbraRect]]
-[[UmbraWidget]]
-[[UmbraWidget::mouse]]</pre>
+*[[UmbraRect]]
+*[[UmbraWidget]]
+*[[UmbraWidget::mouse]]</pre>
 </div>
 <div title="UmbraPoint::UmbraPoint" modifier="Mingos" created="201008160000" modified="201008160001" tags="api method point constructor" changecount="2">
 <pre>!Description
@@ -4281,7 +4359,7 @@ UmbraPoint p2 = p1;
 *[[UmbraPoint::set]]
 *[[UmbraPoint::UmbraPoint]]</pre>
 </div>
-<div title="UmbraRect" modifier="Mingos" created="201008132227" modified="201008132301" tags="api class rect mouse" changecount="8">
+<div title="UmbraRect" modifier="Mingos" created="201008132227" modified="201008191703" tags="api class rect mouse" changecount="9">
 <pre>UmbraRect is one of the additions to UmbraWidget, along with UmbraPoint. It defines a rectangle as well as interactions with the mouse cursor and an UmbraPoint. Every UmbraWidget includes two UmbraRect objects: the [[widget area|Widget area]] and the [[drag zone|Drag zone]].
 !Constructor
 UmbraRect takes four arguments in the constructor: the [x,y] coordinates of the top left corner, the width and the height. It can be instantiated like this:
@@ -4311,9 +4389,9 @@ if (rectangle.mouseDown) doSomethingMore();
 !Methods
 &lt;&lt;tiddler UmbraRectMethods&gt;&gt;
 !See also
-[[UmbraPoint]]
-[[UmbraWidget]]
-[[UmbraWidget::mouse]]</pre>
+*[[UmbraPoint]]
+*[[UmbraWidget]]
+*[[UmbraWidget::mouse]]</pre>
 </div>
 <div title="UmbraRect::UmbraRect" modifier="Mingos" created="201008171106" tags="api method rect constructor" changecount="1">
 <pre>!Description
@@ -4479,7 +4557,7 @@ UmbraEngine engine = UmbraEngine(&quot;data/cfg/umbra.txt&quot;,UMBRA_REGISTER_A
 <pre>*[[UmbraWidget::mouse]]
 *[[UmbraWidget::setDragZone]]</pre>
 </div>
-<div title="Using Umbra" modifier="Mingos" created="200910241814" modified="201008132228" tags="tutorial" changecount="31">
+<div title="Using Umbra" modifier="Mingos" created="200910241814" modified="201008191729" tags="tutorial" changecount="32">
 <pre>#Basics
 ##[[Starting a project using Umbra]]
 ##[[Umbra Hello World]]
@@ -4519,9 +4597,7 @@ UmbraEngine engine = UmbraEngine(&quot;data/cfg/umbra.txt&quot;,UMBRA_REGISTER_A
 #Errors
 ##[[Error log]]
 ##[[Reporting an error]]
-##[[Displaying an error]]
-
-Please read the [[API reference]] for details on how everything works.</pre>
+##[[Displaying an error]]</pre>
 </div>
 <div title="Using a callback" modifier="Mingos" created="201008111219" tags="tutorial callback" changecount="1">
 <pre>Once a callback is [[created|Creating a callback]], starting to use it is extremely easy. The callback only needs to be registered in the engine:
