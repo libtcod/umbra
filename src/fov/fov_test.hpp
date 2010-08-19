@@ -36,14 +36,12 @@ public :
 	virtual void getRenderSize(int *w, int *h);
 	virtual void render(TCODConsole *con,int x, int y);
 	static TCODRandom rng; // random number generator
+	float progress; // for progress bar, between 0.0 and 1.0
 protected :
-	float t0;
 	float lastRunTime; // length of the execution of run function in seconds
 	int playerx,playery;
-	inline void startCounter() {t0=TCODSystem::getElapsedSeconds();}
-	inline void stopCounter() {lastRunTime=TCODSystem::getElapsedSeconds()-t0;}
-	virtual void execute();
-	void buildOutdoorMap();
+	virtual void execute(); // the actual test
+	void buildOutdoorMap(); // map building utility
 };
 
 class FovPillar1 : public FovTest {

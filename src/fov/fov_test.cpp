@@ -58,9 +58,9 @@ FovTest* FovTest::getTest(int algoNum,int testNum) {
 }
 
 void FovTest::run() {
-	startCounter();
+	float t0=TCODSystem::getElapsedSeconds();
 	execute();
-	stopCounter();
+	lastRunTime=TCODSystem::getElapsedSeconds()-t0;
 }
 
 void FovTest::getRenderSize(int *w, int *h) {
@@ -113,6 +113,7 @@ void FovPillar1::initialise() {
 	// player against the pillar
 	playerx=4;
 	playery=5;
+	progress=0.0f;
 }
 
 
@@ -139,6 +140,7 @@ void FovCorner1::initialise() {
 	// player at the T junction
 	playerx=7;
 	playery=6;
+	progress=0.0f;
 }
 
 void FovCorner2::initialise() {
@@ -174,6 +176,7 @@ void FovDiagonal::initialise() {
 	// player against the wall
 	playerx=6;
 	playery=5;
+	progress=0.0f;
 }
 
 #define NB_SYMMETRY_TESTS 20
@@ -181,6 +184,7 @@ void FovSymmetry::initialise() {
 	// create a 60x60 map. it's built in the execute function
 	map = new TCODMap(60,60);
 	playerx=playery=30;
+	progress=0.0f;
 }
 
 void FovSymmetry::execute() {
@@ -215,6 +219,7 @@ void FovSymmetry::execute() {
 				}
 			}
 		}
+		progress=(float)(i+1)/NB_SYMMETRY_TESTS;
 	}
 	nbErrFromPlayer/=NB_SYMMETRY_TESTS;
 	nbErrToPlayer/=NB_SYMMETRY_TESTS;
@@ -236,6 +241,7 @@ void FovSpeedEmpty::initialise() {
 	map->clear(true,true);
 	nbRuns=0;
 	randomPos=true;
+	progress=0.0f;
 }
 
 void FovSpeedEmpty::getRenderSize(int *w, int *h) {
@@ -268,6 +274,8 @@ void FovSpeedEmpty::execute() {
 		if ( nbRuns % 100 == 0 ) {
 			// don't recompute every run. it could affect the total time
 			t1=TCODSystem::getElapsedMilli();
+			progress=(float)(t1-t0)/5000;
+			progress=CLAMP(0.0f,1.0f,progress);		
 		}
 		nbRuns++;
 	} while (t1-t0 < 5000); // run for at least 5 seconds
@@ -281,6 +289,7 @@ void FovSpeedFull::initialise() {
 	map->setProperties(playerx,playery,true,true);
 	nbRuns=0;
 	randomPos=false;	
+	progress=0.0f;
 }
 
 void FovSpeedOutdoor::initialise() {
@@ -289,4 +298,5 @@ void FovSpeedOutdoor::initialise() {
 	buildOutdoorMap();
 	randomPos=true;
 	nbRuns=0;
+	progress=0.0f;
 }

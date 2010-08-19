@@ -50,16 +50,20 @@ class FovSetup: public UmbraWidget {
         void render ();
         void mouse (TCOD_mouse_t &ms);
         void initialise();
+        friend int testThread(void *data);
     private:
     	UmbraCheckbox algoCkb[NB_FOV_ALGORITHMS];
     	UmbraCheckbox testCkb[FOV_NB_TESTS];
     	UmbraButton go;
     	bool running; // we are currently running tests
     	TCODList<FovTest *>testsToRun;
+    	FovTest *currentTest;
     	TCODList<FovTest *>finishedTests;
     	TCODList<UmbraButton *>tabs;
     	int curTestResult;
     	TCODRandom *rngBackup; // saved rng
+    	void createResultTabs();
+    	TCOD_thread_t bgThread;
 };
 
 

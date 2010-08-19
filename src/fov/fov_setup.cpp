@@ -85,31 +85,43 @@ const char *testShortNames[FOV_NB_TESTS] = {
 	"SPEED-OUTDR",
 };
 
+// background thread executing the tests
+int testThread(void *data) {
+	FovSetup *setup=(FovSetup *)data;
+    // run the tests
+    while ( !setup->testsToRun.isEmpty() ) {
+		setup->currentTest = setup->testsToRun.pop();
+		// restore the rng so that all tests are done in the same conditions
+		FovTest::rng.restore(setup->rngBackup);
+		setup->currentTest->initialise();
+		setup->currentTest->run();
+		setup->finishedTests.push(setup->currentTest);
+	}
+    // all tests are finished
+    setup->createResultTabs();
+    return 0;
+}
+
 FovSetup::FovSetup () {
 }
 
-bool FovSetup::update () {
-	if (running) {
-	    // run the next available test
-		FovTest *nextTest=testsToRun.pop();
-		// restore the rng so that all tests are done in the same conditions
-		FovTest::rng.restore(rngBackup);
-		nextTest->initialise();
-		nextTest->run();
-		finishedTests.push(nextTest);
-		if ( testsToRun.isEmpty() ) {
-		    // all tests are finished
-		    running=false;
-		    // create the result tabs
-		    int x=0;
-            for (int j=0; j <FOV_NB_TESTS; j++) {
-                if ( testCkb[j].checked ) {
-                    tabs.push(new UmbraButton(this,x,20,strlen(testShortNames[j])+2,3,testShortNames[j]));
-                    x += strlen(testShortNames[j])+2;
-                }
-            }
+void FovSetup::createResultTabs() {
+	// create the result tabs
+	int x=0,y=17;
+	for (int j=0; j <FOV_NB_TESTS; j++) {
+		if ( testCkb[j].checked ) {
+			int len=strlen(testShortNames[j])+2;
+			if ( x+len >= engine.getRootWidth() ) {
+				x=0;y+=3;
+			}
+			tabs.push(new UmbraButton(this,x,y,len,3,testShortNames[j]));
+			x += len;
 		}
 	}
+	running=false;
+}
+
+bool FovSetup::update () {
     return true;
 }
 
@@ -118,7 +130,6 @@ void FovSetup::initialise() {
 	for (int i=0; i < NB_FOV_ALGORITHMS; i++) {
 		algoCkb[i].set(this,2,y,strlen(fovnames[i])+2,1,fovnames[i]);
 		y++;
-		if (i < FOV_PERMISSIVE_0 || i >= FOV_PERMISSIVE_8 ) y++;
 	}
 	y=2;
 	for (int i=0; i < FOV_NB_TESTS; i++) {
@@ -130,6 +141,8 @@ void FovSetup::initialise() {
 	running=false;
 	// save the test rng to be able to restore it
 	rngBackup = FovTest::rng.save();
+	bgThread=NULL;
+	currentTest=NULL;
 }
 
 void FovSetup::render () {
@@ -149,7 +162,7 @@ void FovSetup::render () {
     }
 	if (! running ) {
 		if ( finishedTests.size() > 0 ) {
-			// render the last executed tests for the current tab
+			// render the results for the last executed tests for the current tab
 			int tx=0,ty=24, th=0,w,h;
 			for (FovTest **it=finishedTests.begin(); it != finishedTests.end(); it++) {
 				// skip tests not belonging to current tab
@@ -178,7 +191,12 @@ void FovSetup::render () {
 		}
 	} else {
 		// render remaining tests counter
-		TCODConsole::root->print(30,35,"Running test %d / %d...", finishedTests.size()+1, testsToRun.size()+finishedTests.size());
+		TCODConsole::root->print(30,35,"Running test %d / %d...", finishedTests.size()+1, testsToRun.size()+finishedTests.size()+1);
+		TCODConsole::root->setBackgroundColor(TCODColor::lighterBlue);
+		TCODConsole::root->rect(20,37,40,1,false,TCOD_BKGND_SET);
+		TCODConsole::root->setBackgroundColor(TCODColor::darkBlue);
+		int progressLength=(int)(40*currentTest->progress);
+		if ( progressLength > 0 ) TCODConsole::root->rect(20,37,progressLength,1,false,TCOD_BKGND_SET);
 	}
 }
 
@@ -220,10 +238,11 @@ void FovSetup::mouse (TCOD_mouse_t &ms) {
 			// if at least 1 algo and 1 test selected, click go to launch
 			running = go.area.mouseDown;
 			if (running) {
-				// launching...
+				// initialise the test lists...
 				testsToRun.clear();
 				finishedTests.clear();
 				tabs.clearAndDelete();
+				if ( bgThread != NULL ) TCODSystem::deleteThread(bgThread);
 				// create the list of tests to run
                 for (int j=FOV_NB_TESTS-1; j >= 0; j--) {
                     if ( testCkb[j].checked ) {
@@ -231,11 +250,16 @@ void FovSetup::mouse (TCOD_mouse_t &ms) {
                         for (int i=NB_FOV_ALGORITHMS-1; i >= 0; i--) {
                             if ( algoCkb[i].checked ) {
 								FovTest *test=FovTest::getTest(i,j);
-								if ( test != NULL ) testsToRun.push(test);
+								if ( test != NULL ) {
+									currentTest=test;
+									testsToRun.push(test);
+								}
 							}
 						}
 					}
 				}
+				// launch the thread
+				bgThread = TCODSystem::newThread(testThread,this);
 			}
 		}
 	}
