@@ -25,16 +25,21 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef _MAIN_HPP
-#define _MAIN_HPP
-
-#include "../umbra/umbra.hpp"
-#include "bsp_helper.hpp"
-#include "fov_test.hpp"
-#include "fov_setup.hpp"
-
-#define FOVTC_VERSION "0.1"
-
-extern UmbraEngine engine;
-
-#endif
+class BspHelper : public ITCODBspCallback {
+public :
+	BspHelper();
+	int bspDepth;
+	int minRoomSize;
+	bool randomRoom; 
+	bool roomWalls; 			
+	void createBspDungeon(TCODMap *map, TCODRandom *rng);
+	// libtcod bsp callback stuff
+	bool visitNode(TCODBsp *node, void *userData);
+private :
+	void vline(TCODMap *map,int x, int y1, int y2);
+	void vline_up(TCODMap *map,int x, int y);
+	void vline_down(TCODMap *map,int x, int y);
+	void hline(TCODMap *map,int x1, int y, int x2);
+	void hline_left(TCODMap *map,int x, int y);
+	void hline_right(TCODMap *map,int x, int y);		
+};

@@ -31,6 +31,7 @@ OBJS_UMBRA_DEBUG= \
 	$(TEMP)/umbra/debug/widget_checkbox.o 
 
 OBJS_DEBUG= \
+	$(TEMP)/fov/debug/bsp_helper.o \
 	$(TEMP)/fov/debug/fov_setup.o \
 	$(TEMP)/fov/debug/fov_test.o \
 	$(TEMP)/fov/debug/main.o 
@@ -47,6 +48,7 @@ OBJS_RELEASE= \
 	$(TEMP)/umbra/release/widget.o \
 	$(TEMP)/umbra/release/widget_button.o \
 	$(TEMP)/umbra/release/widget_checkbox.o \
+	$(TEMP)/fov/release/bsp_helper.o \
 	$(TEMP)/fov/release/fov_setup.o \
 	$(TEMP)/fov/release/fov_test.o \
 	$(TEMP)/fov/release/main.o 

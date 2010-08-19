@@ -67,9 +67,11 @@ const char *testnames[FOV_NB_TESTS] = {
 	"Corner peeking: corridor",
 	"Diagonal walls",
 	"Symmetry, outdoor map",
+	"Symmetry, indoor map",
 	"Speed, empty map",
 	"Speed, full map",
 	"Speed, outdoor map",
+	"Speed, indoor map",
 };
 
 const char *testShortNames[FOV_NB_TESTS] = {
@@ -79,10 +81,12 @@ const char *testShortNames[FOV_NB_TESTS] = {
 	"CORNER-T-J",
 	"CORNER-CORR",
 	"DIAGONAL-WL",
-	"SYMM-OUTDR",
+	"SYMM-OUT",
+	"SYMM-IN",
 	"SPEED-EMPTY",
 	"SPEED-FULL",
-	"SPEED-OUTDR",
+	"SPEED-OUT",
+	"SPEED-IN",
 };
 
 // background thread executing the tests
@@ -137,7 +141,7 @@ void FovSetup::initialise() {
 		testCkb[i].set(this,40,y,strlen(testnames[i])+2,1,testnames[i]);
 		y++;
 	}
-	go.set(this,39,14,10,3,"GO");
+	go.set(this,70,0,10,3,"GO");
 	running=false;
 	// save the test rng to be able to restore it
 	rngBackup = FovTest::rng.save();

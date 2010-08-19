@@ -45,10 +45,12 @@ FovTest* FovTest::getTest(int algoNum,int testNum) {
 		case FOV_TEST_CORNER1 : ret=new FovCorner1(); break;
 		case FOV_TEST_CORNER2 : ret=new FovCorner2(); break;
 		case FOV_TEST_DIAGONAL : ret=new FovDiagonal(); break;
-		case FOV_TEST_SYMMETRY : ret=new FovSymmetry(); break;
+		case FOV_TEST_SYMMETRY_OUTDOOR : ret=new FovSymmetryOutdoor(); break;
+		case FOV_TEST_SYMMETRY_INDOOR : ret=new FovSymmetryIndoor(); break;
 		case FOV_TEST_SPEED_EMPTY : ret=new FovSpeedEmpty(); break;
 		case FOV_TEST_SPEED_FULL : ret=new FovSpeedFull(); break;
 		case FOV_TEST_SPEED_OUTDOOR : ret=new FovSpeedOutdoor(); break;
+		case FOV_TEST_SPEED_INDOOR : ret=new FovSpeedIndoor(); break;
 		default:break;
 	}
 	if ( ret == NULL ) return ret; // not implemented
@@ -102,6 +104,11 @@ void FovTest::buildOutdoorMap() {
 		int y=rng.getInt(0,map->getHeight()-1);
 		map->setProperties(x,y,false,false);
 	}
+}
+
+void FovTest::buildIndoorMap() {
+	BspHelper bsp;
+	bsp.createBspDungeon(map,&rng);
 }
 
 
@@ -193,7 +200,8 @@ void FovSymmetry::execute() {
 	nbErrFromPlayer=0;
 	nbErrToPlayer=0;
 	for (int i=0; i < NB_SYMMETRY_TESTS; i++) {
-		buildOutdoorMap();
+		if (indoor ) buildIndoorMap(); 
+		else buildOutdoorMap();
 		map->setProperties(playerx,playery,true,true); // in case there's a pillar at player's position
 		
 		// create a copy of the map for reverse fov
@@ -233,6 +241,16 @@ void FovSymmetry::getRenderSize(int *w, int *h) {
 void FovSymmetry::render(TCODConsole *con,int x, int y) {
 	float errorRate=(float)(nbErrFromPlayer+nbErrToPlayer)/nbFovCells;
 	con->print(x,y,"%.2g%% (%d+%d/%d)",errorRate*100,nbErrFromPlayer,nbErrToPlayer,nbFovCells);
+}
+
+void FovSymmetryIndoor::initialise() {
+	FovSymmetry::initialise();
+	indoor=true;
+}
+
+void FovSymmetryOutdoor::initialise() {
+	FovSymmetry::initialise();
+	indoor=false;
 }
 
 void FovSpeedEmpty::initialise() {
@@ -296,6 +314,15 @@ void FovSpeedOutdoor::initialise() {
 	// build a 60x60 outdoor map
 	map = new TCODMap(60,60);
 	buildOutdoorMap();
+	randomPos=true;
+	nbRuns=0;
+	progress=0.0f;
+}
+
+void FovSpeedIndoor::initialise() {
+	// build a 60x60 indoor map
+	map = new TCODMap(60,60);
+	buildIndoorMap();
 	randomPos=true;
 	nbRuns=0;
 	progress=0.0f;

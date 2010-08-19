@@ -41,7 +41,9 @@ protected :
 	float lastRunTime; // length of the execution of run function in seconds
 	int playerx,playery;
 	virtual void execute(); // the actual test
-	void buildOutdoorMap(); // map building utility
+	// map building utilities
+	void buildOutdoorMap(); // empty map with random pillars 
+	void buildIndoorMap(); // bsp dungeon
 };
 
 class FovPillar1 : public FovTest {
@@ -84,6 +86,18 @@ public :
 protected :
 	void execute();
 	int nbErrFromPlayer,nbErrToPlayer,nbFovCells;
+	bool indoor;
+};
+
+
+class FovSymmetryOutdoor : public FovSymmetry {
+public :
+	void initialise();
+};
+
+class FovSymmetryIndoor : public FovSymmetry {
+public :
+	void initialise();
 };
 
 class FovSpeedEmpty : public FovTest {
@@ -103,6 +117,11 @@ public :
 };
 
 class FovSpeedOutdoor : public FovSpeedEmpty {
+public :
+	void initialise();
+};
+
+class FovSpeedIndoor : public FovSpeedEmpty {
 public :
 	void initialise();
 };
