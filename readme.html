@@ -2272,8 +2272,8 @@ If UmbraEngine is initialised with the additional callbacks enabled (see [[Umbra
 
 Please remember to use a code profiler, such as gprof, to profile your code. Speedo is not a profiler, it can merely inform you of possible performance issues, but will not identify any bottlenecks in the program.</pre>
 </div>
-<div title="Starting a project using Umbra" modifier="Mingos" created="201003301731" modified="201007272139" tags="tutorial basics init" changecount="6">
-<pre>Umbra is not a library, but a collection of C++ code files. As such, absolutely no linking is required to start using Umbra.
+<div title="Starting a project using Umbra" modifier="Mingos" created="201003301731" modified="201009182212" tags="tutorial basics init" changecount="9">
+<pre>Umbra is not a library, but a framework in the form of a collection of C++ source code files. As such, absolutely no linking is required to start using Umbra.
 
 What is necessary, however, is adding the code that comes with Umbra to your project. Since you're not likely to want to modify Umbra files, save in some corner cases where you might need a higher grade of customisation, you are advised to place Umbra files in a separate directory so that they don't distract you from your own code.
 
@@ -2281,7 +2281,7 @@ Once you have done that, all you need to do to be able to start using Umbra is i
 &lt;code C++&gt;
 #include &quot;umbra.hpp&quot;
 &lt;/code&gt;
-Umbra requires libtcod to run, so it already includes it, and therefore you are not required to include it separately.</pre>
+Remember that ''Umbra requires libtcod to run''!</pre>
 </div>
 <div title="StyleSheet" modifier="Mingos" created="200701130013" modified="201008190950" server.type="file" server.host="tiddlythemes.com/empties/Monochrome.html" server.page.revision="200708091512" changecount="53">
 <pre>[[StyleSheetSyntaxHighlighter]]
