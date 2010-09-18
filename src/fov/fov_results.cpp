@@ -25,40 +25,22 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#include "umbra.hpp"
+// This module takes care of rendering the test results onto the screen.
 
-UmbraModBSOD::UmbraModBSOD () {
-    bsod = new TCODConsole(30,8);
-    closeButton.set(28,0);
-    duration = 5000;
-    msgString = "";
-    rect.set(getEngine()->getRootWidth()-31,getEngine()->getRootHeight()-9,30,8);
-    setDragZone(0,0,28,1);
+#include "main.hpp"
+
+void FovResults::initialise() {
+	setup = engine.getModule(MOD_SETUP);
 }
 
-void UmbraModBSOD::activate () {
-    startTime = TCODSystem::getElapsedMilli();
-    msgString = UmbraError::getLastMessage();
+void FovResults::activate() {
+	engine.getModule(MOD_SETUP)->setPause(true);
 }
 
-bool UmbraModBSOD::update () {
-    if (closeButton.mouseDown) setActive(false);
-    if (TCODSystem::getElapsedMilli() - startTime >= duration) return false;
-    else return true;
+void FovResults::deactivate() {
+	engine.getModule(MOD_SETUP)->setPause(false);
 }
 
-void UmbraModBSOD::render () {
-    bsod->setDefaultBackground(TCODColor::blue);
-    bsod->clear();
-    bsod->setDefaultForeground(TCODColor::white);
-    bsod->printFrame(0,0,30,8,true,TCOD_BKGND_NONE,"Umbra BSOD");
-    bsod->printRectEx(15,2,28,5,TCOD_BKGND_NONE,TCOD_CENTER,UmbraError::getLastMessage());
-    if (closeButton.mouseHover)
-        bsod->setDefaultForeground(TCODColor::red);
-    bsod->putChar(closeButton.x,closeButton.y,'X',TCOD_BKGND_NONE);
-    if (dragZone.mouseHover || isDragging) {
-        bsod->setDefaultBackground(TCODColor::lightRed);
-        bsod->rect(9,0,12,1,false,TCOD_BKGND_SET);
-    }
-    TCODConsole::blit(bsod,0,0,rect.w,rect.h,TCODConsole::root,rect.x,rect.y,1.0f,0.5f);
+bool update() {
+
 }

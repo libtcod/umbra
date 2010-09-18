@@ -45,16 +45,16 @@ void RabbitWidget::mouse (TCOD_mouse_t &ms) {
 }
 
 void RabbitWidget::render () {
-    rabbit->setForegroundColor(TCODColor::white);
-    rabbit->setBackgroundColor(TCODColor::black);
+    rabbit->setDefaultForeground(TCODColor::white);
+    rabbit->setDefaultBackground(TCODColor::black);
     rabbit->printFrame(0,0,24,12,true,TCOD_BKGND_SET,"Wake up, Neo");
     rabbit->printRectEx(12,2,24,6,TCOD_BKGND_NONE,TCOD_CENTER,"The Matrix has you. Press OK to follow the white rabbit.");
     if (dragZone.mouseHover || isDragging) {
-        rabbit->setBackgroundColor(TCODColor::lightRed);
+        rabbit->setDefaultBackground(TCODColor::lightRed);
         rabbit->rect(5,0,14,1,false,TCOD_BKGND_SET);
     }
-    if (button.area.mouseHover) rabbit->setForegroundColor(TCODColor::lightGreen);
-    else rabbit->setForegroundColor(TCODColor::white);
+    if (button.area.mouseHover) rabbit->setDefaultForeground(TCODColor::lightGreen);
+    else rabbit->setDefaultForeground(TCODColor::white);
     button.render(rabbit);
     TCODConsole::blit(rabbit,0,0,rect.w,rect.h,TCODConsole::root,rect.x,rect.y,1.0f,0.5f);
 }

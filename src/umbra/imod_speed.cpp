@@ -104,8 +104,8 @@ void UmbraModSpeed::setTimes(long updateTime, long renderTime) {
 }
 
 void UmbraModSpeed::render () {
-    speed->setBackgroundColor(TCODColor::black);
-    speed->setForegroundColor(TCODColor::white);
+    speed->setDefaultBackground(TCODColor::black);
+    speed->setDefaultForeground(TCODColor::white);
 	if ( isMinimised ) {
 		speed->printEx(0,0,TCOD_BKGND_SET,TCOD_LEFT,"%4dfps ",TCODSystem::getFps());
 		TCODConsole::blit(speed,0,0,8,1,TCODConsole::root,rect.x,rect.y,1.0f,0.5f);
@@ -123,18 +123,18 @@ void UmbraModSpeed::render () {
             TCOD_COLCTRL_FORE_RGB,255,1,1,TCOD_COLCTRL_STOP,
             sysPer);
 		if ( dragZone.mouseHover || isDragging) {
-            speed->setBackgroundColor(TCODColor::lightRed);
+            speed->setDefaultBackground(TCODColor::lightRed);
 		    speed->rect(7,0,15,1,false,TCOD_BKGND_SET);
 		}
 	}
-	speed->setBackgroundColor(TCODColor::black);
+	speed->setDefaultBackground(TCODColor::black);
 	// draw minimize button
-	if (minimiseButton.mouseHover) speed->setForegroundColor(TCODColor::white); //button is active
-	else speed->setForegroundColor(TCODColor::lightGrey); //button is not active
+	if (minimiseButton.mouseHover) speed->setDefaultForeground(TCODColor::white); //button is active
+	else speed->setDefaultForeground(TCODColor::lightGrey); //button is not active
 	speed->putChar(minimiseButton.x,minimiseButton.y, isMinimised ? '+' : '-', TCOD_BKGND_SET);
 	//draw close button
-	if (closeButton.mouseHover) speed->setForegroundColor(TCODColor::red); //button is active
-	else speed->setForegroundColor(TCODColor::lightGrey); //button is not active
+	if (closeButton.mouseHover) speed->setDefaultForeground(TCODColor::red); //button is active
+	else speed->setDefaultForeground(TCODColor::lightGrey); //button is not active
 	speed->putChar(closeButton.x,closeButton.y, 'X', TCOD_BKGND_SET);
 	//blit the console
 	TCODConsole::blit(speed,0,0,rect.w,rect.h,TCODConsole::root,rect.x,rect.y,1.0f,0.52f);

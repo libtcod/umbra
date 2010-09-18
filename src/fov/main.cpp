@@ -29,8 +29,6 @@
 
 UmbraEngine engine;
 
-enum { MOD_SETUP, MOD_RESULT };
-
 int main() {
     //set window title
     engine.setWindowTitle("Umbra FOV Torture Chamber v"FOVTC_VERSION);

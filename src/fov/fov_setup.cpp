@@ -196,9 +196,9 @@ void FovSetup::render () {
 	} else {
 		// render remaining tests counter
 		TCODConsole::root->print(30,35,"Running test %d / %d...", finishedTests.size()+1, testsToRun.size()+finishedTests.size()+1);
-		TCODConsole::root->setBackgroundColor(TCODColor::lighterBlue);
+		TCODConsole::root->setDefaultBackground(TCODColor::darkerGrey);
 		TCODConsole::root->rect(20,37,40,1,false,TCOD_BKGND_SET);
-		TCODConsole::root->setBackgroundColor(TCODColor::darkBlue);
+		TCODConsole::root->setDefaultBackground(TCODColor::darkRed);
 		int progressLength=(int)(40*currentTest->progress);
 		if ( progressLength > 0 ) TCODConsole::root->rect(20,37,progressLength,1,false,TCOD_BKGND_SET);
 	}

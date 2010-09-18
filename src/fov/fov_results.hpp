@@ -25,40 +25,15 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#include "umbra.hpp"
+class FovSetup;
 
-UmbraModBSOD::UmbraModBSOD () {
-    bsod = new TCODConsole(30,8);
-    closeButton.set(28,0);
-    duration = 5000;
-    msgString = "";
-    rect.set(getEngine()->getRootWidth()-31,getEngine()->getRootHeight()-9,30,8);
-    setDragZone(0,0,28,1);
-}
-
-void UmbraModBSOD::activate () {
-    startTime = TCODSystem::getElapsedMilli();
-    msgString = UmbraError::getLastMessage();
-}
-
-bool UmbraModBSOD::update () {
-    if (closeButton.mouseDown) setActive(false);
-    if (TCODSystem::getElapsedMilli() - startTime >= duration) return false;
-    else return true;
-}
-
-void UmbraModBSOD::render () {
-    bsod->setDefaultBackground(TCODColor::blue);
-    bsod->clear();
-    bsod->setDefaultForeground(TCODColor::white);
-    bsod->printFrame(0,0,30,8,true,TCOD_BKGND_NONE,"Umbra BSOD");
-    bsod->printRectEx(15,2,28,5,TCOD_BKGND_NONE,TCOD_CENTER,UmbraError::getLastMessage());
-    if (closeButton.mouseHover)
-        bsod->setDefaultForeground(TCODColor::red);
-    bsod->putChar(closeButton.x,closeButton.y,'X',TCOD_BKGND_NONE);
-    if (dragZone.mouseHover || isDragging) {
-        bsod->setDefaultBackground(TCODColor::lightRed);
-        bsod->rect(9,0,12,1,false,TCOD_BKGND_SET);
-    }
-    TCODConsole::blit(bsod,0,0,rect.w,rect.h,TCODConsole::root,rect.x,rect.y,1.0f,0.5f);
-}
+class FovResults : public UmbraWidget {
+	public:
+		void initialise();
+		void activate();
+		void deactivate();
+		bool update();
+		void render();
+	private:
+		FovSetup * setup;
+};

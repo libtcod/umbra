@@ -65,6 +65,7 @@ class FovSetup: public UmbraWidget {
     	TCODRandom *rngBackup; // saved rng
     	void createResultTabs();
     	TCOD_thread_t bgThread;
+	friend class FovResults;
 };
 
 

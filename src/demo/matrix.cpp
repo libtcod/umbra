@@ -47,12 +47,12 @@ void MatrixLead::render (uint32 time) {
     else if (random->getInt(0,5) == 5)
         c = random->getInt('0','9');
     if (time >= lastY+yDuration) {
-        matrix->setFore(x,y,TCODColor::green);
+        matrix->setCharForeground(x,y,TCODColor::green);
         lastY = time;
         y++;
         if (y >= engine.getRootHeight()) return;
     }
-    matrix->setForegroundColor(TCODColor::lightGreen);
+    matrix->setDefaultForeground(TCODColor::lightGreen);
     matrix->putChar(x,y,c,TCOD_BKGND_NONE);
 }
 

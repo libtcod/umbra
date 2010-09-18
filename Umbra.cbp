@@ -5,7 +5,7 @@
 		<Option title="Umbra" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
-		<Option virtualFolders="Umbra\;Umbra\Headers\;Umbra\Sources\;FOV Benchmark\;FOV Benchmark\Sources\;FOV Benchmark\Headers\;Umbra Demo\;Umbra Demo\Headers\;Umbra Demo\Sources\;Umbra Invaders\;Umbra Invaders\Sources\;Umbra Invaders\Headers\;" />
+		<Option virtualFolders="Torture Chamber\;Torture Chamber\;Torture Chamber\;Torture Chamber\Sources\;Torture Chamber\Headers\;Torture Chamber\;Torture Chamber\;Umbra Demo\Sources\;Umbra Demo\Headers\;Umbra Invaders\Sources\;Umbra Invaders\Headers\;Umbra\Sources\;Umbra\Headers\;" />
 		<Build>
 			<Target title="Demo Debug WIN">
 				<Option output="umbra-demo-debug" prefix_auto="0" extension_auto="1" />
@@ -263,43 +263,57 @@
 			<Option target="Demo Debug LINUX" />
 			<Option target="Demo Release LINUX" />
 		</Unit>
+		<Unit filename="src\fov\bsp_helper.cpp">
+			<Option virtualFolder="Torture Chamber\Sources\" />
+			<Option target="Fovbench Debug WIN" />
+			<Option target="Fovbench Release WIN" />
+			<Option target="Fovbench Debug LINUX" />
+			<Option target="Fovbench Release LINUX" />
+		</Unit>
+		<Unit filename="src\fov\bsp_helper.hpp">
+			<Option virtualFolder="Torture Chamber\Headers\" />
+			<Option target="Fovbench Debug WIN" />
+			<Option target="Fovbench Release WIN" />
+			<Option target="Fovbench Debug LINUX" />
+			<Option target="Fovbench Release LINUX" />
+		</Unit>
 		<Unit filename="src\fov\fov_setup.cpp">
-			<Option virtualFolder="FOV Benchmark\Sources\" />
+			<Option virtualFolder="Torture Chamber\Sources\" />
 			<Option target="Fovbench Debug WIN" />
 			<Option target="Fovbench Release WIN" />
 			<Option target="Fovbench Debug LINUX" />
 			<Option target="Fovbench Release LINUX" />
 		</Unit>
 		<Unit filename="src\fov\fov_setup.hpp">
-			<Option virtualFolder="FOV Benchmark\Headers\" />
+			<Option virtualFolder="Torture Chamber\Headers\" />
 			<Option target="Fovbench Debug WIN" />
 			<Option target="Fovbench Release WIN" />
 			<Option target="Fovbench Debug LINUX" />
 			<Option target="Fovbench Release LINUX" />
 		</Unit>
 		<Unit filename="src\fov\fov_test.cpp">
-			<Option virtualFolder="FOV Benchmark\Sources\" />
+			<Option virtualFolder="Torture Chamber\Sources\" />
 			<Option target="Fovbench Debug WIN" />
 			<Option target="Fovbench Release WIN" />
 			<Option target="Fovbench Debug LINUX" />
 			<Option target="Fovbench Release LINUX" />
 		</Unit>
 		<Unit filename="src\fov\fov_test.hpp">
-			<Option virtualFolder="FOV Benchmark\Headers\" />
+			<Option virtualFolder="Torture Chamber\Headers\" />
 			<Option target="Fovbench Debug WIN" />
 			<Option target="Fovbench Release WIN" />
 			<Option target="Fovbench Debug LINUX" />
 			<Option target="Fovbench Release LINUX" />
 		</Unit>
 		<Unit filename="src\fov\main.cpp">
-			<Option virtualFolder="FOV Benchmark\Sources\" />
+			<Option virtualFolder="Torture Chamber\Sources\" />
 			<Option target="Fovbench Debug WIN" />
 			<Option target="Fovbench Release WIN" />
 			<Option target="Fovbench Debug LINUX" />
 			<Option target="Fovbench Release LINUX" />
 		</Unit>
 		<Unit filename="src\fov\main.hpp">
-			<Option virtualFolder="FOV Benchmark\Headers\" />
+			<Option virtualFolder="Torture Chamber\Headers\" />
 			<Option target="Fovbench Debug WIN" />
 			<Option target="Fovbench Release WIN" />
 			<Option target="Fovbench Debug LINUX" />

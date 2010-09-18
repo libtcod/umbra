@@ -322,7 +322,7 @@ int UmbraEngine::run () {
 	            }
 	        }
 	    }
-	    TCODConsole::root->setBackgroundColor(TCODColor::black);
+	    TCODConsole::root->setDefaultBackground(TCODColor::black);
         TCODConsole::root->clear();
         long updateTime=TCODSystem::getElapsedMilli() - startTime;
         // render active modules by inverted priority order

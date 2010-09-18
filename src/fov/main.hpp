@@ -32,9 +32,11 @@
 #include "bsp_helper.hpp"
 #include "fov_test.hpp"
 #include "fov_setup.hpp"
+#include "fov_results.hpp"
 
 #define FOVTC_VERSION "0.1"
 
+enum { MOD_SETUP, MOD_RESULT };
 extern UmbraEngine engine;
 
 #endif

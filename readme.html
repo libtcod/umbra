@@ -527,8 +527,8 @@ Also see [[AdvancedOptions]]</pre>
     &quot;Defines&quot; &quot;Defines&quot; [[Defines]]
 &gt;&gt;</pre>
 </div>
-<div title="About Umbra" modifier="Mingos" created="200910241806" modified="201008020000" changecount="15">
-<pre>Umbra Engine is a general purpose engine for applications that use libtcod, mainly games. It is thought to be a &quot;module player&quot; more than anything else, meaning that it lacks any game logic or other game elements. The game/app developer will still need to write everything from scratch, but Umbra will make sure the game is divided into manageable chunks, or modules. Also, the engine takes control over the main game loop and screen flushing, provides a global keybindings method and lets the developer define module-specific keybindings.
+<div title="About Umbra" modifier="Mingos" created="200910241806" modified="201009032153" changecount="16">
+<pre>Umbra is a general purpose framework for applications that use libtcod, mainly games. It is thought to provide a &quot;module player&quot; functionality more than anything else, meaning that it lacks any out-of-the-box support for game logic or other game elements. The game/app developer will still need to write everything from scratch, but Umbra will help divide the game into manageable chunks, or [[modules|What is a module]]. Also, the [[engine|The engine]] takes control over the main game loop and screen flushing, provides a global keybindings method and lets the developer define module-specific keybindings.
 
 Umbra is released under the BSD licence and thus may be freely used by anyone for any purpose. The licence text is as follows:
 
@@ -542,6 +542,17 @@ Redistribution and use in source and binary forms, with or without modification,
 * The names of Mingos or Jice may not be used to endorse or promote products derived from this software without specific prior written permission.
 
 THIS SOFTWARE IS PROVIDED BY MINGOS &amp; JICE &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL MINGOS OR JICE BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</pre>
+</div>
+<div title="Accessing modules and widgets" modifier="Mingos" created="201009091724" modified="201009100137" tags="tutorial module widget moduleReference" changecount="4">
+<pre>Modules and widgets are accessed in the same way, as the engine does not distinguish between them.
+
+The method used to gain access to a module from within the engine is [[UmbraEngine::getModule]]. It takes the [[module ID number|Module ID]] as parametre, and returns a pointer to the module with that ID.
+
+!Example
+&lt;code C++&gt;
+myModule-&gt;getEngine()-&gt;getModule(2)-&gt;setActive(true);
+&lt;/code&gt;
+The above code, executed from within a module, will fetch a pointer to the engine, then to a module with an ID number of 2, and activate it.</pre>
 </div>
 <div title="Activating modules" modifier="Mingos" created="200911121718" modified="201007272150" tags="tutorial module moduleStatus init" changecount="5">
 <pre>A registered module resides inside the modules list, but before the engine actually runs any of the modules from the list, the developer has to specify which one needs to be activated. Typically, a main menu, a title screen or a credits screen will be the first activated module.
@@ -631,7 +642,7 @@ class UmbraCallbackQuit: public UmbraCallback {
 };
 &lt;/code&gt;</pre>
 </div>
-<div title="Creating a module" modifier="Mingos" created="200911142341" modified="201007271701" tags="tutorial module" changecount="13">
+<div title="Creating a module" modifier="Mingos" created="200911142341" modified="201009182111" tags="tutorial module" changecount="14">
 <pre>Creating a module is essentially easy. Here's the simplest way:
 &lt;code C++&gt;
 class MyModule : public UmbraModule {};
@@ -716,8 +727,8 @@ Credits::Credits () {
               &quot;by Game Author\n&quot;
               &quot;\n&quot;
               &quot;powered by:\n&quot;
-              &quot;libtcod 1.4.3 by Jice,\n&quot;
-              &quot;Umbra by Mingos &amp; Jice&quot;;
+              &quot;libtcod 1.5.1 by Jice &amp; Mingos,\n&quot;
+              &quot;Umbra 0.1 by Mingos &amp; Jice&quot;;
     duration = 3000;
     x = UmbraConfig::rootWidth/2;
     y = (UmbraConfig::rootHeight/2)-3;
@@ -922,7 +933,7 @@ How will the engine behave? The first activated module is supposedly a credits s
 <div title="Flags" modifier="Mingos" created="201008111239" modified="201008111239" changecount="2">
 <pre>*[[UmbraRegisterCallbackFlag]]</pre>
 </div>
-<div title="Font autodetection" modifier="Mingos" created="200911050951" modified="201007272150" tags="tutorial font init" changecount="20">
+<div title="Font autodetection" modifier="Mingos" created="200911050951" modified="201009152146" tags="tutorial font init" changecount="21">
 <pre>By default Umbra will look for {{{font&lt;w&gt;x&lt;h&gt;[_&lt;layout&gt;].png}}} files in the {{{./data/img/}}} directory. You can change this directory by adding a fontDir variable in umbra.txt, for example :
 &lt;code c++&gt;
 /*
@@ -942,11 +953,11 @@ If no font file is found, we fall back to the default libtcod behaviour: we'll t
 Font files names must have the following format: 
 {{{font&lt;w&gt;x&lt;h&gt;[_&lt;layout&gt;].png}}}
 w and h represent the character width and height in the font.
-layout is either {{{TCOD}}}, {{{ASCII_INCOL}}} or {{{ASCII_INROW}}}. If missing, {{{TCOD}}} is assumed. Fonts must be grayscale (see libtcod setCustomFont documentation).
+layout is either {{{TCOD}}}, {{{INCOL}}} or {{{INROW}}}. If missing, {{{TCOD}}} is assumed. Fonts must be grayscale (see libtcod setCustomFont documentation).
 Examples :
 {{{font8x8.png}}}: grayscale font with 8 pixels wide square characters, TCOD layout
-{{{font10x10_ASCII_INCOL.png}}}: grayscale font with 10 pixels wide square characters, ASCII in columns layout
-{{{font10x12_ASCII_INROW.png}}}: grayscale font with non square characters, ASCII in rows layout
+{{{font10x10_INCOL.png}}}: grayscale font with 10 pixels wide square characters, ASCII in columns layout
+{{{font10x12_INROW.png}}}: grayscale font with non square characters, ASCII in rows layout
 
 All those fonts will be automatically registered and sorted by character &quot;size&quot; = width * height, smallest to biggest. When the game runs, you can switch the current font by pressing pageUp and pageDown (by default). The font selected will be remembered the next time you run the game.
 
@@ -954,6 +965,9 @@ If you want a finer control on the way fonts are loaded, you can register them m
 
 ;see also:
 :[[Registering fonts]]</pre>
+</div>
+<div title="Font switching fails when fonts have different layouts" modifier="Mingos" created="201009152158" tags="issueTracker bug open" changecount="1">
+<pre>Apparently, if there are multiple fonts registered and their layout is not the same, switching between them using Umbra inbuilt font switcher doesn't work. This might be a libtcod-specific bug though.</pre>
 </div>
 <div title="ForEachTiddlerMacro" modifier="YourName" created="200512081501" modified="200707300922" tags="Documentation ForEachTiddlerMacro Macro" server.type="file" server.host="tiddlywiki.abego-software.de/#ForEachTiddlerPlugin" server.page.revision="200707300922">
 <pre>//~~(Part of the [[ForEachTiddlerPlugin]])~~//
@@ -1860,6 +1874,10 @@ DAMAGE.
 
 </pre>
 </div>
+<div title="Fullscreen font changing" modifier="Mingos" created="201009182107" tags="issueTracker bug open" changecount="1">
+<pre>Changing the font when in fullscreen mode reverts back to windowed mode. While not a fatal bug, this can be annoying.
+The source of the bug may be Umbra or libtcod - to be investigated.</pre>
+</div>
 <div title="Initialisation versus activation" modifier="Mingos" created="200911162110" modified="201007271722" tags="tutorial module" changecount="6">
 <pre>The [[UmbraModule]] provides two virtual methods which can be overridden in a custom module. These are [[UmbraModule::initialise]] and [[UmbraModule::activate]]. The difference between the two might seem a bit blurry, so let's have a closer look at what they do.
 !Initialisation
@@ -1932,6 +1950,49 @@ These are the internal callbacks, which can be registered automatically, providi
 <pre>One of the developers of this humble engine. Please visit my websites for more details about what I do.
 *http://www.umbraprojekt.pl/
 *http://umbrarumregnum.110mb.com/</pre>
+</div>
+<div title="Module ID" modifier="Mingos" created="201009182113" modified="201009182157" tags="tutorial module" changecount="8">
+<pre>Module ID, as the name implies, is a unique identification number assigned to a module.
+
+The ID numbers are integers, assigned to the modules in an ascending order, starting from 0. The assignment is done automatically when [[registering modules|Registering modules]]. The first module that is registered in the engine will be given an ID of 0, the next one will have an ID of 1 and so on.
+
+The ID numbers are then used for [[referencing modules|Accessing modules and widgets]].
+
+There are different approaches to managing the module ID numbers in an application:
+!Manual assignment
+Since the way the engine assigns ID numbers is predictable, one can register modules in a predetermined order an then simply use constants:
+&lt;code C++&gt;
+enum {
+    MOD_INTRO,
+    MOD_MENU,
+    MOD_GAME
+};
+UmbraEngine engine;
+engine.registerModule(new moduleIntro());
+engine.registerModule(new moduleMenu());
+engine.registerModule(new moduleGame());
+UmbraModule * currentModule = engine.getModule(MOD_INTRO);
+&lt;/code&gt;
+The modules need to be registered in the exact same order as specified in the enum.
+!Hash table
+It's also possible to create a hash table or an associative array and call the modules by their key, typically a string. A decent way of achieving this is the {{{std::map}}} class.
+&lt;code C++&gt;
+UmbraEngine engine;
+std::map&lt;std::string, int&gt; modules;
+modules.insert(&quot;intro&quot;,engine.registerModule(new moduleIntro()));
+modules.insert(&quot;menu&quot;,engine.registerModule(new moduleMenu()));
+modules.insert(&quot;game&quot;,engine.registerModule(new moduleGame()));
+UmbraModule * currentModule = engine.getModule(modules[&quot;intro&quot;]);
+&lt;/code&gt;
+!Variables
+Module ID numbers can be stored in variables, although it would be important to make their scope large enough so that they are accessible from any place in the code.
+&lt;code C++&gt;
+UmbraEngine engine;
+int moduleIntroID = engine.registerModule(new moduleIntro());
+int moduleMenuID = engine.registerModule(new moduleMenu());
+int moduleGameID = engine.registerModule(new moduleGame());
+UmbraModule * currentModule = engine.getModule(moduleIntroID);
+&lt;/code&gt;</pre>
 </div>
 <div title="Operators" modifier="Mingos" created="201008152255" modified="201008191017" tags="api operator" changecount="33">
 <pre>*[[UmbraKey::operator ==]]
@@ -4557,7 +4618,7 @@ UmbraEngine engine = UmbraEngine(&quot;data/cfg/umbra.txt&quot;,UMBRA_REGISTER_A
 <pre>*[[UmbraWidget::mouse]]
 *[[UmbraWidget::setDragZone]]</pre>
 </div>
-<div title="Using Umbra" modifier="Mingos" created="200910241814" modified="201008191729" tags="tutorial" changecount="32">
+<div title="Using Umbra" modifier="Mingos" created="200910241814" modified="201009091735" tags="tutorial" changecount="33">
 <pre>#Basics
 ##[[Starting a project using Umbra]]
 ##[[Umbra Hello World]]
@@ -4574,6 +4635,7 @@ UmbraEngine engine = UmbraEngine(&quot;data/cfg/umbra.txt&quot;,UMBRA_REGISTER_A
 ##[[What is a module]]
 ##[[What is a widget]]
 ##[[Creating a module]]
+##[[Module ID]]
 ##[[Fallbacks]]
 ##[[Creating a widget]]
 ##Internal modules

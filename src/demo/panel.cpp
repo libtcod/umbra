@@ -52,10 +52,10 @@ Panel::Panel () {
 }
 
 void Panel::render () {
-    panel->setBackgroundColor(TCODColor::darkerGrey);
-    panel->setForegroundColor(TCODColor::silver);
+    panel->setDefaultBackground(TCODColor::darkerGrey);
+    panel->setDefaultForeground(TCODColor::silver);
     panel->printFrame(0,0,rect.w,rect.h,true,TCOD_BKGND_SET,NULL);
-    if (bQuit.area.mouseHover) panel->setForegroundColor(TCODColor::white);
+    if (bQuit.area.mouseHover) panel->setDefaultForeground(TCODColor::white);
     bQuit.render(panel);
     TCODConsole::blit(panel,0,0,rect.w,rect.h,TCODConsole::root,posx,posy,1.0f,0.5f);
 }
