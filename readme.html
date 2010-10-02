@@ -2823,7 +2823,7 @@ There needs to be one and only one instance of the engine, no more, no less. Aft
 
 Once the initialisation is successful, the engine can be run. Running the engine initiates the main program loop. In it, modules are executed, activated and deactivated, mouse and keyboard input is read and so on. This is when the program is actually executed.</pre>
 </div>
-<div title="Umbra Hello World" modifier="Mingos" created="200911082305" modified="201007272139" tags="tutorial basics init" changecount="17">
+<div title="Umbra Hello World" modifier="Mingos" created="200911082305" modified="201010021621" tags="tutorial basics init" changecount="18">
 <pre>Let's begin with source code for a //Hello world// program. First, let's create the following {{{main.hpp}}} file:
 &lt;code C++&gt;
 #include &quot;umbra.hpp&quot; //assumes its search directory is known
@@ -2837,7 +2837,7 @@ Then, let's create the following {{{main.cpp}}} file:
 #include &quot;main.hpp&quot;
 
 void HelloWorld::render () {
-    TCODConsole::root-&gt;printLeft(0,0,TCOD_BKGND_NONE,&quot;Hello world!&quot;);
+    TCODConsole::root-&gt;print(0,0,&quot;Hello world!&quot;);
 }
 
 int main (void) {
