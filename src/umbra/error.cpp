@@ -29,18 +29,37 @@
 #include <stdarg.h>
 #include <stdio.h>
 
+//resolve errorlevel strings
+std::string errLevStr (UmbraErrorLevel errLev) {
+	std::string ret;
+	switch (errLev) {
+		case UMBRA_ERRORLEVEL_NOTICE:
+			ret = "NOTICE: "; break;
+		case UMBRA_ERRORLEVEL_WARNING:
+			ret = "WARNING: "; break;
+		case UMBRA_ERRORLEVEL_ERROR:
+			ret = "ERROR: "; break;
+		case UMBRA_ERRORLEVEL_FATAL_ERROR:
+			ret = "FATAL ERROR: "; break;
+		default:
+			ret = "UNKNOWN ERROR: "; break;
+	}
+	return ret;
+}
+
 //initialise empty error list
 TCODList <std::string*> UmbraError::errors;
 
 //append an error message
-int UmbraError::add (const char * errStr, ...) {
+int UmbraError::add (UmbraErrorLevel errLev, const char * errStr, ...) {
     char err[2048];
     va_list ap;
     va_start(ap,errStr);
     vsprintf(err,errStr,ap);
     va_end(ap);
 
-    std::string * errorMessage = new std::string (err);
+    std::string * errorMessage = new std::string ();
+    errorMessage->assign(errLevStr(errLev) + std::string(err));
 
     errors.push(errorMessage);
     fprintf(stderr,"%s\n",errorMessage->c_str());
@@ -51,8 +70,9 @@ int UmbraError::add (const char * errStr, ...) {
 }
 
 //append an error message
-int UmbraError::add (std::string errStr) {
-	std::string * errorMessage = new std::string(errStr);
+int UmbraError::add (UmbraErrorLevel errLev, std::string errStr) {
+	std::string * errorMessage = new std::string();
+	errorMessage->assign(errLevStr(errLev) + std::string(errStr));
 
 	errors.push(errorMessage);
     fprintf(stderr,"%s\n",errorMessage->c_str());
@@ -75,25 +95,17 @@ void UmbraError::save () {
         //print the log header
         fprintf(out,"%s ver. %s (%s) Error Log\n"
                     "---===---\n"
-                    "%d error(s) registered in the log.\n"
+                    "%d %s registered in the log.\n"
                     "\n"
-                    "\n"
-                    "BEGIN ERROR LOG\n"
-                    "---===---\n"
                     "\n",
-                    UMBRA_TITLE,UMBRA_VERSION,UMBRA_STATUS,errors.size());
+                    UMBRA_TITLE,UMBRA_VERSION,UMBRA_STATUS,errors.size(),errors.size() > 1 ? "errors" : "error");
 
         //print the errors
         int i = 0;
         do {
             std::string * msg = errors.get(i);
-            fprintf(out,"%03d: %s\n",i+1,msg->c_str());
+            fprintf(out,"%03d. %s\n",i+1,msg->c_str());
         } while (++i < errors.size());
-
-        //print the log footer
-        fprintf(out,"\n"
-                    "---===---\n"
-                    "END ERROR LOG\n");
 
         //close the log file
         fclose(out);

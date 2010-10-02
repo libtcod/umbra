@@ -56,7 +56,7 @@ void UmbraConfig::load (const char *fileName) {
 
     //check if the config file exists
     if (!UmbraError::fileExists(fileName)) {
-        UmbraError::add("Configuration file %s is bad or missing.", fileName );
+        UmbraError::add(UMBRA_ERRORLEVEL_FATAL_ERROR,"Configuration file %s is bad or missing.", fileName );
         exit(1); //replace by loading defaults or automatic default config file generator
     }
 

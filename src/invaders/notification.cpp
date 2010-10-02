@@ -45,16 +45,16 @@ void Notification::mouse (TCOD_mouse_t &ms) {
 }
 
 void Notification::render () {
-    notification->setForegroundColor(TCODColor::white);
-    notification->setBackgroundColor(TCODColor::darkerAzure);
+    notification->setDefaultForeground(TCODColor::white);
+    notification->setDefaultBackground(TCODColor::darkerAzure);
     notification->printFrame(0,0,24,12,true,TCOD_BKGND_SET,NULL);
     notification->printRectEx(12,2,24,6,TCOD_BKGND_NONE,TCOD_CENTER,text.c_str());
     if (dragZone.mouseHover || isDragging) {
-        notification->setBackgroundColor(TCODColor::lightRed);
+        notification->setDefaultBackground(TCODColor::lightRed);
         notification->rect(5,0,14,1,false,TCOD_BKGND_SET);
     }
-    if (button.area.mouseHover) notification->setForegroundColor(TCODColor::lightGreen);
-    else notification->setForegroundColor(TCODColor::white);
+    if (button.area.mouseHover) notification->setDefaultForeground(TCODColor::lightGreen);
+    else notification->setDefaultForeground(TCODColor::white);
     button.render(notification);
     TCODConsole::blit(notification,0,0,rect.w,rect.h,TCODConsole::root,rect.x,rect.y,1.0f,0.5f);
 }
