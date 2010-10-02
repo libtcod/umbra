@@ -31,10 +31,33 @@ class UmbraFont {
     public:
         UmbraFont ();
         ~UmbraFont ();
+        /**
+         * Initialises a font. Used for manual initialisation (ie, when automatic font detection isn't used).
+         * @param c number of columns of characters in the font image file
+         * @param r number of rows of characters in the font image file
+         * @param fn the filename of the font image file
+         * @param f font layout flags
+         */
         void initialise (int c, int r, const char * fn, int f = TCOD_FONT_LAYOUT_TCOD); //initialise manually
+        /**
+         * Gets the font image's filename
+         * @return the font image's filename
+         */
         inline const char * filename () { return _filename.c_str(); }
+        /**
+         * Gets the font image's number of columns
+         * @return the font image's number of columns
+         */
         inline int columns () { return _columns; }
+        /**
+         * Gets the font image's number of rows
+         * @return the font image's number of rows
+         */
         inline int rows () { return _rows; }
+        /**
+         * Gets the font image's layout flags
+         * @return the font image's layout flags
+         */
         inline int flags () { return _flags; }
 
     private:
