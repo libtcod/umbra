@@ -36,7 +36,15 @@ class UmbraKey {
 	public:
 		UmbraKey (): vk(TCODK_NONE),c(0),alt(false),ctrl(false),shift(false) {}
 		UmbraKey (TCOD_keycode_t vk, char c, bool alt, bool ctrl, bool shift): vk(vk),c(c),alt(alt),ctrl(ctrl),shift(shift) {}
-		inline void assign (TCOD_keycode_t vk, char c, bool alt, bool ctrl, bool shift) { this->vk=vk; this->c=c; this->alt=alt; this->ctrl=ctrl; this->shift=shift; }
+		/**
+		 * Assigns a keystroke or key combination. In case of alt, ctrl and shift keys, left and right keys are not distinguished (due to incomplete support in SDL).
+		 * @param vk the non-printable key code, using TCOD_keycode_t constants (see libtcod documentation). Set to TCODK_NONE if none is expected
+		 * @param c a printable character key. Set to 0 if none is expected
+		 * @param alt boolean indicating whether the alt key is expected to be pressed
+		 * @param ctrl boolean indicating whether the ctrl key is expected to be pressed
+		 * @param shift boolean indicating whether the shift key is expected to be pressed                   		 
+		 */     		
+    inline void assign (TCOD_keycode_t vk, char c, bool alt, bool ctrl, bool shift) { this->vk=vk; this->c=c; this->alt=alt; this->ctrl=ctrl; this->shift=shift; }
 		inline bool operator == (const UmbraKey &k1) { return memcmp (this, &k1, sizeof(UmbraKey)) == 0; }
 	private:
 		TCOD_keycode_t vk;
@@ -73,9 +81,22 @@ class UmbraEngine {
 		UmbraEngine (const char *fileName = "data/cfg/umbra.txt",
 		             UmbraRegisterCallbackFlag flag = UMBRA_REGISTER_DEFAULT); //constructor
 
+    /**
+     * Registers a module for usage in the application. Unregistered modules cannot be activated. Registering is done only once per application run.<br><i>Note: this method only registers the module, but doesn't activate it. Activation is performed using the UmbraEngine::activateModule(*) methods!</i>
+     * @param module a pointer to the module to be registered. Creating the module using the <i>new</i> keyword is strongly encouraged, eg. <code>registerModule(new myModule());</code>
+     * @param fallback (optional) the fallback module's ID
+     * @return the module's unique ID number (0 for the first registered module, 1 for the second, etc.)               
+     */                      
 		int registerModule (UmbraModule * module, int fallback = (-1)); //add a module to the modules list. returns id
-		void registerFont (int columns, int rows, const char * filename, int flags = TCOD_FONT_LAYOUT_TCOD);
-		bool initialise (TCOD_renderer_t renderer = TCOD_RENDERER_SDL); //initialises the engine
+		/**
+		 * Registers a font for usage in the application.<br><i>Note: you are encouraged to let the engine register fonts automatically. Please refer to the documentation regarding font autodetection.</i>
+		 * @param column number of character columns in the font image file
+		 * @param rows number of character rows in the font image file
+		 * @param filename the filename of the font image file
+		 *               		 
+		 */     		
+    void registerFont (int columns, int rows, const char * filename, int flags = TCOD_FONT_LAYOUT_TCOD);    		
+    bool initialise (TCOD_renderer_t renderer = TCOD_RENDERER_SDL); //initialises the engine
 		void reinitialise (TCOD_renderer_t renderer = TCOD_RENDERER_SDL);
 		int run (); //runs the engine
 

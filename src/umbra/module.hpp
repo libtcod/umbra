@@ -42,16 +42,49 @@ class UmbraModule {
 
         //setters
         inline void setFallback (int fback) { fallback = fback; } //set default fallback module's index
+        /**
+         * Activates or deactivates the module.
+         * @param active <i>true</i> if the module is to be activated, <i>false</i> otherwise         
+         */ 
         void setActive (bool active);
+        /**
+         * Pauses or unpauses the module.
+         * @param paused <i>true</i> if the module is to be paused, <i>false</i> otherwise         
+         */
         void setPause (bool paused);
 
         //getters
+        
+        /**
+         * Gets the ID number of the fallback module.
+         * @return ID number of the fallback module        
+         */                 
         inline int getFallback () { return fallback; }
+        /**
+         * Checks whether the module is paused or not.
+         * @return <i>true</i> if the module is paused, <i>false</i> otherwise         
+         */                 
         inline bool getPause () { return status == UMBRA_PAUSED; }
+        /**
+         * Checks whether the module has been activated.
+         * @return <i>true</i> if the module has been activated, <i>false</i> otherwise         
+         */                 
         inline bool getActive () { return status > UMBRA_INACTIVE; }
+        /**
+         * Provides a pointer to the engine object.
+         * @return a pointer to the engine object         
+         */ 
         inline UmbraEngine * getEngine () { return UmbraEngine::getInstance(); }
-		inline int getPriority() { return priority; }
-		inline UmbraModuleStatus getStatus () { return status; }
+		    /**
+         * Checks the module's priority.
+         * @return the module's priority         
+         */ 
+        inline int getPriority() { return priority; }
+        /**
+         * Checks the modul's status.
+         * @return module's status (one of the values from the UmbraModuleStatus enum)        
+         */ 
+		    inline UmbraModuleStatus getStatus () { return status; }
 
     protected:
         // for activation/deactivation custom code

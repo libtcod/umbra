@@ -1998,6 +1998,11 @@ int moduleGameID = engine.registerModule(new moduleGame());
 UmbraModule * currentModule = engine.getModule(moduleIntroID);
 &lt;/code&gt;</pre>
 </div>
+<div title="Module timeout" modifier="Mingos" created="201010051123" modified="201010051123" tags="issueTracker RFE open" changecount="2">
+<pre>There should be an ~UmbraModule method for setting a timeout on a module.
+The module would store the activation time and deactivate itself automatically after the time specified in the timeout has passed.
+Good for things like credits screens that are supposed to be displayed only during a few seconds.</pre>
+</div>
 <div title="Operators" modifier="Mingos" created="201008152255" modified="201008191017" tags="api operator" changecount="33">
 <pre>*[[UmbraKey::operator ==]]
 *[[UmbraPoint::operator ==]]</pre>
@@ -2100,6 +2105,9 @@ Bear in mind that this method accepts printf-like text formatting. Ultimately, y
 </div>
 <div title="Scautura" modifier="Scautura" created="200911111208" changecount="1">
 <pre>Proofreader. Nothing more.</pre>
+</div>
+<div title="Setting the renderer" modifier="Mingos" created="201010051127" tags="issueTracker bug open" changecount="1">
+<pre>The renderer should be specified in the config file, not passed to the engine's initialisation function. The user should be able to change it in case the default one doesn't work.</pre>
 </div>
 <div title="SideBarOptions" modifier="Mingos" created="200701130013" modified="201008111353" server.type="file" server.host="tiddlythemes.com/empties/LewcidOrange.html" server.page.revision="200708091512" changecount="15">
 <pre>&lt;&lt;closeAll&gt;&gt;
@@ -4724,6 +4732,9 @@ There's also a special kind of module, called widget, that offers extra interact
 Widgets include special areas that can be defined to make the widget become interactive. Per default, a widget has a drag zone, a close button and a minimise button. If they are given legal values, they can be shown in the widget, and also react to mouse movement and clicks.
 
 It is not recommended to use widgets in games that only use keyboard control, since they are slower than normal modules and will be able to offer the same functionality.</pre>
+</div>
+<div title="registerFont should look in the default font directory" modifier="Mingos" created="201010051104" modified="201010051104" tags="issueTracker RFE open" changecount="2">
+<pre>The [[UmbraEngine::registerFont]] method currently only accepts the filename with full path. It should also accept the filename with no path and look in the default fonts directory.</pre>
 </div>
 </div>
 <!--POST-STOREAREA-->

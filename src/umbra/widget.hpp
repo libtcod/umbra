@@ -32,7 +32,18 @@ class UmbraPoint {
         bool mouseDown;
         UmbraPoint (): x(0),y(0),mouseHover(false) {}
         UmbraPoint (int x, int y): x(x),y(y),mouseHover(false) {}
+        /**
+         * Sets the point's coordinates.
+         * @param x the point's <i>x</i> coordinate
+         * @param y the point's <i>y</i> coordinate         
+         */
         inline void set (int x, int y) { this->x=x; this->y=y; }
+        /**
+         * Checks whether the point's coordinates match the provided pair.
+         * @param px the <i>x</i> coordinate to be compared
+         * @param py the <i>y</i> coordinate to be compared
+         * @return <i>true</i> if the coordinates match, <i>false</i> if they don't                 
+         */   
         inline bool is (int px, int py) { return px == x && py == y; }
         inline bool operator == (const UmbraPoint &p1) { return p1.x == x && p1.y == y; }
 };
@@ -44,10 +55,38 @@ class UmbraRect {
         bool mouseDown;
         UmbraRect (): x(0),y(0),w(0),h(0),mouseHover(false) {}
         UmbraRect (int x, int y, int w, int h): x(x),y(y),w(w),h(h),mouseHover(false) {}
+        /**
+         * Sets the rectangle's position.
+         * @param x the rectangle's top left corner's <i>x</i> coordinate
+         * @param y the rectangle's top left corner's <i>y</i> coordinate         
+         */
         inline void setPos (int x, int y) { this->x=x; this->y=y; }
+        /**
+         * Sets the rectangle's size, keeping the top left corner's coordinates unchanged.
+         * @param w the rectangle's width
+         * @param h the rectangle's height        
+         */
         inline void setSize (int w, int h) { this->w=w;this->h=h; }
+        /**
+         * Sets the rectangle's position and size.
+         * @param x the rectangle's top left corner's <i>x</i> coordinate
+         * @param y the rectangle's top left corner's <i>y</i> coordinate
+         * @param w the rectangle's width
+         * @param h the rectangle's height                  
+         */
         inline void set (int x, int y, int w, int h) { setPos(x,y); setSize(w,h); }
+        /**
+         * Checks whether a set of coordinates is contained within the rectangle.
+         * @param px the <i>x</i> coordinate to be checked
+         * @param py the <i>y</i> coordinate to be checked
+         * @return <i>true</i> if the coordinates are within the rectangle, <i>false</i> otherwise                 
+         */                 
         inline bool contains (int px, int py) { return px >= x && px < x+w && py >= y && py < y+h; }
+        /**
+         * Checks whether a point is contained within the rectangle.
+         * @param p the point to be checked
+         * @return <i>true</i> if the point is within the rectangle, <i>false</i> otherwise                  
+         */
         inline bool contains (const UmbraPoint &p) { return p.x >= x && p.x < x+w && p.y >= y && p.y < y+h; }
 };
 
@@ -56,8 +95,19 @@ class UmbraWidget: public UmbraModule {
     friend class UmbraButton;
     public :
         UmbraWidget ();
+        /**
+         * Custom, widget-specific code interpreting the mouse input.
+         * @param ms reference to the mouse object         
+         */                 
         void mouse (TCOD_mouse_t &ms);
     protected :
+        /**
+         * Sets the widget's active zone reacting to dragging.
+         * @param x the drag zone's top left corner's <i>x</i> coordinate
+         * @param y the drag zone's top left corner's <i>y</i> coordinate
+         * @param w the drag zone's width
+         * @param h the drag zone's height                  
+         */
         void setDragZone (int x, int y, int w, int h);
         UmbraRect rect; // part of the screen where the widget is
         UmbraRect dragZone; // part of the widget we can click to drag it
