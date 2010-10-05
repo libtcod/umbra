@@ -44,7 +44,7 @@ class UmbraKey {
 		 * @param ctrl boolean indicating whether the ctrl key is expected to be pressed
 		 * @param shift boolean indicating whether the shift key is expected to be pressed                   		 
 		 */     		
-    inline void assign (TCOD_keycode_t vk, char c, bool alt, bool ctrl, bool shift) { this->vk=vk; this->c=c; this->alt=alt; this->ctrl=ctrl; this->shift=shift; }
+		inline void assign (TCOD_keycode_t vk, char c, bool alt, bool ctrl, bool shift) { this->vk=vk; this->c=c; this->alt=alt; this->ctrl=ctrl; this->shift=shift; }
 		inline bool operator == (const UmbraKey &k1) { return memcmp (this, &k1, sizeof(UmbraKey)) == 0; }
 	private:
 		TCOD_keycode_t vk;
@@ -81,29 +81,54 @@ class UmbraEngine {
 		UmbraEngine (const char *fileName = "data/cfg/umbra.txt",
 		             UmbraRegisterCallbackFlag flag = UMBRA_REGISTER_DEFAULT); //constructor
 
-    /**
-     * Registers a module for usage in the application. Unregistered modules cannot be activated. Registering is done only once per application run.<br><i>Note: this method only registers the module, but doesn't activate it. Activation is performed using the UmbraEngine::activateModule(*) methods!</i>
-     * @param module a pointer to the module to be registered. Creating the module using the <i>new</i> keyword is strongly encouraged, eg. <code>registerModule(new myModule());</code>
-     * @param fallback (optional) the fallback module's ID
-     * @return the module's unique ID number (0 for the first registered module, 1 for the second, etc.)               
-     */                      
+		/**
+		 * Registers a module for usage in the application. Unregistered modules cannot be activated. Registering is done only once per application run.<br><i>Note: this method only registers the module, but doesn't activate it. Activation is performed using the UmbraEngine::activateModule(*) methods!</i>
+		 * @param module a pointer to the module to be registered. Creating the module using the <code>new</code> keyword is strongly encouraged, eg. <code>registerModule(new myModule());</code>
+		 * @param fallback (optional) the fallback module's ID
+		 * @return the module's unique ID number (0 for the first registered module, 1 for the second, etc.)
+		 */
 		int registerModule (UmbraModule * module, int fallback = (-1)); //add a module to the modules list. returns id
 		/**
 		 * Registers a font for usage in the application.<br><i>Note: you are encouraged to let the engine register fonts automatically. Please refer to the documentation regarding font autodetection.</i>
-		 * @param column number of character columns in the font image file
+		 * @param columns number of character columns in the font image file
 		 * @param rows number of character rows in the font image file
 		 * @param filename the filename of the font image file
-		 *               		 
+		 * @param flags font layout flags. Please refer to <b>libtcod</b> documentation for more information on font layout flags.
 		 */     		
-    void registerFont (int columns, int rows, const char * filename, int flags = TCOD_FONT_LAYOUT_TCOD);    		
-    bool initialise (TCOD_renderer_t renderer = TCOD_RENDERER_SDL); //initialises the engine
+		void registerFont (int columns, int rows, const char * filename, int flags = TCOD_FONT_LAYOUT_TCOD);
+		bool initialise (TCOD_renderer_t renderer = TCOD_RENDERER_SDL); //initialises the engine
 		void reinitialise (TCOD_renderer_t renderer = TCOD_RENDERER_SDL);
+		/**
+		 * Runs the engine.
+         * @return the result of running the application: <i>0</i> if no errors have occurred, different value otherwise.
+         */
 		int run (); //runs the engine
 
+		/**
+		 * Sets the window title.<br><i>Note: this method is usually called before initialising the engine. Should it be called after the engine has been initialised, the title won't be changed util the engine is reinitialised.</i>
+         * @param title the main program window's new title
+         * @param ... optional printf-like formatting of the title
+         */
 		void setWindowTitle (const char * title, ...);
+		/**
+		 * Sets the window title.<br><i>Note: this method is usually called before initialising the engine. Should it be called after the engine has been initialised, the title won't be changed util the engine is reinitialised.</i>
+         * @param title the main program window's new title
+         */
 		void setWindowTitle (std::string title);
+		/**
+		 * Sets the keyboard mode.
+         * @param mode keyboard mode, as defined in the <code>UmbraKeyboardMode</code> enum.
+         */
 		inline void setKeyboardMode (UmbraKeyboardMode mode) { keyboardMode = mode; }
+		/**
+		 * Pauses or unpauses the engine.
+         * @param pause <code>true</code> if the engine is to be paused, <code>false</code> otherwise
+         */
 		inline void setPause (bool pause) { paused = pause; }
+		/**
+		 * Registers a new keyboard callback.
+         * @param cbk a pointer to the keyboard callback. You're encouraged to create the callback using the <code>new</code> keyword here: <code>registerCallback(new MyCallback());</code>
+         */
 		inline void registerCallback (UmbraCallback * cbk) {callbacks.push(cbk); }
 
 		// register a module for activation next frame, either by id or reference

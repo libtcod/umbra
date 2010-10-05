@@ -42,7 +42,7 @@ class UmbraPoint {
          * Checks whether the point's coordinates match the provided pair.
          * @param px the <i>x</i> coordinate to be compared
          * @param py the <i>y</i> coordinate to be compared
-         * @return <i>true</i> if the coordinates match, <i>false</i> if they don't                 
+         * @return <code>true</code> if the coordinates match, <code>false</code> if they don't
          */   
         inline bool is (int px, int py) { return px == x && py == y; }
         inline bool operator == (const UmbraPoint &p1) { return p1.x == x && p1.y == y; }
@@ -79,13 +79,13 @@ class UmbraRect {
          * Checks whether a set of coordinates is contained within the rectangle.
          * @param px the <i>x</i> coordinate to be checked
          * @param py the <i>y</i> coordinate to be checked
-         * @return <i>true</i> if the coordinates are within the rectangle, <i>false</i> otherwise                 
+         * @return <code>true</code> if the coordinates are within the rectangle, <code>false</code> otherwise
          */                 
         inline bool contains (int px, int py) { return px >= x && px < x+w && py >= y && py < y+h; }
         /**
          * Checks whether a point is contained within the rectangle.
          * @param p the point to be checked
-         * @return <i>true</i> if the point is within the rectangle, <i>false</i> otherwise                  
+         * @return <code>true</code> if the point is within the rectangle, <code>false</code> otherwise
          */
         inline bool contains (const UmbraPoint &p) { return p.x >= x && p.x < x+w && p.y >= y && p.y < y+h; }
 };

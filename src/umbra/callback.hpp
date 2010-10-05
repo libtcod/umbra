@@ -32,8 +32,20 @@ class UmbraCallback {
         virtual ~UmbraCallback () {}
 	protected:
 		UmbraKey key;
+		/**
+		 * Checks whether the collected keyboard event corresponds to the one the callback is listening to.
+         * @param k the keyboard event collected by the engine
+         * @return <code>true</code> if the keyboard events match, <code>false</code> otherwise
+         */
         virtual inline bool evaluate (UmbraKey k) { if (k == key) return true; else return false; }
+		/**
+		 * A pure virtual method (ie. it is mandatory to override it) containing custom code executed whenever the callback encounters a key event it is listening to.
+         */
         virtual void action () = 0;
+		/**
+		 * Fetches a pointer to the engine.
+         * @return a pointer to the engine
+         */
         inline UmbraEngine * getEngine () { return UmbraEngine::getInstance(); }
 };
 

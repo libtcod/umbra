@@ -28,10 +28,26 @@
 class UmbraConfig {
     friend class UmbraEngine;
     private:
-        static bool activateFont (int shift = 0);
+        /**
+		 * Activates a different font
+         * @param shift a number by which the active fot number should be shifted. Can be -1 (switch down) or 1 (switch up). All other numbers will be clamped to these values. A value of 0 results in doing nothing. 
+         * @return <code>true</code> if the font has been successfully changed, <code>false</code> otherwise
+         */
+		static bool activateFont (int shift = 0);
 
-        static void load (const char *fileName); //load config from file
-        static void save (); //save config to file
+		/**
+		 * Loads configuration variables from a config file.
+         * @param fileName the filename (with path to it) of the configuration file
+         */
+        static void load (const char *fileName);
+		/**
+		 * Saves the configuration to a config file. It is called on application exit, so any changes to the configuration are stored.
+         */
+        static void save ();
+		/**
+		 * Adds a font to the registered fonts list
+         * @param _font the font object to be added to the list
+         */
         static void registerFont (UmbraFont * _font);
 
         static int rootWidth;

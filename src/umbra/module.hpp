@@ -29,72 +29,102 @@ enum UmbraModuleStatus { UMBRA_UNINITIALISED, UMBRA_INACTIVE, UMBRA_ACTIVE, UMBR
 
 //all screens or views, such as credits, main menu, map view, etc. have to inherit this
 class UmbraModule {
-    public:
-        UmbraModule (); //constructor
-        virtual ~UmbraModule () {} //destructor
+	public:
+		UmbraModule (); //constructor
+		virtual ~UmbraModule () {} //destructor
 
-        virtual void initialise (); // allocate resources. called only once
-
-        virtual void render () { } //render the module on the root console
-        virtual bool update () { return getActive(); } //update the module's logic
-        virtual void keyboard (TCOD_key_t &key) { } //module-specific keyboard
-        virtual void mouse (TCOD_mouse_t &ms) { } //module-specific mouse
-
-        //setters
-        inline void setFallback (int fback) { fallback = fback; } //set default fallback module's index
-        /**
-         * Activates or deactivates the module.
-         * @param active <i>true</i> if the module is to be activated, <i>false</i> otherwise         
-         */ 
-        void setActive (bool active);
-        /**
-         * Pauses or unpauses the module.
-         * @param paused <i>true</i> if the module is to be paused, <i>false</i> otherwise         
+		/**
+		 * Custom code that is executed once and only once, when the module is activated for the first time.<br>It is used mainly to allocate resources that might be unavailable at the moment of the module's instantiation.
          */
-        void setPause (bool paused);
+		virtual void initialise (); // allocate resources. called only once
+		/**
+		 * Custom code controlling what and how is displayed on the console. Called automatically after <code>update()</code>.
+         */
+		virtual void render () { } //render the module on the root console
+		/**
+		 * Custom code used for updating the module's internal logic. Called automatically before <code>render()</code>.
+         * @return <code>true</code> if the module should remain active, <code>false</code> if it should be deactivated.
+         */
+		virtual bool update () { return getActive(); } //update the module's logic
+		/**
+		 * Implementation of any module-specific keyboard event interpretation. Called automatically.
+         * @param key a reference to the key event object
+         */
+		virtual void keyboard (TCOD_key_t &key) { } //module-specific keyboard
+		/**
+		 * Implementation of any module-specific mouse event interpretation. Called automatically
+         * @param ms a reference to the mouse event object
+         */
+		virtual void mouse (TCOD_mouse_t &ms) { } //module-specific mouse
 
-        //getters
-        
-        /**
-         * Gets the ID number of the fallback module.
-         * @return ID number of the fallback module        
-         */                 
-        inline int getFallback () { return fallback; }
-        /**
-         * Checks whether the module is paused or not.
-         * @return <i>true</i> if the module is paused, <i>false</i> otherwise         
-         */                 
-        inline bool getPause () { return status == UMBRA_PAUSED; }
-        /**
-         * Checks whether the module has been activated.
-         * @return <i>true</i> if the module has been activated, <i>false</i> otherwise         
-         */                 
-        inline bool getActive () { return status > UMBRA_INACTIVE; }
-        /**
-         * Provides a pointer to the engine object.
-         * @return a pointer to the engine object         
-         */ 
-        inline UmbraEngine * getEngine () { return UmbraEngine::getInstance(); }
-		    /**
-         * Checks the module's priority.
-         * @return the module's priority         
-         */ 
-        inline int getPriority() { return priority; }
-        /**
-         * Checks the modul's status.
-         * @return module's status (one of the values from the UmbraModuleStatus enum)        
-         */ 
-		    inline UmbraModuleStatus getStatus () { return status; }
+		//setters
+		/**
+		 * Sets the fallback module. Please refer to Umbra documentation for detailed information about fallbacks.
+         * @param fback the ID of the fallback module.
+         */
+		inline void setFallback (int fback) { fallback = fback; } //set default fallback module's index
+		/**
+		 * Activates or deactivates the module.
+		 * @param active <code>true</code> if the module is to be activated, <code>false</code> otherwise
+		 */
+		void setActive (bool active);
+		/**
+		 * Pauses or unpauses the module.
+		 * @param paused <code>true</code> if the module is to be paused, <code>false</code> otherwise
+		 */
+		void setPause (bool paused);
 
-    protected:
-        // for activation/deactivation custom code
-        virtual void activate() {}
-        virtual void deactivate() {}
-        // for pause/resume custom code
-        virtual void pause() {}
-        virtual void resume() {}
+		//getters
+		/**
+		 * Gets the ID number of the fallback module.
+		 * @return ID number of the fallback module
+		 */
+		inline int getFallback () { return fallback; }
+		/**
+		 * Checks whether the module is paused or not.
+		 * @return <code>true</code> if the module is paused, <code>false</code> otherwise
+		 */
+		inline bool getPause () { return status == UMBRA_PAUSED; }
+		/**
+		 * Checks whether the module has been activated.
+		 * @return <code>true</code> if the module has been activated, <code>false</code> otherwise
+		 */
+		inline bool getActive () { return status > UMBRA_INACTIVE; }
+		/**
+		 * Provides a pointer to the engine object.
+		 * @return a pointer to the engine object
+		 */
+		inline UmbraEngine * getEngine () { return UmbraEngine::getInstance(); }
+			/**
+		 * Checks the module's priority.
+		 * @return the module's priority
+		 */
+		inline int getPriority() { return priority; }
+		/**
+		 * Checks the modul's status.
+		 * @return module's status (one of the values from the UmbraModuleStatus enum)
+		 */
+		inline UmbraModuleStatus getStatus () { return status; }
+
+	protected:
+		/**
+		 * Custom code that is executed each time the module is activated
+		 */
+		virtual void activate() {}
+		/**
+		 * Custom code that is executed each time the module is deactivated
+		 */
+		virtual void deactivate() {}
+		/**
+		 * Custom code that is executed each time the module is paused
+         */
+		virtual void pause() {}
+		/**
+		 * Custom code that is executed each time the module is resumed
+         */
+		virtual void resume() {}
 		int priority; // update order (inverse of render order)
-    private:
-        UmbraModuleStatus status;
-        int fallback; //fallback module's index
+	private:
+		UmbraModuleStatus status;
+		int fallback; //fallback module's index
 };

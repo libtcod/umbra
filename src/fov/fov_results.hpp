@@ -32,8 +32,6 @@ class FovResults : public UmbraWidget {
 		void initialise();
 		void activate();
 		void deactivate();
-		bool update();
-		void render();
 	private:
 		FovSetup * setup;
 };

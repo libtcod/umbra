@@ -30,7 +30,7 @@
 #include "main.hpp"
 
 void FovResults::initialise() {
-	setup = engine.getModule(MOD_SETUP);
+	setup = (FovSetup*)engine.getModule(MOD_SETUP);
 }
 
 void FovResults::activate() {
@@ -39,8 +39,4 @@ void FovResults::activate() {
 
 void FovResults::deactivate() {
 	engine.getModule(MOD_SETUP)->setPause(false);
-}
-
-bool update() {
-
 }

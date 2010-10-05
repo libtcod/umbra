@@ -36,8 +36,11 @@ enum UmbraErrorLevel {
 
 class UmbraError {
     private:
-        static TCODList <std::string*> errors; //list of all errors as strings
-        static void save (); //saves the error log to an external file for further examination
+        static TCODList <std::string*> errors; //list of all errors as C++ strings
+        /**
+		 * Saves the error log to an external file for further examination
+         */
+		static void save ();
 
     public:
         /**
