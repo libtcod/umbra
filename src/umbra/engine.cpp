@@ -189,7 +189,7 @@ void UmbraEngine::activateModule(UmbraModule *module) {
 void UmbraEngine::doActivateModule( UmbraModule *mod ) {
   if (! mod->getActive() ) {
     mod->setActive(true);
-    //mod->setTimeout(module->timeout);
+    //mod->initialiseTimeout();
     //insert the module at the right pos, sorted by priority
 		int idx = 0;
 		while ( idx < activeModules.size() && activeModules.get(idx)->getPriority() < mod->getPriority() ) idx ++;
