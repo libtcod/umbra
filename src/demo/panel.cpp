@@ -28,56 +28,56 @@
 #include "main.hpp"
 
 ButtonQuit::ButtonQuit () {
-    text = "Quit the demonstration.";
+	text = "Quit the demonstration.";
 }
 
 void ButtonQuit::onMouseOver () {
 }
 
 void ButtonQuit::onMouseDown () {
-    engine.deactivateAll();
+	engine.deactivateAll();
 }
 
 Panel::Panel () {
-    width = 24;
-    height = 48;
-    posx = 0;
-    posy = (getEngine()->getRootHeight() - height) / 2;
-    rect.set(posx,posy,width,height);
-    panel = new TCODConsole(width,height);
-    priority = 0; //always on top
-    lastHover = 0;
-    delay = 3000;
-    bQuit.set(this,2,2,20,3,"Quit");
+	width = 24;
+	height = 48;
+	posx = 0;
+	posy = (getEngine()->getRootHeight() - height) / 2;
+	rect.set(posx,posy,width,height);
+	panel = new TCODConsole(width,height);
+	priority = 0; //always on top
+	lastHover = 0;
+	delay = 3000;
+	bQuit.set(this,2,2,20,3,"Quit");
 }
 
 void Panel::render () {
-    panel->setDefaultBackground(TCODColor::darkerGrey);
-    panel->setDefaultForeground(TCODColor::silver);
-    panel->printFrame(0,0,rect.w,rect.h,true,TCOD_BKGND_SET,NULL);
-    if (bQuit.area.mouseHover) panel->setDefaultForeground(TCODColor::white);
-    bQuit.render(panel);
-    TCODConsole::blit(panel,0,0,rect.w,rect.h,TCODConsole::root,posx,posy,1.0f,0.5f);
+	panel->setDefaultBackground(TCODColor::darkerGrey);
+	panel->setDefaultForeground(TCODColor::silver);
+	panel->printFrame(0,0,rect.w,rect.h,true,TCOD_BKGND_SET,NULL);
+	if (bQuit.area.mouseHover) panel->setDefaultForeground(TCODColor::white);
+	bQuit.render(panel);
+	TCODConsole::blit(panel,0,0,rect.w,rect.h,TCODConsole::root,posx,posy,1.0f,0.5f);
 }
 
 bool Panel::update () {
-    uint32 time = TCODSystem::getElapsedMilli();
-    if (rect.mouseHover) {
-        lastHover = time;
-        posx += 3;
-        posx = MIN(posx,0);
-        rect.set(posx,posy,width,height);
-    }
-    else if (time >= lastHover + delay) {
-        posx -= 2;
-        posx = MAX(posx,(-width)+1);
-        rect.set(posx,posy,width,height);
-    }
-    return getActive();
+	uint32 time = TCODSystem::getElapsedMilli();
+	if (rect.mouseHover) {
+		lastHover = time;
+		posx += 3;
+		posx = MIN(posx,0);
+		rect.set(posx,posy,width,height);
+	}
+	else if (time >= lastHover + delay) {
+		posx -= 2;
+		posx = MAX(posx,(-width)+1);
+		rect.set(posx,posy,width,height);
+	}
+	return getActive();
 }
 
 void Panel::mouse (TCOD_mouse_t &ms) {
-    UmbraWidget::mouse(ms);
-    bQuit.mouse(ms);
-    return;
+	UmbraWidget::mouse(ms);
+	bQuit.mouse(ms);
+	return;
 }

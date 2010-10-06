@@ -582,11 +582,12 @@ Please note that this module requires the console emulator to be active, otherwi
 *[[UmbraCallbackScreenshot]]
 *[[UmbraCallbackSpeedometer]]</pre>
 </div>
-<div title="Change log" modifier="Mingos" created="201008111354" modified="201010021205" tags="changeLog" changecount="12">
+<div title="Change log" modifier="Mingos" created="201008111354" modified="201010062012" tags="changeLog" changecount="14">
 <pre>&lt;&lt;tiddler ChangeLogSymbols&gt;&gt;
 !!!Umbra, current HEAD revision
 |!Category|!Committed on|!Change|!Committed by|
 |API|2-Oct-2010|Error reporting now uses error levels|Mingos|
+|NEW|6-Oct-2010|Added timeouts to modules|Mingos|
 !!!Umbra 10.09 Alpha, 19-September-2010
 |!Category|!Committed on|!Change|!Committed by|
 |NEW|19-Sep-2010|First official release of Umbra Engine|Mingos &amp; Jice|</pre>
@@ -1998,7 +1999,7 @@ int moduleGameID = engine.registerModule(new moduleGame());
 UmbraModule * currentModule = engine.getModule(moduleIntroID);
 &lt;/code&gt;</pre>
 </div>
-<div title="Module timeout" modifier="Mingos" created="201010051123" modified="201010051123" tags="issueTracker RFE open" changecount="2">
+<div title="Module timeout" modifier="Mingos" created="201010051123" modified="201010062016" tags="issueTracker RFE closed" changecount="3">
 <pre>There should be an ~UmbraModule method for setting a timeout on a module.
 The module would store the activation time and deactivate itself automatically after the time specified in the timeout has passed.
 Good for things like credits screens that are supposed to be displayed only during a few seconds.</pre>
@@ -2830,6 +2831,16 @@ var dp={sh:{Toolbar:{},Utils:{},RegexLib:{},Brushes:{},Strings:{AboutDialog:&quo
 There needs to be one and only one instance of the engine, no more, no less. After having registered modules, fonts and callbacks and having configured other things the developer might need, the engine can then be initialised. The initialisation process contains a series of self checks and will only be successful if no obstacles are encountered. In case there are problems, an error log will be created in a text file in the working directory. The file will contain the error(s) the engine has encountered.
 
 Once the initialisation is successful, the engine can be run. Running the engine initiates the main program loop. In it, modules are executed, activated and deactivated, mouse and keyboard input is read and so on. This is when the program is actually executed.</pre>
+</div>
+<div title="Timeouts" modifier="Mingos" created="201010061947" modified="201010061947" tags="tutorial module timeout" changecount="3">
+<pre>A timeout is set time period after which a module automatically deactivates itself. The timeout, off by default, can be set by calling the [[UmbraModule::setTimeout]] method. After this is done, the module will initialise its timeout each time it is activated.
+
+The entire process is handled internally, so the only thing the developer needs to worry about is setting the timeout. This is typically done in the module's constructor:
+&lt;code C++&gt;
+MyModule::MyModule() {
+    setTimeout(5000);
+}
+&lt;/code&gt;</pre>
 </div>
 <div title="Umbra Hello World" modifier="Mingos" created="200911082305" modified="201010021621" tags="tutorial basics init" changecount="18">
 <pre>Let's begin with source code for a //Hello world// program. First, let's create the following {{{main.hpp}}} file:
@@ -4260,6 +4271,32 @@ void setPause (
 !Remarks
 Note that when a module is paused or unpaused, [[UmbraModule::pause]] or [[UmbraModule::resume]], respectively, are called in the following iteration of the main application loop.</pre>
 </div>
+<div title="UmbraModule::setTimeout" modifier="Mingos" created="201010061959" tags="api method moduleClass timeout" changecount="1">
+<pre>!Description
+Sets a timeout on the module.
+!Construction
+&lt;code C++&gt;
+void setTimeout (
+    uint32 val
+);
+&lt;/code&gt;
+!Parametres
+*{{{uint32 val}}}: the time the module should remain active before timing out, in milliseconds.
+!Remarks
+All modules and widgets start out without a timeout; it needs to be set up, preferably in the module's constructor.
+In case a timeout has been set and it needs to be removed, it should be set to 0 milliseconds.
+Any changes made to the timeout will be reflected only when the module is activated.
+Once the timeout is set, the engine takes care of it, thus it requires no further attention.
+!Example
+&lt;code C++&gt;
+MyModule::MyModule {
+    //set the timeout to 5 seconds
+    setTimeout(5000);
+}
+&lt;/code&gt;
+!See also
+&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;timeout&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;timeout&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;timeout&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
+</div>
 <div title="UmbraModule::update" modifier="Mingos" created="200911121749" modified="201008111844" tags="api method module moduleClass autoCalling" changecount="11">
 <pre>!Description
 Updates the module's internal logic.
@@ -4274,25 +4311,8 @@ virtual bool update (
 :This method will be called automatically each frame. It shouldn't be called manually, but rather overloaded in each module.
 :The developer is expected to adhere to the rules concerning the return value. Making the method return a value of {{{false}}} will deactivate the module.</pre>
 </div>
-<div title="UmbraModuleMethods" modifier="Mingos" created="201007271154" modified="201008031453" tags="methodlist" changecount="4">
-<pre>*[[UmbraModule::activate]]
-*[[UmbraModule::deactivate]]
-*[[UmbraModule::getActive]]
-*[[UmbraModule::getEngine]]
-*[[UmbraModule::getFallback]]
-*[[UmbraModule::getPause]]
-*[[UmbraModule::getPriority]]
-*[[UmbraModule::getStatus]]
-*[[UmbraModule::initialise]]
-*[[UmbraModule::keyboard]]
-*[[UmbraModule::mouse]]
-*[[UmbraModule::pause]]
-*[[UmbraModule::render]]
-*[[UmbraModule::resume]]
-*[[UmbraModule::setActive]]
-*[[UmbraModule::setFallback]]
-*[[UmbraModule::setPause]]
-*[[UmbraModule::update]]</pre>
+<div title="UmbraModuleMethods" modifier="Mingos" created="201007271154" modified="201010062009" tags="methodlist" changecount="9">
+<pre>&lt;&lt;forEachTiddler where 'tiddler.tags.containsAll([&quot;method&quot;,&quot;moduleClass&quot;])' sortBy 'tiddler.title'&gt;&gt;</pre>
 </div>
 <div title="UmbraModuleStatus" modifier="Mingos" created="201007271045" modified="201007271728" tags="api enum module moduleStatus" changecount="6">
 <pre>!Description
@@ -4651,7 +4671,7 @@ UmbraEngine engine = UmbraEngine(&quot;data/cfg/umbra.txt&quot;,UMBRA_REGISTER_A
 <pre>*[[UmbraWidget::mouse]]
 *[[UmbraWidget::setDragZone]]</pre>
 </div>
-<div title="Using Umbra" modifier="Mingos" created="200910241814" modified="201009091735" tags="tutorial" changecount="33">
+<div title="Using Umbra" modifier="Mingos" created="200910241814" modified="201010061922" tags="tutorial" changecount="34">
 <pre>#Basics
 ##[[Starting a project using Umbra]]
 ##[[Umbra Hello World]]
@@ -4670,6 +4690,7 @@ UmbraEngine engine = UmbraEngine(&quot;data/cfg/umbra.txt&quot;,UMBRA_REGISTER_A
 ##[[Creating a module]]
 ##[[Module ID]]
 ##[[Fallbacks]]
+##[[Timeouts]]
 ##[[Creating a widget]]
 ##Internal modules
 ###[[Speed-o-meter]]

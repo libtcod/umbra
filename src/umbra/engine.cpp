@@ -189,7 +189,7 @@ void UmbraEngine::activateModule(UmbraModule *module) {
 void UmbraEngine::doActivateModule( UmbraModule *mod ) {
   if (! mod->getActive() ) {
     mod->setActive(true);
-    //mod->initialiseTimeout();
+    mod->initialiseTimeout();
     //insert the module at the right pos, sorted by priority
 		int idx = 0;
 		while ( idx < activeModules.size() && activeModules.get(idx)->getPriority() < mod->getPriority() ) idx ++;
@@ -251,96 +251,96 @@ bool UmbraEngine::initialise (TCOD_renderer_t renderer) {
 }
 
 int UmbraEngine::run () {
-    TCOD_key_t key;
-    TCOD_mouse_t mouse;
+	TCOD_key_t key;
+	TCOD_mouse_t mouse;
 
-    if (modules.size() == 0) {
-        UmbraError::add(UMBRA_ERRORLEVEL_FATAL_ERROR,"No modules registered!");
-        displayError();
-        exit(1);
-    }
+	if (modules.size() == 0) {
+		UmbraError::add(UMBRA_ERRORLEVEL_FATAL_ERROR,"No modules registered!");
+		displayError();
+		exit(1);
+	}
 
-    while(!TCODConsole::isWindowClosed()) {
-        //execute only when paused
-        if (paused) {
-            key = TCODConsole::checkForKeypress(TCOD_KEY_RELEASED);
-            keyboard(key);
-            TCODConsole::root->flush();
-            continue; //don't update or render anything anew
-        }
+	while(!TCODConsole::isWindowClosed()) {
+		//execute only when paused
+		if (paused) {
+			key = TCODConsole::checkForKeypress(TCOD_KEY_RELEASED);
+			keyboard(key);
+			TCODConsole::root->flush();
+			continue; //don't update or render anything anew
+		}
 
-        // deactivate modules
-        for (UmbraModule ** mod = toDeactivate.begin(); mod != toDeactivate.end(); mod++) {
-            (*mod)->setActive(false);
-            activeModules.remove(*mod);
-        }
-        toDeactivate.clear();
-        // activate new modules
-        for (UmbraModule ** mod = toActivate.begin(); mod != toActivate.end(); mod++) {
+		// deactivate modules
+		for (UmbraModule ** mod = toDeactivate.begin(); mod != toDeactivate.end(); mod++) {
+			(*mod)->setActive(false);
+			activeModules.remove(*mod);
+		}
+		toDeactivate.clear();
+		// activate new modules
+		for (UmbraModule ** mod = toActivate.begin(); mod != toActivate.end(); mod++) {
 			doActivateModule(*mod);
-        }
-        toActivate.clear();
-        if (activeModules.size() == 0) break; // exit game
-        // update all active modules
-        switch ( keyboardMode ) {
-            case UMBRA_KEYBOARD_WAIT :
-                key = TCODConsole::waitForKeypress( true ) ;
-                break;
-            case UMBRA_KEYBOARD_WAIT_NOFLUSH :
-                key = TCODConsole::waitForKeypress( false ) ;
-                break;
-            case UMBRA_KEYBOARD_PRESSED :
-                key = TCODConsole::checkForKeypress( TCOD_KEY_PRESSED ) ;
-                break;
-            case UMBRA_KEYBOARD_PRESSED_RELEASED :
-                key = TCODConsole::checkForKeypress( TCOD_KEY_PRESSED | TCOD_KEY_RELEASED ) ;
-                break;
-            case UMBRA_KEYBOARD_RELEASED :
-            default :
-                key = TCODConsole::checkForKeypress( TCOD_KEY_RELEASED ) ;
-                break;
-        }
-        mouse = TCODMouse::getStatus();
-        keyboard(key);
-        uint32 startTime=TCODSystem::getElapsedMilli();
+		}
+		toActivate.clear();
+		if (activeModules.size() == 0) break; // exit game
+		// update all active modules
+		switch ( keyboardMode ) {
+			case UMBRA_KEYBOARD_WAIT :
+				key = TCODConsole::waitForKeypress( true ) ;
+				break;
+			case UMBRA_KEYBOARD_WAIT_NOFLUSH :
+				key = TCODConsole::waitForKeypress( false ) ;
+				break;
+			case UMBRA_KEYBOARD_PRESSED :
+				key = TCODConsole::checkForKeypress( TCOD_KEY_PRESSED ) ;
+				break;
+			case UMBRA_KEYBOARD_PRESSED_RELEASED :
+				key = TCODConsole::checkForKeypress( TCOD_KEY_PRESSED | TCOD_KEY_RELEASED ) ;
+				break;
+			case UMBRA_KEYBOARD_RELEASED :
+			default :
+				key = TCODConsole::checkForKeypress( TCOD_KEY_RELEASED ) ;
+				break;
+		}
+		mouse = TCODMouse::getStatus();
+		keyboard(key);
+		uint32 startTime=TCODSystem::getElapsedMilli();
 		// update all active modules by priority order
-	    for (UmbraModule ** mod = activeModules.begin(); mod != activeModules.end(); mod++) {
-	        if (!(*mod)->getPause()) {
-	            // handle input
-	            (*mod)->keyboard(key);
-	            (*mod)->mouse(mouse);
-	            if (!(*mod)->update() ||/* (*mod)->isTimedOut(startTime) ||*/ !(*mod)->getActive()) {
-	                UmbraModule *module=*mod;
-	                int fallback=module->getFallback();
-	                // deactivate module
-	                module->setActive(false);
-	                mod = activeModules.remove(mod);
-	                if (fallback != -1) {
-	                    // register fallback for activation
-	                    UmbraModule *fallbackModule = modules.get(fallback);
-	                    if (fallbackModule != NULL && !fallbackModule->getActive()) toActivate.push(fallbackModule);
-	                }
-	            }
-	        }
-	    }
-	    TCODConsole::root->setDefaultBackground(TCODColor::black);
-        TCODConsole::root->clear();
-        long updateTime=TCODSystem::getElapsedMilli() - startTime;
-        // render active modules by inverted priority order
-	    for (UmbraModule ** mod = activeModules.end(); mod != activeModules.begin(); ) {
+		for (UmbraModule ** mod = activeModules.begin(); mod != activeModules.end(); mod++) {
+			if (!(*mod)->getPause()) {
+				// handle input
+				(*mod)->keyboard(key);
+				(*mod)->mouse(mouse);
+				if ((*mod)->isTimedOut(startTime) || !(*mod)->update() || !(*mod)->getActive()) {
+					UmbraModule *module=*mod;
+					int fallback=module->getFallback();
+					// deactivate module
+					module->setActive(false);
+					mod = activeModules.remove(mod);
+					if (fallback != -1) {
+						// register fallback for activation
+						UmbraModule *fallbackModule = modules.get(fallback);
+						if (fallbackModule != NULL && !fallbackModule->getActive()) toActivate.push(fallbackModule);
+					}
+				}
+			}
+		}
+		TCODConsole::root->setDefaultBackground(TCODColor::black);
+		TCODConsole::root->clear();
+		long updateTime=TCODSystem::getElapsedMilli() - startTime;
+		// render active modules by inverted priority order
+		for (UmbraModule ** mod = activeModules.end(); mod != activeModules.begin(); ) {
 			mod --;
-	        (*mod)->render();
-	    }
-        long renderTime=TCODSystem::getElapsedMilli() - startTime - updateTime;
-        if ( internalModules[UMBRA_INTERNAL_SPEEDOMETER]->getActive() ) {
-            ((UmbraModSpeed *)internalModules[UMBRA_INTERNAL_SPEEDOMETER])->setTimes(updateTime,renderTime);
-        }
-        //flush the screen
-        TCODConsole::root->flush();
-    }
+			(*mod)->render();
+		}
+		long renderTime=TCODSystem::getElapsedMilli() - startTime - updateTime;
+		if ( internalModules[UMBRA_INTERNAL_SPEEDOMETER]->getActive() ) {
+			((UmbraModSpeed *)internalModules[UMBRA_INTERNAL_SPEEDOMETER])->setTimes(updateTime,renderTime);
+		}
+		//flush the screen
+		TCODConsole::root->flush();
+	}
 
-    UmbraConfig::save();
-    return 0;
+	UmbraConfig::save();
+	return 0;
 }
 
 void UmbraEngine::keyboard (TCOD_key_t &key) {

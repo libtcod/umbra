@@ -31,12 +31,8 @@
 class Credits: public UmbraWidget {
     public:
         Credits ();
-        void initialise ();
-        bool update ();
         void render ();
         std::string text;
-        uint32 startTime;
-        uint32 duration;
         TCODConsole * credits;
 };
 

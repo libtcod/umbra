@@ -39,18 +39,7 @@ Credits::Credits () {
            "Simple DirectMedia Layer 1.2.12\n"
            "Copyright (c) Sam Lantinga";
     rect.set(getEngine()->getRootWidth()/2-24,getEngine()->getRootHeight()/2-5,48,11);
-}
-
-void Credits::initialise () {
-    startTime = TCODSystem::getElapsedMilli();
-    duration = 5000;
-}
-
-bool Credits::update () {
-    if (startTime + duration > TCODSystem::getElapsedMilli())
-        return true;
-    else
-        return false;
+	setTimeout(5000);
 }
 
 void Credits::render () {

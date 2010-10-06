@@ -27,7 +27,7 @@
 
 #include "umbra.hpp"
 
-UmbraModule::UmbraModule (): priority(1), status(UMBRA_UNINITIALISED), fallback(-1)/*, timeout(0)*/ {
+UmbraModule::UmbraModule (): priority(1), status(UMBRA_UNINITIALISED), fallback(-1), timeout(0), timeoutEnd(0xffffffff) {
 }
 
 void UmbraModule::initialise () {
@@ -60,7 +60,7 @@ void UmbraModule::setPause (bool paused) {
 	}
 }
 
-//void UmbraModule::initialiseTimeout() {
-//  if (timeout <= 0) return;
-//  timeoutEnd = TCODSystem::getElapsedMilli() + timeout;
-//}
+void UmbraModule::initialiseTimeout() {
+	if (timeout == 0) return;
+	else timeoutEnd = TCODSystem::getElapsedMilli() + timeout;
+}
