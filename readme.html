@@ -909,6 +909,11 @@ else return 1;
 
 The errors are added automatically when something goes wrong inside Umbra, but the developer can also use the log to append custom error messages.</pre>
 </div>
+<div title="Fading support" modifier="Mingos" created="201010062148" tags="issueTracker RFE open" changecount="1">
+<pre>It would be nice to have fading in the modules.
+The general idea is to make the module store the fade value between 0.0 and 1.0, without actually implementing any visual effects (because fading can mean any effect: opacity change, whiteout/blackout, console position change, displayed area change...).
+It is not yet certain how the mechanism should work. To be discussed.</pre>
+</div>
 <div title="Fallbacks" modifier="Mingos" created="200911091937" modified="201007271701" tags="tutorial module fallback" changecount="12">
 <pre>A fallback (not to be confused with a callback) is a simple integer ID number that can be assigned to any registered module.
 
