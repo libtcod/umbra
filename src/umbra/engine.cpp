@@ -187,9 +187,10 @@ void UmbraEngine::activateModule(UmbraModule *module) {
 
 // the internal function actually putting a module in active list
 void UmbraEngine::doActivateModule( UmbraModule *mod ) {
-    if (! mod->getActive() ) {
-        mod->setActive(true);
-		// insert the module at the right pos, sorted by priority
+  if (! mod->getActive() ) {
+    mod->setActive(true);
+    //mod->setTimeout(module->timeout);
+    //insert the module at the right pos, sorted by priority
 		int idx = 0;
 		while ( idx < activeModules.size() && activeModules.get(idx)->getPriority() < mod->getPriority() ) idx ++;
         activeModules.insertBefore(mod,idx);
@@ -308,7 +309,7 @@ int UmbraEngine::run () {
 	            // handle input
 	            (*mod)->keyboard(key);
 	            (*mod)->mouse(mouse);
-	            if (!(*mod)->update() || !(*mod)->getActive()) {
+	            if (!(*mod)->update() ||/* (*mod)->isTimedOut(startTime) ||*/ !(*mod)->getActive()) {
 	                UmbraModule *module=*mod;
 	                int fallback=module->getFallback();
 	                // deactivate module

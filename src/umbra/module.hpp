@@ -63,7 +63,10 @@ class UmbraModule {
          * @param fback the ID of the fallback module.
          */
 		inline void setFallback (int fback) { fallback = fback; } //set default fallback module's index
-		/**
+		
+    //inline void setTimeout (uint32 val) { timeout = val; }
+    
+    /**
 		 * Activates or deactivates the module.
 		 * @param active <code>true</code> if the module is to be activated, <code>false</code> otherwise
 		 */
@@ -101,7 +104,7 @@ class UmbraModule {
 		 */
 		inline int getPriority() { return priority; }
 		/**
-		 * Checks the modul's status.
+		 * Checks the module's status.
 		 * @return module's status (one of the values from the UmbraModuleStatus enum)
 		 */
 		inline UmbraModuleStatus getStatus () { return status; }
@@ -125,6 +128,11 @@ class UmbraModule {
 		virtual void resume() {}
 		int priority; // update order (inverse of render order)
 	private:
+    //friend class UmbraEngine;
 		UmbraModuleStatus status;
 		int fallback; //fallback module's index
+		//uint32 timeout;
+		//uint32 timeoutEnd;
+		//void initialiseTimeout();
+		//inline bool isTimedOut(uint32 currentTime) { return (timeoutEnd > currentTime) ? false : true; }
 };
