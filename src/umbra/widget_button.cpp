@@ -28,50 +28,50 @@
 #include "umbra.hpp"
 
 UmbraButton::UmbraButton () {
-    parent = NULL;
-    area.set(0,0,0,0);
-    tag = "";
-    visible = true;
+	parent = NULL;
+	area.set(0,0,0,0);
+	tag = "";
+	visible = true;
 }
 
 UmbraButton::UmbraButton (UmbraWidget * parent, int x, int y, int w, int h, const char * tag) {
-    this->parent = parent;
-    area.set(x, y, w, h);
-    this->tag = tag;
-    visible = true;
+	this->parent = parent;
+	area.set(x, y, w, h);
+	this->tag = tag;
+	visible = true;
 }
 
 void UmbraButton::set (UmbraWidget * parent, int x, int y, int w, int h, const char * tag) {
-    this->parent = parent;
-    area.set(x, y, w, h);
-    this->tag = tag;
-    visible = true;
+	this->parent = parent;
+	area.set(x, y, w, h);
+	this->tag = tag;
+	visible = true;
 }
 
 void UmbraButton::mouse (TCOD_mouse_t &ms) {
-    if (!visible)
-        return;
-    if (area.contains(ms.cx-parent->rect.x, ms.cy-parent->rect.y)) {
-        area.mouseHover = true;
-        onMouseOver();
-    }
-    else
-        area.mouseHover = false;
-    if (area.mouseHover && ms.lbutton) {
-        area.mouseDown = true;
-        ms.lbutton_pressed=false;
-        onMouseDown();
-    }
-    else area.mouseDown = false;
+	if (!visible)
+		return;
+	if (area.contains(ms.cx-parent->rect.x, ms.cy-parent->rect.y)) {
+		area.mouseHover = true;
+		onMouseOver();
+	}
+	else
+		area.mouseHover = false;
+	if (area.mouseHover && ms.lbutton) {
+		area.mouseDown = true;
+		ms.lbutton_pressed=false;
+		onMouseDown();
+	}
+	else area.mouseDown = false;
 }
 
 void UmbraButton::render (TCODConsole * con) {
-    if (!visible)
-        return;
-    TCODColor col=con->getDefaultForeground();
-    con->setDefaultForeground(area.mouseHover ? TCODColor::white : TCODColor::lighterBlue);
-    con->printFrame(area.x,area.y,area.w,area.h,false,TCOD_BKGND_NONE,NULL);
-    if (!tag.empty())
-        con->printRectEx(area.x+(area.w/2),area.y+(area.h/2),area.w-2,area.h-2,TCOD_BKGND_NONE,TCOD_CENTER,tag.c_str());
-    con->setDefaultForeground(col);
+	if (!visible)
+		return;
+	TCODColor col=con->getDefaultForeground();
+	con->setDefaultForeground(area.mouseHover ? TCODColor::white : TCODColor::lighterBlue);
+	con->printFrame(area.x,area.y,area.w,area.h,false,TCOD_BKGND_NONE,NULL);
+	if (!tag.empty())
+		con->printRectEx(area.x+(area.w/2),area.y+(area.h/2),area.w-2,area.h-2,TCOD_BKGND_NONE,TCOD_CENTER,tag.c_str());
+	con->setDefaultForeground(col);
 }

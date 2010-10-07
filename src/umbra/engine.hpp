@@ -42,8 +42,8 @@ class UmbraKey {
 		 * @param c a printable character key. Set to 0 if none is expected
 		 * @param alt boolean indicating whether the alt key is expected to be pressed
 		 * @param ctrl boolean indicating whether the ctrl key is expected to be pressed
-		 * @param shift boolean indicating whether the shift key is expected to be pressed                   		 
-		 */     		
+		 * @param shift boolean indicating whether the shift key is expected to be pressed
+		 */
 		inline void assign (TCOD_keycode_t vk, char c, bool alt, bool ctrl, bool shift) { this->vk=vk; this->c=c; this->alt=alt; this->ctrl=ctrl; this->shift=shift; }
 		inline bool operator == (const UmbraKey &k1) { return memcmp (this, &k1, sizeof(UmbraKey)) == 0; }
 	private:
@@ -69,10 +69,10 @@ enum UmbraInternalModuleID {
 };
 
 enum UmbraRegisterCallbackFlag {
-	UMBRA_REGISTER_NONE       = 0x00000000,
-	UMBRA_REGISTER_DEFAULT    = 0x00000001,
+	UMBRA_REGISTER_NONE	   = 0x00000000,
+	UMBRA_REGISTER_DEFAULT	= 0x00000001,
 	UMBRA_REGISTER_ADDITIONAL = 0x00000002,
-	UMBRA_REGISTER_ALL        = 0xFFFFFFFF
+	UMBRA_REGISTER_ALL		= 0xFFFFFFFF
 };
 
 //the main engine
@@ -94,41 +94,41 @@ class UmbraEngine {
 		 * @param rows number of character rows in the font image file
 		 * @param filename the filename of the font image file
 		 * @param flags font layout flags. Please refer to <b>libtcod</b> documentation for more information on font layout flags.
-		 */     		
+		 */
 		void registerFont (int columns, int rows, const char * filename, int flags = TCOD_FONT_LAYOUT_TCOD);
 		bool initialise (TCOD_renderer_t renderer = TCOD_RENDERER_SDL); //initialises the engine
 		void reinitialise (TCOD_renderer_t renderer = TCOD_RENDERER_SDL);
 		/**
 		 * Runs the engine.
-         * @return the result of running the application: <i>0</i> if no errors have occurred, different value otherwise.
-         */
+		 * @return the result of running the application: <i>0</i> if no errors have occurred, different value otherwise.
+		 */
 		int run (); //runs the engine
 
 		/**
 		 * Sets the window title.<br><i>Note: this method is usually called before initialising the engine. Should it be called after the engine has been initialised, the title won't be changed util the engine is reinitialised.</i>
-         * @param title the main program window's new title
-         * @param ... optional printf-like formatting of the title
-         */
+		 * @param title the main program window's new title
+		 * @param ... optional printf-like formatting of the title
+		 */
 		void setWindowTitle (const char * title, ...);
 		/**
 		 * Sets the window title.<br><i>Note: this method is usually called before initialising the engine. Should it be called after the engine has been initialised, the title won't be changed util the engine is reinitialised.</i>
-         * @param title the main program window's new title
-         */
+		 * @param title the main program window's new title
+		 */
 		void setWindowTitle (std::string title);
 		/**
 		 * Sets the keyboard mode.
-         * @param mode keyboard mode, as defined in the <code>UmbraKeyboardMode</code> enum.
-         */
+		 * @param mode keyboard mode, as defined in the <code>UmbraKeyboardMode</code> enum.
+		 */
 		inline void setKeyboardMode (UmbraKeyboardMode mode) { keyboardMode = mode; }
 		/**
 		 * Pauses or unpauses the engine.
-         * @param pause <code>true</code> if the engine is to be paused, <code>false</code> otherwise
-         */
+		 * @param pause <code>true</code> if the engine is to be paused, <code>false</code> otherwise
+		 */
 		inline void setPause (bool pause) { paused = pause; }
 		/**
 		 * Registers a new keyboard callback.
-         * @param cbk a pointer to the keyboard callback. You're encouraged to create the callback using the <code>new</code> keyword here: <code>registerCallback(new MyCallback());</code>
-         */
+		 * @param cbk a pointer to the keyboard callback. You're encouraged to create the callback using the <code>new</code> keyword here: <code>registerCallback(new MyCallback());</code>
+		 */
 		inline void registerCallback (UmbraCallback * cbk) {callbacks.push(cbk); }
 
 		// register a module for activation next frame, either by id or reference

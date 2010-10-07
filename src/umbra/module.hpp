@@ -35,38 +35,38 @@ class UmbraModule {
 
 		/**
 		 * Custom code that is executed once and only once, when the module is activated for the first time.<br>It is used mainly to allocate resources that might be unavailable at the moment of the module's instantiation.
-         */
+		 */
 		virtual void initialise (); // allocate resources. called only once
 		/**
 		 * Custom code controlling what and how is displayed on the console. Called automatically after <code>update()</code>.
-         */
+		 */
 		virtual void render () { } //render the module on the root console
 		/**
 		 * Custom code used for updating the module's internal logic. Called automatically before <code>render()</code>.
-         * @return <code>true</code> if the module should remain active, <code>false</code> if it should be deactivated.
-         */
+		 * @return <code>true</code> if the module should remain active, <code>false</code> if it should be deactivated.
+		 */
 		virtual bool update () { return getActive(); } //update the module's logic
 		/**
 		 * Implementation of any module-specific keyboard event interpretation. Called automatically.
-         * @param key a reference to the key event object
-         */
+		 * @param key a reference to the key event object
+		 */
 		virtual void keyboard (TCOD_key_t &key) { } //module-specific keyboard
 		/**
 		 * Implementation of any module-specific mouse event interpretation. Called automatically
-         * @param ms a reference to the mouse event object
-         */
+		 * @param ms a reference to the mouse event object
+		 */
 		virtual void mouse (TCOD_mouse_t &ms) { } //module-specific mouse
 
 		//setters
 		/**
 		 * Sets the fallback module. Please refer to Umbra documentation for detailed information about fallbacks.
-         * @param fback the ID of the fallback module.
-         */
+		 * @param fback the ID of the fallback module.
+		 */
 		inline void setFallback (int fback) { fallback = fback; } //set default fallback module's index
 		/**
 		 * Sets the module's timeout.
 		 * @param val the number of milliseconds that the module will be allowed to run before timing out. Set to 0 if the timeout is to be removed.		 
-		 */     		
+		 */
 		inline void setTimeout (uint32 val) { timeout = val; }
 		/**
 		 * Activates or deactivates the module.
@@ -122,11 +122,11 @@ class UmbraModule {
 		virtual void deactivate() {}
 		/**
 		 * Custom code that is executed each time the module is paused
-         */
+		 */
 		virtual void pause() {}
 		/**
 		 * Custom code that is executed each time the module is resumed
-         */
+		 */
 		virtual void resume() {}
 		int priority; // update order (inverse of render order)
 	private:

@@ -31,17 +31,17 @@ class UmbraWidget;
 class UmbraRect;
 
 class UmbraCheckbox {
-    public:
-        UmbraCheckbox ();
-        virtual ~UmbraCheckbox () {}
-        UmbraCheckbox (UmbraWidget * parent, int x, int y, int w, int h, const char * tag = "");
-        void set (UmbraWidget * parent, int x, int y, int w, int h, const char * tag = "");
-        UmbraRect area; //the rectangle where the object is contained
-        UmbraWidget * parent; //reference to the widget that contains the object
-        bool visible; //visibility (can be toggled)
-        bool checked;
-        std::string tag;
-        void render (TCODConsole * con);
-        void mouse (TCOD_mouse_t &ms); //checks the status
-        virtual void onMouseOver () {} //custom code launched when mouse cursor is over the checkbox area
+	public:
+		UmbraCheckbox ();
+		virtual ~UmbraCheckbox () {}
+		UmbraCheckbox (UmbraWidget * parent, int x, int y, int w, int h, const char * tag = "");
+		void set (UmbraWidget * parent, int x, int y, int w, int h, const char * tag = "");
+		UmbraRect area; //the rectangle where the object is contained
+		UmbraWidget * parent; //reference to the widget that contains the object
+		bool visible; //visibility (can be toggled)
+		bool checked;
+		std::string tag;
+		void render (TCODConsole * con);
+		void mouse (TCOD_mouse_t &ms); //checks the status
+		virtual void onMouseOver () {} //custom code launched when mouse cursor is over the checkbox area
 };

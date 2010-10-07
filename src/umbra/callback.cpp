@@ -29,62 +29,62 @@
 
 //quit program
 UmbraCallbackQuit::UmbraCallbackQuit () {
-    key2.assign(TCODK_F4,0,true,false,false);
-    key.assign(TCODK_CHAR,'q',false,true,false);
+	key2.assign(TCODK_F4,0,true,false,false);
+	key.assign(TCODK_CHAR,'q',false,true,false);
 }
 
 void UmbraCallbackQuit::action () {
-    getEngine()->deactivateAll();
+	getEngine()->deactivateAll();
 }
 
 //switch fullscreen
 UmbraCallbackFullscreen::UmbraCallbackFullscreen () {
-    key.assign(TCODK_ENTER,'\r',true,false,false);
+	key.assign(TCODK_ENTER,'\r',true,false,false);
 }
 
 void UmbraCallbackFullscreen::action () {
-    TCODConsole::setFullscreen(!TCODConsole::isFullscreen());
+	TCODConsole::setFullscreen(!TCODConsole::isFullscreen());
 }
 
 //save screenshot
 UmbraCallbackScreenshot::UmbraCallbackScreenshot () {
-    key.assign(TCODK_PRINTSCREEN,0,false,false,false);
+	key.assign(TCODK_PRINTSCREEN,0,false,false,false);
 }
 
 void UmbraCallbackScreenshot::action () {
-    TCODSystem::saveScreenshot(NULL);
+	TCODSystem::saveScreenshot(NULL);
 }
 
 //switch font up
 UmbraCallbackFontUp::UmbraCallbackFontUp () {
-    key.assign(TCODK_PAGEUP,0,false,false,false);
+	key.assign(TCODK_PAGEUP,0,false,false,false);
 }
 
 void UmbraCallbackFontUp::action () {
-    if (getEngine()->activateFont(1)) getEngine()->reinitialise();
+	if (getEngine()->activateFont(1)) getEngine()->reinitialise();
 }
 
 //switch font down
 UmbraCallbackFontDown::UmbraCallbackFontDown () {
-    key.assign(TCODK_PAGEDOWN,0,false,false,false);
+	key.assign(TCODK_PAGEDOWN,0,false,false,false);
 }
 
 void UmbraCallbackFontDown::action () {
-    if (getEngine()->activateFont(-1)) getEngine()->reinitialise();
+	if (getEngine()->activateFont(-1)) getEngine()->reinitialise();
 }
 
 //pause the program
 UmbraCallbackPause::UmbraCallbackPause () {
-    key.assign(TCODK_PAUSE,0,false,false,false);
+	key.assign(TCODK_PAUSE,0,false,false,false);
 }
 
 void UmbraCallbackPause::action () {
-    getEngine()->setPause(!getEngine()->getPause());
+	getEngine()->setPause(!getEngine()->getPause());
 }
 
 //pause the program
 UmbraCallbackSpeedometer::UmbraCallbackSpeedometer () {
-    key.assign(TCODK_F5,0,false,false,false);
+	key.assign(TCODK_F5,0,false,false,false);
 }
 
 void UmbraCallbackSpeedometer::action () {

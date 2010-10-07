@@ -29,16 +29,16 @@
 #include <string>
 
 UmbraFont::UmbraFont () {
-    std::string _filename;
-    _filename = "NULL";
-    _columns = 0;
-    _rows = 0;
-    _flags = 0;
+	std::string _filename;
+	_filename = "NULL";
+	_columns = 0;
+	_rows = 0;
+	_flags = 0;
 }
 
 void UmbraFont::initialise (int c, int r, const char * fn, int f) {
-    _columns = c;
-    _rows = r;
-    _flags = f;
-    _filename = fn;
+	_columns = c;
+	_rows = r;
+	_flags = f;
+	_filename = fn;
 }

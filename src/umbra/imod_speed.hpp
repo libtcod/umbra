@@ -26,20 +26,20 @@
 */
 
 class UmbraModSpeed: public UmbraWidget {
-  public:
-    UmbraModSpeed ();
-    /**
-     * Gathers data about time useage.
-     * @return <code>true</code> if Speedo is to continue active, <code>false</code> it it should be deactivated                  
-     */                 
-    bool update ();
-    /**
-     * Displays the Speedo widget.
-     */                 
-    void render ();
-    /**
-     * Parses mouse input.
-     */         
+	public:
+		UmbraModSpeed ();
+		/**
+		 * Gathers data about time useage.
+		 * @return <code>true</code> if Speedo is to continue active, <code>false</code> it it should be deactivated
+		 */
+		bool update ();
+		/**
+		 * Displays the Speedo widget.
+		 */
+		void render ();
+		/**
+		 * Parses mouse input.
+		 */
 		void mouse (TCOD_mouse_t &ms);
 		/**
 		 * Sets the minimised state of the widget.
@@ -47,19 +47,19 @@ class UmbraModSpeed: public UmbraWidget {
 		 */     		
 		inline void setMinimised(bool val) { isMinimised=val; }
 	protected:         
-    void activate ();
-    void deactivate ();
-  private:
-    friend class UmbraEngine;
-    // timebar stuff         
-    void setTimes(long updateTime, long renderTime); // this is called by engine each frame
-    float cumulatedElapsed;
-    float updateTime;
-    float renderTime;
-    int updatePer, renderPer, sysPer;
-    TCODImage *timeBar;
-    TCODConsole * speed;
-    int fps;
+		void activate ();
+		void deactivate ();
+	private:
+		friend class UmbraEngine;
+		// timebar stuff
+		void setTimes(long updateTime, long renderTime); // this is called by engine each frame
+		float cumulatedElapsed;
+		float updateTime;
+		float renderTime;
+		int updatePer, renderPer, sysPer;
+		TCODImage *timeBar;
+		TCODConsole * speed;
+		int fps;
 		bool isMinimised;
 };
 

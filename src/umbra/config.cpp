@@ -39,90 +39,86 @@ const char * UmbraConfig::fileName = NULL;
 const char * UmbraConfig::fontDir = NULL;
 
 void UmbraConfig::load (const char *fileName) {
-    static bool loaded = false;
-    if (loaded && strcmp(UmbraConfig::fileName, fileName) == 0) return;
-    TCODParser parser;
+	static bool loaded = false;
+	if (loaded && strcmp(UmbraConfig::fileName, fileName) == 0) return;
+	TCODParser parser;
 
-    UmbraConfig::fileName = strdup(fileName);
-    //register configuration variables
-    TCODParserStruct * config = parser.newStructure("config");
-        config->addProperty("rootWidth",TCOD_TYPE_INT,true);
-        config->addProperty("rootHeight",TCOD_TYPE_INT,true);
-        config->addProperty("fontID",TCOD_TYPE_INT,true);
-        config->addProperty("fullScreen",TCOD_TYPE_BOOL,true);
-        config->addProperty("debug",TCOD_TYPE_BOOL,true);
-        // optional custom font directory
-        config->addProperty("fontDir",TCOD_TYPE_STRING,false);
+	UmbraConfig::fileName = strdup(fileName);
+	//register configuration variables
+	TCODParserStruct * config = parser.newStructure("config");
+		config->addProperty("rootWidth",TCOD_TYPE_INT,true);
+		config->addProperty("rootHeight",TCOD_TYPE_INT,true);
+		config->addProperty("fontID",TCOD_TYPE_INT,true);
+		config->addProperty("fullScreen",TCOD_TYPE_BOOL,true);
+		config->addProperty("debug",TCOD_TYPE_BOOL,true);
+		// optional custom font directory
+		config->addProperty("fontDir",TCOD_TYPE_STRING,false);
 
-    //check if the config file exists
-    if (!UmbraError::fileExists(fileName)) {
-        UmbraError::add(UMBRA_ERRORLEVEL_FATAL_ERROR,"Configuration file %s is bad or missing.", fileName );
-        exit(1); //replace by loading defaults or automatic default config file generator
-    }
+	//check if the config file exists
+	if (!UmbraError::fileExists(fileName)) {
+		UmbraError::add(UMBRA_ERRORLEVEL_FATAL_ERROR,"Configuration file %s is bad or missing.", fileName );
+		exit(1); //replace by loading defaults or automatic default config file generator
+	}
 
-    //run the parser
-    parser.run(fileName,NULL);
+	//run the parser
+	parser.run(fileName,NULL);
 
-    //assign parsed values to class variables
-    rootWidth = parser.getIntProperty("config.rootWidth");
-    rootHeight = parser.getIntProperty("config.rootHeight");
-    fontID = parser.getIntProperty("config.fontID");
-    fullScreen = parser.getBoolProperty("config.fullScreen");
-    debug = parser.getBoolProperty("config.debug");
-    fontDir = parser.getStringProperty("config.fontDir");
-    if ( fontDir != NULL ) {
-        fontDir = strdup(fontDir);
-    } else {
-        // default value
-        fontDir = "data/img";
-    }
+	//assign parsed values to class variables
+	rootWidth = parser.getIntProperty("config.rootWidth");
+	rootHeight = parser.getIntProperty("config.rootHeight");
+	fontID = parser.getIntProperty("config.fontID");
+	fullScreen = parser.getBoolProperty("config.fullScreen");
+	debug = parser.getBoolProperty("config.debug");
+	fontDir = parser.getStringProperty("config.fontDir");
+	if ( fontDir != NULL )
+		fontDir = strdup(fontDir);
+	else
+		fontDir = "data/img"; // default value
 
-    loaded = true;
+	loaded = true;
 }
 
 void UmbraConfig::save () {
-    FILE * out;
-    out = fopen(fileName,"w");
+	FILE * out;
+	out = fopen(fileName,"w");
 
-    fprintf(out,"/*\n"
-                " * UMBRA CONFIGURATION FILE\n"
-                " */\n"
-                "\n"
-                "config {\n"
-                "  rootWidth = %d\n"
-                "  rootHeight = %d\n"
-                "  fontID = %d\n"
-                "  fullScreen = %s\n"
-                "  debug = %s\n"
-                "  fontDir = \"%s\"\n"
-                "}\n",
-                rootWidth,
-                rootHeight,
-                fontID,
-                (TCODConsole::isFullscreen()?"true":"false"),
-                (debug?"true":"false"),
-                fontDir);
+	fprintf(out,"/*\n"
+	            " * UMBRA CONFIGURATION FILE\n"
+	            " */\n"
+	            "\n"
+	            "config {\n"
+	            "  rootWidth = %d\n"
+	            "  rootHeight = %d\n"
+	            "  fontID = %d\n"
+	            "  fullScreen = %s\n"
+	            "  debug = %s\n"
+	            "  fontDir = \"%s\"\n"
+	            "}\n",
+	            rootWidth,
+	            rootHeight,
+	            fontID,
+	            (TCODConsole::isFullscreen()?"true":"false"),
+	            (debug?"true":"false"),
+	            fontDir);
 
-    fclose(out);
+	fclose(out);
 }
 
 void UmbraConfig::registerFont (UmbraFont * _font) {
-    fonts.push(_font);
+	fonts.push(_font);
 }
 
 bool UmbraConfig::activateFont (int shift) {
-    int s = CLAMP(-1,1,shift);
-    //check if there are any registered fonts
-    if (fonts.size() == 0) {
-        // can happen if a user uses the default terminal.png without registering any font
-        return false;
-    }
-    //check if the requested ID isn't out of range
-    if (fontID+s < 0 || fontID+s >= fonts.size()) return false;
-    //check if the font needs changing at all
-    if (font != NULL && s == 0) return false;
-    //register the font
-    font = fonts.get(fontID+s);
-    fontID += s;
-    return true;
+	int s = CLAMP(-1,1,shift);
+	//check if there are any registered fonts
+	if (fonts.size() == 0)
+		return false; // can happen if a user uses the default terminal.png without registering any font
+	//check if the requested ID isn't out of range
+	if (fontID+s < 0 || fontID+s >= fonts.size()) return false;
+	//check if the font needs changing at all
+	if (font != NULL && s == 0) return false;
+	//register the font
+	font = fonts.get(fontID+s);
+	fontID += s;
+	return true;
 }

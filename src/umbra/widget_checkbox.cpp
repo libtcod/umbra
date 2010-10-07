@@ -28,56 +28,56 @@
 #include "umbra.hpp"
 
 UmbraCheckbox::UmbraCheckbox () {
-    parent = NULL;
-    area.set(0,0,0,0);
-    tag = "";
-    checked = false;
-    visible = true;
+	parent = NULL;
+	area.set(0,0,0,0);
+	tag = "";
+	checked = false;
+	visible = true;
 }
 
 UmbraCheckbox::UmbraCheckbox (UmbraWidget * parent, int x, int y, int w, int h, const char * tag) {
-    this->parent = parent;
-    area.set(x, y, w, h);
-    this->tag = tag;
-    checked = false;
-    visible = true;
+	this->parent = parent;
+	area.set(x, y, w, h);
+	this->tag = tag;
+	checked = false;
+	visible = true;
 }
 
 void UmbraCheckbox::set (UmbraWidget * parent, int x, int y, int w, int h, const char * tag) {
-    this->parent = parent;
-    area.set(x, y, w, h);
-    this->tag = tag;
-    checked = false;
-    visible = true;
+	this->parent = parent;
+	area.set(x, y, w, h);
+	this->tag = tag;
+	checked = false;
+	visible = true;
 }
 
 void UmbraCheckbox::mouse (TCOD_mouse_t &ms) {
-    if (!visible)
-        return;
-    if (area.contains(ms.cx-parent->rect.x, ms.cy-parent->rect.y)) {
-        area.mouseHover = true;
-        onMouseOver();
-    }
-    else
-        area.mouseHover = false;
-    if (area.mouseHover && ms.lbutton_pressed) {
-        area.mouseDown = true;
-        checked = !checked;
-        ms.lbutton_pressed=false;
-    }
-    else area.mouseDown = false;
+	if (!visible)
+		return;
+	if (area.contains(ms.cx-parent->rect.x, ms.cy-parent->rect.y)) {
+		area.mouseHover = true;
+		onMouseOver();
+	}
+	else
+		area.mouseHover = false;
+	if (area.mouseHover && ms.lbutton_pressed) {
+		area.mouseDown = true;
+		checked = !checked;
+		ms.lbutton_pressed=false;
+	}
+	else area.mouseDown = false;
 }
 
 void UmbraCheckbox::render (TCODConsole * con) {
-    if (!visible)
-        return;
-    TCODColor col=con->getDefaultForeground();
-    con->setDefaultForeground(area.mouseHover ? TCODColor::white : TCODColor::lighterBlue);
-    if (checked)
-        con->putChar(area.x,area.y,TCOD_CHAR_CHECKBOX_SET,TCOD_BKGND_NONE);
-    else
-        con->putChar(area.x,area.y,TCOD_CHAR_CHECKBOX_UNSET,TCOD_BKGND_NONE);
-    if (!tag.empty())
-        con->printRectEx(area.x+2, area.y, area.w-2, area.h, TCOD_BKGND_NONE, TCOD_LEFT, tag.c_str());
-    con->setDefaultForeground(col);
+	if (!visible)
+		return;
+	TCODColor col=con->getDefaultForeground();
+	con->setDefaultForeground(area.mouseHover ? TCODColor::white : TCODColor::lighterBlue);
+	if (checked)
+		con->putChar(area.x,area.y,TCOD_CHAR_CHECKBOX_SET,TCOD_BKGND_NONE);
+	else
+		con->putChar(area.x,area.y,TCOD_CHAR_CHECKBOX_UNSET,TCOD_BKGND_NONE);
+	if (!tag.empty())
+		con->printRectEx(area.x+2, area.y, area.w-2, area.h, TCOD_BKGND_NONE, TCOD_LEFT, tag.c_str());
+	con->setDefaultForeground(col);
 }

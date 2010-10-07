@@ -31,17 +31,17 @@ class UmbraWidget;
 class UmbraRect;
 
 class UmbraButton {
-    public:
-        UmbraButton ();
-        virtual ~UmbraButton() {}
-        UmbraButton (UmbraWidget * parent, int x, int y, int w, int h, const char * tag = "");
-        void set (UmbraWidget * parent, int x, int y, int w, int h, const char * tag = "");
-        UmbraRect area; //the rectangle where the object is contained
-        UmbraWidget * parent; //reference to the widget that contains the object
-        bool visible; //visibility (can be toggled)
-        std::string tag;
-        virtual void render (TCODConsole * con);
-        void mouse (TCOD_mouse_t &ms); //checks the status
-        virtual void onMouseDown () {} //custom code executed after a button press
-        virtual void onMouseOver () {} //custom code executed when the mouse is hovering
+	public:
+		UmbraButton ();
+		virtual ~UmbraButton() {}
+		UmbraButton (UmbraWidget * parent, int x, int y, int w, int h, const char * tag = "");
+		void set (UmbraWidget * parent, int x, int y, int w, int h, const char * tag = "");
+		UmbraRect area; //the rectangle where the object is contained
+		UmbraWidget * parent; //reference to the widget that contains the object
+		bool visible; //visibility (can be toggled)
+		std::string tag;
+		virtual void render (TCODConsole * con);
+		void mouse (TCOD_mouse_t &ms); //checks the status
+		virtual void onMouseDown () {} //custom code executed after a button press
+		virtual void onMouseOver () {} //custom code executed when the mouse is hovering
 };

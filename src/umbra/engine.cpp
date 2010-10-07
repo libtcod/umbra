@@ -34,36 +34,36 @@ UmbraEngine * UmbraEngine::engineInstance = NULL;
 
 //constructor
 UmbraEngine::UmbraEngine (const char *fileName, UmbraRegisterCallbackFlag flag): keyboardMode(UMBRA_KEYBOARD_RELEASED) {
-    //load configuration variables
-    UmbraConfig::load(fileName);
+	//load configuration variables
+	UmbraConfig::load(fileName);
 
-    paused = false;
-    setWindowTitle("%s ver. %s (%s)", UMBRA_TITLE, UMBRA_VERSION, UMBRA_STATUS);
-    engineInstance = this;
-    //register internal modules
-    registerInternalModule(UMBRA_INTERNAL_SPEEDOMETER,new UmbraModSpeed());
-    registerInternalModule(UMBRA_INTERNAL_BSOD,new UmbraModBSOD());
-    //register default callbacks
-    if (flag & UMBRA_REGISTER_DEFAULT) {
-        registerCallback(new UmbraCallbackQuit());
-        registerCallback(new UmbraCallbackFullscreen());
-        registerCallback(new UmbraCallbackScreenshot());
-        registerCallback(new UmbraCallbackFontUp());
-        registerCallback(new UmbraCallbackFontDown());
-        registerCallback(new UmbraCallbackPause());
-    }
-    if (flag & UMBRA_REGISTER_ADDITIONAL) {
-        registerCallback(new UmbraCallbackSpeedometer());
-    }
+	paused = false;
+	setWindowTitle("%s ver. %s (%s)", UMBRA_TITLE, UMBRA_VERSION, UMBRA_STATUS);
+	engineInstance = this;
+	//register internal modules
+	registerInternalModule(UMBRA_INTERNAL_SPEEDOMETER,new UmbraModSpeed());
+	registerInternalModule(UMBRA_INTERNAL_BSOD,new UmbraModBSOD());
+	//register default callbacks
+	if (flag & UMBRA_REGISTER_DEFAULT) {
+		registerCallback(new UmbraCallbackQuit());
+		registerCallback(new UmbraCallbackFullscreen());
+		registerCallback(new UmbraCallbackScreenshot());
+		registerCallback(new UmbraCallbackFontUp());
+		registerCallback(new UmbraCallbackFontDown());
+		registerCallback(new UmbraCallbackPause());
+	}
+	if (flag & UMBRA_REGISTER_ADDITIONAL) {
+		registerCallback(new UmbraCallbackSpeedometer());
+	}
 }
 
 void UmbraEngine::setWindowTitle (const char * title, ...) {
-    char f[512];
-    va_list ap;
-    va_start(ap,title);
-    vsprintf(f,title,ap);
-    va_end(ap);
-    windowTitle = (const char *)f;
+	char f[512];
+	va_list ap;
+	va_start(ap,title);
+	vsprintf(f,title,ap);
+	va_end(ap);
+	windowTitle = (const char *)f;
 }
 
 void UmbraEngine::setWindowTitle (std::string title) {
@@ -72,182 +72,182 @@ void UmbraEngine::setWindowTitle (std::string title) {
 
 //add a module to the modules list
 int UmbraEngine::registerModule (UmbraModule * module, int fallback) {
-    module->setFallback(fallback);
-    modules.push(module);
-    return modules.size()-1;
+	module->setFallback(fallback);
+	modules.push(module);
+	return modules.size()-1;
 }
 
 //register a font
 void UmbraEngine::registerFont (int columns, int rows, const char * filename, int flags) {
-    if (!UmbraError::fileExists(filename)) {
-        UmbraError::add(UMBRA_ERRORLEVEL_ERROR,"Tried to register a font file that does not exist: %s.",filename);
-        displayError();
-        return;
-    }
-    UmbraFont * file = new UmbraFont; //don't delete this later
-    file->initialise(columns,rows,filename,flags);
-    UmbraConfig::registerFont(file);
+	if (!UmbraError::fileExists(filename)) {
+		UmbraError::add(UMBRA_ERRORLEVEL_ERROR,"Tried to register a font file that does not exist: %s.",filename);
+		displayError();
+		return;
+	}
+	UmbraFont * file = new UmbraFont; //don't delete this later
+	file->initialise(columns,rows,filename,flags);
+	UmbraConfig::registerFont(file);
 }
 
 // temporary internal font storage structure
 struct TmpFontData {
-    int rows;
-    int columns;
-    char name[512];
-    int flags;
-    int size;
+	int rows;
+	int columns;
+	char name[512];
+	int flags;
+	int size;
 };
 #define MAX_FONTS 16
 bool UmbraEngine::registerFonts () {
-    // if fonts registered by the user, do nothing
-    if ( getNbFonts() > 0 ) return true;
-    TmpFontData dat[MAX_FONTS];
-    TCODList<TmpFontData *> fontDataList;
-    // look for font*png in font directory
-    TCODList<const char *> dir=TCODSystem::getDirectoryContent(getFontDir(),"font*.png");
-    if ( dir.size() > 0 ) {
-        int fontNum=0;
-        for (const char **fontName = dir.begin(); fontName != dir.end() && fontNum < MAX_FONTS; fontName++) {
-            int charWidth;
-            int charHeight;
-            char layout[32]="";
-            if ( sscanf(*fontName,"font%dx%d%s",&charWidth,&charHeight,layout) >= 2 ) {
-                if ( charWidth > 0 && charHeight > 0 ) {
-                    int fontFlag = TCOD_FONT_TYPE_GREYSCALE;
-                    if ( layout[0] == '_' ) {
-                        // parse font layout
-                        if ( strncasecmp(layout,"_TCOD.",6) == 0 ) fontFlag|=TCOD_FONT_LAYOUT_TCOD;
-                        else if ( strncasecmp(layout,"_INCOL.",7) == 0 ) fontFlag|=TCOD_FONT_LAYOUT_ASCII_INCOL;
-                        else if ( strncasecmp(layout,"_INROW.",7) == 0 ) fontFlag|=TCOD_FONT_LAYOUT_ASCII_INROW;
-                    } else {
-                        // default is TCOD |GREYSCALE
-                        fontFlag|=TCOD_FONT_LAYOUT_TCOD;
-                    }
-                    // compute font grid size from image size & char size
-                    int w,h;
-                    sprintf(dat[fontNum].name,"%s/%s",getFontDir(),*fontName);
-                    TCODImage tmp(dat[fontNum].name);
-                    tmp.getSize(&w,&h);
-                    dat[fontNum].size = charWidth*charHeight;
-                    dat[fontNum].rows=h/charHeight;
-                    dat[fontNum].columns=w/charWidth;
-                    dat[fontNum].flags=fontFlag;
-                    // sort this font by size
-                    int idx=0;
-                    while ( idx < fontDataList.size() && fontDataList.get(idx)->size < dat[fontNum].size ) idx ++;
-                    fontDataList.insertBefore(&dat[fontNum],idx);
-                    fontNum++;
-                }
-            }
-        }
-        for (TmpFontData **dat=fontDataList.begin(); dat != fontDataList.end(); dat ++) {
-            // register the fonts from smallest to biggest
-            registerFont((*dat)->columns,(*dat)->rows,(*dat)->name,(*dat)->flags);
-        }
-    }
-    else {
-        UmbraError::add(UMBRA_ERRORLEVEL_FATAL_ERROR,"No fonts registered. The font directory %s is empty.",getFontDir());
-        return false;
-    }
+	// if fonts registered by the user, do nothing
+	if ( getNbFonts() > 0 ) return true;
+	TmpFontData dat[MAX_FONTS];
+	TCODList<TmpFontData *> fontDataList;
+	// look for font*png in font directory
+	TCODList<const char *> dir=TCODSystem::getDirectoryContent(getFontDir(),"font*.png");
+	if ( dir.size() > 0 ) {
+		int fontNum=0;
+		for (const char **fontName = dir.begin(); fontName != dir.end() && fontNum < MAX_FONTS; fontName++) {
+			int charWidth;
+			int charHeight;
+			char layout[32]="";
+			if ( sscanf(*fontName,"font%dx%d%s",&charWidth,&charHeight,layout) >= 2 ) {
+				if ( charWidth > 0 && charHeight > 0 ) {
+					int fontFlag = TCOD_FONT_TYPE_GREYSCALE;
+					if ( layout[0] == '_' ) {
+						// parse font layout
+						if ( strncasecmp(layout,"_TCOD.",6) == 0 ) fontFlag|=TCOD_FONT_LAYOUT_TCOD;
+						else if ( strncasecmp(layout,"_INCOL.",7) == 0 ) fontFlag|=TCOD_FONT_LAYOUT_ASCII_INCOL;
+						else if ( strncasecmp(layout,"_INROW.",7) == 0 ) fontFlag|=TCOD_FONT_LAYOUT_ASCII_INROW;
+					} else {
+						// default is TCOD |GREYSCALE
+						fontFlag|=TCOD_FONT_LAYOUT_TCOD;
+					}
+					// compute font grid size from image size & char size
+					int w,h;
+					sprintf(dat[fontNum].name,"%s/%s",getFontDir(),*fontName);
+					TCODImage tmp(dat[fontNum].name);
+					tmp.getSize(&w,&h);
+					dat[fontNum].size = charWidth*charHeight;
+					dat[fontNum].rows=h/charHeight;
+					dat[fontNum].columns=w/charWidth;
+					dat[fontNum].flags=fontFlag;
+					// sort this font by size
+					int idx=0;
+					while ( idx < fontDataList.size() && fontDataList.get(idx)->size < dat[fontNum].size ) idx ++;
+					fontDataList.insertBefore(&dat[fontNum],idx);
+					fontNum++;
+				}
+			}
+		}
+		for (TmpFontData **dat=fontDataList.begin(); dat != fontDataList.end(); dat ++) {
+			// register the fonts from smallest to biggest
+			registerFont((*dat)->columns,(*dat)->rows,(*dat)->name,(*dat)->flags);
+		}
+	}
+	else {
+		UmbraError::add(UMBRA_ERRORLEVEL_FATAL_ERROR,"No fonts registered. The font directory %s is empty.",getFontDir());
+		return false;
+	}
 
-    if (getNbFonts() == 0) {
-        UmbraError::add(UMBRA_ERRORLEVEL_FATAL_ERROR,"No fonts registered. Autodetection found no fonts matching the naming pattern font<WIDTH>x<HEIGHT>[_<LAYOUT>].png in the specified directory %s.",getFontDir());
-        return false;
-    }
-    else return true;
+	if (getNbFonts() == 0) {
+		UmbraError::add(UMBRA_ERRORLEVEL_FATAL_ERROR,"No fonts registered. Autodetection found no fonts matching the naming pattern font<WIDTH>x<HEIGHT>[_<LAYOUT>].png in the specified directory %s.",getFontDir());
+		return false;
+	}
+	else return true;
 }
 
 // public function registering the module for activation next frame, by id
 void UmbraEngine::activateModule (int moduleId) {
-    if ( moduleId < 0 || moduleId >= modules.size() ) {
-        UmbraError::add(UMBRA_ERRORLEVEL_WARNING,"Tried to activate an invalid module: ID %d.",moduleId);
-        displayError();
-        return;
-    }
-    UmbraModule *module = modules.get(moduleId);
-    activateModule(module);
+	if ( moduleId < 0 || moduleId >= modules.size() ) {
+		UmbraError::add(UMBRA_ERRORLEVEL_WARNING,"Tried to activate an invalid module: ID %d.",moduleId);
+		displayError();
+		return;
+	}
+	UmbraModule *module = modules.get(moduleId);
+	activateModule(module);
 }
 
 //public function registering an internal module for activation next frame, by id
 void UmbraEngine::activateModule (UmbraInternalModuleID id) {
-    if (id < 0 || id >= UMBRA_INTERNAL_MAX) {
-        UmbraError::add(UMBRA_ERRORLEVEL_WARNING,"Tried to activate an invalid internal module: ID %d.",(int)id);
-        displayError();
-        return;
-    }
-    activateModule(internalModules[id]);
+	if (id < 0 || id >= UMBRA_INTERNAL_MAX) {
+		UmbraError::add(UMBRA_ERRORLEVEL_WARNING,"Tried to activate an invalid internal module: ID %d.",(int)id);
+		displayError();
+		return;
+	}
+	activateModule(internalModules[id]);
 }
 
 // public function registering the module for activation next frame, by reference
 void UmbraEngine::activateModule(UmbraModule *module) {
-    if (module != NULL && ! module->getActive()) {
-        toActivate.push(module);
-    }
+	if (module != NULL && ! module->getActive()) {
+		toActivate.push(module);
+	}
 }
 
 // the internal function actually putting a module in active list
 void UmbraEngine::doActivateModule( UmbraModule *mod ) {
   if (! mod->getActive() ) {
-    mod->setActive(true);
-    mod->initialiseTimeout();
-    //insert the module at the right pos, sorted by priority
+	mod->setActive(true);
+	mod->initialiseTimeout();
+	//insert the module at the right pos, sorted by priority
 		int idx = 0;
 		while ( idx < activeModules.size() && activeModules.get(idx)->getPriority() < mod->getPriority() ) idx ++;
-        activeModules.insertBefore(mod,idx);
-    }
+		activeModules.insertBefore(mod,idx);
+	}
 }
 
 // register the module for deactivation by id
 void UmbraEngine::deactivateModule (int moduleId) {
-    if ( moduleId < 0 || moduleId >= modules.size() ) {
-        UmbraError::add(UMBRA_ERRORLEVEL_WARNING,"Tried to deactivate an invalid module: ID %d.",moduleId);
-        displayError();
-        return;
-    }
-    UmbraModule *module = modules.get(moduleId);
-    deactivateModule(module);
+	if ( moduleId < 0 || moduleId >= modules.size() ) {
+		UmbraError::add(UMBRA_ERRORLEVEL_WARNING,"Tried to deactivate an invalid module: ID %d.",moduleId);
+		displayError();
+		return;
+	}
+	UmbraModule *module = modules.get(moduleId);
+	deactivateModule(module);
 }
 
 void UmbraEngine::deactivateModule (UmbraInternalModuleID id) {
-    if (id < 0 || id >= UMBRA_INTERNAL_MAX) {
-        UmbraError::add(UMBRA_ERRORLEVEL_WARNING,"Tried to deactivate an invalid internal module: ID %d.",(int)id);
-        displayError();
-        return;
-    }
-    else deactivateModule(internalModules[id]);
+	if (id < 0 || id >= UMBRA_INTERNAL_MAX) {
+		UmbraError::add(UMBRA_ERRORLEVEL_WARNING,"Tried to deactivate an invalid internal module: ID %d.",(int)id);
+		displayError();
+		return;
+	}
+	else deactivateModule(internalModules[id]);
 }
 
 // register the module for deactivation by reference
 void UmbraEngine::deactivateModule(UmbraModule *module) {
-    if (module != NULL && module->getActive()) {
-        toDeactivate.push(module);
-        module->setActive(false);
-    }
+	if (module != NULL && module->getActive()) {
+		toDeactivate.push(module);
+		module->setActive(false);
+	}
 }
 
 void UmbraEngine::deactivateAll () {
-    for (UmbraModule ** mod = activeModules.begin(); mod != activeModules.end(); mod++) {
-        deactivateModule((*mod));
-    }
+	for (UmbraModule ** mod = activeModules.begin(); mod != activeModules.end(); mod++) {
+		deactivateModule((*mod));
+	}
 }
 
 bool UmbraEngine::initialise (TCOD_renderer_t renderer) {
-    // autodetect fonts if needed
-    bool retVal = registerFonts();
-    //activate the base font
-    if (retVal) {
+	// autodetect fonts if needed
+	bool retVal = registerFonts();
+	//activate the base font
+	if (retVal) {
 		UmbraEngine::renderer=renderer;
-        UmbraConfig::activateFont();
-        //initialise console
-        TCODConsole::setCustomFont(UmbraConfig::font->filename(),UmbraConfig::font->flags(),UmbraConfig::font->columns(),UmbraConfig::font->rows());
-        TCODConsole::initRoot(getRootWidth(),getRootHeight(),windowTitle.c_str(), UmbraConfig::fullScreen, renderer);
-        TCODSystem::setFps(25);
-        TCODMouse::showCursor(true);
-    }
-    else {
-        UmbraError::add(UMBRA_ERRORLEVEL_FATAL_ERROR,"Could not initialise the root console.");
-    }
-    return retVal;
+		UmbraConfig::activateFont();
+		//initialise console
+		TCODConsole::setCustomFont(UmbraConfig::font->filename(),UmbraConfig::font->flags(),UmbraConfig::font->columns(),UmbraConfig::font->rows());
+		TCODConsole::initRoot(getRootWidth(),getRootHeight(),windowTitle.c_str(), UmbraConfig::fullScreen, renderer);
+		TCODSystem::setFps(25);
+		TCODMouse::showCursor(true);
+	}
+	else {
+		UmbraError::add(UMBRA_ERRORLEVEL_FATAL_ERROR,"Could not initialise the root console.");
+	}
+	return retVal;
 }
 
 int UmbraEngine::run () {
@@ -344,42 +344,42 @@ int UmbraEngine::run () {
 }
 
 void UmbraEngine::keyboard (TCOD_key_t &key) {
-    if (key.vk == TCODK_NONE || key.pressed) return;
+	if (key.vk == TCODK_NONE || key.pressed) return;
 
-    UmbraKey k(key.vk, key.c, key.ralt|key.lalt, key.rctrl|key.lctrl, key.shift);
+	UmbraKey k(key.vk, key.c, key.ralt|key.lalt, key.rctrl|key.lctrl, key.shift);
 
-    bool val = false;
+	bool val = false;
 
-    for (UmbraCallback ** cbk = callbacks.begin(); cbk != callbacks.end(); cbk++) {
-        if ((*cbk)->evaluate(k)) {
-            (*cbk)->action();
-            val = true;
-            break;
-        }
-    }
+	for (UmbraCallback ** cbk = callbacks.begin(); cbk != callbacks.end(); cbk++) {
+		if ((*cbk)->evaluate(k)) {
+			(*cbk)->action();
+			val = true;
+			break;
+		}
+	}
 
-    if (val) {
-        // "erase" key event
-        memset(&key,0,sizeof(TCOD_key_t));
-    }
+	if (val) {
+		// "erase" key event
+		memset(&key,0,sizeof(TCOD_key_t));
+	}
 }
 
 void UmbraEngine::reinitialise (TCOD_renderer_t renderer) {
-    delete TCODConsole::root;
-    TCODConsole::root = NULL;
-    TCODConsole::setCustomFont(UmbraConfig::font->filename(),UmbraConfig::font->flags(),UmbraConfig::font->columns(),UmbraConfig::font->rows());
+	delete TCODConsole::root;
+	TCODConsole::root = NULL;
+	TCODConsole::setCustomFont(UmbraConfig::font->filename(),UmbraConfig::font->flags(),UmbraConfig::font->columns(),UmbraConfig::font->rows());
 	UmbraEngine::renderer=renderer;
-    TCODConsole::initRoot(getRootWidth(),getRootHeight(),windowTitle.c_str(), UmbraConfig::fullScreen, this->renderer);
+	TCODConsole::initRoot(getRootWidth(),getRootHeight(),windowTitle.c_str(), UmbraConfig::fullScreen, this->renderer);
 }
 
 void UmbraEngine::registerInternalModule (UmbraInternalModuleID id, UmbraModule * module) {
-    internalModules[id] = module;
+	internalModules[id] = module;
 }
 
 void UmbraEngine::displayError () {
-    if (UmbraConfig::debug && TCODConsole::root != NULL) {
-        if (internalModules[UMBRA_INTERNAL_BSOD]->getActive())
-            toDeactivate.push(internalModules[UMBRA_INTERNAL_BSOD]);
-        toActivate.push(internalModules[UMBRA_INTERNAL_BSOD]);
-    }
+	if (UmbraConfig::debug && TCODConsole::root != NULL) {
+		if (internalModules[UMBRA_INTERNAL_BSOD]->getActive())
+			toDeactivate.push(internalModules[UMBRA_INTERNAL_BSOD]);
+		toActivate.push(internalModules[UMBRA_INTERNAL_BSOD]);
+	}
 }

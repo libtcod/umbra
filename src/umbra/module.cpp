@@ -31,31 +31,31 @@ UmbraModule::UmbraModule (): priority(1), status(UMBRA_UNINITIALISED), fallback(
 }
 
 void UmbraModule::initialise () {
-    status=UMBRA_INACTIVE;
+	status=UMBRA_INACTIVE;
 }
 
 void UmbraModule::setActive (bool active) {
-    if (status == UMBRA_UNINITIALISED) {
-        initialise();
-    }
-    if (active) {
-	    status = UMBRA_ACTIVE;
+	if (status == UMBRA_UNINITIALISED) {
+		initialise();
+	}
+	if (active) {
+		status = UMBRA_ACTIVE;
 		activate();
-    } else {
-	    status = UMBRA_INACTIVE;
+	} else {
+		status = UMBRA_INACTIVE;
 		deactivate();
 	}
 }
 
 void UmbraModule::setPause (bool paused) {
-    if (status == UMBRA_UNINITIALISED) {
-        initialise();
-    }
-    if (paused) {
-	    status=UMBRA_PAUSED;
+	if (status == UMBRA_UNINITIALISED) {
+		initialise();
+	}
+	if (paused) {
+		status=UMBRA_PAUSED;
 		pause();
 	} else {
-	    status=UMBRA_ACTIVE;
+		status=UMBRA_ACTIVE;
 		resume();
 	}
 }

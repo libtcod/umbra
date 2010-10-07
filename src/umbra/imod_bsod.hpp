@@ -26,24 +26,24 @@
 */
 
 class UmbraModBSOD: public UmbraWidget {
-    public:
-        UmbraModBSOD ();
+	public:
+		UmbraModBSOD ();
 		/**
 		 * Updates the internal logic of the BSOD.
-         * @return <code>true</code> if the module hasn't timed out and is supposed to continue active, <code>false</code> if it's timed out or the user requested its deactivation
-         */
-        bool update ();
+		 * @return <code>true</code> if the module hasn't timed out and is supposed to continue active, <code>false</code> if it's timed out or the user requested its deactivation
+		 */
+		bool update ();
 		/**
 		 * Renders the BSOD on the screen.
-         */
-        void render ();
-    private:
+		 */
+		void render ();
+	private:
 		/**
 		 * Initialises the time count for a new timeout.
-         */
-        void activate ();
-        TCODConsole * bsod;
-        uint32 startTime;
-        uint32 duration;
-        std::string msgString;
+		 */
+		void activate ();
+		TCODConsole * bsod;
+		uint32 startTime;
+		uint32 duration;
+		std::string msgString;
 };

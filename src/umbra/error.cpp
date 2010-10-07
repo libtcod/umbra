@@ -52,21 +52,21 @@ TCODList <std::string*> UmbraError::errors;
 
 //append an error message
 int UmbraError::add (UmbraErrorLevel errLev, const char * errStr, ...) {
-    char err[2048];
-    va_list ap;
-    va_start(ap,errStr);
-    vsprintf(err,errStr,ap);
-    va_end(ap);
+	char err[2048];
+	va_list ap;
+	va_start(ap,errStr);
+	vsprintf(err,errStr,ap);
+	va_end(ap);
 
-    std::string * errorMessage = new std::string ();
-    errorMessage->assign(errLevStr(errLev) + std::string(err));
+	std::string * errorMessage = new std::string ();
+	errorMessage->assign(errLevStr(errLev) + std::string(err));
 
-    errors.push(errorMessage);
-    fprintf(stderr,"%s\n",errorMessage->c_str());
+	errors.push(errorMessage);
+	fprintf(stderr,"%s\n",errorMessage->c_str());
 
-    save();
+	save();
 
-    return errors.size()-1;
+	return errors.size()-1;
 }
 
 //append an error message
@@ -75,69 +75,69 @@ int UmbraError::add (UmbraErrorLevel errLev, std::string errStr) {
 	errorMessage->assign(errLevStr(errLev) + std::string(errStr));
 
 	errors.push(errorMessage);
-    fprintf(stderr,"%s\n",errorMessage->c_str());
+	fprintf(stderr,"%s\n",errorMessage->c_str());
 
-    save();
+	save();
 
-    return errors.size()-1;
+	return errors.size()-1;
 }
 
 
 //save the error log
 void UmbraError::save () {
-    //if there are no errors, return
-    if (errors.size() == 0) return;
-    //else create the log file
-    else {
-        //create an empty error log file
-        FILE * out = fopen("errorlog.txt","w");
+	//if there are no errors, return
+	if (errors.size() == 0) return;
+	//else create the log file
+	else {
+		//create an empty error log file
+		FILE * out = fopen("errorlog.txt","w");
 
-        //print the log header
-        fprintf(out,"%s ver. %s (%s) Error Log\n"
-                    "---===---\n"
-                    "%d %s registered in the log.\n"
-                    "\n"
-                    "\n",
-                    UMBRA_TITLE,UMBRA_VERSION,UMBRA_STATUS,errors.size(),errors.size() > 1 ? "errors" : "error");
+		//print the log header
+		fprintf(out,"%s ver. %s (%s) Error Log\n"
+					"---===---\n"
+					"%d %s registered in the log.\n"
+					"\n"
+					"\n",
+					UMBRA_TITLE,UMBRA_VERSION,UMBRA_STATUS,errors.size(),errors.size() > 1 ? "errors" : "error");
 
-        //print the errors
-        int i = 0;
-        do {
-            std::string * msg = errors.get(i);
-            fprintf(out,"%03d. %s\n",i+1,msg->c_str());
-        } while (++i < errors.size());
+		//print the errors
+		int i = 0;
+		do {
+			std::string * msg = errors.get(i);
+			fprintf(out,"%03d. %s\n",i+1,msg->c_str());
+		} while (++i < errors.size());
 
-        //close the log file
-        fclose(out);
-    }
+		//close the log file
+		fclose(out);
+	}
 }
 
 const char * UmbraError::getLastMessage () {
-    int size = errors.size(); //SIZE MATTERS!
-    if (size == 0) return "No errors registered.";
-    else return (errors.get(size-1))->c_str();
+	int size = errors.size(); //SIZE MATTERS!
+	if (size == 0) return "No errors registered.";
+	else return (errors.get(size-1))->c_str();
 }
 
 const char * UmbraError::getMessage (int idx) {
-    if (idx < 0 || idx >= errors.size()) return "Requested wrong error index.";
-    else return (errors.get(idx))->c_str();
+	if (idx < 0 || idx >= errors.size()) return "Requested wrong error index.";
+	else return (errors.get(idx))->c_str();
 }
 
 
 
 //confirms the existence of a file. Returns false if there is no such file.
 bool UmbraError::fileExists (const char * filename, ...) {
-    char f[256];
-    va_list ap;
-    va_start(ap,filename);
-    vsprintf(f,filename,ap);
-    va_end(ap);
+	char f[256];
+	va_list ap;
+	va_start(ap,filename);
+	vsprintf(f,filename,ap);
+	va_end(ap);
 
-    bool retVal = false;
-    FILE * in = fopen(f,"rb");
-    if (in != NULL) {
-        retVal = true;
-        fclose(in);
-    }
-    return retVal;
+	bool retVal = false;
+	FILE * in = fopen(f,"rb");
+	if (in != NULL) {
+		retVal = true;
+		fclose(in);
+	}
+	return retVal;
 }
