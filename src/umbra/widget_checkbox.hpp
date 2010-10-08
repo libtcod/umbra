@@ -35,13 +35,42 @@ class UmbraCheckbox {
 		UmbraCheckbox ();
 		virtual ~UmbraCheckbox () {}
 		UmbraCheckbox (UmbraWidget * parent, int x, int y, int w, int h, const char * tag = "");
+		UmbraCheckbox (UmbraWidget * parent, int x, int y, int w, int h, std::string tag = "");
+		/**
+		 * Sets the basic properties of the checkbox: parent widget, position in the console, size and tag.<br><i>Note: the checkbox without a tag should have the width and height equal to 1. These values should be changed only if the checkbox needs to display a tag as well as the checkbox itself.</i>
+		 * @param parent a pointer to the UmbraWidget containing the checkbox
+		 * @param x the <code>x</code> coordinate of the top left corner of the checkbox area
+		 * @param y the <code>y</code> coordinate of the top left corner of the checkbox area
+		 * @param w the checkbox area's width
+		 * @param h the checkbox area's height
+		 * @param tag the tag's text
+		 */
 		void set (UmbraWidget * parent, int x, int y, int w, int h, const char * tag = "");
+		/**
+		 * Sets the basic properties of the checkbox: parent widget, position in the console, size and tag.<br><i>Note: the checkbox without a tag should have the width and height equal to 1. These values should be changed only if the checkbox needs to display a tag as well as the checkbox itself.</i>
+		 * @param parent a pointer to the UmbraWidget containing the checkbox
+		 * @param x the <code>x</code> coordinate of the top left corner of the checkbox area
+		 * @param y the <code>y</code> coordinate of the top left corner of the checkbox area
+		 * @param w the checkbox area's width
+		 * @param h the checkbox area's height
+		 * @param tag the tag's text
+		 */
+		inline void set (UmbraWidget * parent, int x, int y, int w, int h, std::string tag = "") { set(parent, x, y, w, h, tag.c_str()); }
 		UmbraRect area; //the rectangle where the object is contained
 		UmbraWidget * parent; //reference to the widget that contains the object
 		bool visible; //visibility (can be toggled)
 		bool checked;
 		std::string tag;
-		void render (TCODConsole * con);
+		/**
+		 * Renders the checkbox.
+		 */
+		virtual void render (TCODConsole * con);
+		/**
+		 * Checks the mouse status and calls <code>onMouseHover()</code> if necessary
+		 */
 		void mouse (TCOD_mouse_t &ms); //checks the status
+		/**
+		 * Custom code launched when the mouse cursor is over the checkbox area, <i>including the tag</i>.
+		 */
 		virtual void onMouseOver () {} //custom code launched when mouse cursor is over the checkbox area
 };

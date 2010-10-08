@@ -135,6 +135,12 @@ class UmbraModule {
 		int fallback; //fallback module's index
 		uint32 timeout;
 		uint32 timeoutEnd;
+		/**
+		 * Initialises the timeout by calculating the exact time when the module will time out.
+		 */
 		void initialiseTimeout();
+		/**
+		 * Checks whether the module has timed out and is eligible for deactivation.
+		 */
 		inline bool isTimedOut(uint32 currentTime) { return (timeoutEnd > currentTime) ? false : true; }
 };

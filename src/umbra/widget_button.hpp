@@ -35,13 +35,45 @@ class UmbraButton {
 		UmbraButton ();
 		virtual ~UmbraButton() {}
 		UmbraButton (UmbraWidget * parent, int x, int y, int w, int h, const char * tag = "");
+		UmbraButton (UmbraWidget * parent, int x, int y, int w, int h, std::string tag = "");
+        /**
+		 * Sets the basic properties of the button: parent widget, position in the console, size and tag.
+		 * @param parent a pointer to the UmbraWidget containing the button
+		 * @param x the <code>x</code> coordinate of the top left corner of the button area
+		 * @param y the <code>y</code> coordinate of the top left corner of the button area
+		 * @param w the button area's width
+		 * @param h the button area's height
+		 * @param tag the tag's text
+		 */
 		void set (UmbraWidget * parent, int x, int y, int w, int h, const char * tag = "");
+		/**
+		 * Sets the basic properties of the button: parent widget, position in the console, size and tag.
+		 * @param parent a pointer to the UmbraWidget containing the button
+		 * @param x the <code>x</code> coordinate of the top left corner of the button area
+		 * @param y the <code>y</code> coordinate of the top left corner of the button area
+		 * @param w the button area's width
+		 * @param h the button area's height
+		 * @param tag the tag's text
+		 */
+		inline void set (UmbraWidget * parent, int x, int y, int w, int h, std::string tag = "") { set(parent, x, y, w, h, tag.c_str()); }
 		UmbraRect area; //the rectangle where the object is contained
 		UmbraWidget * parent; //reference to the widget that contains the object
 		bool visible; //visibility (can be toggled)
 		std::string tag;
+        /**
+		 * Renders the button.
+		 */
 		virtual void render (TCODConsole * con);
+		/**
+		 * Checks the mouse status and calls <code>onMouseHover()</code> and <code>onMouseDown()</code> if necessary
+		 */
 		void mouse (TCOD_mouse_t &ms); //checks the status
-		virtual void onMouseDown () {} //custom code executed after a button press
-		virtual void onMouseOver () {} //custom code executed when the mouse is hovering
+		/**
+		 * Custom code launched when the button is clicked
+		 */
+		virtual void onMouseDown () {}
+		/**
+		 * Custom code launched when the mouse cursor is over the button area
+		 */
+		virtual void onMouseOver () {}
 };

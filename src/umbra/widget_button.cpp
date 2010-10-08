@@ -41,6 +41,13 @@ UmbraButton::UmbraButton (UmbraWidget * parent, int x, int y, int w, int h, cons
 	visible = true;
 }
 
+UmbraButton::UmbraButton (UmbraWidget * parent, int x, int y, int w, int h, std::string tag) {
+	this->parent = parent;
+	area.set(x, y, w, h);
+	this->tag = tag;
+	visible = true;
+}
+
 void UmbraButton::set (UmbraWidget * parent, int x, int y, int w, int h, const char * tag) {
 	this->parent = parent;
 	area.set(x, y, w, h);
@@ -69,7 +76,7 @@ void UmbraButton::render (TCODConsole * con) {
 	if (!visible)
 		return;
 	TCODColor col=con->getDefaultForeground();
-	con->setDefaultForeground(area.mouseHover ? TCODColor::white : TCODColor::lighterBlue);
+	con->setDefaultForeground(area.mouseHover ? TCODColor::white : TCODColor::lighterBlue); //placeholder!
 	con->printFrame(area.x,area.y,area.w,area.h,false,TCOD_BKGND_NONE,NULL);
 	if (!tag.empty())
 		con->printRectEx(area.x+(area.w/2),area.y+(area.h/2),area.w-2,area.h-2,TCOD_BKGND_NONE,TCOD_CENTER,tag.c_str());

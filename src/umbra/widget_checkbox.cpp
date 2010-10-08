@@ -43,6 +43,14 @@ UmbraCheckbox::UmbraCheckbox (UmbraWidget * parent, int x, int y, int w, int h, 
 	visible = true;
 }
 
+UmbraCheckbox::UmbraCheckbox (UmbraWidget * parent, int x, int y, int w, int h, std::string tag) {
+	this->parent = parent;
+	area.set(x, y, w, h);
+	this->tag = tag;
+	checked = false;
+	visible = true;
+}
+
 void UmbraCheckbox::set (UmbraWidget * parent, int x, int y, int w, int h, const char * tag) {
 	this->parent = parent;
 	area.set(x, y, w, h);
@@ -72,7 +80,7 @@ void UmbraCheckbox::render (TCODConsole * con) {
 	if (!visible)
 		return;
 	TCODColor col=con->getDefaultForeground();
-	con->setDefaultForeground(area.mouseHover ? TCODColor::white : TCODColor::lighterBlue);
+	con->setDefaultForeground(area.mouseHover ? TCODColor::white : TCODColor::lighterBlue); //placeholder!
 	if (checked)
 		con->putChar(area.x,area.y,TCOD_CHAR_CHECKBOX_SET,TCOD_BKGND_NONE);
 	else
