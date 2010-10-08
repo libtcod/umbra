@@ -69,10 +69,10 @@ enum UmbraInternalModuleID {
 };
 
 enum UmbraRegisterCallbackFlag {
-	UMBRA_REGISTER_NONE	   = 0x00000000,
-	UMBRA_REGISTER_DEFAULT	= 0x00000001,
+	UMBRA_REGISTER_NONE       = 0x00000000,
+	UMBRA_REGISTER_DEFAULT	  = 0x00000001,
 	UMBRA_REGISTER_ADDITIONAL = 0x00000002,
-	UMBRA_REGISTER_ALL		= 0xFFFFFFFF
+	UMBRA_REGISTER_ALL		  = 0xFFFFFFFF
 };
 
 //the main engine
@@ -207,40 +207,79 @@ class UmbraEngine {
 		 */
 		void displayError ();
 
-		//Config-related stuff
+		/**
+		 * Activates a different font.
+         * @param shift a number indicating whether to activate the next or the previous font in the registered fonts list.<br>This can be -1 (switch down) or 1 (switch up). All other numbers will be clamped to these values.<br>A value of 0 results in doing nothing.
+         * @return <code>true</code> if the font has been successfully changed, <code>false</code> otherwise
+         */
 		inline bool activateFont (int shift = 0) { return UmbraConfig::activateFont(shift); }
 
+		/**
+		 * Retrieves the width of the console in cells.
+         * @return the console's width
+         */
 		inline int getRootWidth () { return UmbraConfig::rootWidth; }
+		/**
+		 * Retrieves the height of the console in cells.
+         * @return the console's height
+         */
 		inline int getRootHeight () { return UmbraConfig::rootHeight; }
 
+		/**
+		 * Retrieves the ID number of the currently used font.
+         * @return current font's ID
+         */
 		inline int getFontID() { return UmbraConfig::fontID; }
+		/**
+		 * Retrieves the total number of registered fonts.
+         * @return number of registered fonts
+         */
 		inline int getNbFonts() { return UmbraConfig::fonts.size(); }
+		/**
+		 * Retrieves the font directory.
+         * @return the font direcory
+         */
 		inline const char * getFontDir() { return UmbraConfig::fontDir; }
 
+		/**
+		 * Sets the root console's dimensions in cells.
+         * @param w the root console's width
+         * @param h the root console's height
+         */
 		static void setRootDimensions (int w, int h) { UmbraConfig::rootWidth = w; UmbraConfig::rootHeight = h; getInstance()->reinitialise(renderer); }
 
 	private:
 		static UmbraEngine * engineInstance;
 		std::string windowTitle;
-		void keyboard (TCOD_key_t &key);
 		bool paused;
 		static TCOD_renderer_t renderer;
-
 		TCODList <UmbraModule*> modules; // list of all registered modules
 		TCODList <UmbraModule*> activeModules; // currently active modules
 		TCODList <UmbraModule*> toActivate; // modules to activate next frame
 		TCODList <UmbraModule*> toDeactivate; // modules to deactivate next frame
-		UmbraKeyboardMode keyboardMode;
-
-		//the keybinding callbacks
-		TCODList <UmbraCallback *> callbacks;
-
-		// actually put the module in active list
-		void doActivateModule( UmbraModule *mod );
-		// font autodetection if no font is registered
-		bool registerFonts ();
-
-		//the internal modules stuff
 		UmbraModule * internalModules[UMBRA_INTERNAL_MAX];
+		UmbraKeyboardMode keyboardMode;	
+		TCODList <UmbraCallback *> callbacks; //the keybinding callbacks
+
+		/**
+		 * Parses the keyboard input and passes it to the registered callbacks.
+         * @param key a reference to the keyboard event object
+         */
+		void keyboard (TCOD_key_t &key);
+		/**
+		 * Puts the newly activated module in the active modules list.
+         * @param mod a pointer to the module that's being activated
+         */
+		void doActivateModule( UmbraModule *mod );
+		/**
+		 * Performs font autodetection and registered any found fonts.
+         * @return <code>true</code> if at least one font has been registered, <code>false</code> otherwise
+         */
+		bool registerFonts ();
+		/**
+		 * Registers an internal module for usage in the application.
+         * @param id the ID number of an internal module
+         * @param module a pointer to the internal module to be registered.
+         */
 		void registerInternalModule (UmbraInternalModuleID id, UmbraModule * module);
 };

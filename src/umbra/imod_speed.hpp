@@ -26,6 +26,7 @@
 */
 
 class UmbraModSpeed: public UmbraWidget {
+	friend class UmbraEngine;
 	public:
 		UmbraModSpeed ();
 		/**
@@ -45,21 +46,30 @@ class UmbraModSpeed: public UmbraWidget {
 		 * Sets the minimised state of the widget.
 		 * @param val <code>true</code> for minimised, <code>false</code> for maximised		 
 		 */     		
-		inline void setMinimised(bool val) { isMinimised=val; }
-	protected:         
-		void activate ();
-		void deactivate ();
+		inline void setMinimised(bool val) { isMinimised=val; }       
 	private:
-		friend class UmbraEngine;
-		// timebar stuff
-		void setTimes(long updateTime, long renderTime); // this is called by engine each frame
 		float cumulatedElapsed;
 		float updateTime;
 		float renderTime;
 		int updatePer, renderPer, sysPer;
-		TCODImage *timeBar;
+		TCODImage * timeBar;
 		TCODConsole * speed;
 		int fps;
 		bool isMinimised;
+
+		/**
+		 * Removes the frames per second limit in order to attempt to enforce a 100% load on the CPU.
+         */
+		void activate ();
+		/**
+		 * Restores the frames per second limit from before Speedo activation.
+         */
+		void deactivate ();
+		/**
+		 * Uptades the update and render times.
+		 * @param updateTime the time spend on <code>update()</code> methods
+		 * @param renderTime the time spend on <code>render()</code> methods
+		 */
+		void setTimes(long updateTime, long renderTime); // this is called by engine each frame
 };
 

@@ -93,14 +93,21 @@ class UmbraRect {
 class UmbraWidget: public UmbraModule {
 	friend class UmbraCheckbox;
 	friend class UmbraButton;
-	public :
+	public:
 		UmbraWidget ();
 		/**
 		 * Custom, widget-specific code interpreting the mouse input.
 		 * @param ms reference to the mouse object
 		 */
 		void mouse (TCOD_mouse_t &ms);
-	protected :
+	protected:
+		UmbraRect rect; // part of the screen where the widget is
+		UmbraRect dragZone; // part of the widget we can click to drag it
+		UmbraPoint minimiseButton; //minimise button coordinates
+		UmbraPoint closeButton; //close button coordinates
+		int mousex,mousey;
+		int dragx,dragy;
+		bool canDrag, isDragging;
 		/**
 		 * Sets the widget's active zone reacting to dragging.
 		 * @param x the drag zone's top left corner's <i>x</i> coordinate
@@ -109,11 +116,4 @@ class UmbraWidget: public UmbraModule {
 		 * @param h the drag zone's height
 		 */
 		void setDragZone (int x, int y, int w, int h);
-		UmbraRect rect; // part of the screen where the widget is
-		UmbraRect dragZone; // part of the widget we can click to drag it
-		UmbraPoint minimiseButton; //minimise button coordinates
-		UmbraPoint closeButton; //close button coordinates
-		int mousex,mousey;
-		int dragx,dragy;
-		bool canDrag, isDragging;
 };

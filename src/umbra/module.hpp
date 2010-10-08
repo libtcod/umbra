@@ -29,6 +29,7 @@ enum UmbraModuleStatus { UMBRA_UNINITIALISED, UMBRA_INACTIVE, UMBRA_ACTIVE, UMBR
 
 //all screens or views, such as credits, main menu, map view, etc. have to inherit this
 class UmbraModule {
+	friend class UmbraEngine;
 	public:
 		UmbraModule (); //constructor
 		virtual ~UmbraModule () {} //destructor
@@ -130,7 +131,6 @@ class UmbraModule {
 		virtual void resume() {}
 		int priority; // update order (inverse of render order)
 	private:
-		friend class UmbraEngine;
 		UmbraModuleStatus status;
 		int fallback; //fallback module's index
 		uint32 timeout;

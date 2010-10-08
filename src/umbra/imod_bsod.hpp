@@ -38,12 +38,13 @@ class UmbraModBSOD: public UmbraWidget {
 		 */
 		void render ();
 	private:
-		/**
-		 * Initialises the time count for a new timeout.
-		 */
-		void activate ();
 		TCODConsole * bsod;
 		uint32 startTime;
 		uint32 duration;
 		std::string msgString;
+		
+		/**
+		 * Initialises the time count for a new timeout.
+		 */
+		void activate ();
 };

@@ -32,6 +32,11 @@ class UmbraRect;
 
 class UmbraButton {
 	public:
+		UmbraRect area; //the rectangle where the object is contained
+		UmbraWidget * parent; //reference to the widget that contains the object
+		bool visible; //visibility (can be toggled)
+		std::string tag; //the descriptive tag
+
 		UmbraButton ();
 		virtual ~UmbraButton() {}
 		UmbraButton (UmbraWidget * parent, int x, int y, int w, int h, const char * tag = "");
@@ -56,10 +61,6 @@ class UmbraButton {
 		 * @param tag the tag's text
 		 */
 		inline void set (UmbraWidget * parent, int x, int y, int w, int h, std::string tag = "") { set(parent, x, y, w, h, tag.c_str()); }
-		UmbraRect area; //the rectangle where the object is contained
-		UmbraWidget * parent; //reference to the widget that contains the object
-		bool visible; //visibility (can be toggled)
-		std::string tag;
         /**
 		 * Renders the button.
 		 */

@@ -29,8 +29,8 @@ class UmbraConfig {
 	friend class UmbraEngine;
 	private:
 		/**
-		 * Activates a different font
-		 * @param shift a number by which the active fot number should be shifted. Can be -1 (switch down) or 1 (switch up). All other numbers will be clamped to these values. A value of 0 results in doing nothing.
+		 * Activates a different font. This method is called by the engine.
+		 * @param shift a number indicating whether to activate the next or the previous font in the registered fonts list.<br>This can be -1 (switch down) or 1 (switch up). All other numbers will be clamped to these values.<br>A value of 0 results in doing nothing.
 		 * @return <code>true</code> if the font has been successfully changed, <code>false</code> otherwise
 		 */
 		static bool activateFont (int shift = 0);
