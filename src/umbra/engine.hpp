@@ -96,7 +96,16 @@ class UmbraEngine {
 		 * @param flags font layout flags. Please refer to <b>libtcod</b> documentation for more information on font layout flags.
 		 */
 		void registerFont (int columns, int rows, const char * filename, int flags = TCOD_FONT_LAYOUT_TCOD);
+		/**
+		 * Initialises the engine.
+		 * @param renderer the renderer to be used (defaults to SDL)
+		 * @return <code>true</code> if initialisation is successful, <code>false</code> if errors were encountered
+		 */
 		bool initialise (TCOD_renderer_t renderer = TCOD_RENDERER_SDL); //initialises the engine
+        /**
+		 * Reinitialises an already initialised engine. Used mainly when the console font or the window title change.
+		 * @param renderer the renderer to be used (defaults to SDL)
+		 */
 		void reinitialise (TCOD_renderer_t renderer = TCOD_RENDERER_SDL);
 		/**
 		 * Runs the engine.
@@ -131,23 +140,71 @@ class UmbraEngine {
 		 */
 		inline void registerCallback (UmbraCallback * cbk) {callbacks.push(cbk); }
 
-		// register a module for activation next frame, either by id or reference
+		/**
+		 * Activates a module.
+		 * @param moduleId the identification number of the module to be activated
+		 */
 		void activateModule (int moduleId);
+		/**
+		 * Activates a module.
+		 * @param mod a pointer to the module object to be activated
+		 */
 		void activateModule (UmbraModule *mod);
+		/**
+		 * Activates an internal module.
+		 * @param id the identification number of the internal module to be activated
+		 */
 		void activateModule (UmbraInternalModuleID id);
-		// register a module for deactivation next frame either by id or reference
+		/**
+		 * Deactivates a module.
+		 * @param moduleId the identification number of the module to be deactivated
+		 */
 		void deactivateModule (int moduleId);
+		/**
+		 * Deactivates a module.
+		 * @param mod a pointer to the module object to be deactivated
+		 */
 		void deactivateModule (UmbraModule * mod);
+		/**
+		 * Deactivates an internal module.
+		 * @param id the identification number of the internal module to be deactivated
+		 */
 		void deactivateModule (UmbraInternalModuleID id);
-		//deactivate all modules (the program will end normally)
+		/**
+		 * Deactivates all modules, including the internal ones, causing the program to end normally (returning <code>0</code>)
+		 */
 		void deactivateAll ();
 
+		/**
+		 * Retrieves the paused state of the engine.
+		 * @return <code>true</code> if the engine is currently paused, <code>false</code> otherwise
+		 */
 		inline bool getPause () { return paused; }
+		/**
+		 * Retrieves the keyboard mode used by the engine.
+		 * @return the currently used keyboard mode
+		 */
 		inline UmbraKeyboardMode getKeyboardMode () { return keyboardMode; }
+		/**
+		 * Fetches a pointer to a module.
+		 * @param moduleId the identification number of the module to which a pointer is to be fetched
+		 * @return a pointer to the requested module
+		 */
 		inline UmbraModule * getModule (int moduleId) { return (moduleId < 0 || moduleId >= modules.size() ? NULL: modules.get(moduleId)); }
+        /**
+		 * Fetches a pointer to an internal module.
+		 * @param id the identification number of the internal module to which a pointer is to be fetched
+		 * @return a pointer to the requested internal module
+		 */
 		inline UmbraModule * getModule (UmbraInternalModuleID id) { return (id < 0 || id >= UMBRA_INTERNAL_MAX ? NULL: internalModules[id]); }
+		/**
+		 * Fetches a pointer to the engine instance.
+		 * @return a pointer to the engine
+		 */
 		inline static UmbraEngine * getInstance () { if (engineInstance == NULL) engineInstance = new UmbraEngine(); return engineInstance; }
-
+		/**
+		 * Displays the last logged error using the inbuilt BSOD module.
+		 */
 		void displayError ();
 
 		//Config-related stuff

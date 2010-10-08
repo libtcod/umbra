@@ -57,7 +57,15 @@ class UmbraCallbackQuit: public UmbraCallback {
 		UmbraCallbackQuit ();
 	private:
 		UmbraKey key2;
+		/**
+		 * Checks whether the collected keyboard event corresponds to one of the Quit key combinations.
+		 * @param k the keyboard event collected by the engine
+		 * @return <code>true</code> if the keyboard events match, <code>false</code> otherwise
+		 */
 		inline bool evaluate (UmbraKey k) { if (k == key || k == key2) return true; else return false; }
+		/**
+		 * Quits the application.
+		 */
 		void action ();
 };
 
@@ -66,6 +74,9 @@ class UmbraCallbackFullscreen: public UmbraCallback {
 	public:
 		UmbraCallbackFullscreen ();
 	private:
+		/**
+		 * Toggles fullscreen mode on/off.
+		 */
 		void action ();
 };
 
@@ -74,6 +85,9 @@ class UmbraCallbackScreenshot: public UmbraCallback {
 	public:
 		UmbraCallbackScreenshot ();
 	private:
+		/**
+		 * Saves a screenshot.
+		 */
 		void action ();
 };
 
@@ -82,6 +96,9 @@ class UmbraCallbackFontUp: public UmbraCallback {
 	public:
 		UmbraCallbackFontUp ();
 	private:
+		/**
+		 * Switches the font to the next one in the registered fonts list.
+		 */
 		void action ();
 };
 
@@ -90,6 +107,9 @@ class UmbraCallbackFontDown: public UmbraCallback {
 	public:
 		UmbraCallbackFontDown ();
 	private:
+		/**
+		 * Switches the font to the previous one in the registered fonts list.
+		 */
 		void action ();
 };
 
@@ -98,6 +118,9 @@ class UmbraCallbackPause: public UmbraCallback {
 	public:
 		UmbraCallbackPause ();
 	private:
+	    /**
+	     * Toggles the engine's paused state.
+	     */
 		void action ();
 };
 
@@ -106,5 +129,8 @@ class UmbraCallbackSpeedometer: public UmbraCallback {
 	public:
 		UmbraCallbackSpeedometer ();
 	private:
+	    /**
+	     * Turns the Speedometer on and off.
+	     */
 		void action ();
 };
