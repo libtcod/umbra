@@ -46,13 +46,13 @@ int main()
     engine.registerModule(new Matrix(),MOD_DEMO);
     engine.registerModule(new Demo());
     engine.registerModule(new RabbitWidget());
-    engine.registerModule(new Credits());
     engine.registerModule(new Panel());
+    engine.registerModule(new Credits());
     //activate modules
     engine.activateModule(MOD_MATRIX);
     engine.activateModule(MOD_RABBIT);
-    engine.activateModule(MOD_CREDITS);
     engine.activateModule(MOD_PANEL);
+    engine.activateModule(MOD_CREDITS);
     //initialise and run the engine
     if (engine.initialise()) return engine.run();
     else return 1;
