@@ -32,6 +32,7 @@ class UmbraModule {
 	friend class UmbraEngine;
 	public:
 		UmbraModule (); //constructor
+		UmbraModule (int priority); //constructor
 		virtual ~UmbraModule () {} //destructor
 
 		/**
@@ -75,6 +76,11 @@ class UmbraModule {
 		 */
 		void setActive (bool active);
 		/**
+		 * Sets the module's priority.<br>The priority works like a weight setting: a lower number results in the module being updated earlier and rendered on top of others, while a high number will put the module under the others.
+		 * @param priority the module's priority
+		 */
+		inline void setPriority (int priority) { this->priority = priority; }
+		/**
 		 * Pauses or unpauses the module.
 		 * @param paused <code>true</code> if the module is to be paused, <code>false</code> otherwise
 		 */
@@ -113,6 +119,7 @@ class UmbraModule {
 		inline UmbraModuleStatus getStatus () { return status; }
 
 	protected:
+	    int priority; // update order (inverse of render order)
 		/**
 		 * Custom code that is executed each time the module is activated
 		 */
@@ -129,7 +136,6 @@ class UmbraModule {
 		 * Custom code that is executed each time the module is resumed
 		 */
 		virtual void resume() {}
-		int priority; // update order (inverse of render order)
 	private:
 		UmbraModuleStatus status;
 		int fallback; //fallback module's index

@@ -323,15 +323,13 @@ int UmbraEngine::run () {
 				}
 			}
 		}
+		uint32 updateTime=TCODSystem::getElapsedMilli() - startTime;
 		TCODConsole::root->setDefaultBackground(TCODColor::black);
 		TCODConsole::root->clear();
-		long updateTime=TCODSystem::getElapsedMilli() - startTime;
 		// render active modules by inverted priority order
-		for (UmbraModule ** mod = activeModules.end(); mod != activeModules.begin(); ) {
-			mod --;
+		for (UmbraModule ** mod = activeModules.end(); mod != activeModules.begin(); mod--)
 			(*mod)->render();
-		}
-		long renderTime=TCODSystem::getElapsedMilli() - startTime - updateTime;
+		uint32 renderTime = TCODSystem::getElapsedMilli() - startTime - updateTime;
 		if ( internalModules[UMBRA_INTERNAL_SPEEDOMETER]->getActive() ) {
 			((UmbraModSpeed *)internalModules[UMBRA_INTERNAL_SPEEDOMETER])->setTimes(updateTime,renderTime);
 		}
