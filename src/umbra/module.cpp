@@ -29,10 +29,6 @@
 
 UmbraModule::UmbraModule (): priority(1), status(UMBRA_UNINITIALISED), fallback(-1), timeout(0), timeoutEnd(0xffffffff) {}
 
-UmbraModule::UmbraModule (int priority): status(UMBRA_UNINITIALISED), fallback(-1), timeout(0), timeoutEnd(0xffffffff) {
-	this->priority = priority;
-}
-
 void UmbraModule::initialise () {
 	status=UMBRA_INACTIVE;
 }

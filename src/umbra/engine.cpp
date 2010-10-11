@@ -100,25 +100,25 @@ struct TmpFontData {
 #define MAX_FONTS 16
 bool UmbraEngine::registerFonts () {
 	// if fonts registered by the user, do nothing
-	if ( getNbFonts() > 0 ) return true;
+	if (getNbFonts() > 0) return true;
 	TmpFontData dat[MAX_FONTS];
 	TCODList<TmpFontData *> fontDataList;
 	// look for font*png in font directory
 	TCODList<const char *> dir=TCODSystem::getDirectoryContent(getFontDir(),"font*.png");
-	if ( dir.size() > 0 ) {
+	if (dir.size() > 0) {
 		int fontNum=0;
 		for (const char **fontName = dir.begin(); fontName != dir.end() && fontNum < MAX_FONTS; fontName++) {
 			int charWidth;
 			int charHeight;
 			char layout[32]="";
-			if ( sscanf(*fontName,"font%dx%d%s",&charWidth,&charHeight,layout) >= 2 ) {
-				if ( charWidth > 0 && charHeight > 0 ) {
+			if (sscanf(*fontName,"font%dx%d%s",&charWidth,&charHeight,layout) >= 2) {
+				if (charWidth > 0 && charHeight > 0) {
 					int fontFlag = TCOD_FONT_TYPE_GREYSCALE;
-					if ( layout[0] == '_' ) {
+					if (layout[0] == '_') {
 						// parse font layout
-						if ( strncasecmp(layout,"_TCOD.",6) == 0 ) fontFlag|=TCOD_FONT_LAYOUT_TCOD;
-						else if ( strncasecmp(layout,"_INCOL.",7) == 0 ) fontFlag|=TCOD_FONT_LAYOUT_ASCII_INCOL;
-						else if ( strncasecmp(layout,"_INROW.",7) == 0 ) fontFlag|=TCOD_FONT_LAYOUT_ASCII_INROW;
+						if (strncasecmp(layout,"_TCOD.",6) == 0) fontFlag|=TCOD_FONT_LAYOUT_TCOD;
+						else if (strncasecmp(layout,"_INCOL.",7) == 0) fontFlag|=TCOD_FONT_LAYOUT_ASCII_INCOL;
+						else if (strncasecmp(layout,"_INROW.",7) == 0) fontFlag|=TCOD_FONT_LAYOUT_ASCII_INROW;
 					} else {
 						// default is TCOD |GREYSCALE
 						fontFlag|=TCOD_FONT_LAYOUT_TCOD;
@@ -134,7 +134,7 @@ bool UmbraEngine::registerFonts () {
 					dat[fontNum].flags=fontFlag;
 					// sort this font by size
 					int idx=0;
-					while ( idx < fontDataList.size() && fontDataList.get(idx)->size < dat[fontNum].size ) idx ++;
+					while (idx < fontDataList.size() && fontDataList.get(idx)->size < dat[fontNum].size) idx ++;
 					fontDataList.insertBefore(&dat[fontNum],idx);
 					fontNum++;
 				}
@@ -187,19 +187,19 @@ void UmbraEngine::activateModule(UmbraModule *module) {
 
 // the internal function actually putting a module in active list
 void UmbraEngine::doActivateModule( UmbraModule *mod ) {
-  if (! mod->getActive() ) {
+  if (!mod->getActive()) {
 	mod->setActive(true);
 	mod->initialiseTimeout();
 	//insert the module at the right pos, sorted by priority
 		int idx = 0;
-		while ( idx < activeModules.size() && activeModules.get(idx)->getPriority() < mod->getPriority() ) idx ++;
+		while (idx < activeModules.size() && activeModules.get(idx)->getPriority() < mod->getPriority()) idx ++;
 		activeModules.insertBefore(mod,idx);
 	}
 }
 
 // register the module for deactivation by id
 void UmbraEngine::deactivateModule (int moduleId) {
-	if ( moduleId < 0 || moduleId >= modules.size() ) {
+	if (moduleId < 0 || moduleId >= modules.size()) {
 		UmbraError::add(UMBRA_ERRORLEVEL_WARNING,"Tried to deactivate an invalid module: ID %d.",moduleId);
 		displayError();
 		return;
@@ -244,9 +244,7 @@ bool UmbraEngine::initialise (TCOD_renderer_t renderer) {
 		TCODSystem::setFps(25);
 		TCODMouse::showCursor(true);
 	}
-	else {
-		UmbraError::add(UMBRA_ERRORLEVEL_FATAL_ERROR,"Could not initialise the root console.");
-	}
+	else UmbraError::add(UMBRA_ERRORLEVEL_FATAL_ERROR,"Could not initialise the root console.");
 	return retVal;
 }
 
@@ -256,7 +254,6 @@ int UmbraEngine::run () {
 
 	if (modules.size() == 0) {
 		UmbraError::add(UMBRA_ERRORLEVEL_FATAL_ERROR,"No modules registered!");
-		displayError();
 		exit(1);
 	}
 
@@ -275,46 +272,50 @@ int UmbraEngine::run () {
 			activeModules.remove(*mod);
 		}
 		toDeactivate.clear();
+
 		// activate new modules
 		for (UmbraModule ** mod = toActivate.begin(); mod != toActivate.end(); mod++) {
 			doActivateModule(*mod);
 		}
 		toActivate.clear();
+
 		if (activeModules.size() == 0) break; // exit game
+
 		// update all active modules
-		switch ( keyboardMode ) {
+		switch (keyboardMode) {
 			case UMBRA_KEYBOARD_WAIT :
-				key = TCODConsole::waitForKeypress( true ) ;
+				key = TCODConsole::waitForKeypress(true) ;
 				break;
 			case UMBRA_KEYBOARD_WAIT_NOFLUSH :
-				key = TCODConsole::waitForKeypress( false ) ;
+				key = TCODConsole::waitForKeypress(false) ;
 				break;
 			case UMBRA_KEYBOARD_PRESSED :
-				key = TCODConsole::checkForKeypress( TCOD_KEY_PRESSED ) ;
+				key = TCODConsole::checkForKeypress(TCOD_KEY_PRESSED) ;
 				break;
 			case UMBRA_KEYBOARD_PRESSED_RELEASED :
-				key = TCODConsole::checkForKeypress( TCOD_KEY_PRESSED | TCOD_KEY_RELEASED ) ;
+				key = TCODConsole::checkForKeypress(TCOD_KEY_PRESSED | TCOD_KEY_RELEASED) ;
 				break;
 			case UMBRA_KEYBOARD_RELEASED :
 			default :
-				key = TCODConsole::checkForKeypress( TCOD_KEY_RELEASED ) ;
+				key = TCODConsole::checkForKeypress(TCOD_KEY_RELEASED) ;
 				break;
 		}
 		mouse = TCODMouse::getStatus();
 		keyboard(key);
 		uint32 startTime=TCODSystem::getElapsedMilli();
 		// update all active modules by priority order
-		for (UmbraModule ** mod = activeModules.begin(); mod != activeModules.end(); mod++) {
-			if (!(*mod)->getPause()) {
+		UmbraModule ** tmpMod;
+		for (tmpMod = activeModules.begin(); tmpMod != activeModules.end(); tmpMod++) {
+			if (!(*tmpMod)->getPause()) {
 				// handle input
-				(*mod)->keyboard(key);
-				(*mod)->mouse(mouse);
-				if ((*mod)->isTimedOut(startTime) || !(*mod)->update() || !(*mod)->getActive()) {
-					UmbraModule *module=*mod;
-					int fallback=module->getFallback();
+				(*tmpMod)->keyboard(key);
+				(*tmpMod)->mouse(mouse);
+				if ((*tmpMod)->isTimedOut(startTime) || !(*tmpMod)->update() || !(*tmpMod)->getActive()) {
+					UmbraModule *module = *tmpMod;
+					int fallback = module->getFallback();
 					// deactivate module
 					module->setActive(false);
-					mod = activeModules.remove(mod);
+					tmpMod = activeModules.remove(tmpMod);
 					if (fallback != -1) {
 						// register fallback for activation
 						UmbraModule *fallbackModule = modules.get(fallback);
@@ -327,9 +328,9 @@ int UmbraEngine::run () {
 		TCODConsole::root->setDefaultBackground(TCODColor::black);
 		TCODConsole::root->clear();
 		// render active modules by inverted priority order
-		for (UmbraModule ** mod = activeModules.end(); mod != activeModules.begin(); ) {
-			mod--;
-			(*mod)->render();
+		for (tmpMod = activeModules.end(); tmpMod != activeModules.begin(); ) {
+			tmpMod--;
+			(*tmpMod)->render();
 		}
 		uint32 renderTime = TCODSystem::getElapsedMilli() - startTime - updateTime;
 		if ( internalModules[UMBRA_INTERNAL_SPEEDOMETER]->getActive() ) {

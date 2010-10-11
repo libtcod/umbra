@@ -56,8 +56,15 @@ void UmbraConfig::load (const char *fileName) {
 
 	//check if the config file exists
 	if (!UmbraError::fileExists(fileName)) {
-		UmbraError::add(UMBRA_ERRORLEVEL_FATAL_ERROR,"Configuration file %s is bad or missing.", fileName );
-		exit(1); //replace by loading defaults or automatic default config file generator
+		UmbraError::add(UMBRA_ERRORLEVEL_WARNING,"Configuration file %s is bad or missing. Attempting to create a new one.", fileName);
+		//assign defaults
+		rootWidth = 80;
+		rootHeight = 60;
+		fontID = 0;
+		fullScreen = false;
+		debug = true;
+		fontDir = "data/img";
+		UmbraConfig::save();
 	}
 
 	//run the parser
@@ -70,7 +77,7 @@ void UmbraConfig::load (const char *fileName) {
 	fullScreen = parser.getBoolProperty("config.fullScreen");
 	debug = parser.getBoolProperty("config.debug");
 	fontDir = parser.getStringProperty("config.fontDir");
-	if ( fontDir != NULL )
+	if (fontDir != NULL)
 		fontDir = strdup(fontDir);
 	else
 		fontDir = "data/img"; // default value

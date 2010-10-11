@@ -32,7 +32,6 @@ class UmbraModule {
 	friend class UmbraEngine;
 	public:
 		UmbraModule (); //constructor
-		UmbraModule (int priority); //constructor
 		virtual ~UmbraModule () {} //destructor
 
 		/**

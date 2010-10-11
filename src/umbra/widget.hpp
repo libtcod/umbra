@@ -105,8 +105,8 @@ class UmbraWidget: public UmbraModule {
 		UmbraRect dragZone; // part of the widget we can click to drag it
 		UmbraPoint minimiseButton; //minimise button coordinates
 		UmbraPoint closeButton; //close button coordinates
-		int mousex,mousey;
-		int dragx,dragy;
+		int mousex, mousey;
+		int dragx, dragy;
 		bool canDrag, isDragging;
 		/**
 		 * Sets the widget's active zone reacting to dragging.

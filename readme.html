@@ -2010,6 +2010,20 @@ int moduleGameID = engine.registerModule(new moduleGame());
 UmbraModule * currentModule = engine.getModule(moduleIntroID);
 &lt;/code&gt;</pre>
 </div>
+<div title="Module priority" modifier="Mingos" created="201010111935" modified="201010111936" tags="tutorial module priority" changecount="2">
+<pre>Modules and widgets, when activated, are put in the active modules' list in an order controlled by the priority. This impacts the module's behaviour and appearance.
+!Updating
+Since the modules are updated according to the priority in ascending order, a module with a priority of 1 will be updated before a module with a priority of 2. It can be illustrated by a practical example:
+&lt;code C++&gt;
+MyModule1 * mod1 = new MyModule1();
+mod1-&gt;setPriority(1);
+MyModule2 * mod2 = new MyModule2();
+mod1-&gt;setPriority(2);
+&lt;/code&gt;
+Let's assume both {{{mod1}}} and {{{mod2}}} have similar keyboard parsing, sharing some keyboard events. Since {{{mod1}}} has a priority of 1, it will be parsed before {{{mod2}}}. If {{{mod1}}} detects a keystroke it reacts to, it will clear that keyboard event, so when {{{mod2}}} gets updated, the keyboard event list will be empty.
+!Rendering
+On the other hand, module rendering is done in the inverse order. What this means is that if {{{mod1}}} and {{{mod2}}} overlap each other on the screen, {{{mod1}}} will be rendered after {{{mod2}}}, thus it will appear on top of {{{mod2}}}.</pre>
+</div>
 <div title="Module timeout" modifier="Mingos" created="201010051123" modified="201010062016" tags="issueTracker RFE closed" changecount="3">
 <pre>There should be an ~UmbraModule method for setting a timeout on a module.
 The module would store the activation time and deactivate itself automatically after the time specified in the timeout has passed.
@@ -4101,9 +4115,9 @@ bool getPause (
 !See also
 &lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;moduleStatus&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;moduleStatus&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;moduleStatus&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
 </div>
-<div title="UmbraModule::getPriority" modifier="Mingos" created="201008111904" tags="api method moduleClass priority" changecount="1">
+<div title="UmbraModule::getPriority" modifier="Mingos" created="201008111904" modified="201010111623" tags="api method moduleClass priority" changecount="4">
 <pre>!Description
-Checks whether the module is active.
+Checks the module's priority.
 !Construction
 &lt;code C++&gt;
 int getPriority (
@@ -4112,7 +4126,7 @@ int getPriority (
 !Return value
 {{{int}}}: The module's priority.
 !See also
-&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;priority&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;priority&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;moduleStatus&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
+&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;priority&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;priority&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;priority&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
 </div>
 <div title="UmbraModule::getStatus" modifier="Mingos" created="201008111909" tags="api method moduleClass moduleStatus" changecount="1">
 <pre>!Description
@@ -4281,6 +4295,22 @@ void setPause (
 {{{bool paused}}}: {{{true}}} pauses the module, {{{false}}} unpauses it.
 !Remarks
 Note that when a module is paused or unpaused, [[UmbraModule::pause]] or [[UmbraModule::resume]], respectively, are called in the following iteration of the main application loop.</pre>
+</div>
+<div title="UmbraModule::setPriority" modifier="Mingos" created="201010111625" modified="201010111936" tags="api method moduleClass priority" changecount="2">
+<pre>!Description
+Sets the module's priority.
+!Construction
+&lt;code C++&gt;
+void setPriority (
+    int priority
+);
+&lt;/code&gt;
+!Parametres
+*{{{int priority}}}: the module's priority.
+!Remarks
+This method is best used in the module's constructor.
+!See also
+&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;priority&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;priority&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;priority&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
 </div>
 <div title="UmbraModule::setTimeout" modifier="Mingos" created="201010061959" tags="api method moduleClass timeout" changecount="1">
 <pre>!Description

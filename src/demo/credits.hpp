@@ -29,11 +29,11 @@
 #define CREDITS_HPP
 
 class Credits: public UmbraWidget {
-    public:
-        Credits ();
-        void render ();
-        std::string text;
-        TCODConsole * credits;
+	public:
+		Credits ();
+		void render ();
+		std::string text;
+		TCODConsole * credits;
 };
 
 #endif

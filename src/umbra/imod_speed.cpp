@@ -79,15 +79,15 @@ void UmbraModSpeed::mouse (TCOD_mouse_t &ms) {
 bool UmbraModSpeed::update () {
 	cumulatedElapsed += TCODSystem::getLastFrameLength();
 
-	if ( cumulatedElapsed >= 1.0f ) {
+	if (cumulatedElapsed >= 1.0f) {
 		updatePer = (int)(updateTime * 100.0f / (cumulatedElapsed));
 		renderPer = (int)(renderTime * 100.0f / (cumulatedElapsed));
 		sysPer = 100 - updatePer - renderPer;
 		cumulatedElapsed = updateTime = renderTime = 0.0f;
 		// compute time bar picture
-		for (int px = 0; px < TIMEBAR_LENGTH; px++ ) {
+		for (int px = 0; px < TIMEBAR_LENGTH; px++) {
 			TCODColor col;
-			if ( px < TIMEBAR_LENGTH*updatePer/100 ) col = TCODColor::green;
+			if (px < TIMEBAR_LENGTH * updatePer/100) col = TCODColor::green;
 			else if ( px < TIMEBAR_LENGTH*(updatePer+renderPer)/100 ) col = TCODColor::yellow;
 			else col = TCODColor::red;
 			timeBar->putPixel(px,0,col);
