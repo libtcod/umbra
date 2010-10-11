@@ -327,8 +327,10 @@ int UmbraEngine::run () {
 		TCODConsole::root->setDefaultBackground(TCODColor::black);
 		TCODConsole::root->clear();
 		// render active modules by inverted priority order
-		for (UmbraModule ** mod = activeModules.end(); mod != activeModules.begin(); mod--)
+		for (UmbraModule ** mod = activeModules.end(); mod != activeModules.begin(); ) {
+			mod--;
 			(*mod)->render();
+		}
 		uint32 renderTime = TCODSystem::getElapsedMilli() - startTime - updateTime;
 		if ( internalModules[UMBRA_INTERNAL_SPEEDOMETER]->getActive() ) {
 			((UmbraModSpeed *)internalModules[UMBRA_INTERNAL_SPEEDOMETER])->setTimes(updateTime,renderTime);
