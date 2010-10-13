@@ -119,8 +119,6 @@
             <pElem>../libtcod/include</pElem>
             <pElem>src/umbra</pElem>
             <pElem>src/demo</pElem>
-            <pElem>src/fov</pElem>
-            <pElem>src/invaders</pElem>
           </incDir>
         </ccTool>
         <linkerTool>
@@ -188,8 +186,6 @@
             <pElem>../libtcod/include</pElem>
             <pElem>src/umbra</pElem>
             <pElem>src/demo</pElem>
-            <pElem>src/fov</pElem>
-            <pElem>src/invaders</pElem>
           </incDir>
         </ccTool>
         <fortranCompilerTool>
@@ -258,9 +254,7 @@
           <incDir>
             <pElem>../libtcod/include</pElem>
             <pElem>src/umbra</pElem>
-            <pElem>src/demo</pElem>
             <pElem>src/fov</pElem>
-            <pElem>src/invaders</pElem>
           </incDir>
         </ccTool>
         <linkerTool>
@@ -329,9 +323,7 @@
           <incDir>
             <pElem>../libtcod/include</pElem>
             <pElem>src/umbra</pElem>
-            <pElem>src/demo</pElem>
             <pElem>src/fov</pElem>
-            <pElem>src/invaders</pElem>
           </incDir>
         </ccTool>
         <fortranCompilerTool>
@@ -402,8 +394,6 @@
           <incDir>
             <pElem>../libtcod/include</pElem>
             <pElem>src/umbra</pElem>
-            <pElem>src/demo</pElem>
-            <pElem>src/fov</pElem>
             <pElem>src/invaders</pElem>
           </incDir>
         </ccTool>
@@ -475,8 +465,6 @@
           <incDir>
             <pElem>../libtcod/include</pElem>
             <pElem>src/umbra</pElem>
-            <pElem>src/demo</pElem>
-            <pElem>src/fov</pElem>
             <pElem>src/invaders</pElem>
           </incDir>
         </ccTool>

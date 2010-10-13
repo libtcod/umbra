@@ -57,6 +57,68 @@ UmbraEngine::UmbraEngine (const char *fileName, UmbraRegisterCallbackFlag flag):
 	}
 }
 
+UmbraEngine::UmbraEngine (const char *fileName): keyboardMode(UMBRA_KEYBOARD_RELEASED) {
+	//load configuration variables
+	UmbraConfig::load(fileName);
+
+	paused = false;
+	setWindowTitle("%s ver. %s (%s)", UMBRA_TITLE, UMBRA_VERSION, UMBRA_STATUS);
+	engineInstance = this;
+	//register internal modules
+	registerInternalModule(UMBRA_INTERNAL_SPEEDOMETER,new UmbraModSpeed());
+	registerInternalModule(UMBRA_INTERNAL_BSOD,new UmbraModBSOD());
+	//register default callbacks
+	registerCallback(new UmbraCallbackQuit());
+	registerCallback(new UmbraCallbackFullscreen());
+	registerCallback(new UmbraCallbackScreenshot());
+	registerCallback(new UmbraCallbackFontUp());
+	registerCallback(new UmbraCallbackFontDown());
+	registerCallback(new UmbraCallbackPause());
+}
+
+UmbraEngine::UmbraEngine (UmbraRegisterCallbackFlag flag): keyboardMode(UMBRA_KEYBOARD_RELEASED) {
+	//load configuration variables
+	UmbraConfig::load("data/cfg/umbra.txt");
+
+	paused = false;
+	setWindowTitle("%s ver. %s (%s)", UMBRA_TITLE, UMBRA_VERSION, UMBRA_STATUS);
+	engineInstance = this;
+	//register internal modules
+	registerInternalModule(UMBRA_INTERNAL_SPEEDOMETER,new UmbraModSpeed());
+	registerInternalModule(UMBRA_INTERNAL_BSOD,new UmbraModBSOD());
+	//register default callbacks
+	if (flag & UMBRA_REGISTER_DEFAULT) {
+		registerCallback(new UmbraCallbackQuit());
+		registerCallback(new UmbraCallbackFullscreen());
+		registerCallback(new UmbraCallbackScreenshot());
+		registerCallback(new UmbraCallbackFontUp());
+		registerCallback(new UmbraCallbackFontDown());
+		registerCallback(new UmbraCallbackPause());
+	}
+	if (flag & UMBRA_REGISTER_ADDITIONAL) {
+		registerCallback(new UmbraCallbackSpeedometer());
+	}
+}
+
+UmbraEngine::UmbraEngine (): keyboardMode(UMBRA_KEYBOARD_RELEASED) {
+	//load configuration variables
+	UmbraConfig::load("data/cfg/umbra.txt");
+
+	paused = false;
+	setWindowTitle("%s ver. %s (%s)", UMBRA_TITLE, UMBRA_VERSION, UMBRA_STATUS);
+	engineInstance = this;
+	//register internal modules
+	registerInternalModule(UMBRA_INTERNAL_SPEEDOMETER,new UmbraModSpeed());
+	registerInternalModule(UMBRA_INTERNAL_BSOD,new UmbraModBSOD());
+	//register default callbacks
+	registerCallback(new UmbraCallbackQuit());
+	registerCallback(new UmbraCallbackFullscreen());
+	registerCallback(new UmbraCallbackScreenshot());
+	registerCallback(new UmbraCallbackFontUp());
+	registerCallback(new UmbraCallbackFontDown());
+	registerCallback(new UmbraCallbackPause());
+}
+
 void UmbraEngine::setWindowTitle (const char * title, ...) {
 	char f[512];
 	va_list ap;
@@ -192,8 +254,9 @@ void UmbraEngine::doActivateModule( UmbraModule *mod ) {
 	mod->initialiseTimeout();
 	//insert the module at the right pos, sorted by priority
 		int idx = 0;
-		while (idx < activeModules.size() && activeModules.get(idx)->getPriority() < mod->getPriority()) idx ++;
-		activeModules.insertBefore(mod,idx);
+		while (idx < activeModules.size() && activeModules.get(idx)->getPriority() < mod->getPriority()) idx++;
+		if (idx < activeModules.size()) activeModules.insertBefore(mod,idx);
+		else activeModules.push(mod);
 	}
 }
 

@@ -78,8 +78,10 @@ enum UmbraRegisterCallbackFlag {
 //the main engine
 class UmbraEngine {
 	public:
-		UmbraEngine (const char *fileName = "data/cfg/umbra.txt",
-		             UmbraRegisterCallbackFlag flag = UMBRA_REGISTER_DEFAULT); //constructor
+		UmbraEngine (const char * fileName, UmbraRegisterCallbackFlag flag);
+		UmbraEngine (const char * filename);
+		UmbraEngine (UmbraRegisterCallbackFlag flag);
+		UmbraEngine ();
 
 		/**
 		 * Registers a module for usage in the application. Unregistered modules cannot be activated. Registering is done only once per application run.<br><i>Note: this method only registers the module, but doesn't activate it. Activation is performed using the UmbraEngine::activateModule(*) methods!</i>

@@ -585,9 +585,12 @@ Please note that this module requires the console emulator to be active, otherwi
 *[[UmbraCallbackScreenshot]]
 *[[UmbraCallbackSpeedometer]]</pre>
 </div>
-<div title="Change log" modifier="Mingos" created="201008111354" modified="201010082246" tags="changeLog" changecount="19">
+<div title="Change log" modifier="Mingos" created="201008111354" modified="201010132150" tags="changeLog" changecount="21">
 <pre>&lt;&lt;tiddler ChangeLogSymbols&gt;&gt;
 !Current HEAD revision
+|!Category|!Committed on|!Change|!Committed by|
+|BUG|13-Oct-2010|Module activation method now correctly places modules with the lowest priority|Mingos|
+|API|13-Oct-2010|~UmbraEngine now has four constructors|Mingos|
 !Previous releases
 !!!Umbra 10.10 Alpha, 9-October-2010
 |!Category|!Committed on|!Change|!Committed by|
@@ -3076,14 +3079,22 @@ Registered automatically if additional callbacks are enabled during engine initi
 UmbraEngine::getInstance()-&gt;registerCallback(new UmbraCallbackSpeedometer());
 &lt;/code&gt;</pre>
 </div>
-<div title="UmbraEngine" modifier="Mingos" created="200910241822" modified="201008050918" tags="api class engine" changecount="58">
+<div title="UmbraEngine" modifier="Mingos" created="200910241822" modified="201010132223" tags="api class engine" changecount="60">
 <pre>The class UmbraEngine contains the heart of Umbra. An instance of UmbraEngine needs to be created in order for Umbra to become alive:
 &lt;code C++&gt;
 UmbraEngine engine;
 &lt;/code&gt;
-Umbra will look for its {{{umbra.txt}}} configuration file in {{{./data/cfg/}}} by default. If you want it in another directory, use this syntax ;
+Umbra will look for its {{{umbra.txt}}} configuration file in {{{./data/cfg/}}} by default. If you want it in another directory, use this syntax:
 &lt;code C++&gt;
-UmbraEngine engine(&quot;./config&quot;);
+UmbraEngine engine(&quot;my/directory/filename.txt&quot;);
+&lt;/code&gt;
+The default set of registered callbacks can also be altered in the constructor:
+&lt;code C++&gt;
+UmbraEngine engine(UMBRA_REGISTER_ALL);
+&lt;/code&gt;
+Of course, you can set both of the above:
+&lt;code C++&gt;
+UmbraEngine engine(&quot;my/directory/filename.txt&quot;, UMBRA_REGISTER_ALL);
 &lt;/code&gt;
 Then, several [[UmbraModule]]s need to be declared. The modules are assigned unique id numbers. The first registered module has {{{id=0}}}, the second one has {{{id=1}}} and so on. Make sure you can refer to those modules in some way, for instance, by creating an enumeration with unique names. The registerModule function also returns the registered module id.
 &lt;code C++&gt;
@@ -4794,6 +4805,13 @@ There's also a special kind of module, called widget, that offers extra interact
 Widgets include special areas that can be defined to make the widget become interactive. Per default, a widget has a drag zone, a close button and a minimise button. If they are given legal values, they can be shown in the widget, and also react to mouse movement and clicks.
 
 It is not recommended to use widgets in games that only use keyboard control, since they are slower than normal modules and will be able to offer the same functionality.</pre>
+</div>
+<div title="module activation bug when no lower priority modules are present" modifier="Mingos" created="201010132148" modified="201010132200" tags="issueTracker bug closed" changecount="3">
+<pre>When there's at least one module active and another one is being activated, but with a lower priority setting (ie, higher priority number), it is not placed at the end of the active modules list, but rather before the last module, resulting in it not being on the bottom, as expected.
+
+This is caused by the ~UmbraEngine::doActivateModule() method inserting modules only before another element. If the list has been scanned until the end and no suitable place was found, it should simply push the new module at the end of the list.
+
+It is now fixed.</pre>
 </div>
 <div title="registerFont should look in the default font directory" modifier="Mingos" created="201010051104" modified="201010051104" tags="issueTracker RFE open" changecount="2">
 <pre>The [[UmbraEngine::registerFont]] method currently only accepts the filename with full path. It should also accept the filename with no path and look in the default fonts directory.</pre>
