@@ -116,4 +116,10 @@ class UmbraWidget: public UmbraModule {
 		 * @param h the drag zone's height
 		 */
 		void setDragZone (int x, int y, int w, int h);
+		/**
+		 * Custom code that is executed when the user release the mouse button
+		 * after dragging the widget		  
+		 */		 		
+		virtual void onDragEnd() {}
+		
 };
