@@ -585,10 +585,11 @@ Please note that this module requires the console emulator to be active, otherwi
 *[[UmbraCallbackScreenshot]]
 *[[UmbraCallbackSpeedometer]]</pre>
 </div>
-<div title="Change log" modifier="Mingos" created="201008111354" modified="201010132150" tags="changeLog" changecount="21">
+<div title="Change log" modifier="YourName" created="201008111354" modified="201010141353" tags="changeLog" changecount="22">
 <pre>&lt;&lt;tiddler ChangeLogSymbols&gt;&gt;
 !Current HEAD revision
 |!Category|!Committed on|!Change|!Committed by|
+|API|14-Oct-2010|External module configuration (API break!)|Jice|
 |BUG|13-Oct-2010|Module activation method now correctly places modules with the lowest priority|Mingos|
 |API|13-Oct-2010|~UmbraEngine now has four constructors|Mingos|
 !Previous releases
@@ -655,7 +656,7 @@ class UmbraCallbackQuit: public UmbraCallback {
 };
 &lt;/code&gt;</pre>
 </div>
-<div title="Creating a module" modifier="Mingos" created="200911142341" modified="201009182111" tags="tutorial module" changecount="14">
+<div title="Creating a module" modifier="YourName" created="200911142341" modified="201010141449" tags="tutorial module" changecount="15">
 <pre>Creating a module is essentially easy. Here's the simplest way:
 &lt;code C++&gt;
 class MyModule : public UmbraModule {};
@@ -665,6 +666,14 @@ Yes, that's right. By creating any class that inherits [[UmbraModule]] you can c
 Creating a ''valid'' module is one thing. Making it ''functional'' is a different story. Registering the above module is legal, but no code would ever be executed should it be run.
 
 Each module, along with [[UmbraModule]], inherits a set of virtual methods, which are called by the engine. These need to be overridden. First, let's have a look at the method that is probably the most interesting to the developer: [[UmbraModule::update]].
+
+It's recommended to give a name to the module. This makes it possible to manage this module through the external module configuration file.
+&lt;code C++&gt;
+MyModule::MyModule() : UmbraModule(&quot;myModule&quot;) { ... }
+// or 
+MyModule::MyModule() { setName(&quot;myModule&quot;); }
+&lt;/code&gt;
+
 !Update
 
 The module needs to update its internal logic in order to work. This is what [[UmbraModule::update]] is supposed to do. Imagine you have a chess program. The updating would be roughly something like this:
@@ -917,6 +926,30 @@ else return 1;
 <pre>The error log is a list of error messages registered throughout a single run of the application. Errors can be appended to that list, and each time an error is reported, it will be sent to stderr (in case of console-based applications, stderr is the system console) and also to a text file {{{errorlog.txt}}} located in the application's working directory.
 
 The errors are added automatically when something goes wrong inside Umbra, but the developer can also use the log to append custom error messages.</pre>
+</div>
+<div title="External module configuration" modifier="YourName" created="201010141500" changecount="1">
+<pre>With Umbra, you don't have to define the module's fallbacks in your code. You can define them along with a few other properties in an external configuration file. To use this feature, all you have to do is register all the modules you need to the engine, then call [[UmbraEngine::loadModuleConfiguration]]. The configuration file can defines several modules chains, allowing you to have different modes for the application (or it could also be different applications in the same .exe) :
+&lt;code&gt;
+moduleChain &quot;chainName&quot; {
+    module &quot;moduleName&quot; {
+        timeOut=0
+        priority=0
+        fallback=&quot;otherModuleName&quot;
+        active
+    }
+    module &quot;otherModuleName&quot; {
+        timeOut=0
+        priority=0
+    }
+}
+&lt;/code&gt;
+The file contains a list of &quot;moduleChain&quot; structures. The application activates one of those chains by calling the [[UmbraEngine::loadModuleConfiguration]] function. It's not allowed to start more than one chain at a time.
+The moduleChain structure contains one or several module structures. Each module structure has a name. A module with the same name must have been registered to the engine before calling [[UmbraEngine::loadModuleConfiguration]].
+In the module structure, you can define several properties (they're all optional) :
+* timeOut : same as calling [[UmbraModule::setTimeOut]] after creating the module
+* priority : same as calling [[UmbraModule::setPriority]] after creating the module
+* fallback : name of this module's fallback. The fallback can be defined later in the file.
+* active : if this flag is present, the module is activated during the engine initialisation.</pre>
 </div>
 <div title="Fading support" modifier="Mingos" created="201010062148" tags="issueTracker RFE open" changecount="1">
 <pre>It would be nice to have fading in the modules.
@@ -3182,7 +3215,7 @@ If the engine is created with the {{{registerDefaultCallbacks}}} parametre set t
 
 </pre>
 </div>
-<div title="UmbraEngine::activateModule" modifier="Mingos" created="200911081445" modified="201008111840" tags="api method engineClass module moduleStatus init" changecount="23">
+<div title="UmbraEngine::activateModule" modifier="YourName" created="200911081445" modified="201010141359" tags="api method engineClass module moduleStatus init" changecount="24">
 <pre>!Description
 Puts a module on the activation list. It will be activated in the next main game loop iteration (next frame).
 !Construction
@@ -3201,12 +3234,18 @@ void activateModule (
     UmbraInternalModuleID id
 );
 &lt;/code&gt;
+&lt;code C++&gt;
+void activateModule (
+    const char * moduleName
+);
+&lt;/code&gt;
 !Parametres
 *{{{int moduleId}}} - the ID number of a module, returned by the [[UmbraEngine::registerModule]] method.
 *{{{UmbraModule * mod}}} - pointer to a module, returned by the [[UmbraEngine::getModule]] methods.
 *{{{UmbraInternalModuleID id}}} - the ID number of an internal module, as defined in the [[UmbraInternalModuleID]] enum.
+*{{{const char *moduleName}}} - the name of a module.
 !Remarks:
-You may use three ways of specifying a module: either specify the integer user module ID, pass a reference to the module in question, or specify an internal module ID.
+You may use four ways of specifying a module: either specify the integer user module ID, pass a reference to the module in question, its name, or specify an internal module ID.
 !Example:
 &lt;code c++&gt;
 //module IDs
@@ -3247,7 +3286,7 @@ class MyModule : public UmbraModule {
 !See also
 &lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;moduleStatus&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;moduleStatus&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;moduleStatus&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
 </div>
-<div title="UmbraEngine::deactivateModule" modifier="Mingos" created="200911081458" modified="201008111841" tags="api method engineClass module moduleStatus" changecount="18">
+<div title="UmbraEngine::deactivateModule" modifier="YourName" created="200911081458" modified="201010141440" tags="api method engineClass module moduleStatus" changecount="19">
 <pre>!Description
 Puts a module on the deactivation list. It will be deactivated in the next main game loop iteration (next frame).
 !Construction
@@ -3266,12 +3305,18 @@ void deactivateModule (
     UmbraInternalModuleID id
 );
 &lt;/code&gt;
+&lt;code C++&gt;
+void deactivateModule (
+    const char * moduleName
+);
+&lt;/code&gt;
 !Parametres
 *{{{int moduleId}}} - the ID number of a module, returned by the [[UmbraEngine::registerModule]] method.
 *{{{UmbraModule * mod}}} - pointer to a module, returned by the [[UmbraEngine::getModule]] methods.
 *{{{UmbraInternalModuleID id}}} - the ID number of an internal module, as defined in the [[UmbraInternalModuleID]] enum.
+*{{{const char * moduleName}}} - the module name.
 !Remarks
-You may use three ways of specifying a module: either specify the integer user module ID, pass a reference to the module in question, or specify an internal module ID.
+You may use four ways of specifying a module: either specify the integer user module ID, pass a reference to the module in question, its name, or specify an internal module ID.
 !Example
 &lt;code c++&gt;
 //module IDs
@@ -3367,7 +3412,7 @@ UmbraKeyboardMode getKeyboardMode (
 !See also
 &lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;keyboard&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;keyboard&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;keyboard&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
 </div>
-<div title="UmbraEngine::getModule" modifier="Mingos" created="200911081506" modified="201007271607" tags="api method engineClass module moduleReference" changecount="13">
+<div title="UmbraEngine::getModule" modifier="YourName" created="200911081506" modified="201010141444" tags="api method engineClass module moduleReference" changecount="15">
 <pre>!Description
 Retrieves a reference to the module with the ID passed in the argument.
 !Construction
@@ -3379,10 +3424,15 @@ UmbraModule *  getModule (
 UmbraModule * getModule (
     UmbraInternalModuleID id
 );
+
+UmbraModule * getModule (
+    const char * moduleName
+);
 &lt;/code&gt;
 !Parametres
 *{{{int moduleId}}}: the ID number of a module, returned by the [[UmbraEngine::registerModule]] method.
 *{{{UmbraInternalModuleID id}}}: the ID number of an internal module, as defined in the [[UmbraInternalModuleID]] enum.
+*{{{const char * name}}}: name of the module
 !Return value
 {{{UmbraModule*}}}: reference to the UmbraModule object with the specified ID
 !Remarks
@@ -3528,30 +3578,28 @@ engine.registerFont(32,8,&quot;./fonts/arial10x10.png&quot;, TCOD_FONT_LAYOUT_TC
 !See also
 &lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;font&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;font&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;font&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
 </div>
-<div title="UmbraEngine::registerModule" modifier="Mingos" created="200911091644" modified="201007272138" tags="api method engineClass module fallback init" changecount="16">
+<div title="UmbraEngine::registerModule" modifier="YourName" created="200911091644" modified="201010141450" tags="api method engineClass module fallback init" changecount="17">
 <pre>!Description
 Registers a user defined module for future activation.
 !Construction
 &lt;code C++&gt;
 int registerModule (
-    UmbraModule * module,
-    int fallback = (-1)
+    UmbraModule * module
 );
 &lt;/code&gt;
 !Parametres
 *{{{UmbraModule * module}}}: a pointer to the module to be registered.
-*{{{int fallback}}}: ID number of the module to be activated once the registered one is deactivated (module fallback). A value of -1 sets the fallback off. Specifying no value also sets the fallback off.
 !Return value
 {{{int}}}: the registered module's ID number.
 !Remarks
 The method requires the creation of a pointer to a module. The easiest way to achieve this is to call the {{{new}}} operator inside the method's argument.
 The method registers the newly created module for further use and assigns it an ID number. This number is generated automatically: the first registered module gets ID 0, the next is assigned 1, then 2, and so on, progressively. It is always wise to control the order in which the modules are registered.
-The second argument is optional. It is a module ID that will be activated once the currently registered module is deactivated. If no fallback ID is specified, no modules will be activated after deactivating the one currently registered.
 !Example
 &lt;code C++&gt;
 UmbraEngine engine;
 int mod1 = engine.registerModule(new MyModule()); //mod1 = 0
-int mod2 = engine.registerModule(new MyModule2(),mod1); //mod2 = 1; falls back to the previous one
+int mod2 = engine.registerModule(new MyModule2()); //mod2 = 1; 
+engine.getModule(mod2)-&gt;setFallback(mod1); // mod2 falls back to the previous one
 &lt;/code&gt;
 !See also
 &lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;module&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;module&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;module&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
@@ -3873,7 +3921,7 @@ enum UmbraErrorLevel {
 *[[UmbraError::getMessage]]
 *[[UmbraError::getNbErrors]]</pre>
 </div>
-<div title="UmbraInternalModuleID" modifier="Mingos" created="200911081536" modified="201007271729" tags="api enum module internalModule moduleReference" changecount="13">
+<div title="UmbraInternalModuleID" modifier="YourName" created="200911081536" modified="201010141445" tags="api enum module internalModule moduleReference" changecount="14">
 <pre>!Description
 ID numbers for all internal modules available in Umbra.
 !Construction
@@ -3885,13 +3933,15 @@ enum UmbraInternalModuleID {
 };
 &lt;/code&gt;
 !Values
-*{{{UMBRA_INTERNAL_SPEEDOMETER}}}: The Speed-o-meter widget.
-*{{{UMBRA_INTERNAL_BSOD}}}: The error notification widget.
+*{{{UMBRA_INTERNAL_SPEEDOMETER}}}: The Speed-o-meter widget (name : &quot;umbraSpeedometer&quot;).
+*{{{UMBRA_INTERNAL_BSOD}}}: The error notification widget (name : &quot;umbraBSOD&quot;).
 *{{{UMBRA_INTERNAL_MAX}}}: Total number of internal modules available.
 !Example
 &lt;code C++&gt;
 UmbraEngine engine;
 engine.activateModule(UMBRA_INTERNAL_SPEEDOMETER);
+// equivalent to
+engine.activateModule(&quot;umbraSpeedometer&quot;);
 &lt;/code&gt;
 !See also:
 :[[UmbraEngine::displayError]]</pre>
@@ -4276,7 +4326,7 @@ Note that when a module is activated or deactivated, [[UmbraModule::activate]] o
 !See also
 &lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;moduleStatus&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;moduleStatus&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;moduleStatus&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
 </div>
-<div title="UmbraModule::setFallback" modifier="Mingos" created="201004011604" modified="201007272301" tags="api method module moduleClass fallback" changecount="6">
+<div title="UmbraModule::setFallback" modifier="YourName" created="201004011604" modified="201010141446" tags="api method module moduleClass fallback" changecount="7">
 <pre>!Description
 Sets the fallback module (the module that will be activated when the current one is deactivated).
 !Construction
@@ -4284,11 +4334,17 @@ Sets the fallback module (the module that will be activated when the current one
 void setFallback (
     int fback
 );
+
+void setFallback (
+    const char * moduleName
+);
+
 &lt;/code&gt;
 !Parametres
 *{{{int fback}}}: the ID number of the fallback module. 
+*{{{const char * moduleName}}}: the name of the fallback module. 
 !Remarks
-When the module is deactivated, the module with ID number specified as the argument to {{{UmbraModule::setFallback}}} will be activated.
+When the module is deactivated, the module specified as the argument to {{{UmbraModule::setFallback}}} will be activated.
 The ID number of the fallback module is the number returned by [[UmbraEngine::registerModule]].
 !See also
 &lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;fallback&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;fallback&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;fallback&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
@@ -4723,7 +4779,7 @@ UmbraEngine engine = UmbraEngine(&quot;data/cfg/umbra.txt&quot;,UMBRA_REGISTER_A
 <pre>*[[UmbraWidget::mouse]]
 *[[UmbraWidget::setDragZone]]</pre>
 </div>
-<div title="Using Umbra" modifier="Mingos" created="200910241814" modified="201010061922" tags="tutorial" changecount="34">
+<div title="Using Umbra" modifier="YourName" created="200910241814" modified="201010141451" tags="tutorial" changecount="35">
 <pre>#Basics
 ##[[Starting a project using Umbra]]
 ##[[Umbra Hello World]]
@@ -4743,6 +4799,7 @@ UmbraEngine engine = UmbraEngine(&quot;data/cfg/umbra.txt&quot;,UMBRA_REGISTER_A
 ##[[Module ID]]
 ##[[Fallbacks]]
 ##[[Timeouts]]
+##[[External module configuration]]
 ##[[Creating a widget]]
 ##Internal modules
 ###[[Speed-o-meter]]

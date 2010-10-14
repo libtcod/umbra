@@ -25,6 +25,8 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
+#include <string>
+
 enum UmbraModuleStatus { UMBRA_UNINITIALISED, UMBRA_INACTIVE, UMBRA_ACTIVE, UMBRA_PAUSED };
 
 //all screens or views, such as credits, main menu, map view, etc. have to inherit this
@@ -32,12 +34,13 @@ class UmbraModule {
 	friend class UmbraEngine;
 	public:
 		UmbraModule (); //constructor
+		UmbraModule (const char *name); //constructor
 		virtual ~UmbraModule () {} //destructor
 
 		/**
 		 * Custom code that is executed once and only once, when the module is activated for the first time.<br>It is used mainly to allocate resources that might be unavailable at the moment of the module's instantiation.
 		 */
-		virtual void initialise (); // allocate resources. called only once
+		virtual void initialise () {} // allocate resources. called only once
 		/**
 		 * Custom code controlling what and how is displayed on the console. Called automatically after <code>update()</code>.
 		 */
@@ -64,6 +67,10 @@ class UmbraModule {
 		 * @param fback the ID of the fallback module.
 		 */
 		inline void setFallback (int fback) { fallback = fback; } //set default fallback module's index
+		/**
+		 * Sets the fallback from its name
+		 */		  		
+		void setFallback(const char *name);
 		/**
 		 * Sets the module's timeout.
 		 * @param val the number of milliseconds that the module will be allowed to run before timing out. Set to 0 if the timeout is to be removed.		 
@@ -116,6 +123,12 @@ class UmbraModule {
 		 * @return module's status (one of the values from the UmbraModuleStatus enum)
 		 */
 		inline UmbraModuleStatus getStatus () { return status; }
+		
+		/**
+		 * Gets the name of the module
+		 * @return the name of the module
+		 */		 		 		
+		inline const char *getName() { return name.c_str(); }
 
 	protected:
 	    int priority; // update order (inverse of render order)
@@ -135,11 +148,18 @@ class UmbraModule {
 		 * Custom code that is executed each time the module is resumed
 		 */
 		virtual void resume() {}
+		
+		/**
+		 * Set the module's name
+		 */		 		
+		inline void setName(const char *name) {this->name.assign(name);}
+		
 	private:
 		UmbraModuleStatus status;
 		int fallback; //fallback module's index
 		uint32 timeout;
 		uint32 timeoutEnd;
+		std::string name;
 		/**
 		 * Initialises the timeout by calculating the exact time when the module will time out.
 		 */

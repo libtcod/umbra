@@ -34,6 +34,7 @@ UmbraModBSOD::UmbraModBSOD () {
 	msgString = "";
 	rect.set(getEngine()->getRootWidth()-31,getEngine()->getRootHeight()-9,30,8);
 	setDragZone(0,0,28,1);
+	setName("umbraBSOD");
 }
 
 void UmbraModBSOD::activate () {

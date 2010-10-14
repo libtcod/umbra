@@ -29,13 +29,14 @@
 
 UmbraModule::UmbraModule (): priority(1), status(UMBRA_UNINITIALISED), fallback(-1), timeout(0), timeoutEnd(0xffffffff) {}
 
-void UmbraModule::initialise () {
-	status=UMBRA_INACTIVE;
+UmbraModule::UmbraModule (const char *name): priority(1), status(UMBRA_UNINITIALISED), fallback(-1), timeout(0), timeoutEnd(0xffffffff) {
+	setName(name);
 }
 
 void UmbraModule::setActive (bool active) {
 	if (status == UMBRA_UNINITIALISED) {
 		initialise();
+		status=UMBRA_INACTIVE;
 	}
 	if (active && status == UMBRA_INACTIVE) {
 		status = UMBRA_ACTIVE;
@@ -49,6 +50,7 @@ void UmbraModule::setActive (bool active) {
 void UmbraModule::setPause (bool paused) {
 	if (status == UMBRA_UNINITIALISED) {
 		initialise();
+		status=UMBRA_INACTIVE;
 	}
 	if (paused && status != UMBRA_PAUSED) {
 		status=UMBRA_PAUSED;
@@ -62,4 +64,14 @@ void UmbraModule::setPause (bool paused) {
 void UmbraModule::initialiseTimeout() {
 	if (timeout == 0) return;
 	else timeoutEnd = TCODSystem::getElapsedMilli() + timeout;
+}
+
+void UmbraModule::setFallback(const char *name) {
+	UmbraModule *mod=getEngine()->getModule(name);
+	if (mod) {
+		setFallback(getEngine()->getModuleId(mod));
+	} else {
+		UmbraError::add(UMBRA_ERRORLEVEL_ERROR,"Unknown module '%s'.",name);
+		getEngine()->displayError();
+	}
 }

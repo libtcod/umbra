@@ -133,10 +133,26 @@ void UmbraEngine::setWindowTitle (std::string title) {
 }
 
 //add a module to the modules list
-int UmbraEngine::registerModule (UmbraModule * module, int fallback) {
-	module->setFallback(fallback);
+int UmbraEngine::registerModule (UmbraModule * module) {
 	modules.push(module);
 	return modules.size()-1;
+}
+
+// fetch a pointer to a module from its name
+UmbraModule * UmbraEngine::getModule (const char *name) {
+	for (UmbraModule **it=modules.begin(); it != modules.end(); it++) {
+		if ( (*it)->name.compare( name ) == 0 ) return *it;
+	}
+	return NULL;
+}
+
+// get module id from its reference
+int UmbraEngine::getModuleId(UmbraModule *mod) {
+	int id=0;
+	for (UmbraModule **it=modules.begin(); it != modules.end(); it++,id++) {
+		if ( *it == mod ) return id;
+	}
+	return -1;
 }
 
 //register a font
@@ -219,6 +235,82 @@ bool UmbraEngine::registerFonts () {
 	else return true;
 }
 
+// specific parser for module.cfg file
+class UmbraModuleConfigParser : public ITCODParserListener {
+public :
+	UmbraModuleConfigParser(const char *chainName) : chainName(chainName),skip(false) {}
+    bool parserNewStruct(TCODParser *parser,const TCODParserStruct *str,const char *name) {
+    	if ( strcmp(str->getName(),"moduleChain") == 0 ) {
+    		// parse a new module chain
+			if ( chainName && strcmp(name,chainName) != 0 ) {
+				// this is not the chain we're looking for. skip it
+				skip=true;
+			}
+		} else if ( ! skip ) {
+			// parse a module for current chain
+			module = UmbraEngine::getInstance()->getModule(name);
+			if (! module) {
+				error("Unknown module");
+				return false;
+			}
+		}
+		return true;    	
+	}
+    bool parserFlag(TCODParser *parser,const char *name) {
+    	if (skip) return true;
+    	if ( strcmp(name,"active") == 0 ) {
+    		UmbraEngine::getInstance()->activateModule(module);
+		}
+		return true;
+	}
+    bool parserProperty(TCODParser *parser,const char *name, TCOD_value_type_t type, TCOD_value_t value) {
+    	if (skip) return true;
+    	if ( strcmp(name,"timeOut") == 0 ) {
+    		module->setTimeout(value.i);
+    	} else if ( strcmp(name,"priority") == 0 ) {
+    		module->setPriority(value.i);
+    	} else if ( strcmp(name,"fallback") == 0 ) {
+    		module->setFallback(value.s);
+		}
+		return true;
+	}
+    bool parserEndStruct(TCODParser *parser,const TCODParserStruct *str, const char *name) {
+    	if ( strcmp(str->getName(),"moduleChain") == 0 ) {
+    		if ( skip ) {
+    			skip=false;
+			} else {
+				// finished parsing requested chain. abort
+				return false;
+			}
+    	}
+		return true;
+	}
+    void error(const char *msg) {
+    	UmbraError::add(UMBRA_ERRORLEVEL_ERROR,msg);
+		UmbraEngine::getInstance()->displayError();
+	}
+private :
+	const char *chainName;
+	UmbraModule *module;
+	bool skip;
+}; 
+
+// load external module configuration
+bool UmbraEngine::loadModuleConfig(const char *filename,const char *chainName) {
+	if (! filename ) return false; // no configuration file is defined
+	if (!UmbraError::fileExists(filename)) return false; // file doesn't exist
+	TCODParser parser;
+	TCODParserStruct * moduleChain = parser.newStructure("moduleChain");
+	TCODParserStruct * module = parser.newStructure("module");
+	moduleChain->addStructure(module);
+	module->addProperty("timeOut",TCOD_TYPE_INT,false);
+	module->addProperty("priority",TCOD_TYPE_INT,false);
+	module->addProperty("fallback",TCOD_TYPE_STRING,false);
+	module->addFlag("active");
+	parser.run(filename,new UmbraModuleConfigParser(chainName));
+	return true;
+}
+
 // public function registering the module for activation next frame, by id
 void UmbraEngine::activateModule (int moduleId) {
 	if ( moduleId < 0 || moduleId >= modules.size() ) {
@@ -244,6 +336,16 @@ void UmbraEngine::activateModule (UmbraInternalModuleID id) {
 void UmbraEngine::activateModule(UmbraModule *module) {
 	if (module != NULL && ! module->getActive()) {
 		toActivate.push(module);
+	}
+}
+
+
+void UmbraEngine::activateModule (const char *name) {
+	UmbraModule *mod=getModule(name);
+	if ( mod ) activateModule(mod);
+	else {
+		UmbraError::add(UMBRA_ERRORLEVEL_ERROR,"Unknown module '%s'.",name);
+		displayError();
 	}
 }
 
@@ -285,6 +387,15 @@ void UmbraEngine::deactivateModule(UmbraModule *module) {
 	if (module != NULL && module->getActive()) {
 		toDeactivate.push(module);
 		module->setActive(false);
+	}
+}
+
+void UmbraEngine::deactivateModule (const char *name) {
+	UmbraModule *mod=getModule(name);
+	if ( mod ) deactivateModule(mod);
+	else {
+		UmbraError::add(UMBRA_ERRORLEVEL_ERROR,"Unknown module '%s'.",name);
+		displayError();
 	}
 }
 

@@ -86,10 +86,9 @@ class UmbraEngine {
 		/**
 		 * Registers a module for usage in the application. Unregistered modules cannot be activated. Registering is done only once per application run.<br><i>Note: this method only registers the module, but doesn't activate it. Activation is performed using the UmbraEngine::activateModule(*) methods!</i>
 		 * @param module a pointer to the module to be registered. Creating the module using the <code>new</code> keyword is strongly encouraged, eg. <code>registerModule(new myModule());</code>
-		 * @param fallback (optional) the fallback module's ID
 		 * @return the module's unique ID number (0 for the first registered module, 1 for the second, etc.)
 		 */
-		int registerModule (UmbraModule * module, int fallback = (-1)); //add a module to the modules list. returns id
+		int registerModule (UmbraModule * module); //add a module to the modules list. returns id
 		/**
 		 * Registers a font for usage in the application.<br><i>Note: you are encouraged to let the engine register fonts automatically. Please refer to the documentation regarding font autodetection.</i>
 		 * @param columns number of character columns in the font image file
@@ -98,6 +97,14 @@ class UmbraEngine {
 		 * @param flags font layout flags. Please refer to <b>libtcod</b> documentation for more information on font layout flags.
 		 */
 		void registerFont (int columns, int rows, const char * filename, int flags = TCOD_FONT_LAYOUT_TCOD);
+		/**
+		 * Read module configuration from the given filename, or 
+		 * the filename defined as moduleConfig in umbra.txt.<br>
+		 * If there's no filename or the file cannot be read, return false.
+		 * @param filename name of the module configuration file
+		 * @return true is module configuration has been loaded		 		 
+		 */		  		 		  		
+		bool loadModuleConfig(const char *filename,const char *chainName=NULL);
 		/**
 		 * Initialises the engine.
 		 * @param renderer the renderer to be used (defaults to SDL)
@@ -158,6 +165,11 @@ class UmbraEngine {
 		 */
 		void activateModule (UmbraInternalModuleID id);
 		/**
+		 * Activates a module.
+		 * @param moduleName the name of the module to be activated
+		 */
+		void activateModule (const char *name);
+		/**
 		 * Deactivates a module.
 		 * @param moduleId the identification number of the module to be deactivated
 		 */
@@ -172,6 +184,11 @@ class UmbraEngine {
 		 * @param id the identification number of the internal module to be deactivated
 		 */
 		void deactivateModule (UmbraInternalModuleID id);
+		/**
+		 * Deactivates a module.
+		 * @param moduleName the name of the module be deactivated
+		 */
+		void deactivateModule (const char *name);
 		/**
 		 * Deactivates all modules, including the internal ones, causing the program to end normally (returning <code>0</code>)
 		 */
@@ -193,6 +210,19 @@ class UmbraEngine {
 		 * @return a pointer to the requested module
 		 */
 		inline UmbraModule * getModule (int moduleId) { return (moduleId < 0 || moduleId >= modules.size() ? NULL: modules.get(moduleId)); }
+		/**
+		 * Fetches a pointer to a module.
+		 * @param moduleName the name of the module to which a pointer is to be fetched
+		 * @return a pointer to the requested module
+		 */
+		UmbraModule * getModule (const char *name);
+		/**
+		 * Retrieve the module id from its reference
+		 * @param mod pointer to the module
+		 * 		 
+		 * @return the module's id		 		 		
+		 */		
+		int getModuleId(UmbraModule *mod);
         /**
 		 * Fetches a pointer to an internal module.
 		 * @param id the identification number of the internal module to which a pointer is to be fetched

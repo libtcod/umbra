@@ -42,6 +42,7 @@ UmbraModSpeed::UmbraModSpeed (): cumulatedElapsed(0.0f), updateTime(0.0f), rende
 	closeButton.set(MAXIMISED_MODE_WIDTH-2,0);
 	priority=0; // higher prio for internal modules
 	timeBar = new TCODImage(TIMEBAR_LENGTH,2);
+	setName("umbraSpeedometer");
 }
 
 void UmbraModSpeed::mouse (TCOD_mouse_t &ms) {
