@@ -37,10 +37,10 @@ void UmbraModule::setActive (bool active) {
 	if (status == UMBRA_UNINITIALISED) {
 		initialise();
 	}
-	if (active) {
+	if (active && status == UMBRA_INACTIVE) {
 		status = UMBRA_ACTIVE;
 		activate();
-	} else {
+	} else if (!active && status >= UMBRA_ACTIVE) {
 		status = UMBRA_INACTIVE;
 		deactivate();
 	}
@@ -50,10 +50,10 @@ void UmbraModule::setPause (bool paused) {
 	if (status == UMBRA_UNINITIALISED) {
 		initialise();
 	}
-	if (paused) {
+	if (paused && status != UMBRA_PAUSED) {
 		status=UMBRA_PAUSED;
 		pause();
-	} else {
+	} else if (!paused && status == UMBRA_PAUSED) {
 		status=UMBRA_ACTIVE;
 		resume();
 	}
