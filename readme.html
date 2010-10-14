@@ -4813,6 +4813,11 @@ This is caused by the ~UmbraEngine::doActivateModule() method inserting modules 
 
 It is now fixed.</pre>
 </div>
+<div title="module chain loading" modifier="Mingos" created="201010140839" tags="issueTracker RFE open" changecount="1">
+<pre>Modules should contain a string with a custom module name (set via the ctor and possibly a setName() method). This would bring the following advantages:
+- possibility to activate and deactivate modules by name: engine.activateModule(&quot;demo&quot;), engine.deactivateModule(&quot;demo&quot;), engine.getModule(&quot;name&quot;)
+- possibility to externalise the module activation sequence (controlled by a text config file).</pre>
+</div>
 <div title="registerFont should look in the default font directory" modifier="Mingos" created="201010051104" modified="201010051104" tags="issueTracker RFE open" changecount="2">
 <pre>The [[UmbraEngine::registerFont]] method currently only accepts the filename with full path. It should also accept the filename with no path and look in the default fonts directory.</pre>
 </div>
