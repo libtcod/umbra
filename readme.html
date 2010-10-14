@@ -543,16 +543,22 @@ Redistribution and use in source and binary forms, with or without modification,
 
 THIS SOFTWARE IS PROVIDED BY MINGOS &amp; JICE &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL MINGOS OR JICE BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</pre>
 </div>
-<div title="Accessing modules and widgets" modifier="Mingos" created="201009091724" modified="201009100137" tags="tutorial module widget moduleReference" changecount="4">
-<pre>Modules and widgets are accessed in the same way, as the engine does not distinguish between them.
+<div title="Accessing modules and widgets" modifier="Mingos" created="201009091724" modified="201010142155" tags="tutorial module widget moduleReference" changecount="5">
+<pre>Modules and widgets alike are accessed in the same way, as the engine does not distinguish between them.
 
 The method used to gain access to a module from within the engine is [[UmbraEngine::getModule]]. It takes the [[module ID number|Module ID]] as parametre, and returns a pointer to the module with that ID.
-
 !Example
 &lt;code C++&gt;
 myModule-&gt;getEngine()-&gt;getModule(2)-&gt;setActive(true);
 &lt;/code&gt;
-The above code, executed from within a module, will fetch a pointer to the engine, then to a module with an ID number of 2, and activate it.</pre>
+The above code, executed from within a module, will fetch a pointer to the engine, then to a module with an ID number of 2, and activate it.
+
+If the module's [[name|Naming modules]] is known, it is also possible to access it by its name.
+!Example
+&lt;code C++&gt;
+myModule-&gt;getEngine()-&gt;getModule(&quot;my module&quot;)-&gt;setActive(true);
+&lt;/code&gt;
+Bear in mind that this method, although more intuitive and easier to use, is also slower.</pre>
 </div>
 <div title="Activating modules" modifier="Mingos" created="200911121718" modified="201007272150" tags="tutorial module moduleStatus init" changecount="5">
 <pre>A registered module resides inside the modules list, but before the engine actually runs any of the modules from the list, the developer has to specify which one needs to be activated. Typically, a main menu, a title screen or a credits screen will be the first activated module.
@@ -620,6 +626,34 @@ Please note that this module requires the console emulator to be active, otherwi
     &quot;UmbraRect&quot; &quot;UmbraRect&quot; [[UmbraRect]]
     &quot;UmbraError&quot; &quot;UmbraError&quot; [[UmbraError]]
 &gt;&gt;</pre>
+</div>
+<div title="Configuration variables" modifier="Mingos" created="201010142247" modified="201010142258" tags="tutorial basics init" changecount="4">
+<pre>In order to run, Umbra needs to load some configuration variables. These are stored in an external file called {{{umbra.txt}}} and typically placed in the {{{data/cfg}}} directory. The file's construction is the following:
+&lt;code C++&gt;
+/*
+ * UMBRA CONFIGURATION FILE
+ */
+
+config {
+    rootWidth = 80
+    rootHeight = 60
+    fontID = 0
+    fullScreen = false
+    debug = true
+    fontDir = &quot;data/img/&quot;
+    moduleChain = &quot;demo&quot;
+}
+&lt;/code&gt;
+The variables used are the following:
+*{{{rootWidth}}}: the width of the root console in cells. Defaults to 80. Mandatory.
+*{{{rootHeight}}}: the height of the root console. Defaults to 60. Mandatory.
+*{{{fontID}}}: the ID number of the font to be used (from the set of all registered fonts). Defaults to 0. Mandatory.
+*{{{fullScreen}}}: whether the application should run in full screen mode. Defaults to {{{false}}}. Mandatory.
+*{{{debug}}}: whether the application should run in debug mode (debug mode displays errors on the root console). Defaults to {{{true}}}. Mandatory.
+*{{{fontDir}}}: the directory where Umbra should look for fonts. Defaults to &quot;data/img&quot;. Optional, but will be added automatically if not present.
+*{{{moduleChain}}}: the name of the module chain to be loaded by the [[external module configuration|External module configuration]] loader. No default value. Optional.
+
+It is not necessary to always write a configuration file by hand. It's enough to run an Umbra-powered application once and the file with default values will be generated automatically.</pre>
 </div>
 <div title="Creating a callback" modifier="Mingos" created="201008040033" modified="201008111220" tags="tutorial callback" changecount="6">
 <pre>!Creating a basic callback
@@ -927,7 +961,7 @@ else return 1;
 
 The errors are added automatically when something goes wrong inside Umbra, but the developer can also use the log to append custom error messages.</pre>
 </div>
-<div title="External module configuration" modifier="Mingos" created="201010141500" modified="201010141531" tags="tutorial module init" changecount="3">
+<div title="External module configuration" modifier="Mingos" created="201010141500" modified="201010142232" tags="tutorial module init name" changecount="4">
 <pre>In some cases, it is much more comfortable to define the modules' fallbacks in an external file. They can be defined along with a few other properties in Umbra's external configuration file. To use this feature, it's enough to register all the modules that are needed in the engine, then call [[UmbraEngine::loadModuleConfiguration]]. The configuration file can define multiple module chains, allowing to have different modes for the application (or it could also be different applications in the same .exe):
 &lt;code C++&gt;
 moduleChain &quot;chainName&quot; {
@@ -2066,6 +2100,34 @@ On the other hand, module rendering is done in the inverse order. What this mean
 The module would store the activation time and deactivate itself automatically after the time specified in the timeout has passed.
 Good for things like credits screens that are supposed to be displayed only during a few seconds.</pre>
 </div>
+<div title="Naming modules" modifier="Mingos" created="201010142205" modified="201010142206" tags="tutorial module name" changecount="2">
+<pre>Every module that is registered in the engine has a name that is stored internally. There are several ways to set the module's name: by calling the ~UmbraModule constructor, by using an extra parametre to the [[UmbraEngine::registerModule]] method or by calling the [[UmbraModule::setName]] method.
+!Example
+&lt;code C++&gt;
+class Module1: public UmbraModule {
+    Module1(const char * name);
+    ...
+}
+
+Module1::Module1(const char * name): UmbraModule(name) {
+    ...
+}
+
+engine.registerModule(new Module1(&quot;name1&quot;));
+&lt;/code&gt;
+&lt;code C++&gt;
+engine.registerModule(new Module2(), &quot;name2&quot;);
+&lt;/code&gt;
+&lt;code C++&gt;
+int mod3 = engine.registerModule(new Module3());
+engine.getModule(mod3)-&gt;setName(&quot;name3&quot;);
+&lt;/code&gt;
+Module names are a very useful feature because they allow for a very intuitive way of referencing them:
+&lt;code C++&gt;
+engine.getModule(&quot;my module&quot;);
+&lt;/code&gt;
+Furthermore, module names are a requisite if an [[external module configuration|External module configuration]] is going to be used.</pre>
+</div>
 <div title="Operators" modifier="Mingos" created="201008152255" modified="201008191017" tags="api operator" changecount="33">
 <pre>*[[UmbraKey::operator ==]]
 *[[UmbraPoint::operator ==]]</pre>
@@ -2904,7 +2966,7 @@ MyModule::MyModule() {
 }
 &lt;/code&gt;</pre>
 </div>
-<div title="Umbra Hello World" modifier="Mingos" created="200911082305" modified="201010021621" tags="tutorial basics init" changecount="18">
+<div title="Umbra Hello World" modifier="Mingos" created="200911082305" modified="201010142238" tags="tutorial basics init" changecount="22">
 <pre>Let's begin with source code for a //Hello world// program. First, let's create the following {{{main.hpp}}} file:
 &lt;code C++&gt;
 #include &quot;umbra.hpp&quot; //assumes its search directory is known
@@ -2935,9 +2997,9 @@ The file {{{main.hpp}}} starts with an {{{#include &quot;umbra.hpp&quot;}}} stat
 
 The next statement is {{{class HelloWorld : public UmbraModule}}}. This creates a class called {{{HelloWorld}}} that inherits an [[UmbraModule]]. Please refer to the [[What is a module]] and [[Creating a module]] sections to learn the details. All we need to know right now is that Umbra will not recognise our class if it doesn't inherit an [[UmbraModule]].
 
-One of the methods we can define and implement is {{{void render (void)}}}. This is the method that Umbra will call internally in order to make our module render things on the screen. As you can see, we don't have to call it manually anywhere in the code. All it contains is a libtcod-specific method call {{{TCODConsole::root-&gt;printLeft(0,0,TCOD_BKGND_NONE,&quot;Hello world!&quot;);}}}. This is what prints the line &quot;Hello world!&quot; on the console. ''Note that we don't include [[libtcod|http://doryen.eptalys.net/libtcod]] anywhere in the code - Umbra does it internally.''
+One of the methods we can define and implement is {{{void render ()}}}. This is the method that Umbra will call internally in order to make our module render things on the screen. As you can see, we don't have to call it manually anywhere in the code. All it contains is a libtcod-specific method call {{{TCODConsole::root-&gt;print(0,0,TCOD_BKGND_NONE,&quot;Hello world!&quot;);}}}. This is what prints the line &quot;Hello world!&quot; on the console. ''Note that we don't include [[libtcod|http://doryen.eptalys.net/libtcod]] anywhere in the code - Umbra does it internally.''
 
-After implementing the method in {{{main.cpp}}}, we can finally write the heart of our program. First thing we need to do is to create an instance of [[UmbraEngine]], conveniently called {{{engine}}}. Lines 09. and 10. are crucial for the engine to start running. The first one creates an instance of our {{{HelloWorld}}} class and registers it as a module inside the engine. The next line makes the engine activate the newly registered module. The argument we pass it is an integer value of 0 - this is the ID that our module was assigned. Please refer to [[UmbraModule::registerModule]] for more details on how module ID numbers are assigned.
+After implementing the method in {{{main.cpp}}}, we can finally write the heart of our program. First thing we need to do is to create an instance of [[UmbraEngine]], conveniently called {{{engine}}}. Lines 09. and 10. are crucial for the engine to start running. The first one creates an instance of our {{{HelloWorld}}} class and registers it as a module inside the engine. The next line makes the engine activate the newly registered module. The argument we pass it is an integer value of 0 - this is the ID that our module was assigned. Please refer to [[UmbraEngine::registerModule]] for more details on how module ID numbers are assigned.
 
 Finally, we reach the point where the module is registered and active, and the only missing thing is running the engine. First, we need to initialise it, and if the initialisation is successful, run the engine. That's it, this is the code that powers a &quot;Hello world&quot; program made with Umbra.</pre>
 </div>
@@ -3413,7 +3475,7 @@ UmbraKeyboardMode getKeyboardMode (
 !See also
 &lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;keyboard&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;keyboard&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;keyboard&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
 </div>
-<div title="UmbraEngine::getModule" modifier="YourName" created="200911081506" modified="201010141444" tags="api method engineClass module moduleReference" changecount="15">
+<div title="UmbraEngine::getModule" modifier="Mingos" created="200911081506" modified="201010142234" tags="api method engineClass module moduleReference" changecount="16">
 <pre>!Description
 Retrieves a reference to the module with the ID passed in the argument.
 !Construction
@@ -3433,7 +3495,7 @@ UmbraModule * getModule (
 !Parametres
 *{{{int moduleId}}}: the ID number of a module, returned by the [[UmbraEngine::registerModule]] method.
 *{{{UmbraInternalModuleID id}}}: the ID number of an internal module, as defined in the [[UmbraInternalModuleID]] enum.
-*{{{const char * name}}}: name of the module
+*{{{const char * moduleName}}}: the name of the module
 !Return value
 {{{UmbraModule*}}}: reference to the UmbraModule object with the specified ID
 !Remarks
@@ -3527,6 +3589,32 @@ else return 1;
 &lt;/code&gt;
 !See also
 &lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;engine&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;engine&quot;,&quot;engineClass&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;engine&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
+</div>
+<div title="UmbraEngine::loadModuleConfiguration" modifier="Mingos" created="201010142231" modified="201010142302" tags="api method engineClass module name" changecount="4">
+<pre>!Description
+Loads an entire module configuration from an external configuration file.
+!Construction
+&lt;code C++&gt;
+bool loadModuleConfiuration (
+    const char * filename,
+    const char * chainName = NULL
+);
+&lt;/code&gt;
+!Parametres
+*{{{const char * filename}}}: the file (with relative path) containing the module chains configuration.
+*{{{const char * chainName}}}: the name of the chain configuration to be loaded. Leave at default to either load the configuration defined in {{{umbra.txt}}} or, if it's missing, the first encountered configuration.
+!Return value
+{{{bool}}}: {{{true}}} if the configuration has been loaded correctly, {{{false}}} otherwise (check the error log in this case).
+!Remarks
+This method is not necessary in simple projects, but is useful if a single project should have the possibility to run different progras (or versions of the same program) using a single executable.
+It must be run before the engine is initialised. The best way to call it is shown in the example below.
+!Example
+&lt;code C++&gt;
+if (engine.loadModuleConfiguration(&quot;data/cfg/module.txt&quot;,&quot;demo&quot;) &amp;&amp; engine.initialise()) return engine.run();
+else return 1;
+&lt;/code&gt;
+!See also
+&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;name&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;name&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;name&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
 </div>
 <div title="UmbraEngine::registerCallback" modifier="Mingos" created="201008111159" tags="api method engineClass init callback" changecount="1">
 <pre>!Description
@@ -3726,32 +3814,8 @@ else return 1;
 !See also
 &lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;init&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;init&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;init&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
 </div>
-<div title="UmbraEngineMethods" modifier="Mingos" created="201007271125" modified="201008111830" tags="methodlist" changecount="15">
-<pre>*[[UmbraEngine::activateFont]]
-*[[UmbraEngine::activateModule]]
-*[[UmbraEngine::deactivateAll]]
-*[[UmbraEngine::deactivateModule]]
-*[[UmbraEngine::displayError]]
-*[[UmbraEngine::getFontDir]]
-*[[UmbraEngine::getFontID]]
-*[[UmbraEngine::getInstance]]
-*[[UmbraEngine::getKeyboardMode]]
-*[[UmbraEngine::getModule]]
-*[[UmbraEngine::getNbFonts]]
-*[[UmbraEngine::getPause]]
-*[[UmbraEngine::getRootHeight]]
-*[[UmbraEngine::getRootWidth]]
-*[[UmbraEngine::initialise]]
-*[[UmbraEngine::registerCallback]]
-*[[UmbraEngine::registerFont]]
-*[[UmbraEngine::registerModule]]
-*[[UmbraEngine::reinitialise]]
-*[[UmbraEngine::run]]
-*[[UmbraEngine::setKeyboardMode]]
-*[[UmbraEngine::setPause]]
-*[[UmbraEngine::setRootDimensions]]
-*[[UmbraEngine::setWindowTitle]]
-*[[UmbraEngine::UmbraEngine]]</pre>
+<div title="UmbraEngineMethods" modifier="Mingos" created="201007271125" modified="201010142302" tags="methodlist" changecount="19">
+<pre>&lt;&lt;forEachTiddler where 'tiddler.tags.containsAll([&quot;method&quot;,&quot;engineClass&quot;])' sortBy 'tiddler.title'&gt;&gt;</pre>
 </div>
 <div title="UmbraError" modifier="Mingos" created="201003301723" modified="201008191705" tags="api class error" changecount="11">
 <pre>~UmbraError is a class that does not take part in handling game itself. As its name implies, it is there to handle errors and aid in preventing the occurrence of errors. It is essentially a list of all logged errors, which you can use for debugging.
@@ -4780,10 +4844,11 @@ UmbraEngine engine = UmbraEngine(&quot;data/cfg/umbra.txt&quot;,UMBRA_REGISTER_A
 <pre>*[[UmbraWidget::mouse]]
 *[[UmbraWidget::setDragZone]]</pre>
 </div>
-<div title="Using Umbra" modifier="YourName" created="200910241814" modified="201010141451" tags="tutorial" changecount="35">
+<div title="Using Umbra" modifier="Mingos" created="200910241814" modified="201010142247" tags="tutorial" changecount="47">
 <pre>#Basics
 ##[[Starting a project using Umbra]]
 ##[[Umbra Hello World]]
+##[[Configuration variables]]
 #Engine
 ##[[The engine]]
 ##[[Referencing the engine]]
@@ -4798,6 +4863,7 @@ UmbraEngine engine = UmbraEngine(&quot;data/cfg/umbra.txt&quot;,UMBRA_REGISTER_A
 ##[[What is a widget]]
 ##[[Creating a module]]
 ##[[Module ID]]
+##[[Naming modules]]
 ##[[Fallbacks]]
 ##[[Timeouts]]
 ##[[External module configuration]]
