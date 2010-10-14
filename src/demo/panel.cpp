@@ -45,7 +45,6 @@ Panel::Panel () {
 	posy = (getEngine()->getRootHeight() - height) / 2;
 	rect.set(posx,posy,width,height);
 	panel = new TCODConsole(width,height);
-
 	lastHover = 0;
 	delay = 3000;
 	bQuit.set(this,2,2,20,3,"Quit");

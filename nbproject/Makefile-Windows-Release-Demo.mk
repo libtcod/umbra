@@ -81,87 +81,87 @@ LDLIBSOPTIONS=../libtcod/lib/libtcod-mingw.a
 ${OBJECTDIR}/src/demo/credits.o: src/demo/credits.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/demo
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -I../libtcod/include -Isrc/umbra -Isrc/demo -Isrc/fov -Isrc/invaders -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/demo/credits.o src/demo/credits.cpp
+	$(COMPILE.cc) -O2 -I../libtcod/include -Isrc/umbra -Isrc/demo -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/demo/credits.o src/demo/credits.cpp
 
 ${OBJECTDIR}/src/umbra/imod_bsod.o: src/umbra/imod_bsod.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/umbra
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -I../libtcod/include -Isrc/umbra -Isrc/demo -Isrc/fov -Isrc/invaders -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/umbra/imod_bsod.o src/umbra/imod_bsod.cpp
+	$(COMPILE.cc) -O2 -I../libtcod/include -Isrc/umbra -Isrc/demo -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/umbra/imod_bsod.o src/umbra/imod_bsod.cpp
 
 ${OBJECTDIR}/src/umbra/module.o: src/umbra/module.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/umbra
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -I../libtcod/include -Isrc/umbra -Isrc/demo -Isrc/fov -Isrc/invaders -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/umbra/module.o src/umbra/module.cpp
+	$(COMPILE.cc) -O2 -I../libtcod/include -Isrc/umbra -Isrc/demo -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/umbra/module.o src/umbra/module.cpp
 
 ${OBJECTDIR}/src/umbra/font.o: src/umbra/font.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/umbra
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -I../libtcod/include -Isrc/umbra -Isrc/demo -Isrc/fov -Isrc/invaders -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/umbra/font.o src/umbra/font.cpp
+	$(COMPILE.cc) -O2 -I../libtcod/include -Isrc/umbra -Isrc/demo -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/umbra/font.o src/umbra/font.cpp
 
 ${OBJECTDIR}/src/umbra/imod_speed.o: src/umbra/imod_speed.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/umbra
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -I../libtcod/include -Isrc/umbra -Isrc/demo -Isrc/fov -Isrc/invaders -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/umbra/imod_speed.o src/umbra/imod_speed.cpp
+	$(COMPILE.cc) -O2 -I../libtcod/include -Isrc/umbra -Isrc/demo -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/umbra/imod_speed.o src/umbra/imod_speed.cpp
 
 ${OBJECTDIR}/src/umbra/engine.o: src/umbra/engine.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/umbra
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -I../libtcod/include -Isrc/umbra -Isrc/demo -Isrc/fov -Isrc/invaders -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/umbra/engine.o src/umbra/engine.cpp
+	$(COMPILE.cc) -O2 -I../libtcod/include -Isrc/umbra -Isrc/demo -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/umbra/engine.o src/umbra/engine.cpp
 
 ${OBJECTDIR}/src/umbra/config.o: src/umbra/config.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/umbra
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -I../libtcod/include -Isrc/umbra -Isrc/demo -Isrc/fov -Isrc/invaders -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/umbra/config.o src/umbra/config.cpp
+	$(COMPILE.cc) -O2 -I../libtcod/include -Isrc/umbra -Isrc/demo -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/umbra/config.o src/umbra/config.cpp
 
 ${OBJECTDIR}/src/umbra/callback.o: src/umbra/callback.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/umbra
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -I../libtcod/include -Isrc/umbra -Isrc/demo -Isrc/fov -Isrc/invaders -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/umbra/callback.o src/umbra/callback.cpp
+	$(COMPILE.cc) -O2 -I../libtcod/include -Isrc/umbra -Isrc/demo -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/umbra/callback.o src/umbra/callback.cpp
 
 ${OBJECTDIR}/src/demo/rabbit.o: src/demo/rabbit.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/demo
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -I../libtcod/include -Isrc/umbra -Isrc/demo -Isrc/fov -Isrc/invaders -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/demo/rabbit.o src/demo/rabbit.cpp
+	$(COMPILE.cc) -O2 -I../libtcod/include -Isrc/umbra -Isrc/demo -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/demo/rabbit.o src/demo/rabbit.cpp
 
 ${OBJECTDIR}/src/umbra/widget.o: src/umbra/widget.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/umbra
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -I../libtcod/include -Isrc/umbra -Isrc/demo -Isrc/fov -Isrc/invaders -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/umbra/widget.o src/umbra/widget.cpp
+	$(COMPILE.cc) -O2 -I../libtcod/include -Isrc/umbra -Isrc/demo -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/umbra/widget.o src/umbra/widget.cpp
 
 ${OBJECTDIR}/src/umbra/widget_button.o: src/umbra/widget_button.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/umbra
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -I../libtcod/include -Isrc/umbra -Isrc/demo -Isrc/fov -Isrc/invaders -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/umbra/widget_button.o src/umbra/widget_button.cpp
+	$(COMPILE.cc) -O2 -I../libtcod/include -Isrc/umbra -Isrc/demo -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/umbra/widget_button.o src/umbra/widget_button.cpp
 
 ${OBJECTDIR}/src/demo/main.o: src/demo/main.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/demo
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -I../libtcod/include -Isrc/umbra -Isrc/demo -Isrc/fov -Isrc/invaders -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/demo/main.o src/demo/main.cpp
+	$(COMPILE.cc) -O2 -I../libtcod/include -Isrc/umbra -Isrc/demo -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/demo/main.o src/demo/main.cpp
 
 ${OBJECTDIR}/src/demo/demo.o: src/demo/demo.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/demo
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -I../libtcod/include -Isrc/umbra -Isrc/demo -Isrc/fov -Isrc/invaders -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/demo/demo.o src/demo/demo.cpp
+	$(COMPILE.cc) -O2 -I../libtcod/include -Isrc/umbra -Isrc/demo -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/demo/demo.o src/demo/demo.cpp
 
 ${OBJECTDIR}/src/umbra/widget_checkbox.o: src/umbra/widget_checkbox.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/umbra
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -I../libtcod/include -Isrc/umbra -Isrc/demo -Isrc/fov -Isrc/invaders -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/umbra/widget_checkbox.o src/umbra/widget_checkbox.cpp
+	$(COMPILE.cc) -O2 -I../libtcod/include -Isrc/umbra -Isrc/demo -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/umbra/widget_checkbox.o src/umbra/widget_checkbox.cpp
 
 ${OBJECTDIR}/src/demo/panel.o: src/demo/panel.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/demo
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -I../libtcod/include -Isrc/umbra -Isrc/demo -Isrc/fov -Isrc/invaders -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/demo/panel.o src/demo/panel.cpp
+	$(COMPILE.cc) -O2 -I../libtcod/include -Isrc/umbra -Isrc/demo -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/demo/panel.o src/demo/panel.cpp
 
 ${OBJECTDIR}/src/demo/matrix.o: src/demo/matrix.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/demo
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -I../libtcod/include -Isrc/umbra -Isrc/demo -Isrc/fov -Isrc/invaders -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/demo/matrix.o src/demo/matrix.cpp
+	$(COMPILE.cc) -O2 -I../libtcod/include -Isrc/umbra -Isrc/demo -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/demo/matrix.o src/demo/matrix.cpp
 
 ${OBJECTDIR}/src/umbra/error.o: src/umbra/error.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/umbra
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -I../libtcod/include -Isrc/umbra -Isrc/demo -Isrc/fov -Isrc/invaders -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/umbra/error.o src/umbra/error.cpp
+	$(COMPILE.cc) -O2 -I../libtcod/include -Isrc/umbra -Isrc/demo -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/umbra/error.o src/umbra/error.cpp
 
 # Subprojects
 .build-subprojects:

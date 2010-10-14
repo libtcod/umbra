@@ -133,15 +133,19 @@ void UmbraEngine::setWindowTitle (std::string title) {
 }
 
 //add a module to the modules list
-int UmbraEngine::registerModule (UmbraModule * module) {
+int UmbraEngine::registerModule (UmbraModule * module, const char * name) {
 	modules.push(module);
+	char n[2048];
+	if (name == NULL) sprintf(n,"module%d",modules.size()-1);
+	else sprintf(n,name);
+	module->setName(n);
 	return modules.size()-1;
 }
 
 // fetch a pointer to a module from its name
 UmbraModule * UmbraEngine::getModule (const char *name) {
 	for (UmbraModule **it=modules.begin(); it != modules.end(); it++) {
-		if ( (*it)->name.compare( name ) == 0 ) return *it;
+		if ( (*it)->name.compare(name) == 0 ) return *it;
 	}
 	return NULL;
 }
@@ -235,79 +239,88 @@ bool UmbraEngine::registerFonts () {
 	else return true;
 }
 
-// specific parser for module.cfg file
-class UmbraModuleConfigParser : public ITCODParserListener {
+// specific parser for module.txt file
+class UmbraModuleConfigParser: public ITCODParserListener {
+private:
+	const char * chainName;
+	UmbraModule * module;
+	bool skip;
 public :
-	UmbraModuleConfigParser(const char *chainName) : chainName(chainName),skip(false) {}
-    bool parserNewStruct(TCODParser *parser,const TCODParserStruct *str,const char *name) {
-    	if ( strcmp(str->getName(),"moduleChain") == 0 ) {
-    		// parse a new module chain
-			if ( chainName && strcmp(name,chainName) != 0 ) {
-				// this is not the chain we're looking for. skip it
-				skip=true;
+	UmbraModuleConfigParser(const char *chainName): chainName(chainName), skip(false) {}
+    bool parserNewStruct(TCODParser * parser, const TCODParserStruct * str, const char * name) {
+    	if (strcmp(str->getName(),"moduleChain") == 0) {
+    		//parse a new module chain
+			if (chainName && strcmp(name,chainName) != 0) {
+				//this is not the chain we're looking for. skip it
+				skip = true;
 			}
-		} else if ( ! skip ) {
-			// parse a module for current chain
+		} else if (!skip) {
+			//parse a module for current chain
 			module = UmbraEngine::getInstance()->getModule(name);
-			if (! module) {
+			if (!module) {
 				error("Unknown module");
 				return false;
 			}
 		}
 		return true;    	
 	}
-    bool parserFlag(TCODParser *parser,const char *name) {
+    bool parserFlag(TCODParser * parser, const char * name) {
     	if (skip) return true;
-    	if ( strcmp(name,"active") == 0 ) {
+    	if (strcmp(name,"active") == 0) {
     		UmbraEngine::getInstance()->activateModule(module);
 		}
 		return true;
 	}
-    bool parserProperty(TCODParser *parser,const char *name, TCOD_value_type_t type, TCOD_value_t value) {
+    bool parserProperty(TCODParser * parser, const char * name, TCOD_value_type_t type, TCOD_value_t value) {
     	if (skip) return true;
-    	if ( strcmp(name,"timeOut") == 0 ) {
+    	if (strcmp(name,"timeOut") == 0) {
     		module->setTimeout(value.i);
-    	} else if ( strcmp(name,"priority") == 0 ) {
+    	} else if (strcmp(name,"priority") == 0) {
     		module->setPriority(value.i);
-    	} else if ( strcmp(name,"fallback") == 0 ) {
+    	} else if (strcmp(name,"fallback") == 0) {
     		module->setFallback(value.s);
 		}
 		return true;
 	}
-    bool parserEndStruct(TCODParser *parser,const TCODParserStruct *str, const char *name) {
-    	if ( strcmp(str->getName(),"moduleChain") == 0 ) {
-    		if ( skip ) {
-    			skip=false;
+    bool parserEndStruct(TCODParser * parser, const TCODParserStruct * str, const char * name) {
+    	if (strcmp(str->getName(),"moduleChain") == 0) {
+    		if (skip) {
+    			skip = false;
 			} else {
-				// finished parsing requested chain. abort
+				//finished parsing requested chain. abort
 				return false;
 			}
     	}
 		return true;
 	}
-    void error(const char *msg) {
+    void error(const char * msg) {
     	UmbraError::add(UMBRA_ERRORLEVEL_ERROR,msg);
-		UmbraEngine::getInstance()->displayError();
 	}
-private :
-	const char *chainName;
-	UmbraModule *module;
-	bool skip;
 }; 
 
 // load external module configuration
-bool UmbraEngine::loadModuleConfig(const char *filename,const char *chainName) {
-	if (! filename ) return false; // no configuration file is defined
-	if (!UmbraError::fileExists(filename)) return false; // file doesn't exist
+bool UmbraEngine::loadModuleConfiguration(const char *filename, const char *chainName) {
+	if (!filename) {
+		UmbraError::add(UMBRA_ERRORLEVEL_ERROR,"UmbraEngine::loadModuleConfiguration - specified an empty filename.");
+		return false; // no configuration file is defined
+	}
+	if (!UmbraError::fileExists(filename)) {
+		UmbraError::add(UMBRA_ERRORLEVEL_FATAL_ERROR,"UmbraEngine::loadModuleConfiguration - there exists no file with the specified filename.");
+		return false; // file doesn't exist
+	}
 	TCODParser parser;
 	TCODParserStruct * moduleChain = parser.newStructure("moduleChain");
 	TCODParserStruct * module = parser.newStructure("module");
 	moduleChain->addStructure(module);
-	module->addProperty("timeOut",TCOD_TYPE_INT,false);
+	module->addProperty("timeout",TCOD_TYPE_INT,false);
 	module->addProperty("priority",TCOD_TYPE_INT,false);
 	module->addProperty("fallback",TCOD_TYPE_STRING,false);
 	module->addFlag("active");
-	parser.run(filename,new UmbraModuleConfigParser(chainName));
+	if (chainName == NULL && UmbraConfig::moduleChain != NULL) {
+		std::cout << "attempting to load " << UmbraConfig::moduleChain << std::endl;
+		parser.run(filename,new UmbraModuleConfigParser(UmbraConfig::moduleChain));
+	}
+	else parser.run(filename,new UmbraModuleConfigParser(chainName));
 	return true;
 }
 

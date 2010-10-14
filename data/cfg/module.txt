@@ -1,0 +1,23 @@
+moduleChain "demo" {
+	module "demo" {
+		priority = 10
+	}
+	module "matrix" {
+		priority = 10
+		fallback = "demo"
+		active
+	}
+	module "rabbit" {
+		priority = 5
+		active
+	}
+	module "panel" {
+		priority = 3
+		active
+	}
+	module "credits" {
+		priority = 1
+		timeout = 5000
+		active
+	}
+}

@@ -37,6 +37,7 @@ TCODList <UmbraFont *> UmbraConfig::fonts;
 UmbraFont * UmbraConfig::font = NULL;
 const char * UmbraConfig::fileName = NULL;
 const char * UmbraConfig::fontDir = NULL;
+const char * UmbraConfig::moduleChain = NULL;
 
 void UmbraConfig::load (const char *fileName) {
 	static bool loaded = false;
@@ -51,8 +52,10 @@ void UmbraConfig::load (const char *fileName) {
 		config->addProperty("fontID",TCOD_TYPE_INT,true);
 		config->addProperty("fullScreen",TCOD_TYPE_BOOL,true);
 		config->addProperty("debug",TCOD_TYPE_BOOL,true);
-		// optional custom font directory
+		//optional custom font directory
 		config->addProperty("fontDir",TCOD_TYPE_STRING,false);
+		//optional module chaining
+		config->addProperty("moduleChain",TCOD_TYPE_STRING,false);
 
 	//check if the config file exists
 	if (!UmbraError::fileExists(fileName)) {
@@ -77,17 +80,23 @@ void UmbraConfig::load (const char *fileName) {
 	fullScreen = parser.getBoolProperty("config.fullScreen");
 	debug = parser.getBoolProperty("config.debug");
 	fontDir = parser.getStringProperty("config.fontDir");
-	if (fontDir != NULL)
-		fontDir = strdup(fontDir);
-	else
-		fontDir = "data/img"; // default value
-
+	moduleChain = parser.getStringProperty("config.moduleChain");
+	if (fontDir != NULL) fontDir = strdup(fontDir);
+	else fontDir = "data/img"; // default value
+	if (moduleChain != NULL) moduleChain = strdup(moduleChain);
 	loaded = true;
 }
 
 void UmbraConfig::save () {
 	FILE * out;
 	out = fopen(fileName,"w");
+
+	std::string modC = "";
+	if (moduleChain != NULL) {
+		modC += "  moduleChain = \"";
+		modC += moduleChain;
+		modC += "\"\n";
+	}
 
 	fprintf(out,"/*\n"
 	            " * UMBRA CONFIGURATION FILE\n"
@@ -100,13 +109,15 @@ void UmbraConfig::save () {
 	            "  fullScreen = %s\n"
 	            "  debug = %s\n"
 	            "  fontDir = \"%s\"\n"
+	            "%s"
 	            "}\n",
 	            rootWidth,
 	            rootHeight,
 	            fontID,
 	            (TCODConsole::isFullscreen()?"true":"false"),
 	            (debug?"true":"false"),
-	            fontDir);
+	            fontDir,
+	            modC.c_str());
 
 	fclose(out);
 }

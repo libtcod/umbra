@@ -9,4 +9,5 @@ config {
   fullScreen = false
   debug = true
   fontDir = "data/img/"
+  moduleChain = "demo"
 }

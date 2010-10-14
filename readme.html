@@ -927,12 +927,12 @@ else return 1;
 
 The errors are added automatically when something goes wrong inside Umbra, but the developer can also use the log to append custom error messages.</pre>
 </div>
-<div title="External module configuration" modifier="YourName" created="201010141500" changecount="1">
-<pre>With Umbra, you don't have to define the module's fallbacks in your code. You can define them along with a few other properties in an external configuration file. To use this feature, all you have to do is register all the modules you need to the engine, then call [[UmbraEngine::loadModuleConfiguration]]. The configuration file can defines several modules chains, allowing you to have different modes for the application (or it could also be different applications in the same .exe) :
-&lt;code&gt;
+<div title="External module configuration" modifier="Mingos" created="201010141500" modified="201010141531" tags="tutorial module init" changecount="3">
+<pre>In some cases, it is much more comfortable to define the modules' fallbacks in an external file. They can be defined along with a few other properties in Umbra's external configuration file. To use this feature, it's enough to register all the modules that are needed in the engine, then call [[UmbraEngine::loadModuleConfiguration]]. The configuration file can define multiple module chains, allowing to have different modes for the application (or it could also be different applications in the same .exe):
+&lt;code C++&gt;
 moduleChain &quot;chainName&quot; {
     module &quot;moduleName&quot; {
-        timeOut=0
+        timeout=0
         priority=0
         fallback=&quot;otherModuleName&quot;
         active
@@ -943,13 +943,14 @@ moduleChain &quot;chainName&quot; {
     }
 }
 &lt;/code&gt;
-The file contains a list of &quot;moduleChain&quot; structures. The application activates one of those chains by calling the [[UmbraEngine::loadModuleConfiguration]] function. It's not allowed to start more than one chain at a time.
-The moduleChain structure contains one or several module structures. Each module structure has a name. A module with the same name must have been registered to the engine before calling [[UmbraEngine::loadModuleConfiguration]].
-In the module structure, you can define several properties (they're all optional) :
-* timeOut : same as calling [[UmbraModule::setTimeOut]] after creating the module
-* priority : same as calling [[UmbraModule::setPriority]] after creating the module
-* fallback : name of this module's fallback. The fallback can be defined later in the file.
-* active : if this flag is present, the module is activated during the engine initialisation.</pre>
+The file contains a list of {{{moduleChain}}} structures. The application activates one of those chains by calling the [[UmbraEngine::loadModuleConfiguration]] method. It's not allowed to start more than one chain at a time.
+
+The {{{moduleChain}}} structure contains one or several {{{module}}} structures. Each {{{module}}} structure has a name. A module with the same name is required to be registered in the engine before calling [[UmbraEngine::loadModuleConfiguration]].
+In the module structure, several properties can be defined (they're all optional):
+* {{{timeout}}}: same as calling [[UmbraModule::setTimeout]] in the code
+* {{{priority}}}: same as calling [[UmbraModule::setPriority]] in the code
+* {{{fallback}}}: name of the module's fallback. The fallback module should be defined in the file as well.
+* {{{active}}}: if this flag is present, the module is activated during the engine initialisation.</pre>
 </div>
 <div title="Fading support" modifier="Mingos" created="201010062148" tags="issueTracker RFE open" changecount="1">
 <pre>It would be nice to have fading in the modules.

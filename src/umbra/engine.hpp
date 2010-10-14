@@ -86,9 +86,10 @@ class UmbraEngine {
 		/**
 		 * Registers a module for usage in the application. Unregistered modules cannot be activated. Registering is done only once per application run.<br><i>Note: this method only registers the module, but doesn't activate it. Activation is performed using the UmbraEngine::activateModule(*) methods!</i>
 		 * @param module a pointer to the module to be registered. Creating the module using the <code>new</code> keyword is strongly encouraged, eg. <code>registerModule(new myModule());</code>
+		 * @param name the module's name
 		 * @return the module's unique ID number (0 for the first registered module, 1 for the second, etc.)
 		 */
-		int registerModule (UmbraModule * module); //add a module to the modules list. returns id
+		int registerModule (UmbraModule * module, const char * name = NULL); //add a module to the modules list. returns id
 		/**
 		 * Registers a font for usage in the application.<br><i>Note: you are encouraged to let the engine register fonts automatically. Please refer to the documentation regarding font autodetection.</i>
 		 * @param columns number of character columns in the font image file
@@ -98,13 +99,11 @@ class UmbraEngine {
 		 */
 		void registerFont (int columns, int rows, const char * filename, int flags = TCOD_FONT_LAYOUT_TCOD);
 		/**
-		 * Read module configuration from the given filename, or 
-		 * the filename defined as moduleConfig in umbra.txt.<br>
-		 * If there's no filename or the file cannot be read, return false.
+		 * Read module configuration from the given filename, or the filename defined as moduleConfig in umbra.txt.<br>If there's no filename or the file cannot be read, return false.
 		 * @param filename name of the module configuration file
-		 * @return true is module configuration has been loaded		 		 
+		 * @return <code>true</code> if module configuration has been loaded successfully, <code>false</code> otherwise
 		 */		  		 		  		
-		bool loadModuleConfig(const char *filename,const char *chainName=NULL);
+		bool loadModuleConfiguration(const char *filename, const char *chainName = NULL);
 		/**
 		 * Initialises the engine.
 		 * @param renderer the renderer to be used (defaults to SDL)

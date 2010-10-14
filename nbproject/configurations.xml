@@ -5,6 +5,7 @@
                    displayName="Resource Files"
                    projectFiles="true"
                    kind="SOURCE_LOGICAL_FOLDER">
+      <itemPath>data/cfg/module.txt</itemPath>
       <itemPath>data/cfg/umbra.txt</itemPath>
     </logicalFolder>
     <logicalFolder name="f1" displayName="Umbra" projectFiles="true">
