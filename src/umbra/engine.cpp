@@ -263,7 +263,7 @@ public :
 			if (!module) {
 				if (factory) {
 					module = factory->createModule(name);
-					UmbraEngine::getInstance()->registerModule(module,name);
+					if ( module ) UmbraEngine::getInstance()->registerModule(module,name);
 				}
 				if (! module) {
 					char tmp[256];
