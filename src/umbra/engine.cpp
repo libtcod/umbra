@@ -136,8 +136,10 @@ void UmbraEngine::setWindowTitle (std::string title) {
 int UmbraEngine::registerModule (UmbraModule * module, const char * name) {
 	modules.push(module);
 	char n[2048];
-	if (name == NULL) sprintf(n,"module%d",modules.size()-1);
-	else sprintf(n,name);
+	if (name == NULL) {
+		if ( module->name == "" ) sprintf(n,"module%d",modules.size()-1);
+		else strcpy(n,module->name.c_str());
+	} else strcpy(n,name);
 	module->setName(n);
 	return modules.size()-1;
 }
@@ -258,7 +260,9 @@ public :
 			//parse a module for current chain
 			module = UmbraEngine::getInstance()->getModule(name);
 			if (!module) {
-				error("Unknown module");
+				char tmp[256];
+				sprintf(tmp,"Unknown module '%s'",name);
+				error(tmp);
 				return false;
 			}
 		}
