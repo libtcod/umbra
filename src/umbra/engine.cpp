@@ -247,8 +247,9 @@ private:
 	const char * chainName;
 	UmbraModule * module;
 	bool skip;
+	UmbraModuleFactory *factory;
 public :
-	UmbraModuleConfigParser(const char *chainName): chainName(chainName), skip(false) {}
+	UmbraModuleConfigParser(UmbraModuleFactory *factory,const char *chainName): chainName(chainName), skip(false),factory(factory) {}
     bool parserNewStruct(TCODParser * parser, const TCODParserStruct * str, const char * name) {
     	if (strcmp(str->getName(),"moduleChain") == 0) {
     		//parse a new module chain
@@ -260,10 +261,16 @@ public :
 			//parse a module for current chain
 			module = UmbraEngine::getInstance()->getModule(name);
 			if (!module) {
-				char tmp[256];
-				sprintf(tmp,"Unknown module '%s'",name);
-				error(tmp);
-				return false;
+				if (factory) {
+					module = factory->createModule(name);
+					UmbraEngine::getInstance()->registerModule(module,name);
+				}
+				if (! module) {
+					char tmp[256];
+					sprintf(tmp,"Unknown module '%s'",name);
+					error(tmp);
+					return false;
+				}
 			}
 		}
 		return true;    	
@@ -303,7 +310,7 @@ public :
 }; 
 
 // load external module configuration
-bool UmbraEngine::loadModuleConfiguration(const char *filename, const char *chainName) {
+bool UmbraEngine::loadModuleConfiguration(const char *filename, UmbraModuleFactory *factory, const char *chainName) {
 	if (!filename) {
 		UmbraError::add(UMBRA_ERRORLEVEL_ERROR,"UmbraEngine::loadModuleConfiguration - specified an empty filename.");
 		return false; // no configuration file is defined
@@ -322,9 +329,9 @@ bool UmbraEngine::loadModuleConfiguration(const char *filename, const char *chai
 	module->addFlag("active");
 	if (chainName == NULL && UmbraConfig::moduleChain != NULL) {
 		std::cout << "attempting to load " << UmbraConfig::moduleChain << std::endl;
-		parser.run(filename,new UmbraModuleConfigParser(UmbraConfig::moduleChain));
+		parser.run(filename,new UmbraModuleConfigParser(factory,UmbraConfig::moduleChain));
 	}
-	else parser.run(filename,new UmbraModuleConfigParser(chainName));
+	else parser.run(filename,new UmbraModuleConfigParser(factory,chainName));
 	return true;
 }
 

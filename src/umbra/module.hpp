@@ -29,6 +29,13 @@
 
 enum UmbraModuleStatus { UMBRA_UNINITIALISED, UMBRA_INACTIVE, UMBRA_ACTIVE, UMBRA_PAUSED };
 
+// a factory that creates a module from its name
+class UmbraModuleFactory {
+public :
+	virtual UmbraModule *createModule(const char *name) = 0;
+	virtual ~UmbraModuleFactory() {}
+};
+
 //all screens or views, such as credits, main menu, map view, etc. have to inherit this
 class UmbraModule {
 	friend class UmbraEngine;

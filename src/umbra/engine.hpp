@@ -28,6 +28,7 @@
 #include <iostream>
 
 class UmbraModule;
+class UmbraModuleFactory;
 class UmbraCallback;
 
 class UmbraKey {
@@ -101,9 +102,10 @@ class UmbraEngine {
 		/**
 		 * Read module configuration from the given filename, or the filename defined as moduleConfig in umbra.txt.<br>If there's no filename or the file cannot be read, return false.
 		 * @param filename name of the module configuration file
+		 * @param factory a module factory		 
 		 * @return <code>true</code> if module configuration has been loaded successfully, <code>false</code> otherwise
 		 */		  		 		  		
-		bool loadModuleConfiguration(const char *filename, const char *chainName = NULL);
+		bool loadModuleConfiguration(const char *filename, UmbraModuleFactory *factory = NULL, const char *chainName = NULL);
 		/**
 		 * Initialises the engine.
 		 * @param renderer the renderer to be used (defaults to SDL)

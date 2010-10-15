@@ -28,27 +28,42 @@
 #include "main.hpp"
 #include <stdio.h>
 
-UmbraEngine engine = UmbraEngine("data/cfg/umbra.txt",UMBRA_REGISTER_ALL);
+UmbraEngine engine("data/cfg/umbra.txt",UMBRA_REGISTER_ALL);
+
+class ModuleFactory : public UmbraModuleFactory {
+public :
+    UmbraModule *createModule(const char *name) {
+    	if ( strcmp(name,"matrix") == 0 ) return new Matrix();
+    	else if ( strcmp(name,"demo") == 0 ) return new Demo();
+		else if ( strcmp(name,"rabbit") == 0 ) return new RabbitWidget();
+		else if ( strcmp(name,"panel") == 0 ) return new Panel(); 
+		else if ( strcmp(name,"credits") == 0 ) return new Credits();
+		else return NULL;    
+	}
+};
 
 int main()
 {
-    //create the engine
-    //UmbraEngine engine("data/cfg/umbra.txt",true,true);
     //set window title
     engine.setWindowTitle("Umbra demo");
     //register fonts
     /*
+    No need. It's done automagically !
     engine.registerFont(32,8,"data/img/font8x8.png",TCOD_FONT_LAYOUT_TCOD|TCOD_FONT_TYPE_GRAYSCALE);
     engine.registerFont(32,8,"data/img/font10x10.png",TCOD_FONT_LAYOUT_TCOD|TCOD_FONT_TYPE_GRAYSCALE);
     engine.registerFont(32,8,"data/img/font12x12.png",TCOD_FONT_LAYOUT_TCOD|TCOD_FONT_TYPE_GRAYSCALE);
     */
+    
     //declare modules
+    /*
+    No need. It's done automagically through the factory
     engine.registerModule(new Matrix(),"matrix");
     engine.registerModule(new Demo(),"demo");
     engine.registerModule(new RabbitWidget(),"rabbit");
     engine.registerModule(new Panel(),"panel");
     engine.registerModule(new Credits(),"credits");
+    */
     //initialise and run the engine
-    if (engine.loadModuleConfiguration("data/cfg/module.txt") && engine.initialise()) return engine.run();
+    if (engine.loadModuleConfiguration("data/cfg/module.txt", new ModuleFactory()) && engine.initialise()) return engine.run();
     else return 1;
 }

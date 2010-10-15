@@ -90,7 +90,7 @@ fovtc.exe : $(TEMP)/fov/release $(TEMP)/umbra/release $(OBJS_RELEASE)
 	$(CPP) $(OBJS_RELEASE) -o $@ -L$(LIBTCODDIR)/lib -ltcod-mingw -mwindows
 
 fovtc_debug.exe : $(TEMP)/fov/debug $(TEMP)/umbra/debug $(OBJS_UMBRA_DEBUG) $(OBJS_FOVTC_DEBUG) 
-	$(CPP) $(OBJS_UMBRA_DEBUG) $(OBJS_DEBUG) -o $@ -L$(LIBTCODDIR)/lib -ltcod-mingw-debug -mwindows
+	$(CPP) $(OBJS_UMBRA_DEBUG) $(OBJS_FOVTC_DEBUG) -o $@ -L$(LIBTCODDIR)/lib -ltcod-mingw-debug -mwindows
 
 demo_debug.exe : $(TEMP)/umbra/demo/debug $(TEMP)/umbra/debug $(OBJS_DEMO_DEBUG) $(OBJS_UMBRA_DEBUG)
 	$(CPP) $(OBJS_UMBRA_DEBUG) $(OBJS_DEMO_DEBUG) -o $@ -L$(LIBTCODDIR)/lib -ltcod-mingw-debug -mwindows
