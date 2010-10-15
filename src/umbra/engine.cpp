@@ -247,13 +247,15 @@ private:
 	const char * chainName;
 	UmbraModule * module;
 	bool skip;
+	// whether the active chain has been parsed (skip other chains)
+	bool chainDone;
 	UmbraModuleFactory *factory;
 public :
-	UmbraModuleConfigParser(UmbraModuleFactory *factory,const char *chainName): chainName(chainName), skip(false),factory(factory) {}
+	UmbraModuleConfigParser(UmbraModuleFactory *factory,const char *chainName): chainName(chainName), skip(false),chainDone(false),factory(factory) {}
     bool parserNewStruct(TCODParser * parser, const TCODParserStruct * str, const char * name) {
     	if (strcmp(str->getName(),"moduleChain") == 0) {
     		//parse a new module chain
-			if (chainName && strcmp(name,chainName) != 0) {
+			if (chainDone || (chainName && strcmp(name,chainName) != 0)) {
 				//this is not the chain we're looking for. skip it
 				skip = true;
 			}
@@ -289,7 +291,23 @@ public :
     	} else if (strcmp(name,"priority") == 0) {
     		module->setPriority(value.i);
     	} else if (strcmp(name,"fallback") == 0) {
-    		module->setFallback(value.s);
+    		UmbraModule *fallback = UmbraEngine::getInstance()->getModule(value.s);
+    		if (! fallback) {
+    			// fallback references a module that doesn't exist
+				if (factory) {
+					fallback = factory->createModule(value.s);
+					if ( fallback ) {
+						UmbraEngine::getInstance()->registerModule(fallback,value.s);
+					}
+				}
+				if (! fallback) {
+					char tmp[256];
+					sprintf(tmp,"Unknown module '%s'",value.s);
+					error(tmp);
+					return false;
+				}    			
+			} 
+			module->setFallback(value.s);
 		}
 		return true;
 	}
@@ -298,8 +316,8 @@ public :
     		if (skip) {
     			skip = false;
 			} else {
-				//finished parsing requested chain. abort
-				return false;
+				//finished parsing requested chain. skip other chains
+				chainDone=true;
 			}
     	}
 		return true;
