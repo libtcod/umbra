@@ -136,6 +136,50 @@ class UmbraModule {
 		 * @return the name of the module
 		 */		 		 		
 		inline const char *getName() { return name.c_str(); }
+		
+		/**
+		 * Get a boolean parameter from the module configuration file
+		 * @param name the parameter name
+		 * @return the boolean value (default false)
+		 */		 		 		 		
+		inline bool getBoolParam(const char *name) { return getParameter(name).value.b; }
+		/**
+		 * Get a char parameter from the module configuration file
+		 * @param name the parameter name
+		 * @return the char value (default '\0')
+		 */		 		 		 		
+		inline int getCharParam(const char *name) { return getParameter(name).value.c; }
+		/**
+		 * Get an integer parameter from the module configuration file
+		 * @param name the parameter name
+		 * @return the integer value (default 0)
+		 */		 		 		 		
+		inline int getIntParam(const char *name) { return getParameter(name).value.i; }
+		/**
+		 * Get a float parameter from the module configuration file
+		 * @param name the parameter name
+		 * @return the float value (default 0.0f)
+		 */		 		 		 		
+		inline float getFloatParam(const char *name) { return getParameter(name).value.f; }
+		/**
+		 * Get a string parameter from the module configuration file
+		 * @param name the parameter name
+		 * @return the string value (default NULL)
+		 */		 		 		 		
+		inline const char *getStringParam(const char *name) { return getParameter(name).value.s; }
+		/**
+		 * Get a color parameter from the module configuration file
+		 * @param name the parameter name
+		 * @return the color value (default TCODColor::black)
+		 */		 		 		 		
+		inline TCODColor getColorParam(const char *name) { return getParameter(name).value.col; }
+		/**
+		 * Get a dice parameter from the module configuration file
+		 * @param name the parameter name
+		 * @return the dice value (default filled with 0)
+		 */		 		 		 		
+		inline TCOD_dice_t getDiceParam(const char *name) { return getParameter(name).value.dice; }
+		
 
 	protected:
 	    int priority; // update order (inverse of render order)
@@ -161,12 +205,28 @@ class UmbraModule {
 		 */		 		
 		inline void setName(const char *name) {this->name.assign(name);}
 		
+		friend class UmbraModuleConfigParser;
+		/**
+		 * set a parameter (only used by module.cfg file parser)
+		 */		 		
+		void setParameter(const char *name,TCOD_value_t value);
 	private:
 		UmbraModuleStatus status;
 		int fallback; //fallback module's index
 		uint32 timeout;
 		uint32 timeoutEnd;
 		std::string name;
+
+		struct UmbraModuleParameter {
+			const char *name;
+			TCOD_value_t value;
+		};
+		TCODList<UmbraModuleParameter> params;	
+		/**
+		 * get a parameter (internal helper function)	
+		 */		 	
+		UmbraModuleParameter &getParameter(const char *name);
+			
 		/**
 		 * Initialises the timeout by calculating the exact time when the module will time out.
 		 */
