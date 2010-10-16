@@ -256,6 +256,7 @@ private:
 	UmbraModuleFactory *factory;
 	// for parameter parsing
 	char paramName[128];
+	TCOD_value_t paramValue;
 	// module to activate
 	TCODList<UmbraModule *> toActivate;
 public :
@@ -309,7 +310,7 @@ public :
     		paramName[127]=0;
     	} else if (strcmp(name,"value") == 0) {
     		// a module parameter value
-    		module->setParameter(paramName,value);
+    		paramValue=value;
     	} else if (strcmp(name,"fallback") == 0) {
     		UmbraModule *fallback = UmbraEngine::getInstance()->getModule(value.s);
     		if (! fallback) {
@@ -342,7 +343,16 @@ public :
 				}
 				chainDone=true;
 			}
-    	}
+    	} else if (strcmp(str->getName(),"boolParam") == 0
+    		|| strcmp(str->getName(),"charParam") == 0
+    		|| strcmp(str->getName(),"intParam") == 0
+    		|| strcmp(str->getName(),"floatParam") == 0
+    		|| strcmp(str->getName(),"stringParam") == 0
+    		|| strcmp(str->getName(),"colorParam") == 0
+    		|| strcmp(str->getName(),"diceParam") == 0
+		) {
+    		module->setParameter(paramName,paramValue);
+		}
 		return true;
 	}
     void error(const char * msg) {
