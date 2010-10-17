@@ -12,11 +12,11 @@ moduleChain "demo" {
 		active
 	}
 	module "panel" {
-		priority = 3
+		priority = 1
 		active
 	}
 	module "credits" {
-		priority = 1
+		priority = 3
 		timeout = 5000
 		active
 	}

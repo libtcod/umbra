@@ -918,18 +918,18 @@ In the above code snippet, {{{speed}}} is the offscreen console the widget uses.
 ;{{{UMBRA_LICENCE}}}
 :the string containing the licence text, as quoted [[here|About Umbra]]. You are encouraged to display it somewhere in your application.</pre>
 </div>
-<div title="Defining custom parameters for the modules" modifier="YourName" created="201010152057" modified="201010152058" changecount="2">
-<pre>Beyond defining the basic properties of the modules, the module configuration file makes it possible to set custom parameters on the modules :
+<div title="Defining custom parameters for the modules" modifier="YourName" created="201010152057" modified="201010172157" changecount="3">
+<pre>Beyond defining the basic properties of the modules, the module configuration file makes it possible to set custom parameters on the modules, using libtcod 1.5.1 dynamic properties syntax :
 &lt;code C++&gt;
 moduleChain &quot;myChain&quot; {
     module &quot;myModule&quot; {
-        boolParam { name = &quot;aBoolParam&quot; value=true }
-        charParam { name = &quot;aCharParam&quot; value='@' }
-        intParam { name = &quot;anIntParam&quot; value=4 }
-        floatParam { name = &quot;aFloatParam&quot; value=3.12 }
-        stringParam { name = &quot;aStringParam&quot; value=&quot;aStringValue&quot; }
-        colorParam { name = &quot;aColorParam&quot; value=#00FF00 }
-        diceParam { name = &quot;aDiceParam&quot; value=&quot;3d20&quot; }
+        bool aBoolParam=true 
+        char aCharParam='@' 
+        int anIntParam=4 
+        float aFloatParam=3.12 
+        string aStringParam=&quot;aStringValue&quot; 
+        color aColorParam=#00FF00 
+        dice aDiceParam=&quot;3d20&quot; 
     }
 }
 &lt;/code&gt;
