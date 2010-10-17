@@ -616,7 +616,8 @@ int UmbraEngine::run () {
 		//flush the screen
 		TCODConsole::root->flush();
 	}
-
+	for (UmbraModule ** mod = modules.begin(); mod != modules.end(); mod++)
+		delete (*mod);
 	UmbraConfig::save();
 	return 0;
 }
