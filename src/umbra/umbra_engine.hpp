@@ -30,30 +30,7 @@
 class UmbraModule;
 class UmbraModuleFactory;
 class UmbraCallback;
-
-class UmbraKey {
-	friend class UmbraEngine;
-	friend class UmbraCallback;
-	public:
-		UmbraKey (): vk(TCODK_NONE),c(0),alt(false),ctrl(false),shift(false) {}
-		UmbraKey (TCOD_keycode_t vk, char c, bool alt, bool ctrl, bool shift): vk(vk),c(c),alt(alt),ctrl(ctrl),shift(shift) {}
-		/**
-		 * Assigns a keystroke or key combination. In case of alt, ctrl and shift keys, left and right keys are not distinguished (due to incomplete support in SDL).
-		 * @param vk the non-printable key code, using TCOD_keycode_t constants (see libtcod documentation). Set to TCODK_NONE if none is expected
-		 * @param c a printable character key. Set to 0 if none is expected
-		 * @param alt boolean indicating whether the alt key is expected to be pressed
-		 * @param ctrl boolean indicating whether the ctrl key is expected to be pressed
-		 * @param shift boolean indicating whether the shift key is expected to be pressed
-		 */
-		inline void assign (TCOD_keycode_t vk, char c, bool alt, bool ctrl, bool shift) { this->vk=vk; this->c=c; this->alt=alt; this->ctrl=ctrl; this->shift=shift; }
-		inline bool operator == (const UmbraKey &k1) { return memcmp (this, &k1, sizeof(UmbraKey)) == 0; }
-	private:
-		TCOD_keycode_t vk;
-		char c;
-		bool alt;
-		bool ctrl;
-		bool shift;
-};
+class UmbraKey;
 
 enum UmbraKeyboardMode {
 	UMBRA_KEYBOARD_WAIT,
@@ -102,10 +79,18 @@ class UmbraEngine {
 		/**
 		 * Read module configuration from the given filename, or the filename defined as moduleConfig in umbra.txt.<br>If there's no filename or the file cannot be read, return false.
 		 * @param filename name of the module configuration file
-		 * @param factory a module factory		 
+		 * @param factory a module factory
+		 * @param chainName (optional) the name of the module chain to load. Leave at default to load the chain specified in <code>umbra.txt</code> or, in case it's not specified, the first module chain that's encountered in the module configuration file.
 		 * @return <code>true</code> if module configuration has been loaded successfully, <code>false</code> otherwise
 		 */		  		 		  		
-		bool loadModuleConfiguration(const char *filename, UmbraModuleFactory *factory = NULL, const char *chainName = NULL);
+		bool loadModuleConfiguration(const char *filename, UmbraModuleFactory *factory, const char *chainName = NULL);
+		/**
+		 * Read module configuration from the given filename, or the filename defined as moduleConfig in umbra.txt.<br>If there's no filename or the file cannot be read, return false.
+		 * @param filename name of the module configuration file
+		 * @param chainName (optional) the name of the module chain to load. Leave at default to load the chain specified in <code>umbra.txt</code> or, in case it's not specified, the first module chain that's encountered in the module configuration file.
+		 * @return <code>true</code> if module configuration has been loaded successfully, <code>false</code> otherwise
+		 */
+		bool loadModuleConfiguration(const char *filename, const char *chainName = NULL);
 		/**
 		 * Initialises the engine.
 		 * @param renderer the renderer to be used (defaults to SDL)

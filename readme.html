@@ -591,10 +591,12 @@ Please note that this module requires the console emulator to be active, otherwi
 *[[UmbraCallbackScreenshot]]
 *[[UmbraCallbackSpeedometer]]</pre>
 </div>
-<div title="Change log" modifier="Mingos" created="201008111354" modified="201010180813" tags="changeLog" changecount="23">
+<div title="Change log" modifier="Mingos" created="201008111354" modified="201010182050" tags="changeLog" changecount="26">
 <pre>&lt;&lt;tiddler ChangeLogSymbols&gt;&gt;
 !Current HEAD revision
 |!Category|!Committed on|!Change|!Committed by|
+|API|18-Oct-2010|Umbra files have been renamed in order not to collide with other possible filenames|Mingos|
+|NEW|18-Oct-2010|Added an extra version of the ~UmbraEngine::loadModuleConfiguration method|Mingos|
 |NEW|15-Oct-2010|Module factory added|Jice|
 |API|14-Oct-2010|External module configuration (API break!)|Jice|
 |BUG|13-Oct-2010|Module activation method now correctly places modules with the lowest priority|Mingos|
@@ -616,10 +618,11 @@ Please note that this module requires the console emulator to be active, otherwi
 |API|changed feature and/or API break|
 |BUG|bug fix|</pre>
 </div>
-<div title="Classes" modifier="Mingos" created="200911042330" modified="201008190947" tags="api class" changecount="10">
+<div title="Classes" modifier="Mingos" created="200911042330" modified="201010182049" tags="api class" changecount="11">
 <pre>&lt;&lt;tabs methods
     &quot;UmbraEngine&quot; &quot;UmbraEngine&quot; [[UmbraEngine]]
     &quot;UmbraModule&quot; &quot;UmbraModule&quot; [[UmbraModule]]
+    &quot;UmbraModuleFactory&quot; &quot;UmbraModuleFactory&quot; [[UmbraModuleFactory]]
     &quot;UmbraWidget&quot; &quot;UmbraWidget&quot; [[UmbraWidget]]
     &quot;UmbraCallback&quot; &quot;UmbraCallback&quot; [[UmbraCallback]]
     &quot;UmbraKey&quot; &quot;UmbraKey&quot; [[UmbraKey]]
@@ -919,7 +922,7 @@ In the above code snippet, {{{speed}}} is the offscreen console the widget uses.
 ;{{{UMBRA_LICENCE}}}
 :the string containing the licence text, as quoted [[here|About Umbra]]. You are encouraged to display it somewhere in your application.</pre>
 </div>
-<div title="Defining custom parametres for the modules" modifier="Mingos" created="201010152057" modified="201010180828" tags="tutorial module moduleConfiguration" changecount="7">
+<div title="Defining custom parametres for the modules" modifier="Mingos" created="201010152057" modified="201010181949" tags="tutorial module moduleConfiguration" changecount="8">
 <pre>Beyond defining the basic properties of the modules, the module configuration file makes it possible to set custom parametres for the modules to use, using libtcod 1.5.1 dynamic properties syntax:
 &lt;code C++&gt;
 moduleChain &quot;myChain&quot; {
@@ -929,7 +932,7 @@ moduleChain &quot;myChain&quot; {
         int anIntParam = 4 
         float aFloatParam = 3.14 
         string aStringParam = &quot;aStringValue&quot; 
-        color aColorParam = #00FF00 
+        color aColourParam = #00FF00 
         dice aDiceParam = &quot;3d20&quot; 
     }
 }
@@ -941,14 +944,14 @@ int UmbraModule::getCharParam(const char *name);
 int UmbraModule::getIntParam(const char *name);
 float UmbraModule::getFloatParam(const char *name);
 const char *UmbraModule::getStringParam(const char *name);
-TCODColor UmbraModule::getColorParam(const char *name);
+TCODColor UmbraModule::getColourParam(const char *name);
 TCOD_dice_t UmbraModule::getDiceParam(const char *name);
 &lt;/code&gt;
 Note that those getters mustn't be used in the module constructor, since the custom parametres have not yet been parsed at that moment.
 !See also
 &lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;moduleConfiguration&quot;,&quot;method&quot;])'&gt;&gt;</pre>
 </div>
-<div title="Defining module chains in an external file" modifier="Mingos" created="201010152051" modified="201010180827" tags="tutorial module moduleConfiguration" changecount="2">
+<div title="Defining module chains in an external file" modifier="Mingos" created="201010152051" modified="201010181948" tags="tutorial module moduleConfiguration" changecount="3">
 <pre>In some cases, it is much more comfortable to define the modules' fallbacks in an external file. They can be defined along with a few other properties in Umbra's external configuration file. To use this feature, it's enough to register all the modules that are needed in the engine, then call [[UmbraEngine::loadModuleConfiguration]]. The configuration file can define multiple module chains, allowing to have different modes for the application (or it could also be different applications in the same .exe):
 &lt;code C++&gt;
 moduleChain &quot;chainName&quot; {
@@ -959,7 +962,7 @@ moduleChain &quot;chainName&quot; {
         active
     }
     module &quot;otherModuleName&quot; {
-        timeOut=0
+        timeout=0
         priority=0
     }
 }
@@ -2052,10 +2055,11 @@ These are the internal callbacks, which can be registered automatically, providi
 [[Change log]]
 [[Credits]]</pre>
 </div>
-<div title="Methods" modifier="Mingos" created="200911042331" modified="201008171122" tags="api method" changecount="42">
+<div title="Methods" modifier="Mingos" created="200911042331" modified="201010182111" tags="api method" changecount="43">
 <pre>&lt;&lt;tabs methods
     &quot;UmbraEngine&quot; &quot;UmbraEngine methods&quot; [[UmbraEngineMethods]]
     &quot;UmbraModule&quot; &quot;UmbraModule methods&quot; [[UmbraModuleMethods]]
+    &quot;UmbraModuleFactory&quot; &quot;UmbraModuleFactory methods&quot; [[UmbraModuleFactoryMethods]]
     &quot;UmbraWidget&quot; &quot;UmbraWidget methods&quot; [[UmbraWidgetMethods]]
     &quot;UmbraCallback&quot; &quot;UmbraCallback methods&quot; [[UmbraCallbackMethods]]
     &quot;UmbraKey&quot; &quot;UmbraKey methods&quot; [[UmbraKeyMethods]]
@@ -2131,7 +2135,7 @@ On the other hand, module rendering is done in the inverse order. What this mean
 The module would store the activation time and deactivate itself automatically after the time specified in the timeout has passed.
 Good for things like credits screens that are supposed to be displayed only during a few seconds.</pre>
 </div>
-<div title="Naming modules" modifier="YourName" created="201010142205" modified="201010152106" tags="tutorial module name" changecount="3">
+<div title="Naming modules" modifier="Mingos" created="201010142205" modified="201010182056" tags="tutorial module moduleReference" changecount="6">
 <pre>Every module that is registered in the engine has a name that is stored internally. There are several ways to set the module's name: by calling the ~UmbraModule constructor, by using an extra parametre to the [[UmbraEngine::registerModule]] method or by calling the [[UmbraModule::setName]] method.
 !Example
 &lt;code C++&gt;
@@ -2157,7 +2161,7 @@ Module names are a very useful feature because they allow for a very intuitive w
 &lt;code C++&gt;
 engine.getModule(&quot;my module&quot;);
 &lt;/code&gt;
-Furthermore, module names are a requisite if an [[external module configuration|Defining module chains in an external file]] is going to be used.</pre>
+Furthermore, module names are a requisite if an [[external module configuration|Defining module chains in an external file]] is going to be used. However, if the [[module factory|Using a module factory]] is in use, the names are assigned automatically and they shouldn't be reset. Thus, module naming methods should be considered only in regard to simplifying module referencing.</pre>
 </div>
 <div title="Operators" modifier="Mingos" created="201008152255" modified="201008191017" tags="api operator" changecount="33">
 <pre>*[[UmbraKey::operator ==]]
@@ -3621,14 +3625,20 @@ else return 1;
 !See also
 &lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;engine&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;engine&quot;,&quot;engineClass&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;engine&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
 </div>
-<div title="UmbraEngine::loadModuleConfiguration" modifier="YourName" created="201010142231" modified="201010152104" tags="api method engineClass module name" changecount="6">
+<div title="UmbraEngine::loadModuleConfiguration" modifier="Mingos" created="201010142231" modified="201010182053" tags="api method engineClass module moduleConfiguration" changecount="9">
 <pre>!Description
 Loads an entire module configuration from an external configuration file.
 !Construction
 &lt;code C++&gt;
 bool loadModuleConfiguration (
     const char * filename,
-    UmbraModuleFactory *factory = NULL,
+    UmbraModuleFactory *factory,
+    const char * chainName = NULL
+);
+&lt;/code&gt;
+&lt;code C++&gt;
+bool loadModuleConfiguration (
+    const char * filename,
     const char * chainName = NULL
 );
 &lt;/code&gt;
@@ -3642,12 +3652,25 @@ bool loadModuleConfiguration (
 This method is not necessary in simple projects, but is useful if a single project should have the possibility to run different programs (or versions of the same program) using a single executable.
 It must be run before the engine is initialised. The best way to call it is shown in the example below.
 !Example
+The methid can be called in four different ways:
 &lt;code C++&gt;
-if (engine.loadModuleConfiguration(&quot;data/cfg/module.txt&quot;,NULL,&quot;demo&quot;) &amp;&amp; engine.initialise()) return engine.run();
+if (engine.loadModuleConfiguration(&quot;data/cfg/module.txt&quot;,new MyModuleFactory(),&quot;demo&quot;) &amp;&amp; engine.initialise()) return engine.run();
+else return 1;
+&lt;/code&gt;
+&lt;code C++&gt;
+if (engine.loadModuleConfiguration(&quot;data/cfg/module.txt&quot;,&quot;demo&quot;) &amp;&amp; engine.initialise()) return engine.run();
+else return 1;
+&lt;/code&gt;
+&lt;code C++&gt;
+if (engine.loadModuleConfiguration(&quot;data/cfg/module.txt&quot;,new MyModuleFactory()) &amp;&amp; engine.initialise()) return engine.run();
+else return 1;
+&lt;/code&gt;
+&lt;code C++&gt;
+if (engine.loadModuleConfiguration(&quot;data/cfg/module.txt&quot;) &amp;&amp; engine.initialise()) return engine.run();
 else return 1;
 &lt;/code&gt;
 !See also
-&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;name&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;name&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;name&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
+&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;moduleConfiguration&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;moduleConfiguration&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
 </div>
 <div title="UmbraEngine::registerCallback" modifier="Mingos" created="201008111159" tags="api method engineClass init callback" changecount="1">
 <pre>!Description
@@ -4225,7 +4248,7 @@ bool getActive (
 !See also
 &lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;moduleStatus&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;moduleStatus&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;moduleStatus&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
 </div>
-<div title="UmbraModule::getBoolParam" modifier="Mingos" created="201010181328" modified="201010181333" tags="api method moduleClass moduleConfiguration" changecount="3">
+<div title="UmbraModule::getBoolParam" modifier="Mingos" created="201010181328" modified="201010181946" tags="api method moduleClass moduleConfiguration" changecount="4">
 <pre>!Description
 Retrieves the value of a custom boolean parametre defined in the [[external configuration file|Defining custom parametres for the modules]]
 !Construction
@@ -4248,7 +4271,7 @@ moduleChain &quot;myChain&quot; {
         int anIntParam = 4 
         float aFloatParam = 3.14 
         string aStringParam = &quot;aStringValue&quot; 
-        color aColorParam = #00FF00 
+        color aColourParam = #00FF00 
         dice aDiceParam = &quot;3d20&quot; 
     }
 }
@@ -4260,19 +4283,21 @@ bool myParam = UmbraEngine::getInstance()-&gt;getModule(&quot;myModule&quot;)-&g
 !See also
 &lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;tutorial&quot;,&quot;moduleConfiguration&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;moduleConfiguration&quot;,&quot;method&quot;])'&gt;&gt;</pre>
 </div>
-<div title="UmbraModule::getCharParam" modifier="Mingos" created="201010181335" tags="api method moduleClass moduleConfiguration" changecount="1">
+<div title="UmbraModule::getCharParam" modifier="Mingos" created="201010181335" modified="201010181951" tags="api method moduleClass moduleConfiguration" changecount="4">
 <pre>!Description
 Retrieves the value of a custom character parametre defined in the [[external configuration file|Defining custom parametres for the modules]]
 !Construction
 &lt;code C++&gt;
-char getCharParam (
+int getCharParam (
     const char * name
 );
 &lt;/code&gt;
 !Parametres
 * {{{const char * name}}}: the name of the custom parametre
 !Return value
-{{{char}}}: the value of a custom parametre
+{{{int}}}: the value of a custom parametre
+!Remarks
+This method returns an {{{int}}} instead of a {{{char}}} because it allows the use of Unicode characters as well.
 !Example
 module.txt:
 &lt;code C++&gt;
@@ -4283,14 +4308,84 @@ moduleChain &quot;myChain&quot; {
         int anIntParam = 4 
         float aFloatParam = 3.14 
         string aStringParam = &quot;aStringValue&quot; 
-        color aColorParam = #00FF00 
+        color aColourParam = #00FF00 
         dice aDiceParam = &quot;3d20&quot; 
     }
 }
 &lt;/code&gt;
 C++ code:
 &lt;code C++&gt;
-char myParam = UmbraEngine::getInstance()-&gt;getModule(&quot;myModule&quot;)-&gt;getCharParam(&quot;aBoolParam&quot;);
+char myParam = UmbraEngine::getInstance()-&gt;getModule(&quot;myModule&quot;)-&gt;getCharParam(&quot;aCharParam&quot;);
+&lt;/code&gt;
+!See also
+&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;tutorial&quot;,&quot;moduleConfiguration&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;moduleConfiguration&quot;,&quot;method&quot;])'&gt;&gt;</pre>
+</div>
+<div title="UmbraModule::getColourParam" modifier="Mingos" created="201010181943" tags="api method moduleClass moduleConfiguration" changecount="1">
+<pre>!Description
+Retrieves the value of a custom colour parametre defined in the [[external configuration file|Defining custom parametres for the modules]]
+!Construction
+&lt;code C++&gt;
+TCODColor getColourParam (
+    const char * name
+);
+&lt;/code&gt;
+!Parametres
+* {{{const char * name}}}: the name of the custom parametre
+!Return value
+{{{TCODColor}}}: the value of a custom parametre
+!Example
+module.txt:
+&lt;code C++&gt;
+moduleChain &quot;myChain&quot; {
+    module &quot;myModule&quot; {
+        bool aBoolParam = true
+        char aCharParam = '@'
+        int anIntParam = 4
+        float aFloatParam = 3.14
+        string aStringParam = &quot;aStringValue&quot;
+        color aColourParam = #00FF00
+        dice aDiceParam = &quot;3d20&quot;
+    }
+}
+&lt;/code&gt;
+C++ code:
+&lt;code C++&gt;
+TCODColor myParam = UmbraEngine::getInstance()-&gt;getModule(&quot;myModule&quot;)-&gt;getColourParam(&quot;aColourParam&quot;);
+&lt;/code&gt;
+!See also
+&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;tutorial&quot;,&quot;moduleConfiguration&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;moduleConfiguration&quot;,&quot;method&quot;])'&gt;&gt;</pre>
+</div>
+<div title="UmbraModule::getDiceParam" modifier="Mingos" created="201010181946" tags="api method moduleClass moduleConfiguration" changecount="1">
+<pre>!Description
+Retrieves the value of a custom dice parametre defined in the [[external configuration file|Defining custom parametres for the modules]]
+!Construction
+&lt;code C++&gt;
+TCOD_dice_t getDiceParam (
+    const char * name
+);
+&lt;/code&gt;
+!Parametres
+* {{{const char * name}}}: the name of the custom parametre
+!Return value
+{{{TCOD_dice_t}}}: the value of a custom parametre
+!Example
+module.txt:
+&lt;code C++&gt;
+moduleChain &quot;myChain&quot; {
+    module &quot;myModule&quot; {
+        bool aBoolParam = true 
+        char aCharParam = '@' 
+        int anIntParam = 4 
+        float aFloatParam = 3.14 
+        string aStringParam = &quot;aStringValue&quot; 
+        color aColourParam = #00FF00 
+        dice aDiceParam = &quot;3d20&quot; 
+    }
+}
+&lt;/code&gt;
+C++ code:
+&lt;code C++&gt;
+TCOD_dice_t myParam = UmbraEngine::getInstance()-&gt;getModule(&quot;myModule&quot;)-&gt;getDiceParam(&quot;aDiceParam&quot;);
 &lt;/code&gt;
 !See also
 &lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;tutorial&quot;,&quot;moduleConfiguration&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;moduleConfiguration&quot;,&quot;method&quot;])'&gt;&gt;</pre>
@@ -4331,6 +4426,76 @@ int getFallback (
 !See also
 &lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;fallback&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;fallback&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;fallback&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
 </div>
+<div title="UmbraModule::getFloatParam" modifier="Mingos" created="201010181939" modified="201010181947" tags="api method moduleClass moduleConfiguration" changecount="2">
+<pre>!Description
+Retrieves the value of a custom floating point parametre defined in the [[external configuration file|Defining custom parametres for the modules]]
+!Construction
+&lt;code C++&gt;
+float getFloatParam (
+    const char * name
+);
+&lt;/code&gt;
+!Parametres
+* {{{const char * name}}}: the name of the custom parametre
+!Return value
+{{{float}}}: the value of a custom parametre
+!Example
+module.txt:
+&lt;code C++&gt;
+moduleChain &quot;myChain&quot; {
+    module &quot;myModule&quot; {
+        bool aBoolParam = true 
+        char aCharParam = '@' 
+        int anIntParam = 4 
+        float aFloatParam = 3.14 
+        string aStringParam = &quot;aStringValue&quot; 
+        color aColourParam = #00FF00 
+        dice aDiceParam = &quot;3d20&quot; 
+    }
+}
+&lt;/code&gt;
+C++ code:
+&lt;code C++&gt;
+float myParam = UmbraEngine::getInstance()-&gt;getModule(&quot;myModule&quot;)-&gt;getFloatParam(&quot;aFloatParam&quot;);
+&lt;/code&gt;
+!See also
+&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;tutorial&quot;,&quot;moduleConfiguration&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;moduleConfiguration&quot;,&quot;method&quot;])'&gt;&gt;</pre>
+</div>
+<div title="UmbraModule::getIntParam" modifier="Mingos" created="201010181937" modified="201010181946" tags="api method moduleClass moduleConfiguration" changecount="2">
+<pre>!Description
+Retrieves the value of a custom integer parametre defined in the [[external configuration file|Defining custom parametres for the modules]]
+!Construction
+&lt;code C++&gt;
+int getIntParam (
+    const char * name
+);
+&lt;/code&gt;
+!Parametres
+* {{{const char * name}}}: the name of the custom parametre
+!Return value
+{{{int}}}: the value of a custom parametre
+!Example
+module.txt:
+&lt;code C++&gt;
+moduleChain &quot;myChain&quot; {
+    module &quot;myModule&quot; {
+        bool aBoolParam = true 
+        char aCharParam = '@' 
+        int anIntParam = 4 
+        float aFloatParam = 3.14 
+        string aStringParam = &quot;aStringValue&quot; 
+        color aColourParam = #00FF00 
+        dice aDiceParam = &quot;3d20&quot; 
+    }
+}
+&lt;/code&gt;
+C++ code:
+&lt;code C++&gt;
+int myParam = UmbraEngine::getInstance()-&gt;getModule(&quot;myModule&quot;)-&gt;getIntParam(&quot;anIntParam&quot;);
+&lt;/code&gt;
+!See also
+&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;tutorial&quot;,&quot;moduleConfiguration&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;moduleConfiguration&quot;,&quot;method&quot;])'&gt;&gt;</pre>
+</div>
 <div title="UmbraModule::getPause" modifier="Mingos" created="201004011545" modified="201008111853" tags="api module moduleClass moduleStatus" changecount="10">
 <pre>!Description
 Checks whether the module is paused.
@@ -4369,6 +4534,41 @@ UmbraModuleStatus getStatus (
 {{{UmbraModuleStatus}}}: the module's current status. The values are defined in the [[UmbraModuleStatus]] enum.
 !See also
 &lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;moduleStatus&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;moduleStatus&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;moduleStatus&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
+</div>
+<div title="UmbraModule::getStringParam" modifier="Mingos" created="201010181940" modified="201010181948" tags="api method moduleClass moduleConfiguration" changecount="2">
+<pre>!Description
+Retrieves the value of a custom string parametre defined in the [[external configuration file|Defining custom parametres for the modules]]
+!Construction
+&lt;code C++&gt;
+const char * getStringParam (
+    const char * name
+);
+&lt;/code&gt;
+!Parametres
+* {{{const char * name}}}: the name of the custom parametre
+!Return value
+{{{const char *}}}: the value of a custom parametre
+!Example
+module.txt:
+&lt;code C++&gt;
+moduleChain &quot;myChain&quot; {
+    module &quot;myModule&quot; {
+        bool aBoolParam = true 
+        char aCharParam = '@' 
+        int anIntParam = 4 
+        float aFloatParam = 3.14 
+        string aStringParam = &quot;aStringValue&quot; 
+        color aColourParam = #00FF00 
+        dice aDiceParam = &quot;3d20&quot; 
+    }
+}
+&lt;/code&gt;
+C++ code:
+&lt;code C++&gt;
+const char * myParam = UmbraEngine::getInstance()-&gt;getModule(&quot;myModule&quot;)-&gt;getStringParam(&quot;aStringParam&quot;);
+&lt;/code&gt;
+!See also
+&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;tutorial&quot;,&quot;moduleConfiguration&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;moduleConfiguration&quot;,&quot;method&quot;])'&gt;&gt;</pre>
 </div>
 <div title="UmbraModule::initialise" modifier="Mingos" created="201003312342" modified="201007272256" tags="api method module moduleClass autoCalling" changecount="12">
 <pre>!Description
@@ -4517,6 +4717,22 @@ The ID number of the fallback module is the number returned by [[UmbraEngine::re
 !See also
 &lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;fallback&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;fallback&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;fallback&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
 </div>
+<div title="UmbraModule::setName" modifier="Mingos" created="201010182003" tags="api method moduleClass moduleReference" changecount="1">
+<pre>!Description
+Sets the name of a module for easy referencing.
+!Construction
+&lt;code C++&gt;
+void setName (
+    const char * name
+);
+&lt;/code&gt;
+!Parametres
+*{{{const char * name}}}: module mane to be assigned.
+!Remarks
+This method should be used only when module configuration is not [[externalised|Defining module chains in an external file]] using a [[module factory|Using a module factory]], as in such a case names are assigned automatically.
+!See also
+&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;moduleReference&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;moduleReference&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;moduleReference&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
+</div>
 <div title="UmbraModule::setPause" modifier="Mingos" created="201004011543" modified="201007271830" tags="api method moduleClass moduleStatus" changecount="12">
 <pre>!Description
 Pauses or unpauses the module.
@@ -4587,8 +4803,8 @@ virtual bool update (
 :This method will be called automatically each frame. It shouldn't be called manually, but rather overloaded in each module.
 :The developer is expected to adhere to the rules concerning the return value. Making the method return a value of {{{false}}} will deactivate the module.</pre>
 </div>
-<div title="UmbraModuleFactory" modifier="Mingos" created="201010152103" modified="201010180827" tags="API class" changecount="5">
-<pre>Create a class that inherits UmbraModuleFactory to allow automatic registration of your modules. There's a single method to implement :
+<div title="UmbraModuleFactory" modifier="Mingos" created="201010152103" modified="201010181952" tags="API class" changecount="6">
+<pre>Create a class that inherits UmbraModuleFactory to allow automatic registration of your modules. There's a single method to implement: [[UmbraModuleFactory::createModule]].
 &lt;code C++&gt;
 class UmbraModuleFactory {
 public:
@@ -4612,6 +4828,43 @@ public :
     }
 };
 &lt;/code&gt;</pre>
+</div>
+<div title="UmbraModuleFactory::createModule" modifier="Mingos" created="201010182107" tags="api method moduleConfiguration" changecount="1">
+<pre>!Description
+Creates different types of modules.
+!Construction
+&lt;code C++&gt;
+UmbraModule * UmbraModuleFactory::createModule (
+    const char * name
+) = 0;
+&lt;/code&gt;
+!Parametres
+*{{{const char * name}}}: the name of the module retrieved from the module configuration file
+!Return
+{{{UmbraModule *}}}: a pointer to an instance of a module of a given type.
+!Remarks
+This method is pure virtual, thus it's mandatory to override it.
+It is used to create different modules based on the name retrieved from the module configuration file.
+It is called automatically when [[UmbraEngine::loadModuleConfiguration]] is called with a pointer to the [[UmbraModuleFactory]] instance is passed as its parametre.
+!Example:
+&lt;code C++&gt;
+UmbraModule * MyModuleFactory::createModule(const char *name) {
+    if ( strcmp(name,&quot;matrix&quot;) == 0 ) return new Matrix();
+    else if ( strcmp(name,&quot;demo&quot;) == 0 ) return new Demo();
+    else if ( strcmp(name,&quot;rabbit&quot;) == 0 ) return new RabbitWidget();
+    else if ( strcmp(name,&quot;panel&quot;) == 0 ) return new Panel(); 
+    else if ( strcmp(name,&quot;credits&quot;) == 0 ) return new Credits();
+    else {
+        UmbraError::add(UMBRA_ERRORLEVEL_ERROR,&quot;ModuleFactory::createModule: encountered an unknown module name: %s.&quot;,name);
+        return NULL;
+    }
+}
+&lt;/code&gt;
+!See also
+&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;moduleConfiguration&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;moduleConfiguration&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
+</div>
+<div title="UmbraModuleFactoryMethods" modifier="Mingos" created="201010182110" tags="api class" changecount="1">
+<pre>*[[UmbraModuleFactory::createModule]]</pre>
 </div>
 <div title="UmbraModuleMethods" modifier="Mingos" created="201007271154" modified="201010062009" tags="methodlist" changecount="9">
 <pre>&lt;&lt;forEachTiddler where 'tiddler.tags.containsAll([&quot;method&quot;,&quot;moduleClass&quot;])' sortBy 'tiddler.title'&gt;&gt;</pre>

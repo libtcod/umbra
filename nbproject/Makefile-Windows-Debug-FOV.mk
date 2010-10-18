@@ -33,23 +33,23 @@ OBJECTDIR=build/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
+	${OBJECTDIR}/src/umbra/umbra_engine.o \
 	${OBJECTDIR}/src/fov/fov_setup.o \
+	${OBJECTDIR}/src/umbra/umbra_font.o \
 	${OBJECTDIR}/src/invaders/notification.o \
 	${OBJECTDIR}/src/fov/main.o \
-	${OBJECTDIR}/src/umbra/imod_bsod.o \
-	${OBJECTDIR}/src/umbra/module.o \
-	${OBJECTDIR}/src/umbra/font.o \
-	${OBJECTDIR}/src/umbra/imod_speed.o \
-	${OBJECTDIR}/src/umbra/engine.o \
-	${OBJECTDIR}/src/umbra/config.o \
-	${OBJECTDIR}/src/umbra/callback.o \
-	${OBJECTDIR}/src/umbra/widget.o \
-	${OBJECTDIR}/src/umbra/widget_button.o \
+	${OBJECTDIR}/src/umbra/umbra_widget_button.o \
+	${OBJECTDIR}/src/umbra/umbra_module.o \
+	${OBJECTDIR}/src/umbra/umbra_config.o \
+	${OBJECTDIR}/src/umbra/umbra_widget_checkbox.o \
+	${OBJECTDIR}/src/umbra/umbra_imod_bsod.o \
 	${OBJECTDIR}/src/fov/fov_results.o \
+	${OBJECTDIR}/src/umbra/umbra_error.o \
 	${OBJECTDIR}/src/fov/bsp_helper.o \
-	${OBJECTDIR}/src/umbra/widget_checkbox.o \
+	${OBJECTDIR}/src/umbra/umbra_widget.o \
+	${OBJECTDIR}/src/umbra/umbra_callback.o \
 	${OBJECTDIR}/src/fov/fov_test.o \
-	${OBJECTDIR}/src/umbra/error.o
+	${OBJECTDIR}/src/umbra/umbra_imod_speed.o
 
 
 # C Compiler Flags
@@ -78,10 +78,20 @@ LDLIBSOPTIONS=../libtcod/lib/libtcod-mingw-debug.a
 	${MKDIR} -p .
 	${LINK.cc} -o ./umbra ${OBJECTFILES} ${LDLIBSOPTIONS} 
 
+${OBJECTDIR}/src/umbra/umbra_engine.o: src/umbra/umbra_engine.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src/umbra
+	${RM} $@.d
+	$(COMPILE.cc) -g -I../libtcod/include -Isrc/umbra -Isrc/fov -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/umbra/umbra_engine.o src/umbra/umbra_engine.cpp
+
 ${OBJECTDIR}/src/fov/fov_setup.o: src/fov/fov_setup.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/fov
 	${RM} $@.d
 	$(COMPILE.cc) -g -I../libtcod/include -Isrc/umbra -Isrc/fov -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/fov/fov_setup.o src/fov/fov_setup.cpp
+
+${OBJECTDIR}/src/umbra/umbra_font.o: src/umbra/umbra_font.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src/umbra
+	${RM} $@.d
+	$(COMPILE.cc) -g -I../libtcod/include -Isrc/umbra -Isrc/fov -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/umbra/umbra_font.o src/umbra/umbra_font.cpp
 
 ${OBJECTDIR}/src/invaders/notification.o: src/invaders/notification.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/invaders
@@ -93,75 +103,65 @@ ${OBJECTDIR}/src/fov/main.o: src/fov/main.cpp
 	${RM} $@.d
 	$(COMPILE.cc) -g -I../libtcod/include -Isrc/umbra -Isrc/fov -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/fov/main.o src/fov/main.cpp
 
-${OBJECTDIR}/src/umbra/imod_bsod.o: src/umbra/imod_bsod.cpp 
+${OBJECTDIR}/src/umbra/umbra_widget_button.o: src/umbra/umbra_widget_button.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/umbra
 	${RM} $@.d
-	$(COMPILE.cc) -g -I../libtcod/include -Isrc/umbra -Isrc/fov -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/umbra/imod_bsod.o src/umbra/imod_bsod.cpp
+	$(COMPILE.cc) -g -I../libtcod/include -Isrc/umbra -Isrc/fov -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/umbra/umbra_widget_button.o src/umbra/umbra_widget_button.cpp
 
-${OBJECTDIR}/src/umbra/module.o: src/umbra/module.cpp 
+${OBJECTDIR}/src/umbra/umbra_module.o: src/umbra/umbra_module.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/umbra
 	${RM} $@.d
-	$(COMPILE.cc) -g -I../libtcod/include -Isrc/umbra -Isrc/fov -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/umbra/module.o src/umbra/module.cpp
+	$(COMPILE.cc) -g -I../libtcod/include -Isrc/umbra -Isrc/fov -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/umbra/umbra_module.o src/umbra/umbra_module.cpp
 
-${OBJECTDIR}/src/umbra/font.o: src/umbra/font.cpp 
+${OBJECTDIR}/src/umbra/umbra_config.o: src/umbra/umbra_config.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/umbra
 	${RM} $@.d
-	$(COMPILE.cc) -g -I../libtcod/include -Isrc/umbra -Isrc/fov -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/umbra/font.o src/umbra/font.cpp
+	$(COMPILE.cc) -g -I../libtcod/include -Isrc/umbra -Isrc/fov -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/umbra/umbra_config.o src/umbra/umbra_config.cpp
 
-${OBJECTDIR}/src/umbra/imod_speed.o: src/umbra/imod_speed.cpp 
+${OBJECTDIR}/src/umbra/umbra_widget_checkbox.o: src/umbra/umbra_widget_checkbox.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/umbra
 	${RM} $@.d
-	$(COMPILE.cc) -g -I../libtcod/include -Isrc/umbra -Isrc/fov -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/umbra/imod_speed.o src/umbra/imod_speed.cpp
+	$(COMPILE.cc) -g -I../libtcod/include -Isrc/umbra -Isrc/fov -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/umbra/umbra_widget_checkbox.o src/umbra/umbra_widget_checkbox.cpp
 
-${OBJECTDIR}/src/umbra/engine.o: src/umbra/engine.cpp 
+${OBJECTDIR}/src/umbra/umbra_imod_bsod.o: src/umbra/umbra_imod_bsod.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/umbra
 	${RM} $@.d
-	$(COMPILE.cc) -g -I../libtcod/include -Isrc/umbra -Isrc/fov -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/umbra/engine.o src/umbra/engine.cpp
-
-${OBJECTDIR}/src/umbra/config.o: src/umbra/config.cpp 
-	${MKDIR} -p ${OBJECTDIR}/src/umbra
-	${RM} $@.d
-	$(COMPILE.cc) -g -I../libtcod/include -Isrc/umbra -Isrc/fov -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/umbra/config.o src/umbra/config.cpp
-
-${OBJECTDIR}/src/umbra/callback.o: src/umbra/callback.cpp 
-	${MKDIR} -p ${OBJECTDIR}/src/umbra
-	${RM} $@.d
-	$(COMPILE.cc) -g -I../libtcod/include -Isrc/umbra -Isrc/fov -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/umbra/callback.o src/umbra/callback.cpp
-
-${OBJECTDIR}/src/umbra/widget.o: src/umbra/widget.cpp 
-	${MKDIR} -p ${OBJECTDIR}/src/umbra
-	${RM} $@.d
-	$(COMPILE.cc) -g -I../libtcod/include -Isrc/umbra -Isrc/fov -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/umbra/widget.o src/umbra/widget.cpp
-
-${OBJECTDIR}/src/umbra/widget_button.o: src/umbra/widget_button.cpp 
-	${MKDIR} -p ${OBJECTDIR}/src/umbra
-	${RM} $@.d
-	$(COMPILE.cc) -g -I../libtcod/include -Isrc/umbra -Isrc/fov -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/umbra/widget_button.o src/umbra/widget_button.cpp
+	$(COMPILE.cc) -g -I../libtcod/include -Isrc/umbra -Isrc/fov -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/umbra/umbra_imod_bsod.o src/umbra/umbra_imod_bsod.cpp
 
 ${OBJECTDIR}/src/fov/fov_results.o: src/fov/fov_results.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/fov
 	${RM} $@.d
 	$(COMPILE.cc) -g -I../libtcod/include -Isrc/umbra -Isrc/fov -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/fov/fov_results.o src/fov/fov_results.cpp
 
+${OBJECTDIR}/src/umbra/umbra_error.o: src/umbra/umbra_error.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src/umbra
+	${RM} $@.d
+	$(COMPILE.cc) -g -I../libtcod/include -Isrc/umbra -Isrc/fov -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/umbra/umbra_error.o src/umbra/umbra_error.cpp
+
 ${OBJECTDIR}/src/fov/bsp_helper.o: src/fov/bsp_helper.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/fov
 	${RM} $@.d
 	$(COMPILE.cc) -g -I../libtcod/include -Isrc/umbra -Isrc/fov -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/fov/bsp_helper.o src/fov/bsp_helper.cpp
 
-${OBJECTDIR}/src/umbra/widget_checkbox.o: src/umbra/widget_checkbox.cpp 
+${OBJECTDIR}/src/umbra/umbra_widget.o: src/umbra/umbra_widget.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/umbra
 	${RM} $@.d
-	$(COMPILE.cc) -g -I../libtcod/include -Isrc/umbra -Isrc/fov -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/umbra/widget_checkbox.o src/umbra/widget_checkbox.cpp
+	$(COMPILE.cc) -g -I../libtcod/include -Isrc/umbra -Isrc/fov -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/umbra/umbra_widget.o src/umbra/umbra_widget.cpp
+
+${OBJECTDIR}/src/umbra/umbra_callback.o: src/umbra/umbra_callback.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src/umbra
+	${RM} $@.d
+	$(COMPILE.cc) -g -I../libtcod/include -Isrc/umbra -Isrc/fov -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/umbra/umbra_callback.o src/umbra/umbra_callback.cpp
 
 ${OBJECTDIR}/src/fov/fov_test.o: src/fov/fov_test.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/fov
 	${RM} $@.d
 	$(COMPILE.cc) -g -I../libtcod/include -Isrc/umbra -Isrc/fov -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/fov/fov_test.o src/fov/fov_test.cpp
 
-${OBJECTDIR}/src/umbra/error.o: src/umbra/error.cpp 
+${OBJECTDIR}/src/umbra/umbra_imod_speed.o: src/umbra/umbra_imod_speed.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/umbra
 	${RM} $@.d
-	$(COMPILE.cc) -g -I../libtcod/include -Isrc/umbra -Isrc/fov -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/umbra/error.o src/umbra/error.cpp
+	$(COMPILE.cc) -g -I../libtcod/include -Isrc/umbra -Isrc/fov -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/umbra/umbra_imod_speed.o src/umbra/umbra_imod_speed.cpp
 
 # Subprojects
 .build-subprojects:

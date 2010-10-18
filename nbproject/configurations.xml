@@ -10,32 +10,36 @@
     </logicalFolder>
     <logicalFolder name="f1" displayName="Umbra" projectFiles="true">
       <logicalFolder name="f1" displayName="Headers" projectFiles="true">
-        <itemPath>src/umbra/callback.hpp</itemPath>
-        <itemPath>src/umbra/config.hpp</itemPath>
-        <itemPath>src/umbra/engine.hpp</itemPath>
-        <itemPath>src/umbra/error.hpp</itemPath>
-        <itemPath>src/umbra/font.hpp</itemPath>
-        <itemPath>src/umbra/imod_bsod.hpp</itemPath>
-        <itemPath>src/umbra/imod_speed.hpp</itemPath>
-        <itemPath>src/umbra/module.hpp</itemPath>
         <itemPath>src/umbra/umbra.hpp</itemPath>
-        <itemPath>src/umbra/version.hpp</itemPath>
-        <itemPath>src/umbra/widget.hpp</itemPath>
-        <itemPath>src/umbra/widget_button.hpp</itemPath>
-        <itemPath>src/umbra/widget_checkbox.hpp</itemPath>
+        <itemPath>src/umbra/umbra_callback.hpp</itemPath>
+        <itemPath>src/umbra/umbra_config.hpp</itemPath>
+        <itemPath>src/umbra/umbra_engine.hpp</itemPath>
+        <itemPath>src/umbra/umbra_error.hpp</itemPath>
+        <itemPath>src/umbra/umbra_font.hpp</itemPath>
+        <itemPath>src/umbra/umbra_imod_bsod.hpp</itemPath>
+        <itemPath>src/umbra/umbra_imod_speed.hpp</itemPath>
+        <itemPath>src/umbra/umbra_key.hpp</itemPath>
+        <itemPath>src/umbra/umbra_module.hpp</itemPath>
+        <itemPath>src/umbra/umbra_module_factory.hpp</itemPath>
+        <itemPath>src/umbra/umbra_point.hpp</itemPath>
+        <itemPath>src/umbra/umbra_rect.hpp</itemPath>
+        <itemPath>src/umbra/umbra_version.hpp</itemPath>
+        <itemPath>src/umbra/umbra_widget.hpp</itemPath>
+        <itemPath>src/umbra/umbra_widget_button.hpp</itemPath>
+        <itemPath>src/umbra/umbra_widget_checkbox.hpp</itemPath>
       </logicalFolder>
       <logicalFolder name="f2" displayName="Sources" projectFiles="true">
-        <itemPath>src/umbra/callback.cpp</itemPath>
-        <itemPath>src/umbra/config.cpp</itemPath>
-        <itemPath>src/umbra/engine.cpp</itemPath>
-        <itemPath>src/umbra/error.cpp</itemPath>
-        <itemPath>src/umbra/font.cpp</itemPath>
-        <itemPath>src/umbra/imod_bsod.cpp</itemPath>
-        <itemPath>src/umbra/imod_speed.cpp</itemPath>
-        <itemPath>src/umbra/module.cpp</itemPath>
-        <itemPath>src/umbra/widget.cpp</itemPath>
-        <itemPath>src/umbra/widget_button.cpp</itemPath>
-        <itemPath>src/umbra/widget_checkbox.cpp</itemPath>
+        <itemPath>src/umbra/umbra_callback.cpp</itemPath>
+        <itemPath>src/umbra/umbra_config.cpp</itemPath>
+        <itemPath>src/umbra/umbra_engine.cpp</itemPath>
+        <itemPath>src/umbra/umbra_error.cpp</itemPath>
+        <itemPath>src/umbra/umbra_font.cpp</itemPath>
+        <itemPath>src/umbra/umbra_imod_bsod.cpp</itemPath>
+        <itemPath>src/umbra/umbra_imod_speed.cpp</itemPath>
+        <itemPath>src/umbra/umbra_module.cpp</itemPath>
+        <itemPath>src/umbra/umbra_widget.cpp</itemPath>
+        <itemPath>src/umbra/umbra_widget_button.cpp</itemPath>
+        <itemPath>src/umbra/umbra_widget_checkbox.cpp</itemPath>
       </logicalFolder>
     </logicalFolder>
     <logicalFolder name="f2" displayName="Umbra Demo" projectFiles="true">

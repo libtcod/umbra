@@ -33,23 +33,23 @@ OBJECTDIR=build/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
+	${OBJECTDIR}/src/umbra/umbra_engine.o \
+	${OBJECTDIR}/src/umbra/umbra_font.o \
+	${OBJECTDIR}/src/umbra/umbra_widget_button.o \
 	${OBJECTDIR}/src/demo/credits.o \
-	${OBJECTDIR}/src/umbra/imod_bsod.o \
-	${OBJECTDIR}/src/umbra/module.o \
-	${OBJECTDIR}/src/umbra/font.o \
-	${OBJECTDIR}/src/umbra/imod_speed.o \
-	${OBJECTDIR}/src/umbra/engine.o \
-	${OBJECTDIR}/src/umbra/config.o \
-	${OBJECTDIR}/src/umbra/callback.o \
+	${OBJECTDIR}/src/umbra/umbra_module.o \
+	${OBJECTDIR}/src/umbra/umbra_config.o \
+	${OBJECTDIR}/src/umbra/umbra_widget_checkbox.o \
 	${OBJECTDIR}/src/demo/rabbit.o \
-	${OBJECTDIR}/src/umbra/widget.o \
-	${OBJECTDIR}/src/umbra/widget_button.o \
+	${OBJECTDIR}/src/umbra/umbra_imod_bsod.o \
 	${OBJECTDIR}/src/demo/main.o \
+	${OBJECTDIR}/src/umbra/umbra_error.o \
 	${OBJECTDIR}/src/demo/demo.o \
-	${OBJECTDIR}/src/umbra/widget_checkbox.o \
+	${OBJECTDIR}/src/umbra/umbra_widget.o \
+	${OBJECTDIR}/src/umbra/umbra_callback.o \
 	${OBJECTDIR}/src/demo/panel.o \
 	${OBJECTDIR}/src/demo/matrix.o \
-	${OBJECTDIR}/src/umbra/error.o
+	${OBJECTDIR}/src/umbra/umbra_imod_speed.o
 
 
 # C Compiler Flags
@@ -78,75 +78,75 @@ LDLIBSOPTIONS=../libtcod/lib/libtcod-mingw.a
 	${MKDIR} -p .
 	${LINK.cc} -o ./umbra ${OBJECTFILES} ${LDLIBSOPTIONS} 
 
+${OBJECTDIR}/src/umbra/umbra_engine.o: src/umbra/umbra_engine.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src/umbra
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -I../libtcod/include -Isrc/umbra -Isrc/demo -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/umbra/umbra_engine.o src/umbra/umbra_engine.cpp
+
+${OBJECTDIR}/src/umbra/umbra_font.o: src/umbra/umbra_font.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src/umbra
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -I../libtcod/include -Isrc/umbra -Isrc/demo -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/umbra/umbra_font.o src/umbra/umbra_font.cpp
+
+${OBJECTDIR}/src/umbra/umbra_widget_button.o: src/umbra/umbra_widget_button.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src/umbra
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -I../libtcod/include -Isrc/umbra -Isrc/demo -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/umbra/umbra_widget_button.o src/umbra/umbra_widget_button.cpp
+
 ${OBJECTDIR}/src/demo/credits.o: src/demo/credits.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/demo
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -I../libtcod/include -Isrc/umbra -Isrc/demo -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/demo/credits.o src/demo/credits.cpp
 
-${OBJECTDIR}/src/umbra/imod_bsod.o: src/umbra/imod_bsod.cpp 
+${OBJECTDIR}/src/umbra/umbra_module.o: src/umbra/umbra_module.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/umbra
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -I../libtcod/include -Isrc/umbra -Isrc/demo -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/umbra/imod_bsod.o src/umbra/imod_bsod.cpp
+	$(COMPILE.cc) -O2 -I../libtcod/include -Isrc/umbra -Isrc/demo -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/umbra/umbra_module.o src/umbra/umbra_module.cpp
 
-${OBJECTDIR}/src/umbra/module.o: src/umbra/module.cpp 
+${OBJECTDIR}/src/umbra/umbra_config.o: src/umbra/umbra_config.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/umbra
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -I../libtcod/include -Isrc/umbra -Isrc/demo -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/umbra/module.o src/umbra/module.cpp
+	$(COMPILE.cc) -O2 -I../libtcod/include -Isrc/umbra -Isrc/demo -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/umbra/umbra_config.o src/umbra/umbra_config.cpp
 
-${OBJECTDIR}/src/umbra/font.o: src/umbra/font.cpp 
+${OBJECTDIR}/src/umbra/umbra_widget_checkbox.o: src/umbra/umbra_widget_checkbox.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/umbra
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -I../libtcod/include -Isrc/umbra -Isrc/demo -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/umbra/font.o src/umbra/font.cpp
-
-${OBJECTDIR}/src/umbra/imod_speed.o: src/umbra/imod_speed.cpp 
-	${MKDIR} -p ${OBJECTDIR}/src/umbra
-	${RM} $@.d
-	$(COMPILE.cc) -O2 -I../libtcod/include -Isrc/umbra -Isrc/demo -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/umbra/imod_speed.o src/umbra/imod_speed.cpp
-
-${OBJECTDIR}/src/umbra/engine.o: src/umbra/engine.cpp 
-	${MKDIR} -p ${OBJECTDIR}/src/umbra
-	${RM} $@.d
-	$(COMPILE.cc) -O2 -I../libtcod/include -Isrc/umbra -Isrc/demo -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/umbra/engine.o src/umbra/engine.cpp
-
-${OBJECTDIR}/src/umbra/config.o: src/umbra/config.cpp 
-	${MKDIR} -p ${OBJECTDIR}/src/umbra
-	${RM} $@.d
-	$(COMPILE.cc) -O2 -I../libtcod/include -Isrc/umbra -Isrc/demo -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/umbra/config.o src/umbra/config.cpp
-
-${OBJECTDIR}/src/umbra/callback.o: src/umbra/callback.cpp 
-	${MKDIR} -p ${OBJECTDIR}/src/umbra
-	${RM} $@.d
-	$(COMPILE.cc) -O2 -I../libtcod/include -Isrc/umbra -Isrc/demo -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/umbra/callback.o src/umbra/callback.cpp
+	$(COMPILE.cc) -O2 -I../libtcod/include -Isrc/umbra -Isrc/demo -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/umbra/umbra_widget_checkbox.o src/umbra/umbra_widget_checkbox.cpp
 
 ${OBJECTDIR}/src/demo/rabbit.o: src/demo/rabbit.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/demo
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -I../libtcod/include -Isrc/umbra -Isrc/demo -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/demo/rabbit.o src/demo/rabbit.cpp
 
-${OBJECTDIR}/src/umbra/widget.o: src/umbra/widget.cpp 
+${OBJECTDIR}/src/umbra/umbra_imod_bsod.o: src/umbra/umbra_imod_bsod.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/umbra
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -I../libtcod/include -Isrc/umbra -Isrc/demo -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/umbra/widget.o src/umbra/widget.cpp
-
-${OBJECTDIR}/src/umbra/widget_button.o: src/umbra/widget_button.cpp 
-	${MKDIR} -p ${OBJECTDIR}/src/umbra
-	${RM} $@.d
-	$(COMPILE.cc) -O2 -I../libtcod/include -Isrc/umbra -Isrc/demo -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/umbra/widget_button.o src/umbra/widget_button.cpp
+	$(COMPILE.cc) -O2 -I../libtcod/include -Isrc/umbra -Isrc/demo -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/umbra/umbra_imod_bsod.o src/umbra/umbra_imod_bsod.cpp
 
 ${OBJECTDIR}/src/demo/main.o: src/demo/main.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/demo
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -I../libtcod/include -Isrc/umbra -Isrc/demo -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/demo/main.o src/demo/main.cpp
 
+${OBJECTDIR}/src/umbra/umbra_error.o: src/umbra/umbra_error.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src/umbra
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -I../libtcod/include -Isrc/umbra -Isrc/demo -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/umbra/umbra_error.o src/umbra/umbra_error.cpp
+
 ${OBJECTDIR}/src/demo/demo.o: src/demo/demo.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/demo
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -I../libtcod/include -Isrc/umbra -Isrc/demo -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/demo/demo.o src/demo/demo.cpp
 
-${OBJECTDIR}/src/umbra/widget_checkbox.o: src/umbra/widget_checkbox.cpp 
+${OBJECTDIR}/src/umbra/umbra_widget.o: src/umbra/umbra_widget.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/umbra
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -I../libtcod/include -Isrc/umbra -Isrc/demo -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/umbra/widget_checkbox.o src/umbra/widget_checkbox.cpp
+	$(COMPILE.cc) -O2 -I../libtcod/include -Isrc/umbra -Isrc/demo -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/umbra/umbra_widget.o src/umbra/umbra_widget.cpp
+
+${OBJECTDIR}/src/umbra/umbra_callback.o: src/umbra/umbra_callback.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src/umbra
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -I../libtcod/include -Isrc/umbra -Isrc/demo -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/umbra/umbra_callback.o src/umbra/umbra_callback.cpp
 
 ${OBJECTDIR}/src/demo/panel.o: src/demo/panel.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/demo
@@ -158,10 +158,10 @@ ${OBJECTDIR}/src/demo/matrix.o: src/demo/matrix.cpp
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -I../libtcod/include -Isrc/umbra -Isrc/demo -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/demo/matrix.o src/demo/matrix.cpp
 
-${OBJECTDIR}/src/umbra/error.o: src/umbra/error.cpp 
+${OBJECTDIR}/src/umbra/umbra_imod_speed.o: src/umbra/umbra_imod_speed.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/umbra
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -I../libtcod/include -Isrc/umbra -Isrc/demo -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/umbra/error.o src/umbra/error.cpp
+	$(COMPILE.cc) -O2 -I../libtcod/include -Isrc/umbra -Isrc/demo -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/umbra/umbra_imod_speed.o src/umbra/umbra_imod_speed.cpp
 
 # Subprojects
 .build-subprojects:
