@@ -4225,6 +4225,76 @@ bool getActive (
 !See also
 &lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;moduleStatus&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;moduleStatus&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;moduleStatus&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
 </div>
+<div title="UmbraModule::getBoolParam" modifier="Mingos" created="201010181328" modified="201010181333" tags="api method moduleClass moduleConfiguration" changecount="3">
+<pre>!Description
+Retrieves the value of a custom boolean parametre defined in the [[external configuration file|Defining custom parametres for the modules]]
+!Construction
+&lt;code C++&gt;
+bool getBoolParam (
+    const char * name
+);
+&lt;/code&gt;
+!Parametres
+* {{{const char * name}}}: the name of the custom parametre
+!Return value
+{{{bool}}}: the value of a custom parametre
+!Example
+module.txt:
+&lt;code C++&gt;
+moduleChain &quot;myChain&quot; {
+    module &quot;myModule&quot; {
+        bool aBoolParam = true 
+        char aCharParam = '@' 
+        int anIntParam = 4 
+        float aFloatParam = 3.14 
+        string aStringParam = &quot;aStringValue&quot; 
+        color aColorParam = #00FF00 
+        dice aDiceParam = &quot;3d20&quot; 
+    }
+}
+&lt;/code&gt;
+C++ code:
+&lt;code C++&gt;
+bool myParam = UmbraEngine::getInstance()-&gt;getModule(&quot;myModule&quot;)-&gt;getBoolParam(&quot;aBoolParam&quot;);
+&lt;/code&gt;
+!See also
+&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;tutorial&quot;,&quot;moduleConfiguration&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;moduleConfiguration&quot;,&quot;method&quot;])'&gt;&gt;</pre>
+</div>
+<div title="UmbraModule::getCharParam" modifier="Mingos" created="201010181335" tags="api method moduleClass moduleConfiguration" changecount="1">
+<pre>!Description
+Retrieves the value of a custom character parametre defined in the [[external configuration file|Defining custom parametres for the modules]]
+!Construction
+&lt;code C++&gt;
+char getCharParam (
+    const char * name
+);
+&lt;/code&gt;
+!Parametres
+* {{{const char * name}}}: the name of the custom parametre
+!Return value
+{{{char}}}: the value of a custom parametre
+!Example
+module.txt:
+&lt;code C++&gt;
+moduleChain &quot;myChain&quot; {
+    module &quot;myModule&quot; {
+        bool aBoolParam = true 
+        char aCharParam = '@' 
+        int anIntParam = 4 
+        float aFloatParam = 3.14 
+        string aStringParam = &quot;aStringValue&quot; 
+        color aColorParam = #00FF00 
+        dice aDiceParam = &quot;3d20&quot; 
+    }
+}
+&lt;/code&gt;
+C++ code:
+&lt;code C++&gt;
+char myParam = UmbraEngine::getInstance()-&gt;getModule(&quot;myModule&quot;)-&gt;getCharParam(&quot;aBoolParam&quot;);
+&lt;/code&gt;
+!See also
+&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;tutorial&quot;,&quot;moduleConfiguration&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;moduleConfiguration&quot;,&quot;method&quot;])'&gt;&gt;</pre>
+</div>
 <div title="UmbraModule::getEngine" modifier="Mingos" created="201004021259" modified="201007272300" tags="api method moduleClass engine engineReference" changecount="12">
 <pre>!Description
 Provides a pointer to the engine.
