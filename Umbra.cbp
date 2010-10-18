@@ -389,76 +389,88 @@
 			<Option target="Invaders Debug LINUX" />
 			<Option target="Invaders Release LINUX" />
 		</Unit>
-		<Unit filename="src\umbra\callback.cpp">
-			<Option virtualFolder="Umbra\Sources\" />
-		</Unit>
-		<Unit filename="src\umbra\callback.hpp">
-			<Option virtualFolder="Umbra\Headers\" />
-		</Unit>
-		<Unit filename="src\umbra\config.cpp">
-			<Option virtualFolder="Umbra\Sources\" />
-		</Unit>
-		<Unit filename="src\umbra\config.hpp">
-			<Option virtualFolder="Umbra\Headers\" />
-		</Unit>
-		<Unit filename="src\umbra\engine.cpp">
-			<Option virtualFolder="Umbra\Sources\" />
-		</Unit>
-		<Unit filename="src\umbra\engine.hpp">
-			<Option virtualFolder="Umbra\Headers\" />
-		</Unit>
-		<Unit filename="src\umbra\error.cpp">
-			<Option virtualFolder="Umbra\Sources\" />
-		</Unit>
-		<Unit filename="src\umbra\error.hpp">
-			<Option virtualFolder="Umbra\Headers\" />
-		</Unit>
-		<Unit filename="src\umbra\font.cpp">
-			<Option virtualFolder="Umbra\Sources\" />
-		</Unit>
-		<Unit filename="src\umbra\font.hpp">
-			<Option virtualFolder="Umbra\Headers\" />
-		</Unit>
-		<Unit filename="src\umbra\imod_bsod.cpp">
-			<Option virtualFolder="Umbra\Sources\" />
-		</Unit>
-		<Unit filename="src\umbra\imod_bsod.hpp">
-			<Option virtualFolder="Umbra\Headers\" />
-		</Unit>
-		<Unit filename="src\umbra\imod_speed.cpp">
-			<Option virtualFolder="Umbra\Sources\" />
-		</Unit>
-		<Unit filename="src\umbra\imod_speed.hpp">
-			<Option virtualFolder="Umbra\Headers\" />
-		</Unit>
-		<Unit filename="src\umbra\module.cpp">
-			<Option virtualFolder="Umbra\Sources\" />
-		</Unit>
-		<Unit filename="src\umbra\module.hpp">
-			<Option virtualFolder="Umbra\Headers\" />
-		</Unit>
 		<Unit filename="src\umbra\umbra.hpp">
 			<Option virtualFolder="Umbra\Headers\" />
 		</Unit>
-		<Unit filename="src\umbra\version.hpp">
-			<Option virtualFolder="Umbra\Headers\" />
-		</Unit>
-		<Unit filename="src\umbra\widget.cpp">
+		<Unit filename="src\umbra\umbra_callback.cpp">
 			<Option virtualFolder="Umbra\Sources\" />
 		</Unit>
-		<Unit filename="src\umbra\widget.hpp">
+		<Unit filename="src\umbra\umbra_callback.hpp">
 			<Option virtualFolder="Umbra\Headers\" />
 		</Unit>
-		<Unit filename="src\umbra\widget_button.cpp">
+		<Unit filename="src\umbra\umbra_config.cpp">
 			<Option virtualFolder="Umbra\Sources\" />
 		</Unit>
-		<Unit filename="src\umbra\widget_button.hpp">
+		<Unit filename="src\umbra\umbra_config.hpp">
 			<Option virtualFolder="Umbra\Headers\" />
 		</Unit>
-		<Unit filename="src\umbra\widget_checkbox.cpp">
+		<Unit filename="src\umbra\umbra_engine.cpp">
 			<Option virtualFolder="Umbra\Sources\" />
 		</Unit>
-		<Unit filename="src\umbra\widget_checkbox.hpp">
+		<Unit filename="src\umbra\umbra_engine.hpp">
+			<Option virtualFolder="Umbra\Headers\" />
+		</Unit>
+		<Unit filename="src\umbra\umbra_error.cpp">
+			<Option virtualFolder="Umbra\Sources\" />
+		</Unit>
+		<Unit filename="src\umbra\umbra_error.hpp">
+			<Option virtualFolder="Umbra\Headers\" />
+		</Unit>
+		<Unit filename="src\umbra\umbra_font.cpp">
+			<Option virtualFolder="Umbra\Sources\" />
+		</Unit>
+		<Unit filename="src\umbra\umbra_font.hpp">
+			<Option virtualFolder="Umbra\Headers\" />
+		</Unit>
+		<Unit filename="src\umbra\umbra_imod_bsod.cpp">
+			<Option virtualFolder="Umbra\Sources\" />
+		</Unit>
+		<Unit filename="src\umbra\umbra_imod_bsod.hpp">
+			<Option virtualFolder="Umbra\Headers\" />
+		</Unit>
+		<Unit filename="src\umbra\umbra_imod_speed.cpp">
+			<Option virtualFolder="Umbra\Sources\" />
+		</Unit>
+		<Unit filename="src\umbra\umbra_imod_speed.hpp">
+			<Option virtualFolder="Umbra\Headers\" />
+		</Unit>
+		<Unit filename="src\umbra\umbra_key.hpp">
+			<Option virtualFolder="Umbra\Headers\" />
+		</Unit>
+		<Unit filename="src\umbra\umbra_module.cpp">
+			<Option virtualFolder="Umbra\Sources\" />
+		</Unit>
+		<Unit filename="src\umbra\umbra_module.hpp">
+			<Option virtualFolder="Umbra\Headers\" />
+		</Unit>
+		<Unit filename="src\umbra\umbra_module_factory.hpp">
+			<Option virtualFolder="Umbra\Headers\" />
+		</Unit>
+		<Unit filename="src\umbra\umbra_point.hpp">
+			<Option virtualFolder="Umbra\Headers\" />
+		</Unit>
+		<Unit filename="src\umbra\umbra_rect.hpp">
+			<Option virtualFolder="Umbra\Headers\" />
+		</Unit>
+		<Unit filename="src\umbra\umbra_version.hpp">
+			<Option virtualFolder="Umbra\Headers\" />
+		</Unit>
+		<Unit filename="src\umbra\umbra_widget.cpp">
+			<Option virtualFolder="Umbra\Sources\" />
+		</Unit>
+		<Unit filename="src\umbra\umbra_widget.hpp">
+			<Option virtualFolder="Umbra\Headers\" />
+		</Unit>
+		<Unit filename="src\umbra\umbra_widget_button.cpp">
+			<Option virtualFolder="Umbra\Sources\" />
+		</Unit>
+		<Unit filename="src\umbra\umbra_widget_button.hpp">
+			<Option virtualFolder="Umbra\Headers\" />
+		</Unit>
+		<Unit filename="src\umbra\umbra_widget_checkbox.cpp">
+			<Option virtualFolder="Umbra\Sources\" />
+		</Unit>
+		<Unit filename="src\umbra\umbra_widget_checkbox.hpp">
 			<Option virtualFolder="Umbra\Headers\" />
 		</Unit>
 		<Extensions>

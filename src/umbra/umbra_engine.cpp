@@ -358,7 +358,7 @@ bool UmbraEngine::registerFonts () {
 		return false;
 	}
 	else return true;
-} 
+}
 
 // load external module configuration
 bool UmbraEngine::loadModuleConfiguration(const char *filename, UmbraModuleFactory *factory, const char *chainName) {
@@ -416,7 +416,7 @@ bool UmbraEngine::loadModuleConfiguration(const char *filename, UmbraModuleFacto
 
 // load external module configuration
 bool UmbraEngine::loadModuleConfiguration(const char *filename, const char *chainName) {
-	loadModuleConfiguration(filename,NULL,chainName);
+	return loadModuleConfiguration(filename,NULL,chainName);
 }
 
 // public function registering the module for activation next frame, by id
