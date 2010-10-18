@@ -591,10 +591,11 @@ Please note that this module requires the console emulator to be active, otherwi
 *[[UmbraCallbackScreenshot]]
 *[[UmbraCallbackSpeedometer]]</pre>
 </div>
-<div title="Change log" modifier="YourName" created="201008111354" modified="201010141353" tags="changeLog" changecount="22">
+<div title="Change log" modifier="Mingos" created="201008111354" modified="201010180813" tags="changeLog" changecount="23">
 <pre>&lt;&lt;tiddler ChangeLogSymbols&gt;&gt;
 !Current HEAD revision
 |!Category|!Committed on|!Change|!Committed by|
+|NEW|15-Oct-2010|Module factory added|Jice|
 |API|14-Oct-2010|External module configuration (API break!)|Jice|
 |BUG|13-Oct-2010|Module activation method now correctly places modules with the lowest priority|Mingos|
 |API|13-Oct-2010|~UmbraEngine now has four constructors|Mingos|
@@ -918,34 +919,36 @@ In the above code snippet, {{{speed}}} is the offscreen console the widget uses.
 ;{{{UMBRA_LICENCE}}}
 :the string containing the licence text, as quoted [[here|About Umbra]]. You are encouraged to display it somewhere in your application.</pre>
 </div>
-<div title="Defining custom parameters for the modules" modifier="YourName" created="201010152057" modified="201010172157" changecount="3">
-<pre>Beyond defining the basic properties of the modules, the module configuration file makes it possible to set custom parameters on the modules, using libtcod 1.5.1 dynamic properties syntax :
+<div title="Defining custom parametres for the modules" modifier="Mingos" created="201010152057" modified="201010180828" tags="tutorial module moduleConfiguration" changecount="7">
+<pre>Beyond defining the basic properties of the modules, the module configuration file makes it possible to set custom parametres for the modules to use, using libtcod 1.5.1 dynamic properties syntax:
 &lt;code C++&gt;
 moduleChain &quot;myChain&quot; {
     module &quot;myModule&quot; {
-        bool aBoolParam=true 
-        char aCharParam='@' 
-        int anIntParam=4 
-        float aFloatParam=3.12 
-        string aStringParam=&quot;aStringValue&quot; 
-        color aColorParam=#00FF00 
-        dice aDiceParam=&quot;3d20&quot; 
+        bool aBoolParam = true 
+        char aCharParam = '@' 
+        int anIntParam = 4 
+        float aFloatParam = 3.14 
+        string aStringParam = &quot;aStringValue&quot; 
+        color aColorParam = #00FF00 
+        dice aDiceParam = &quot;3d20&quot; 
     }
 }
 &lt;/code&gt;
-Inside the module &quot;myModule&quot;, you can access the parameters with the getters :
+Inside the module &quot;myModule&quot;, you can access the parametres with the getters:
 &lt;code C++&gt;
-bool UmbraModule::getBoolParam(const char *name)
-int UmbraModule::getCharParam(const char *name)
-int UmbraModule::getIntParam(const char *name)
-float UmbraModule::getFloatParam(const char *name)
-const char *UmbraModule::getStringParam(const char *name)
-TCODColor UmbraModule::getColorParam(const char *name)
-TCOD_dice_t UmbraModule::getDiceParam(const char *name)
+bool UmbraModule::getBoolParam(const char *name);
+int UmbraModule::getCharParam(const char *name);
+int UmbraModule::getIntParam(const char *name);
+float UmbraModule::getFloatParam(const char *name);
+const char *UmbraModule::getStringParam(const char *name);
+TCODColor UmbraModule::getColorParam(const char *name);
+TCOD_dice_t UmbraModule::getDiceParam(const char *name);
 &lt;/code&gt;
-Note that you shouldn't use those getters in the module constructor, since the parameters have not yet been parsed at that moment.</pre>
+Note that those getters mustn't be used in the module constructor, since the custom parametres have not yet been parsed at that moment.
+!See also
+&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;moduleConfiguration&quot;,&quot;method&quot;])'&gt;&gt;</pre>
 </div>
-<div title="Defining module chains in an external file" modifier="YourName" created="201010152051" changecount="1">
+<div title="Defining module chains in an external file" modifier="Mingos" created="201010152051" modified="201010180827" tags="tutorial module moduleConfiguration" changecount="2">
 <pre>In some cases, it is much more comfortable to define the modules' fallbacks in an external file. They can be defined along with a few other properties in Umbra's external configuration file. To use this feature, it's enough to register all the modules that are needed in the engine, then call [[UmbraEngine::loadModuleConfiguration]]. The configuration file can define multiple module chains, allowing to have different modes for the application (or it could also be different applications in the same .exe):
 &lt;code C++&gt;
 moduleChain &quot;chainName&quot; {
@@ -4514,11 +4517,11 @@ virtual bool update (
 :This method will be called automatically each frame. It shouldn't be called manually, but rather overloaded in each module.
 :The developer is expected to adhere to the rules concerning the return value. Making the method return a value of {{{false}}} will deactivate the module.</pre>
 </div>
-<div title="UmbraModuleFactory" modifier="YourName" created="201010152103" modified="201010152103" changecount="2">
+<div title="UmbraModuleFactory" modifier="Mingos" created="201010152103" modified="201010180827" tags="API class" changecount="5">
 <pre>Create a class that inherits UmbraModuleFactory to allow automatic registration of your modules. There's a single method to implement :
 &lt;code C++&gt;
 class UmbraModuleFactory {
-public :
+public:
 	virtual UmbraModule *createModule(const char *name) = 0;
 };
 &lt;/code&gt;
@@ -4526,14 +4529,17 @@ Example :
 &lt;code C++&gt;
 class ModuleFactory : public UmbraModuleFactory {
 public :
-    UmbraModule *createModule(const char *name) {
-    	if ( strcmp(name,&quot;matrix&quot;) == 0 ) return new Matrix();
-    	else if ( strcmp(name,&quot;demo&quot;) == 0 ) return new Demo();
-		else if ( strcmp(name,&quot;rabbit&quot;) == 0 ) return new RabbitWidget();
-		else if ( strcmp(name,&quot;panel&quot;) == 0 ) return new Panel(); 
-		else if ( strcmp(name,&quot;credits&quot;) == 0 ) return new Credits();
-		else return NULL;    
-	}
+    UmbraModule * createModule(const char *name) {
+        if ( strcmp(name,&quot;matrix&quot;) == 0 ) return new Matrix();
+        else if ( strcmp(name,&quot;demo&quot;) == 0 ) return new Demo();
+        else if ( strcmp(name,&quot;rabbit&quot;) == 0 ) return new RabbitWidget();
+        else if ( strcmp(name,&quot;panel&quot;) == 0 ) return new Panel(); 
+        else if ( strcmp(name,&quot;credits&quot;) == 0 ) return new Credits();
+        else {
+            UmbraError::add(UMBRA_ERRORLEVEL_ERROR,&quot;ModuleFactory::createModule: encountered an unknown module name: %s.&quot;,name);
+            return NULL;
+        }    
+    }
 };
 &lt;/code&gt;</pre>
 </div>
@@ -4897,7 +4903,7 @@ UmbraEngine engine = UmbraEngine(&quot;data/cfg/umbra.txt&quot;,UMBRA_REGISTER_A
 <pre>*[[UmbraWidget::mouse]]
 *[[UmbraWidget::setDragZone]]</pre>
 </div>
-<div title="Using Umbra" modifier="YourName" created="200910241814" modified="201010152051" tags="tutorial" changecount="48">
+<div title="Using Umbra" modifier="Mingos" created="200910241814" modified="201010180819" tags="tutorial" changecount="50">
 <pre>#Basics
 ##[[Starting a project using Umbra]]
 ##[[Umbra Hello World]]
@@ -4919,10 +4925,10 @@ UmbraEngine engine = UmbraEngine(&quot;data/cfg/umbra.txt&quot;,UMBRA_REGISTER_A
 ##[[Naming modules]]
 ##[[Fallbacks]]
 ##[[Timeouts]]
-##[[External module configuration]]
+##External module configuration
 ###[[Defining module chains in an external file]]
 ###[[Using a module factory]]
-###[[Defining custom parameters for the modules]]
+###[[Defining custom parametres for the modules]]
 ##[[Creating a widget]]
 ##Internal modules
 ###[[Speed-o-meter]]
@@ -4954,24 +4960,26 @@ UmbraEngine::getInstance()-&gt;registerCallback(new MyCallback());
 &lt;/code&gt;
 Starting from this point, the callback is active and listens to the incoming keystrokes.</pre>
 </div>
-<div title="Using a module factory" modifier="YourName" created="201010152052" modified="201010152052" changecount="2">
-<pre>If you have several module chains, registering all the modules while only a few of them are actual used is a waste of resources. In that case, you'd better provide a [[UmbraModuleFactory]] so that only the modules used by the selected chain are registered to the engine. The module factory provide a single function returning an [[UmbraModule]] from its name. When you provide a factory as parameter to the [[UmbraEngine::loadModuleConfiguration]] function, you don't need to register any module in your code. They'll be automatically registered during the file parsing.
+<div title="Using a module factory" modifier="Mingos" created="201010152052" modified="201010180826" tags="tutorial module moduleConfiguration" changecount="4">
+<pre>If there are several module chains, registering all the modules while only a few of them are actual used is a waste of resources. In that case, it's better to provide an [[UmbraModuleFactory]] so that only the modules used by the selected chain are registered inside the engine. The module factory provides a single method returning a pointer to an [[UmbraModule]], based on a retrieved name. When the factory is provided as a parametre for the [[UmbraEngine::loadModuleConfiguration]] method, there exists no need to register any modules in the code explicitly. They'll be automatically registered during the file parsing.
 
-Exemple of simple factory (from Umbra's demo) :
+Exemple of a simple factory (from Umbra's demo):
 &lt;code C++&gt;
-class ModuleFactory : public UmbraModuleFactory {
-public :
-    UmbraModule *createModule(const char *name) {
-    	if ( strcmp(name,&quot;matrix&quot;) == 0 ) return new Matrix();
-    	else if ( strcmp(name,&quot;demo&quot;) == 0 ) return new Demo();
-		else if ( strcmp(name,&quot;rabbit&quot;) == 0 ) return new RabbitWidget();
-		else if ( strcmp(name,&quot;panel&quot;) == 0 ) return new Panel(); 
-		else if ( strcmp(name,&quot;credits&quot;) == 0 ) return new Credits();
-		else return NULL;    
-	}
+class ModuleFactory: public UmbraModuleFactory {
+public:
+    UmbraModule * createModule(const char *name) {
+        if ( strcmp(name,&quot;matrix&quot;) == 0 ) return new Matrix();
+        else if ( strcmp(name,&quot;demo&quot;) == 0 ) return new Demo();
+        else if ( strcmp(name,&quot;rabbit&quot;) == 0 ) return new RabbitWidget();
+        else if ( strcmp(name,&quot;panel&quot;) == 0 ) return new Panel(); 
+        else if ( strcmp(name,&quot;credits&quot;) == 0 ) return new Credits();
+        else {
+            UmbraError::add(UMBRA_ERRORLEVEL_ERROR,&quot;ModuleFactory::createModule: encountered an unknown module name: %s.&quot;,name);
+            return NULL;
+        }
+    }
 };
 &lt;/code&gt;
-
 How to use it :
 &lt;code C++&gt;
 engine.loadModuleConfiguration(&quot;data/cfg/module.txt&quot;, new ModuleFactory());
@@ -5016,7 +5024,7 @@ This is caused by the ~UmbraEngine::doActivateModule() method inserting modules 
 
 It is now fixed.</pre>
 </div>
-<div title="module chain loading" modifier="Mingos" created="201010140839" tags="issueTracker RFE open" changecount="1">
+<div title="module chain loading" modifier="Mingos" created="201010140839" modified="201010180829" tags="issueTracker RFE closed" changecount="2">
 <pre>Modules should contain a string with a custom module name (set via the ctor and possibly a setName() method). This would bring the following advantages:
 - possibility to activate and deactivate modules by name: engine.activateModule(&quot;demo&quot;), engine.deactivateModule(&quot;demo&quot;), engine.getModule(&quot;name&quot;)
 - possibility to externalise the module activation sequence (controlled by a text config file).</pre>
