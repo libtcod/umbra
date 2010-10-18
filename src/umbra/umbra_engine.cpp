@@ -142,7 +142,7 @@ public :
     		|| strcmp(str->getName(),"colorParam") == 0
     		|| strcmp(str->getName(),"diceParam") == 0
 		) {
-    		module->setParameter(paramName,paramValue);
+    		module->setParametre(paramName,paramValue);
 		}
 		return true;
 	}

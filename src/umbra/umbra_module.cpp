@@ -76,9 +76,9 @@ void UmbraModule::setFallback(const char *name) {
 	}
 }
 
-void UmbraModule::setParameter(const char *name,TCOD_value_t value) {
+void UmbraModule::setParametre(const char *name,TCOD_value_t value) {
 	if (name == NULL) return;
-	for (UmbraModuleParameter *it=params.begin(); it != params.end(); it++) {
+	for (UmbraModuleParametre *it=params.begin(); it != params.end(); it++) {
 		if ( strcmp(it->name,name) == 0 ) {
 			// already exists. update value
 			// this happens when value is overriden in module.cfg
@@ -86,16 +86,16 @@ void UmbraModule::setParameter(const char *name,TCOD_value_t value) {
 			return;
 		}
 	}
-	// new parameter
-	UmbraModuleParameter mod;
+	// new parametre
+	UmbraModuleParametre mod;
 	mod.name=strdup(name); 
 	mod.value=value;
 	params.push(mod);
 }
 
-UmbraModule::UmbraModuleParameter &UmbraModule::getParameter(const char *name) {
-	static UmbraModuleParameter def = {NULL,{0}};
-	for (UmbraModuleParameter *it=params.begin(); it != params.end(); it++) {
+UmbraModule::UmbraModuleParametre &UmbraModule::getParametre(const char *name) {
+	static UmbraModuleParametre def = {NULL,{0}};
+	for (UmbraModuleParametre *it=params.begin(); it != params.end(); it++) {
 		if ( strcmp(it->name,name) == 0 ) return *it;
 	}
 	return def;	

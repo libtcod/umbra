@@ -32,6 +32,7 @@ enum UmbraModuleStatus { UMBRA_UNINITIALISED, UMBRA_INACTIVE, UMBRA_ACTIVE, UMBR
 //all screens or views, such as credits, main menu, map view, etc. have to inherit this
 class UmbraModule {
 	friend class UmbraEngine;
+	friend class UmbraModuleConfigParser;
 	public:
 		UmbraModule (); //constructor
 		UmbraModule (const char *name); //constructor
@@ -135,44 +136,43 @@ class UmbraModule {
 		 * @param name the parameter name
 		 * @return the boolean value (default false)
 		 */		 		 		 		
-		inline bool getBoolParam(const char *name) { return getParameter(name).value.b; }
+		inline bool getBoolParam(const char *name) { return getParametre(name).value.b; }
 		/**
 		 * Get a char parameter from the module configuration file
 		 * @param name the parameter name
 		 * @return the char value (default '\0')
 		 */		 		 		 		
-		inline int getCharParam(const char *name) { return getParameter(name).value.c; }
+		inline int getCharParam(const char *name) { return getParametre(name).value.c; }
 		/**
 		 * Get an integer parameter from the module configuration file
 		 * @param name the parameter name
 		 * @return the integer value (default 0)
 		 */		 		 		 		
-		inline int getIntParam(const char *name) { return getParameter(name).value.i; }
+		inline int getIntParam(const char *name) { return getParametre(name).value.i; }
 		/**
 		 * Get a float parameter from the module configuration file
 		 * @param name the parameter name
 		 * @return the float value (default 0.0f)
 		 */		 		 		 		
-		inline float getFloatParam(const char *name) { return getParameter(name).value.f; }
+		inline float getFloatParam(const char *name) { return getParametre(name).value.f; }
 		/**
 		 * Get a string parameter from the module configuration file
 		 * @param name the parameter name
 		 * @return the string value (default NULL)
 		 */		 		 		 		
-		inline const char *getStringParam(const char *name) { return getParameter(name).value.s; }
+		inline const char *getStringParam(const char *name) { return getParametre(name).value.s; }
 		/**
 		 * Get a color parameter from the module configuration file
 		 * @param name the parameter name
 		 * @return the color value (default TCODColor::black)
 		 */		 		 		 		
-		inline TCODColor getColorParam(const char *name) { return getParameter(name).value.col; }
+		inline TCODColor getColourParam(const char *name) { return getParametre(name).value.col; }
 		/**
 		 * Get a dice parameter from the module configuration file
 		 * @param name the parameter name
 		 * @return the dice value (default filled with 0)
 		 */		 		 		 		
-		inline TCOD_dice_t getDiceParam(const char *name) { return getParameter(name).value.dice; }
-		
+		inline TCOD_dice_t getDiceParam(const char *name) { return getParametre(name).value.dice; }
 
 	protected:
 	    int priority; // update order (inverse of render order)
@@ -192,17 +192,18 @@ class UmbraModule {
 		 * Custom code that is executed each time the module is resumed
 		 */
 		virtual void resume() {}
-		
 		/**
 		 * Set the module's name
+		 * @param name the module's name
 		 */		 		
 		inline void setName(const char *name) {this->name.assign(name);}
-		
-		friend class UmbraModuleConfigParser;
 		/**
-		 * set a parameter (only used by module.cfg file parser)
+		 * Sets a parametere (only used by module.cfg file parser)
+		 * @param name the parametre's name
+		 * @param value the parametre's value
 		 */		 		
-		void setParameter(const char *name,TCOD_value_t value);
+		void setParametre(const char *name,TCOD_value_t value);
+
 	private:
 		UmbraModuleStatus status;
 		int fallback; //fallback module's index
@@ -210,22 +211,22 @@ class UmbraModule {
 		uint32 timeoutEnd;
 		std::string name;
 
-		struct UmbraModuleParameter {
+		struct UmbraModuleParametre {
 			const char *name;
 			TCOD_value_t value;
 		};
-		TCODList<UmbraModuleParameter> params;	
+		TCODList<UmbraModuleParametre> params;
 		/**
 		 * get a parameter (internal helper function)	
 		 */		 	
-		UmbraModuleParameter &getParameter(const char *name);
-			
+		UmbraModuleParametre &getParametre(const char *name);		
 		/**
 		 * Initialises the timeout by calculating the exact time when the module will time out.
 		 */
 		void initialiseTimeout();
 		/**
 		 * Checks whether the module has timed out and is eligible for deactivation.
+		 * @param currentTime the program execution elapsed time, in milliseconds
 		 */
 		inline bool isTimedOut(uint32 currentTime) { return (timeoutEnd > currentTime) ? false : true; }
 };
