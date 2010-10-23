@@ -155,7 +155,6 @@ public :
 UmbraEngine::UmbraEngine (const char *fileName, UmbraRegisterCallbackFlag flag): keyboardMode(UMBRA_KEYBOARD_RELEASED) {
 	//load configuration variables
 	UmbraConfig::load(fileName);
-
 	paused = false;
 	setWindowTitle("%s ver. %s (%s)", UMBRA_TITLE, UMBRA_VERSION, UMBRA_STATUS);
 	engineInstance = this;
@@ -179,7 +178,6 @@ UmbraEngine::UmbraEngine (const char *fileName, UmbraRegisterCallbackFlag flag):
 UmbraEngine::UmbraEngine (const char *fileName): keyboardMode(UMBRA_KEYBOARD_RELEASED) {
 	//load configuration variables
 	UmbraConfig::load(fileName);
-
 	paused = false;
 	setWindowTitle("%s ver. %s (%s)", UMBRA_TITLE, UMBRA_VERSION, UMBRA_STATUS);
 	engineInstance = this;
@@ -198,7 +196,6 @@ UmbraEngine::UmbraEngine (const char *fileName): keyboardMode(UMBRA_KEYBOARD_REL
 UmbraEngine::UmbraEngine (UmbraRegisterCallbackFlag flag): keyboardMode(UMBRA_KEYBOARD_RELEASED) {
 	//load configuration variables
 	UmbraConfig::load("data/cfg/umbra.txt");
-
 	paused = false;
 	setWindowTitle("%s ver. %s (%s)", UMBRA_TITLE, UMBRA_VERSION, UMBRA_STATUS);
 	engineInstance = this;
@@ -222,7 +219,6 @@ UmbraEngine::UmbraEngine (UmbraRegisterCallbackFlag flag): keyboardMode(UMBRA_KE
 UmbraEngine::UmbraEngine (): keyboardMode(UMBRA_KEYBOARD_RELEASED) {
 	//load configuration variables
 	UmbraConfig::load("data/cfg/umbra.txt");
-
 	paused = false;
 	setWindowTitle("%s ver. %s (%s)", UMBRA_TITLE, UMBRA_VERSION, UMBRA_STATUS);
 	engineInstance = this;
@@ -260,7 +256,8 @@ int UmbraEngine::registerModule (UmbraModule * module, const char * name) {
 		else strcpy(n,module->name.c_str());
 	} else strcpy(n,name);
 	module->setName(n);
-	return modules.size()-1;
+	module->id = modules.size()-1;
+	return module->id;
 }
 
 // fetch a pointer to a module from its name
@@ -273,17 +270,29 @@ UmbraModule * UmbraEngine::getModule (const char *name) {
 
 // get module id from its reference
 int UmbraEngine::getModuleId(UmbraModule *mod) {
-	int id=0;
-	for (UmbraModule **it=modules.begin(); it != modules.end(); it++,id++) {
-		if ( *it == mod ) return id;
+	if (!mod || mod == NULL) {
+		UmbraError::add(UMBRA_ERRORLEVEL_ERROR,"UmbraEngine::getModuleId: Tried to retrieve the module's ID, but the pointer to a module given either is NULL or points to an invalid module.");
+		displayError();
+		return -1;
 	}
-	return -1;
+	else return mod->getID();
+}
+
+//get module ID from the name
+int UmbraEngine::getModuleId (const char * name) {
+	UmbraModule * mod = getModule(name);
+	if (!mod || mod == NULL) {
+		UmbraError::add(UMBRA_ERRORLEVEL_ERROR,"UmbraEngine::getModuleId: Tried to retrieve the module's ID, but could not get a module pointer based on the specified name \"%s\".",name);
+		displayError();
+		return -1;
+	}
+	else return mod->getID();
 }
 
 //register a font
 void UmbraEngine::registerFont (int columns, int rows, const char * filename, int flags) {
 	if (!UmbraError::fileExists(filename)) {
-		UmbraError::add(UMBRA_ERRORLEVEL_ERROR,"Tried to register a font file that does not exist: %s.",filename);
+		UmbraError::add(UMBRA_ERRORLEVEL_ERROR,"UmbraEngine::registerFont: Tried to register a font file that does not exist: %s.",filename);
 		displayError();
 		return;
 	}
@@ -319,9 +328,9 @@ bool UmbraEngine::registerFonts () {
 					int fontFlag = TCOD_FONT_TYPE_GREYSCALE;
 					if (layout[0] == '_') {
 						// parse font layout
-						if (strncasecmp(layout,"_TCOD.",6) == 0) fontFlag|=TCOD_FONT_LAYOUT_TCOD;
-						else if (strncasecmp(layout,"_INCOL.",7) == 0) fontFlag|=TCOD_FONT_LAYOUT_ASCII_INCOL;
-						else if (strncasecmp(layout,"_INROW.",7) == 0) fontFlag|=TCOD_FONT_LAYOUT_ASCII_INROW;
+						if (strncasecmp(layout,"_TCOD.",6) == 0) fontFlag |= TCOD_FONT_LAYOUT_TCOD;
+						else if (strncasecmp(layout,"_INCOL.",7) == 0) fontFlag |= TCOD_FONT_LAYOUT_ASCII_INCOL;
+						else if (strncasecmp(layout,"_INROW.",7) == 0) fontFlag |= TCOD_FONT_LAYOUT_ASCII_INROW;
 					} else {
 						// default is TCOD |GREYSCALE
 						fontFlag|=TCOD_FONT_LAYOUT_TCOD;
@@ -349,12 +358,12 @@ bool UmbraEngine::registerFonts () {
 		}
 	}
 	else {
-		UmbraError::add(UMBRA_ERRORLEVEL_FATAL_ERROR,"No fonts registered. The font directory %s is empty.",getFontDir());
+		UmbraError::add(UMBRA_ERRORLEVEL_FATAL_ERROR,"UmbraEngine::registerFonts: No fonts registered. The font directory %s is empty.",getFontDir());
 		return false;
 	}
 
 	if (getNbFonts() == 0) {
-		UmbraError::add(UMBRA_ERRORLEVEL_FATAL_ERROR,"No fonts registered. Autodetection found no fonts matching the naming pattern font<WIDTH>x<HEIGHT>[_<LAYOUT>].png in the specified directory %s.",getFontDir());
+		UmbraError::add(UMBRA_ERRORLEVEL_FATAL_ERROR,"UmbraEngine::registerFonts: No fonts registered. Autodetection found no fonts matching the naming pattern font<WIDTH>x<HEIGHT>[_<LAYOUT>].png in the specified directory %s.",getFontDir());
 		return false;
 	}
 	else return true;
@@ -363,11 +372,11 @@ bool UmbraEngine::registerFonts () {
 // load external module configuration
 bool UmbraEngine::loadModuleConfiguration(const char *filename, UmbraModuleFactory *factory, const char *chainName) {
 	if (!filename) {
-		UmbraError::add(UMBRA_ERRORLEVEL_ERROR,"UmbraEngine::loadModuleConfiguration - specified an empty filename.");
+		UmbraError::add(UMBRA_ERRORLEVEL_ERROR,"UmbraEngine::loadModuleConfiguration: specified an empty filename.");
 		return false; // no configuration file is defined
 	}
 	if (!UmbraError::fileExists(filename)) {
-		UmbraError::add(UMBRA_ERRORLEVEL_FATAL_ERROR,"UmbraEngine::loadModuleConfiguration - there exists no file with the specified filename.");
+		UmbraError::add(UMBRA_ERRORLEVEL_FATAL_ERROR,"UmbraEngine::loadModuleConfiguration: there exists no file with the specified filename.");
 		return false; // file doesn't exist
 	}
 	TCODParser parser;
@@ -422,7 +431,7 @@ bool UmbraEngine::loadModuleConfiguration(const char *filename, const char *chai
 // public function registering the module for activation next frame, by id
 void UmbraEngine::activateModule (int moduleId) {
 	if ( moduleId < 0 || moduleId >= modules.size() ) {
-		UmbraError::add(UMBRA_ERRORLEVEL_WARNING,"Tried to activate an invalid module: ID %d.",moduleId);
+		UmbraError::add(UMBRA_ERRORLEVEL_WARNING,"UmbraEngine::activateModule: Tried to activate an invalid module: ID %d.",moduleId);
 		displayError();
 		return;
 	}
@@ -433,7 +442,7 @@ void UmbraEngine::activateModule (int moduleId) {
 //public function registering an internal module for activation next frame, by id
 void UmbraEngine::activateModule (UmbraInternalModuleID id) {
 	if (id < 0 || id >= UMBRA_INTERNAL_MAX) {
-		UmbraError::add(UMBRA_ERRORLEVEL_WARNING,"Tried to activate an invalid internal module: ID %d.",(int)id);
+		UmbraError::add(UMBRA_ERRORLEVEL_WARNING,"UmbraEngine::activateModule: Tried to activate an invalid internal module: ID %d.",(int)id);
 		displayError();
 		return;
 	}
@@ -450,9 +459,9 @@ void UmbraEngine::activateModule(UmbraModule *module) {
 
 void UmbraEngine::activateModule (const char *name) {
 	UmbraModule *mod=getModule(name);
-	if ( mod ) activateModule(mod);
+	if (mod) activateModule(mod);
 	else {
-		UmbraError::add(UMBRA_ERRORLEVEL_ERROR,"Unknown module '%s'.",name);
+		UmbraError::add(UMBRA_ERRORLEVEL_ERROR,"UmbraEngine::activateModule: Tried to activate a module named \"%s\", but such a module was not found.",name);
 		displayError();
 	}
 }
@@ -473,19 +482,25 @@ void UmbraEngine::doActivateModule( UmbraModule *mod ) {
 // register the module for deactivation by id
 void UmbraEngine::deactivateModule (int moduleId) {
 	if (moduleId < 0 || moduleId >= modules.size()) {
-		UmbraError::add(UMBRA_ERRORLEVEL_WARNING,"Tried to deactivate an invalid module: ID %d.",moduleId);
+		UmbraError::add(UMBRA_ERRORLEVEL_WARNING,"UmbraEngine::deactivateModule: Tried to deactivate an invalid module: ID %d.",moduleId);
 		displayError();
-		return;
 	}
 	UmbraModule *module = modules.get(moduleId);
-	deactivateModule(module);
+	if (!module->getActive()) {
+		UmbraError::add(UMBRA_ERRORLEVEL_WARNING,"UmbraEngine::deactivateModule: Tried to deactivate the module with an ID %d, but it's already inactive.",moduleId);
+		displayError();
+	}
+	else deactivateModule(module);
 }
 
 void UmbraEngine::deactivateModule (UmbraInternalModuleID id) {
 	if (id < 0 || id >= UMBRA_INTERNAL_MAX) {
-		UmbraError::add(UMBRA_ERRORLEVEL_WARNING,"Tried to deactivate an invalid internal module: ID %d.",(int)id);
+		UmbraError::add(UMBRA_ERRORLEVEL_WARNING,"UmbraEngine::deactivateModule: Tried to deactivate an invalid internal module: ID %d.",(int)id);
 		displayError();
-		return;
+	}
+	else if (!internalModules[id]->getActive()) {
+		UmbraError::add(UMBRA_ERRORLEVEL_WARNING,"UmbraEngine::deactivateModule: Tried to deactivate an internal module with an ID %d, but it's already inactive.",(int)id);
+		displayError();
 	}
 	else deactivateModule(internalModules[id]);
 }
@@ -496,13 +511,31 @@ void UmbraEngine::deactivateModule(UmbraModule *module) {
 		toDeactivate.push(module);
 		module->setActive(false);
 	}
+	else if (module != NULL && !module->getActive()) {
+		UmbraError::add(UMBRA_ERRORLEVEL_WARNING,"UmbraEngine::deactivateModule: Tried to deactivate a module, but it's already inactive.");
+		displayError();
+	}
+	else if (module == NULL) {
+		UmbraError::add(UMBRA_ERRORLEVEL_WARNING,"UmbraEngine::deactivateModule: Tried to deactivate a module, but the module pointer given is null.");
+		displayError();
+	}
+	else {
+		UmbraError::add(UMBRA_ERRORLEVEL_WARNING,"UmbraEngine::deactivateModule: Tried to deactivate a module, but the module pointer given does not point to a module on the modules list.");
+		displayError();
+	}
 }
 
 void UmbraEngine::deactivateModule (const char *name) {
 	UmbraModule *mod=getModule(name);
-	if ( mod ) deactivateModule(mod);
+	if (mod)  {
+		if (mod->getActive()) deactivateModule(mod);
+		else {
+			UmbraError::add(UMBRA_ERRORLEVEL_ERROR,"UmbraEngine::deactivateModule: Tried to deactivate a module named \"%s\", but it's already inactive.",name);
+			displayError();
+		}
+	}
 	else {
-		UmbraError::add(UMBRA_ERRORLEVEL_ERROR,"Unknown module '%s'.",name);
+		UmbraError::add(UMBRA_ERRORLEVEL_ERROR,"UmbraEngine::deactivateModule: Tried to deactivate a module, but the module name \"%s\" was not found.",name);
 		displayError();
 	}
 }
@@ -526,7 +559,7 @@ bool UmbraEngine::initialise (TCOD_renderer_t renderer) {
 		TCODSystem::setFps(25);
 		TCODMouse::showCursor(true);
 	}
-	else UmbraError::add(UMBRA_ERRORLEVEL_FATAL_ERROR,"Could not initialise the root console.");
+	else UmbraError::add(UMBRA_ERRORLEVEL_FATAL_ERROR,"UmbraEngine::initialise: Root console initialisation failed.");
 	return retVal;
 }
 
@@ -535,7 +568,7 @@ int UmbraEngine::run () {
 	TCOD_mouse_t mouse;
 
 	if (modules.size() == 0) {
-		UmbraError::add(UMBRA_ERRORLEVEL_FATAL_ERROR,"No modules registered!");
+		UmbraError::add(UMBRA_ERRORLEVEL_FATAL_ERROR,"UmbraEngine::run: No modules have been registered!");
 		exit(1);
 	}
 
@@ -621,8 +654,6 @@ int UmbraEngine::run () {
 		//flush the screen
 		TCODConsole::root->flush();
 	}
-	for (UmbraModule ** mod = modules.begin(); mod != modules.end(); mod++)
-		delete (*mod);
 	UmbraConfig::save();
 	return 0;
 }

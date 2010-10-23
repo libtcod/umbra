@@ -27,37 +27,37 @@
 
 #include "umbra.hpp"
 
-UmbraModule::UmbraModule (): priority(1), status(UMBRA_UNINITIALISED), fallback(-1), timeout(0), timeoutEnd(0xffffffff) {}
+UmbraModule::UmbraModule (): id(-1), priority(1), status(UMBRA_UNINITIALISED), fallback(-1), timeout(0), timeoutEnd(0xffffffff) {}
 
-UmbraModule::UmbraModule (const char *name): priority(1), status(UMBRA_UNINITIALISED), fallback(-1), timeout(0), timeoutEnd(0xffffffff) {
+UmbraModule::UmbraModule (const char *name): id(-1), priority(1), status(UMBRA_UNINITIALISED), fallback(-1), timeout(0), timeoutEnd(0xffffffff) {
 	setName(name);
 }
 
 void UmbraModule::setActive (bool active) {
 	if (status == UMBRA_UNINITIALISED) {
-		initialise();
+		onInitialise();
 		status=UMBRA_INACTIVE;
 	}
 	if (active && status == UMBRA_INACTIVE) {
 		status = UMBRA_ACTIVE;
-		activate();
+		onActivate();
 	} else if (!active && status >= UMBRA_ACTIVE) {
 		status = UMBRA_INACTIVE;
-		deactivate();
+		onDeactivate();
 	}
 }
 
 void UmbraModule::setPause (bool paused) {
 	if (status == UMBRA_UNINITIALISED) {
-		initialise();
+		onInitialise();
 		status=UMBRA_INACTIVE;
 	}
 	if (paused && status != UMBRA_PAUSED) {
 		status=UMBRA_PAUSED;
-		pause();
+		onPause();
 	} else if (!paused && status == UMBRA_PAUSED) {
 		status=UMBRA_ACTIVE;
-		resume();
+		onResume();
 	}
 }
 
@@ -69,17 +69,16 @@ void UmbraModule::initialiseTimeout() {
 void UmbraModule::setFallback(const char *name) {
 	UmbraModule *mod=getEngine()->getModule(name);
 	if (mod) {
-		setFallback(getEngine()->getModuleId(mod));
+		setFallback(mod->getID());
 	} else {
-		UmbraError::add(UMBRA_ERRORLEVEL_ERROR,"Unknown module '%s'.",name);
-		getEngine()->displayError();
+		UmbraError::add(UMBRA_ERRORLEVEL_ERROR,"UmbraModule::setFallback: Unknown module \"%s\".", name);
 	}
 }
 
 void UmbraModule::setParametre(const char *name,TCOD_value_t value) {
 	if (name == NULL) return;
 	for (UmbraModuleParametre *it=params.begin(); it != params.end(); it++) {
-		if ( strcmp(it->name,name) == 0 ) {
+		if (strcmp(it->name,name) == 0) {
 			// already exists. update value
 			// this happens when value is overriden in module.cfg
 			it->value=value;
@@ -96,7 +95,7 @@ void UmbraModule::setParametre(const char *name,TCOD_value_t value) {
 UmbraModule::UmbraModuleParametre &UmbraModule::getParametre(const char *name) {
 	static UmbraModuleParametre def = {NULL,{0}};
 	for (UmbraModuleParametre *it=params.begin(); it != params.end(); it++) {
-		if ( strcmp(it->name,name) == 0 ) return *it;
+		if (strcmp(it->name,name) == 0) return *it;
 	}
 	return def;	
 }

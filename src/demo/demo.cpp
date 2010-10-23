@@ -34,7 +34,7 @@ Demo::Demo () {
     offset = 0.0f;
 }
 
-void Demo::initialise () {
+void Demo::onInitialise () {
     img = new TCODImage(getEngine()->getRootWidth(),getEngine()->getRootHeight());
     logo = new TCODImage("data/img/umbra.png");
 }
@@ -46,7 +46,7 @@ bool Demo::update () {
             float f[2];
             f[0] = 8.0f * i / getEngine()->getRootWidth();
             f[1] = (8.0f * j / getEngine()->getRootHeight()) + offset;
-            int val = (uint8)((noise->getSimplex(f)+1.0f)*24.0f);
+            int val = (uint8)((noise->get(f)+1.0f)*24.0f);
             img->putPixel(i,j,TCODColor(0,val/2,val));
         }
         offset += 0.01f;

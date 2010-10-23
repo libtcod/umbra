@@ -31,7 +31,7 @@
 class Demo: public UmbraModule {
     public:
         Demo ();
-        void initialise ();
+        void onInitialise ();
         bool update ();
         void render ();
         void keyboard (TCOD_key_t &key);

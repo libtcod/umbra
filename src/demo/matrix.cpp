@@ -73,7 +73,6 @@ void Matrix::render () {
                 delete tmp;
             }
         }
-
         TCODConsole::blit(MatrixLead::matrix,0,0,engine.getRootWidth(),engine.getRootHeight(),TCODConsole::root,0,0,0.98f,0.0f);
         TCODConsole::blit(TCODConsole::root,0,0,engine.getRootWidth(),engine.getRootHeight(),MatrixLead::matrix,0,0,1.0f,0.0f);
     }

@@ -29,7 +29,7 @@
 
 void RabbitButton::onMouseDown () {
     parent->setActive(false);
-    engine.getModule(MOD_MATRIX)->setActive(false);
+    engine.getModule("matrix")->setActive(false);
 }
 
 RabbitWidget::RabbitWidget () {

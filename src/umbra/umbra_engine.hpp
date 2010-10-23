@@ -83,14 +83,14 @@ class UmbraEngine {
 		 * @param chainName (optional) the name of the module chain to load. Leave at default to load the chain specified in <code>umbra.txt</code> or, in case it's not specified, the first module chain that's encountered in the module configuration file.
 		 * @return <code>true</code> if module configuration has been loaded successfully, <code>false</code> otherwise
 		 */		  		 		  		
-		bool loadModuleConfiguration(const char *filename, UmbraModuleFactory *factory, const char *chainName = NULL);
+		bool loadModuleConfiguration (const char *filename, UmbraModuleFactory *factory, const char *chainName = NULL);
 		/**
 		 * Read module configuration from the given filename, or the filename defined as moduleConfig in umbra.txt.<br>If there's no filename or the file cannot be read, return false.
 		 * @param filename name of the module configuration file
 		 * @param chainName (optional) the name of the module chain to load. Leave at default to load the chain specified in <code>umbra.txt</code> or, in case it's not specified, the first module chain that's encountered in the module configuration file.
 		 * @return <code>true</code> if module configuration has been loaded successfully, <code>false</code> otherwise
 		 */
-		bool loadModuleConfiguration(const char *filename, const char *chainName = NULL);
+		bool loadModuleConfiguration (const char *filename, const char *chainName = NULL);
 		/**
 		 * Initialises the engine.
 		 * @param renderer the renderer to be used (defaults to SDL)
@@ -203,12 +203,17 @@ class UmbraEngine {
 		 */
 		UmbraModule * getModule (const char *name);
 		/**
-		 * Retrieve the module id from its reference
-		 * @param mod pointer to the module
-		 * 		 
+		 * Retrieve the module id from its name
+		 * @param mod pointer to the module	 
 		 * @return the module's id		 		 		
 		 */		
-		int getModuleId(UmbraModule *mod);
+		int getModuleId (const char * name);
+		/**
+		 * Retrieve the module id from its reference
+		 * @param mod pointer to the module
+		 * @return the module's id
+		 */
+		int getModuleId (UmbraModule *mod);
         /**
 		 * Fetches a pointer to an internal module.
 		 * @param id the identification number of the internal module to which a pointer is to be fetched
@@ -247,17 +252,17 @@ class UmbraEngine {
 		 * Retrieves the ID number of the currently used font.
          * @return current font's ID
          */
-		inline int getFontID() { return UmbraConfig::fontID; }
+		inline int getFontID () { return UmbraConfig::fontID; }
 		/**
 		 * Retrieves the total number of registered fonts.
          * @return number of registered fonts
          */
-		inline int getNbFonts() { return UmbraConfig::fonts.size(); }
+		inline int getNbFonts () { return UmbraConfig::fonts.size(); }
 		/**
 		 * Retrieves the font directory.
          * @return the font direcory
          */
-		inline const char * getFontDir() { return UmbraConfig::fontDir; }
+		inline const char * getFontDir () { return UmbraConfig::fontDir; }
 
 		/**
 		 * Sets the root console's dimensions in cells.
@@ -288,7 +293,7 @@ class UmbraEngine {
 		 * Puts the newly activated module in the active modules list.
          * @param mod a pointer to the module that's being activated
          */
-		void doActivateModule( UmbraModule *mod );
+		void doActivateModule (UmbraModule *mod);
 		/**
 		 * Performs font autodetection and registered any found fonts.
          * @return <code>true</code> if at least one font has been registered, <code>false</code> otherwise

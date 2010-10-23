@@ -34,14 +34,19 @@ class UmbraModule {
 	friend class UmbraEngine;
 	friend class UmbraModuleConfigParser;
 	public:
-		UmbraModule (); //constructor
-		UmbraModule (const char *name); //constructor
-		virtual ~UmbraModule () {} //destructor
-
 		/**
-		 * Custom code that is executed once and only once, when the module is activated for the first time.<br>It is used mainly to allocate resources that might be unavailable at the moment of the module's instantiation.
-		 */
-		virtual void initialise () {} // allocate resources. called only once
+		 * Basic construtor for the UmbraModule. It takes no parametres and sets all initial values to their defaults.
+         */
+		UmbraModule (); //constructor
+		/**
+		 * A constructor. It sets all of the UmbraModule's internal values to their defaults, but takes the module's name from the parametre.
+         * @param name the module's name, used for module identification.
+         */
+		UmbraModule (const char *name); //constructor
+		/**
+		 * Basic UmbraModule's destructor.
+         */
+		virtual ~UmbraModule () {} //destructor
 		/**
 		 * Custom code controlling what and how is displayed on the console. Called automatically after <code>update()</code>.
 		 */
@@ -64,29 +69,10 @@ class UmbraModule {
 
 		//setters
 		/**
-		 * Sets the fallback module. Please refer to Umbra documentation for detailed information about fallbacks.
-		 * @param fback the ID of the fallback module.
-		 */
-		inline void setFallback (int fback) { fallback = fback; } //set default fallback module's index
-		/**
-		 * Sets the fallback from its name
-		 */		  		
-		void setFallback(const char *name);
-		/**
-		 * Sets the module's timeout.
-		 * @param val the number of milliseconds that the module will be allowed to run before timing out. Set to 0 if the timeout is to be removed.		 
-		 */
-		inline void setTimeout (uint32 val) { timeout = val; }
-		/**
 		 * Activates or deactivates the module.
 		 * @param active <code>true</code> if the module is to be activated, <code>false</code> otherwise
 		 */
 		void setActive (bool active);
-		/**
-		 * Sets the module's priority.<br>The priority works like a weight setting: a lower number results in the module being updated earlier and rendered on top of others, while a high number will put the module under the others.
-		 * @param priority the module's priority
-		 */
-		inline void setPriority (int priority) { this->priority = priority; }
 		/**
 		 * Pauses or unpauses the module.
 		 * @param paused <code>true</code> if the module is to be paused, <code>false</code> otherwise
@@ -110,103 +96,132 @@ class UmbraModule {
 		 */
 		inline bool getActive () { return status > UMBRA_INACTIVE; }
 		/**
-		 * Provides a pointer to the engine object.
-		 * @return a pointer to the engine object
-		 */
-		inline UmbraEngine * getEngine () { return UmbraEngine::getInstance(); }
-			/**
 		 * Checks the module's priority.
 		 * @return the module's priority
 		 */
-		inline int getPriority() { return priority; }
+		inline int getPriority () { return priority; }
 		/**
 		 * Checks the module's status.
 		 * @return module's status (one of the values from the UmbraModuleStatus enum)
 		 */
 		inline UmbraModuleStatus getStatus () { return status; }
-		
 		/**
 		 * Gets the name of the module
 		 * @return the name of the module
 		 */		 		 		
-		inline const char *getName() { return name.c_str(); }
+		inline const char *getName () { return name.c_str(); }
+		/**
+		 * Fetches the module's ID number. Used mainly for debugging purposes and should play no real role in a release version of any program.
+         * @return the module's ID number, assigned by UmbraEngine::registerModule().
+         */
+		inline int getID () { return id; }
 		
 		/**
 		 * Get a boolean parameter from the module configuration file
 		 * @param name the parameter name
 		 * @return the boolean value (default false)
 		 */		 		 		 		
-		inline bool getBoolParam(const char *name) { return getParametre(name).value.b; }
+		inline bool getBoolParam (const char *name) { return getParametre(name).value.b; }
 		/**
 		 * Get a char parameter from the module configuration file
 		 * @param name the parameter name
 		 * @return the char value (default '\0')
 		 */		 		 		 		
-		inline int getCharParam(const char *name) { return getParametre(name).value.c; }
+		inline int getCharParam (const char *name) { return getParametre(name).value.c; }
 		/**
 		 * Get an integer parameter from the module configuration file
 		 * @param name the parameter name
 		 * @return the integer value (default 0)
 		 */		 		 		 		
-		inline int getIntParam(const char *name) { return getParametre(name).value.i; }
+		inline int getIntParam (const char *name) { return getParametre(name).value.i; }
 		/**
 		 * Get a float parameter from the module configuration file
 		 * @param name the parameter name
 		 * @return the float value (default 0.0f)
 		 */		 		 		 		
-		inline float getFloatParam(const char *name) { return getParametre(name).value.f; }
+		inline float getFloatParam (const char *name) { return getParametre(name).value.f; }
 		/**
 		 * Get a string parameter from the module configuration file
 		 * @param name the parameter name
 		 * @return the string value (default NULL)
 		 */		 		 		 		
-		inline const char *getStringParam(const char *name) { return getParametre(name).value.s; }
+		inline const char *getStringParam (const char *name) { return getParametre(name).value.s; }
 		/**
 		 * Get a color parameter from the module configuration file
 		 * @param name the parameter name
 		 * @return the color value (default TCODColor::black)
 		 */		 		 		 		
-		inline TCODColor getColourParam(const char *name) { return getParametre(name).value.col; }
+		inline TCODColor getColourParam (const char *name) { return getParametre(name).value.col; }
 		/**
 		 * Get a dice parameter from the module configuration file
 		 * @param name the parameter name
 		 * @return the dice value (default filled with 0)
 		 */		 		 		 		
-		inline TCOD_dice_t getDiceParam(const char *name) { return getParametre(name).value.dice; }
+		inline TCOD_dice_t getDiceParam (const char *name) { return getParametre(name).value.dice; }
 
 	protected:
 	    int priority; // update order (inverse of render order)
 		/**
+		 * Custom code that is executed once and only once, when the module is activated for the first time.<br>It is used mainly to allocate resources that might be unavailable at the moment of the module's instantiation.
+		 */
+		virtual void onInitialise () {}
+		/**
 		 * Custom code that is executed each time the module is activated
 		 */
-		virtual void activate() {}
+		virtual void onActivate () {}
 		/**
 		 * Custom code that is executed each time the module is deactivated
 		 */
-		virtual void deactivate() {}
+		virtual void onDeactivate () {}
 		/**
 		 * Custom code that is executed each time the module is paused
 		 */
-		virtual void pause() {}
+		virtual void onPause () {}
 		/**
-		 * Custom code that is executed each time the module is resumed
+		 * Custom code that is executed each time the module is resumed (unpaused)
 		 */
-		virtual void resume() {}
+		virtual void onResume () {}
+		/**
+		 * Sets the fallback module. Please refer to Umbra documentation for detailed information about fallbacks.
+		 * @param fback the ID of the fallback module.
+		 */
+		inline void setFallback (int fback) { fallback = fback; } //set default fallback module's index
+		/**
+		 * Sets the fallback module.  Please refer to Umbra documentation for detailed information about fallbacks.
+		 * @param name the name of the fallback module.
+		 */
+		void setFallback (const char *name);
+		/**
+		 * Sets the module's timeout.
+		 * @param val the number of milliseconds that the module will be allowed to run before timing out. Set to 0 if the timeout is to be removed.		 
+		 */
+		inline void setTimeout (uint32 val) { timeout = val; }
+		/**
+		 * Sets the module's priority.<br>The priority works like a weight setting: a lower number results in the module being updated earlier and rendered on top of others, while a high number will put the module under the others.
+		 * @param priority the module's priority
+		 */
+		inline void setPriority (int priority) { this->priority = priority; }
 		/**
 		 * Set the module's name
 		 * @param name the module's name
 		 */		 		
-		inline void setName(const char *name) {this->name.assign(name);}
+		inline void setName (const char *name) { this->name = name; }
 		/**
-		 * Sets a parametere (only used by module.cfg file parser)
+		 * Sets a parametere (only used by module.txt file parser)
 		 * @param name the parametre's name
 		 * @param value the parametre's value
 		 */		 		
-		void setParametre(const char *name,TCOD_value_t value);
+		void setParametre (const char *name, TCOD_value_t value);
+		/**
+		 * Provides a pointer to the engine object.
+		 * @return a pointer to the engine object
+		 */
+		inline UmbraEngine * getEngine () { return UmbraEngine::getInstance(); }
 
 	private:
 		UmbraModuleStatus status;
 		int fallback; //fallback module's index
+		int id; //module's ID number
 		uint32 timeout;
 		uint32 timeoutEnd;
 		std::string name;
@@ -219,14 +234,14 @@ class UmbraModule {
 		/**
 		 * get a parameter (internal helper function)	
 		 */		 	
-		UmbraModuleParametre &getParametre(const char *name);		
+		UmbraModuleParametre &getParametre (const char *name);
 		/**
 		 * Initialises the timeout by calculating the exact time when the module will time out.
 		 */
-		void initialiseTimeout();
+		void initialiseTimeout ();
 		/**
 		 * Checks whether the module has timed out and is eligible for deactivation.
 		 * @param currentTime the program execution elapsed time, in milliseconds
 		 */
-		inline bool isTimedOut(uint32 currentTime) { return (timeoutEnd > currentTime) ? false : true; }
+		inline bool isTimedOut (uint32 currentTime) { return (timeoutEnd > currentTime) ? false : true; }
 };
