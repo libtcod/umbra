@@ -37,9 +37,10 @@ OBJECTFILES= \
 	${OBJECTDIR}/src/umbra/umbra_font.o \
 	${OBJECTDIR}/src/umbra/umbra_widget_button.o \
 	${OBJECTDIR}/src/demo/credits.o \
+	${OBJECTDIR}/src/demo/circle.o \
 	${OBJECTDIR}/src/umbra/umbra_module.o \
-	${OBJECTDIR}/src/umbra/umbra_config.o \
 	${OBJECTDIR}/src/umbra/umbra_widget_checkbox.o \
+	${OBJECTDIR}/src/umbra/umbra_config.o \
 	${OBJECTDIR}/src/demo/rabbit.o \
 	${OBJECTDIR}/src/umbra/umbra_imod_bsod.o \
 	${OBJECTDIR}/src/demo/main.o \
@@ -98,20 +99,25 @@ ${OBJECTDIR}/src/demo/credits.o: src/demo/credits.cpp
 	${RM} $@.d
 	$(COMPILE.cc) -g -I../libtcod/include -Isrc/umbra -Isrc/demo -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/demo/credits.o src/demo/credits.cpp
 
+${OBJECTDIR}/src/demo/circle.o: src/demo/circle.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src/demo
+	${RM} $@.d
+	$(COMPILE.cc) -g -I../libtcod/include -Isrc/umbra -Isrc/demo -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/demo/circle.o src/demo/circle.cpp
+
 ${OBJECTDIR}/src/umbra/umbra_module.o: src/umbra/umbra_module.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/umbra
 	${RM} $@.d
 	$(COMPILE.cc) -g -I../libtcod/include -Isrc/umbra -Isrc/demo -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/umbra/umbra_module.o src/umbra/umbra_module.cpp
 
-${OBJECTDIR}/src/umbra/umbra_config.o: src/umbra/umbra_config.cpp 
-	${MKDIR} -p ${OBJECTDIR}/src/umbra
-	${RM} $@.d
-	$(COMPILE.cc) -g -I../libtcod/include -Isrc/umbra -Isrc/demo -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/umbra/umbra_config.o src/umbra/umbra_config.cpp
-
 ${OBJECTDIR}/src/umbra/umbra_widget_checkbox.o: src/umbra/umbra_widget_checkbox.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/umbra
 	${RM} $@.d
 	$(COMPILE.cc) -g -I../libtcod/include -Isrc/umbra -Isrc/demo -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/umbra/umbra_widget_checkbox.o src/umbra/umbra_widget_checkbox.cpp
+
+${OBJECTDIR}/src/umbra/umbra_config.o: src/umbra/umbra_config.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src/umbra
+	${RM} $@.d
+	$(COMPILE.cc) -g -I../libtcod/include -Isrc/umbra -Isrc/demo -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/umbra/umbra_config.o src/umbra/umbra_config.cpp
 
 ${OBJECTDIR}/src/demo/rabbit.o: src/demo/rabbit.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/demo

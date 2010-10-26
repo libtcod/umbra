@@ -43,6 +43,7 @@
 #include "umbra_module_factory.hpp"
 #include "umbra_point.hpp"
 #include "umbra_rect.hpp"
+#include "umbra_circle.hpp"
 #include "umbra_widget.hpp"
 
 #include "umbra_widget_button.hpp"

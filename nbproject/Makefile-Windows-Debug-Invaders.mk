@@ -39,9 +39,10 @@ OBJECTFILES= \
 	${OBJECTDIR}/src/umbra/umbra_widget_button.o \
 	${OBJECTDIR}/src/invaders/utilities.o \
 	${OBJECTDIR}/src/invaders/entities.o \
+	${OBJECTDIR}/src/demo/circle.o \
 	${OBJECTDIR}/src/umbra/umbra_module.o \
-	${OBJECTDIR}/src/umbra/umbra_config.o \
 	${OBJECTDIR}/src/umbra/umbra_widget_checkbox.o \
+	${OBJECTDIR}/src/umbra/umbra_config.o \
 	${OBJECTDIR}/src/umbra/umbra_imod_bsod.o \
 	${OBJECTDIR}/src/invaders/main.o \
 	${OBJECTDIR}/src/umbra/umbra_error.o \
@@ -107,20 +108,25 @@ ${OBJECTDIR}/src/invaders/entities.o: src/invaders/entities.cpp
 	${RM} $@.d
 	$(COMPILE.cc) -g -I../libtcod/include -Isrc/umbra -Isrc/invaders -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/invaders/entities.o src/invaders/entities.cpp
 
+${OBJECTDIR}/src/demo/circle.o: src/demo/circle.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src/demo
+	${RM} $@.d
+	$(COMPILE.cc) -g -I../libtcod/include -Isrc/umbra -Isrc/invaders -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/demo/circle.o src/demo/circle.cpp
+
 ${OBJECTDIR}/src/umbra/umbra_module.o: src/umbra/umbra_module.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/umbra
 	${RM} $@.d
 	$(COMPILE.cc) -g -I../libtcod/include -Isrc/umbra -Isrc/invaders -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/umbra/umbra_module.o src/umbra/umbra_module.cpp
 
-${OBJECTDIR}/src/umbra/umbra_config.o: src/umbra/umbra_config.cpp 
-	${MKDIR} -p ${OBJECTDIR}/src/umbra
-	${RM} $@.d
-	$(COMPILE.cc) -g -I../libtcod/include -Isrc/umbra -Isrc/invaders -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/umbra/umbra_config.o src/umbra/umbra_config.cpp
-
 ${OBJECTDIR}/src/umbra/umbra_widget_checkbox.o: src/umbra/umbra_widget_checkbox.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/umbra
 	${RM} $@.d
 	$(COMPILE.cc) -g -I../libtcod/include -Isrc/umbra -Isrc/invaders -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/umbra/umbra_widget_checkbox.o src/umbra/umbra_widget_checkbox.cpp
+
+${OBJECTDIR}/src/umbra/umbra_config.o: src/umbra/umbra_config.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src/umbra
+	${RM} $@.d
+	$(COMPILE.cc) -g -I../libtcod/include -Isrc/umbra -Isrc/invaders -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/umbra/umbra_config.o src/umbra/umbra_config.cpp
 
 ${OBJECTDIR}/src/umbra/umbra_imod_bsod.o: src/umbra/umbra_imod_bsod.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/umbra

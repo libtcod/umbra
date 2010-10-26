@@ -2,9 +2,13 @@ moduleChain "demo" {
 	module "demo" {
 		priority = 10
 	}
-	module "matrix" {
+	module "circle" {
 		priority = 10
 		fallback = "demo"
+	}
+	module "matrix" {
+		priority = 10
+		fallback = "circle"
 		active
 	}
 	module "rabbit" {

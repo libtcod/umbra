@@ -34,18 +34,18 @@ TCODConsole * MatrixLead::matrix;
 MatrixLead::MatrixLead () {
     if (!random) random = new TCODRandom();
     y = 0;
-    x = random->getInt(0,engine.getRootWidth()-1);
+    x = random->get(0,engine.getRootWidth()-1);
     lastY = TCODSystem::getElapsedMilli();
-    yDuration = random->getInt(50,250);
+    yDuration = random->get(50,250);
     if (!matrix) matrix = new TCODConsole(engine.getRootWidth(),engine.getRootHeight());
 }
 
 void MatrixLead::render (uint32 time) {
-    char c = random->getInt('A','Z');
-    if (random->getInt(0,1) == 1)
+    char c = random->get('A','Z');
+    if (random->get(0,1) == 1)
         c += 0x20;
-    else if (random->getInt(0,5) == 5)
-        c = random->getInt('0','9');
+    else if (random->get(0,5) == 5)
+        c = random->get('0','9');
     if (time >= lastY+yDuration) {
         matrix->setCharForeground(x,y,TCODColor::green);
         lastY = time;
@@ -58,7 +58,7 @@ void MatrixLead::render (uint32 time) {
 
 bool Matrix::update () {
     if (!MatrixLead::random) MatrixLead::random = new TCODRandom();
-    if (MatrixLead::random->getInt(0,3) == 0) leads.push(new MatrixLead());
+    if (MatrixLead::random->get(0,3) == 0) leads.push(new MatrixLead());
     return getActive();
 }
 

@@ -38,6 +38,7 @@ public :
 		else if ( strcmp(name,"rabbit") == 0 ) return new RabbitWidget();
 		else if ( strcmp(name,"panel") == 0 ) return new Panel(); 
 		else if ( strcmp(name,"credits") == 0 ) return new Credits();
+		else if ( strcmp(name,"circle") == 0 ) return new Circle();
 		else return NULL;    
 	}
 };

@@ -31,6 +31,7 @@
 #include "demo.hpp"
 #include "credits.hpp"
 #include "panel.hpp"
+#include "circle.hpp"
 
 enum { MOD_MATRIX, MOD_DEMO, MOD_RABBIT, MOD_PANEL, MOD_CREDITS };
 
