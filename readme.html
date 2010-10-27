@@ -623,7 +623,7 @@ Please note that this module requires the console emulator to be active, otherwi
 |API|changed feature and/or API break|
 |BUG|bug fix|</pre>
 </div>
-<div title="Classes" modifier="Mingos" created="200911042330" modified="201010232255" tags="api class" changecount="13">
+<div title="Classes" modifier="Mingos" created="200911042330" modified="201010271053" tags="api class" changecount="14">
 <pre>&lt;&lt;tabs methods
     &quot;Engine&quot; &quot;UmbraEngine&quot; [[UmbraEngine]]
     &quot;Module&quot; &quot;UmbraModule&quot; [[UmbraModule]]
@@ -633,6 +633,7 @@ Please note that this module requires the console emulator to be active, otherwi
     &quot;Key&quot; &quot;UmbraKey&quot; [[UmbraKey]]
     &quot;Point&quot; &quot;UmbraPoint&quot; [[UmbraPoint]]
     &quot;Rect&quot; &quot;UmbraRect&quot; [[UmbraRect]]
+    &quot;Circle&quot; &quot;UmbraCircle&quot; [[UmbraCircle]]
     &quot;Error&quot; &quot;UmbraError&quot; [[UmbraError]]
 &gt;&gt;</pre>
 </div>
@@ -2060,7 +2061,7 @@ These are the internal callbacks, which can be registered automatically, providi
 [[Change log]]
 [[Credits]]</pre>
 </div>
-<div title="Methods" modifier="Mingos" created="200911042331" modified="201010232256" tags="api method" changecount="44">
+<div title="Methods" modifier="Mingos" created="200911042331" modified="201010271054" tags="api method" changecount="45">
 <pre>&lt;&lt;tabs methods
     &quot;Engine&quot; &quot;UmbraEngine methods&quot; [[UmbraEngineMethods]]
     &quot;Module&quot; &quot;UmbraModule methods&quot; [[UmbraModuleMethods]]
@@ -2070,6 +2071,7 @@ These are the internal callbacks, which can be registered automatically, providi
     &quot;Key&quot; &quot;UmbraKey methods&quot; [[UmbraKeyMethods]]
     &quot;Point&quot; &quot;UmbraPoint methods&quot; [[UmbraPointMethods]]
     &quot;Rect&quot; &quot;UmbraRect methods&quot; [[UmbraRectMethods]]
+    &quot;Circle&quot; &quot;UmbraCircle methods&quot; [[UmbraCircleMethods]]
     &quot;Error&quot; &quot;UmbraError methods&quot; [[UmbraErrorMethods]]
 &gt;&gt;</pre>
 </div>
@@ -3220,6 +3222,23 @@ Registered automatically if additional callbacks are enabled during engine initi
 &lt;code C++&gt;
 UmbraEngine::getInstance()-&gt;registerCallback(new UmbraCallbackSpeedometer());
 &lt;/code&gt;</pre>
+</div>
+<div title="UmbraCircle" modifier="Mingos" created="201010271052" modified="201010271105" tags="api class circle" changecount="6">
+<pre>Although UmbraCircle complements [[UmbraPoint]] and [[UmbraRect]], it is not directly related to the [[UmbraWidget]] or any other Umbra component, as it is not used internally. It's a convenience class, made to be used directly by the developer in case a circle-related behaviour, such as checking whether a point is within a certain radius from another point, is required.
+
+It implements basic methods that allow the circle to be moved and resized. Also, it is possible to check whether a point (or a set of coordinates) is within the circle.
+!Methods
+&lt;&lt;tiddler UmbraCircleMethods&gt;&gt;
+!See also
+* [[UmbraPoint]]
+* [[UmbraRect]]</pre>
+</div>
+<div title="UmbraCircleMethods" modifier="Mingos" created="201010271053" modified="201010271104" tags="api circle methodlist" changecount="2">
+<pre>* [[UmbraCircle::contains]]
+* [[UmbraCircle::setPos]]
+* [[UmbraCircle::serRadius]]
+* [[UmbraCircle::set]]
+* [[UmbraCircle::UmbraCircle]]</pre>
 </div>
 <div title="UmbraEngine" modifier="Mingos" created="200910241822" modified="201010132223" tags="api class engine" changecount="60">
 <pre>The class UmbraEngine contains the heart of Umbra. An instance of UmbraEngine needs to be created in order for Umbra to become alive:
