@@ -5236,7 +5236,7 @@ if (rectangle.mouseDown) doSomethingMore();
 *[[UmbraWidget]]
 *[[UmbraWidget::mouse]]</pre>
 </div>
-<div title="UmbraRect::UmbraRect" modifier="Mingos" created="201008171106" tags="api method rect constructor" changecount="1">
+<div title="UmbraRect::UmbraRect" modifier="Mingos" created="201008171106" modified="201010271045" tags="api method rect constructor" changecount="3">
 <pre>!Description
 Constructor for a rectangle object.
 !Construction
@@ -5244,6 +5244,24 @@ Constructor for a rectangle object.
 UmbraRect () {
     x = 0;
     y = 0;
+    w = 0;
+    h = 0;
+    mouseHover = false;
+}
+&lt;/code&gt;
+&lt;code C++&gt;
+UmbraRect (int x, int y) {
+    this-&gt;x = x;
+    this-&gt;y = y;
+    w = 0;
+    h = 0;
+    mouseHover = false;
+}
+&lt;/code&gt;
+&lt;code C++&gt;
+UmbraRect (const UmbraPoint &amp;p) {
+    x = p.x;
+    y = p.y;
     w = 0;
     h = 0;
     mouseHover = false;
@@ -5258,11 +5276,21 @@ UmbraRect (int x, int y, int w, int h) {
     mouseHover = false;
 }
 &lt;/code&gt;
+&lt;code C++&gt;
+UmbraRect (const UmbraPoint &amp;p, int w, int h) {
+    x = p.x;
+    y = p.y;
+    this-&gt;w = w;
+    this-&gt;h = h;
+    mouseHover = false;
+}
+&lt;/code&gt;
 !Parametres
 *{{{int x}}}: the X coordinate of the rectangle's top left corner
 *{{{int y}}}: the Y coordinate of the rectangle's top left corner
 *{{{int w}}}: the rectangle's width
 *{{{int h}}}: the rectangle's height
+*{{{const UmbraPoint &amp;p}}}: the point whose coordinates are to become the rectangle's top left corner's coordinates
 !Example
 &lt;code C++&gt;
 UmbraRect r1;
@@ -5310,7 +5338,7 @@ printf(&quot;%s, %s, %s, %s\n&quot;,
 !See also
 &lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;rect&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;rect&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;rect&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
 </div>
-<div title="UmbraRect::set" modifier="Mingos" created="201008161338" modified="201010232302" tags="api method rect" changecount="3">
+<div title="UmbraRect::set" modifier="Mingos" created="201008161338" modified="201010271047" tags="api method rect" changecount="4">
 <pre>!Description
 Sets the top left corner's coordinates, as well as the width and the height of a rectangle.
 !Construction
@@ -5322,11 +5350,18 @@ void set (
     int h
 );
 &lt;/code&gt;
+void set (
+    const UmbraPoint &amp;p,
+    int w,
+    int h
+);
+&lt;/code&gt;
 !Parametres
 *{{{int x}}}: the X coordinate of the rectangle's top left corner
 *{{{int y}}}: the Y coordinate of the rectangle's top left corner
 *{{{int w}}}: the rectangle's width
 *{{{int h}}}: the rectangle's height
+*{{{const UmbraPoint &amp;p}}}: the point whose coordinates are to become the rectangle's top left corner's coordinates
 !Access level
 {{{public}}}
 !Remarks
@@ -5335,7 +5370,7 @@ In case the rectangle only needs to be moved to a different position, without re
 !See also
 &lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;rect&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;rect&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;rect&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
 </div>
-<div title="UmbraRect::setPos" modifier="Mingos" created="201008171055" modified="201010232302" tags="api method rect" changecount="2">
+<div title="UmbraRect::setPos" modifier="Mingos" created="201008171055" modified="201010271046" tags="api method rect" changecount="3">
 <pre>!Description
 Moves the rectangle to a different position.
 !Construction
@@ -5345,9 +5380,15 @@ void setPos (
     int y
 );
 &lt;/code&gt;
+&lt;code C++&gt;
+void setPos (
+    const UmbraPoint &amp;p
+);
+&lt;/code&gt;
 !Parametres
 *{{{int x}}}: the X coordinate of the rectangle's top left corner
 *{{{int y}}}: the Y coordinate of the rectangle's top left corner
+*{{{const UmbraPoint &amp;p}}}: the point whose coordinates are to become the rectangle's top left corner's coordinates
 !Access level
 {{{public}}}
 !Remarks

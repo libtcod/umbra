@@ -33,13 +33,21 @@ class UmbraRect {
 		bool mouseHover;
 		bool mouseDown;
 		UmbraRect (): x(0),y(0),w(0),h(0),mouseHover(false) {}
+		UmbraRect (int x, int y): x(x),y(y),w(0),h(0),mouseHover(false) {}
+		UmbraRect (const UmbraPoint &p): x(p.x),y(p.y),w(0),h(0),mouseHover(false) {}
 		UmbraRect (int x, int y, int w, int h): x(x),y(y),w(w),h(h),mouseHover(false) {}
+		UmbraRect (const UmbraPoint &p, int w, int h): x(p.x),y(p.y),w(w),h(h),mouseHover(false) {}
 		/**
 		 * Sets the rectangle's position.
 		 * @param x the rectangle's top left corner's <i>x</i> coordinate
 		 * @param y the rectangle's top left corner's <i>y</i> coordinate
 		 */
 		inline void setPos (int x, int y) { this->x=x; this->y=y; }
+		/**
+		 * Sets the rectangle's position.
+		 * @param p the point whose coordinates are to become the rectangle's top letf corner's coordinates
+		 */
+		inline void setPos (const UmbraPoint &p) { x=p.x; y=p.y; }
 		/**
 		 * Sets the rectangle's size, keeping the top left corner's coordinates unchanged.
 		 * @param w the rectangle's width
@@ -54,6 +62,13 @@ class UmbraRect {
 		 * @param h the rectangle's height
 		 */
 		inline void set (int x, int y, int w, int h) { setPos(x,y); setSize(w,h); }
+		/**
+		 * Sets the rectangle's position and size.
+		 * @param p the point whose coordinates are to become the rectangle's top letf corner's coordinates
+		 * @param w the rectangle's width
+		 * @param h the rectangle's height
+		 */
+		inline void set (const UmbraPoint &p, int w, int h) { setPos(p.x,p.y); setSize(w,h); }
 		/**
 		 * Checks whether a set of coordinates is contained within the rectangle.
 		 * @param px the <i>x</i> coordinate to be checked
