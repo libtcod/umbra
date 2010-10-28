@@ -29,8 +29,7 @@
 
 //quit program
 UmbraCallbackQuit::UmbraCallbackQuit () {
-	key2.assign(TCODK_F4,0,true,false,false);
-	key.assign(TCODK_CHAR,'q',false,true,false);
+	key.assign(TCODK_F4,0,true,false,false);
 }
 
 void UmbraCallbackQuit::action () {
