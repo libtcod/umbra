@@ -1,7 +1,12 @@
 moduleChain "demo" {
+	string chainParam1="chainParam1Value"
+	string chainParam2="chainParam2Value"
 	module "demo" {
 		priority = 10
+		string chainParam2="chainParam2OverloadedValue"
+		string moduleParam="moduleParamValue"
 	}
+	string chainParam3="chainParam3Value"
 	module "circle" {
 		priority = 10
 		fallback = "demo"

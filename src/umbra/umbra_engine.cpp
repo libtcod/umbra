@@ -47,11 +47,16 @@ private:
 	UmbraModuleFactory *factory;
 	// module to activate
 	TCODList<UmbraModule *> toActivate;
+	// custom parameters defined at the module chain level
+	TCODList<UmbraModule::UmbraModuleParametre> chainParameters;
+	// all the modules in the chain
+	TCODList<UmbraModule *> chainModules;
 public :
-	UmbraModuleConfigParser(UmbraModuleFactory *factory,const char *chainName): chainName(chainName), skip(false),chainDone(false),factory(factory) {
+	UmbraModuleConfigParser(UmbraModuleFactory *factory,const char *chainName): chainName(chainName), module(NULL),skip(false),chainDone(false),factory(factory) {
 	}
     bool parserNewStruct(TCODParser * parser, const TCODParserStruct * str, const char * name) {
     	if (strcmp(str->getName(),"moduleChain") == 0) {
+    		chainModules.clear();
     		//parse a new module chain
 			if (chainDone || (chainName && strcmp(name,chainName) != 0)) {
 				//this is not the chain we're looking for. skip it
@@ -74,6 +79,7 @@ public :
 					return false;
 				}
 			}
+			chainModules.push(module);
 		}
 		return true;
 	}
@@ -111,7 +117,16 @@ public :
 			module->setFallback(value.s);
 		} else {
     		// dynamically declared property.
-    		module->setParametre(name,value);
+    		if ( module ) {
+    			// at module level
+    			module->setParametre(name,value);
+    		} else {
+    			// at module chain level
+				UmbraModule::UmbraModuleParametre mod;
+				mod.name=strdup(name); 
+				mod.value=value;
+				chainParameters.push(mod);
+			}
 		}
 		return true;
 	}
@@ -121,11 +136,25 @@ public :
     			skip = false;
 			} else {
 				//finished parsing requested chain. skip other chains
+				// copy module chain parameters into modules
+				for (UmbraModule **mod=chainModules.begin();mod!=chainModules.end(); mod++) {
+					// inherits all chain parameters 
+					// those parameters can be overloaded in the module declaration
+					for (UmbraModule::UmbraModuleParametre *chainParam=chainParameters.begin(); chainParam != chainParameters.end(); chainParam++) {
+						UmbraModule::UmbraModuleParametre moduleParam=(*mod)->getParametre(chainParam->name);
+						if( moduleParam.name == NULL ) {
+							(*mod)->setParametre(chainParam->name,chainParam->value);
+						} // else parameter overloaded by the module. 
+					}
+				}
+				// activate active modules
 				for (UmbraModule **it=toActivate.begin(); it != toActivate.end(); it++) {
 					UmbraEngine::getInstance()->activateModule(*it);
 				}
 				chainDone=true;
 			}
+		} else if (strcmp(str->getName(),"module") == 0 ) {
+			module=NULL;
 		}
 		return true;
 	}

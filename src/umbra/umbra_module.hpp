@@ -207,17 +207,26 @@ class UmbraModule {
 		 */		 		
 		inline void setName (const char *name) { this->name = name; }
 		/**
-		 * Sets a parametere (only used by module.txt file parser)
-		 * @param name the parametre's name
-		 * @param value the parametre's value
-		 */		 		
-		void setParametre (const char *name, TCOD_value_t value);
-		/**
 		 * Provides a pointer to the engine object.
 		 * @return a pointer to the engine object
 		 */
 		inline UmbraEngine * getEngine () { return UmbraEngine::getInstance(); }
 
+    protected :
+		struct UmbraModuleParametre {
+			const char *name;
+			TCOD_value_t value;
+		};
+		/**
+		 * get a parameter (internal helper function)	
+		 */		 	
+		UmbraModuleParametre &getParametre (const char *name);
+		/**
+		 * Sets a parametere (only used by module.txt file parser)
+		 * @param name the parametre's name
+		 * @param value the parametre's value
+		 */		 		
+		void setParametre (const char *name, TCOD_value_t value);
 	private:
 		UmbraModuleStatus status;
 		int fallback; //fallback module's index
@@ -226,15 +235,7 @@ class UmbraModule {
 		uint32 timeoutEnd;
 		std::string name;
 
-		struct UmbraModuleParametre {
-			const char *name;
-			TCOD_value_t value;
-		};
 		TCODList<UmbraModuleParametre> params;
-		/**
-		 * get a parameter (internal helper function)	
-		 */		 	
-		UmbraModuleParametre &getParametre (const char *name);
 		/**
 		 * Initialises the timeout by calculating the exact time when the module will time out.
 		 */
