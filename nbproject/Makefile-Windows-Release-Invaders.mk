@@ -39,6 +39,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/src/umbra/umbra_widget_button.o \
 	${OBJECTDIR}/src/invaders/utilities.o \
 	${OBJECTDIR}/src/invaders/entities.o \
+	${OBJECTDIR}/src/umbra/umbra_log.o \
 	${OBJECTDIR}/src/demo/circle.o \
 	${OBJECTDIR}/src/umbra/umbra_module.o \
 	${OBJECTDIR}/src/umbra/umbra_widget_checkbox.o \
@@ -107,6 +108,11 @@ ${OBJECTDIR}/src/invaders/entities.o: src/invaders/entities.cpp
 	${MKDIR} -p ${OBJECTDIR}/src/invaders
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -I../libtcod/include -Isrc/umbra -Isrc/invaders -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/invaders/entities.o src/invaders/entities.cpp
+
+${OBJECTDIR}/src/umbra/umbra_log.o: src/umbra/umbra_log.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src/umbra
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -I../libtcod/include -Isrc/umbra -Isrc/invaders -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/umbra/umbra_log.o src/umbra/umbra_log.cpp
 
 ${OBJECTDIR}/src/demo/circle.o: src/demo/circle.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/demo

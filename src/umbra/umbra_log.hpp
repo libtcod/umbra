@@ -25,38 +25,35 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-class UmbraConfig {
-	friend class UmbraEngine;
+enum UmbraLogResult {
+	UMBRA_LOG_FAILURE,
+	UMBRA_LOG_SUCCESS
+};
+
+class UmbraLogEntry {
 	friend class UmbraLog;
-	private:
-		static int rootWidth;
-		static int rootHeight;
-		static bool fullScreen;
-		static bool debug; //debug mode (displays messages if set to true)
-		static UmbraFont * font;
-		static const char * fileName;
-		static const char * fontDir;
-		static const char * moduleChain;
-		static int fontID;
-		static TCODList <UmbraFont *> fonts;
-		/**
-		 * Activates a different font. This method is called by the engine.
-		 * @param shift a number indicating whether to activate the next or the previous font in the registered fonts list.<br>This can be -1 (switch down) or 1 (switch up). All other numbers will be clamped to these values.<br>A value of 0 results in doing nothing.
-		 * @return <code>true</code> if the font has been successfully changed, <code>false</code> otherwise
-		 */
-		static bool activateFont (int shift = 0);
-		/**
-		 * Loads configuration variables from a config file.
-		 * @param fileName the filename (with path to it) of the configuration file
-		 */
-		static void load (const char *fileName);
-		/**
-		 * Saves the configuration to a config file. It is called on application exit, so any changes to the configuration are stored.
-		 */
-		static void save ();
-		/**
-		 * Adds a font to the registered fonts list
-		 * @param _font the font object to be added to the list
-		 */
-		static void registerFont (UmbraFont * _font);
+public:
+	std::string message;
+	UmbraLogResult result;
+	UmbraLogEntry();
+	void set(const char * str, ...);
+private:
+	time_t rawTime;
+	struct tm * timeInfo;
+};
+
+class UmbraLog {
+	friend class UmbraEngine;
+	friend class UmbraModule;
+private:
+	static FILE * out;
+	static time_t rawTime;
+	static struct tm * timeInfo;
+	static void save();
+	static void initialise();
+public:
+	static void add(const char * str, ...);
+	static void add(std::string str);
+	static void add(UmbraLogResult result);
+	static void add(UmbraLogEntry entry);
 };
