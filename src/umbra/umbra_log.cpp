@@ -6,27 +6,40 @@
 FILE * UmbraLog::out = NULL;
 time_t UmbraLog::rawTime;
 struct tm * UmbraLog::timeInfo;
+int UmbraLog::indent = 0;
 
-UmbraLogEntry::UmbraLogEntry() {
-	time(&rawTime);
-	timeInfo = localtime(&rawTime);
-	result = UMBRA_LOG_SUCCESS;
-}
+const char * levelString[] = {
+	"INF.",
+	"NOT.",
+	"WAR.",
+	"ERR.",
+	"FAT."
+};
+const char * resultString[] = {
+	"[END BLOCK: FAILURE]",
+	"[END BLOCK: SUCCESS]",
+	"[END BLOCK]"
+};
 
-void UmbraLogEntry::set(const char * str, ...) {
-	char s[2048];
-	va_list ap;
-	va_start(ap,str);
-	vsprintf(s,str,ap);
-	va_end(ap);
-	message = s;
-}
+enum {
+	UMBRA_LOG_INFO,
+	UMBRA_LOG_NOTICE,
+	UMBRA_LOG_WARN,
+	UMBRA_LOG_ERROR,
+	UMBRA_LOG_FATAL
+};
 
 void UmbraLog::initialise() {
 	out = fopen("log.txt","w");
 	time(&rawTime);
 	timeInfo = localtime(&rawTime);
 	fprintf(out,"%s ver. %s (%s) Log file, created on %04d-%02d-%02d, %02d:%02d:%02d.\n"
+	            "---===---\n"
+	            "INF. = INFORMATION. Informative message.\n"
+	            "NOT. = NOTICE. Something unexpected that does not affect the program execution.\n"
+	            "WAR. = WARNING. An error that may potentially provoke some misbehaviour.\n"
+	            "ERR. = ERROR. An error that is guaranteed to provoke some misbehaviour.\n"
+	            "FAT. = FATAL ERROR. An error that prevents the program from continuing.\n"
 	            "---===---",
 	            UMBRA_TITLE, UMBRA_VERSION, UMBRA_STATUS,
 	            timeInfo->tm_year, timeInfo->tm_mon, timeInfo->tm_mday, timeInfo->tm_hour, timeInfo->tm_min, timeInfo->tm_sec);
@@ -34,56 +47,114 @@ void UmbraLog::initialise() {
 }
 
 void UmbraLog::save() {
-	UmbraLog::add("Log file saved.");
+	indent = 0;
+	UmbraLog::info("Log file saved.");
 	if (out != NULL) fclose(out);
 }
 
-void UmbraLog::add(const char* str, ...) {
+void UmbraLog::output(int logLevel, const char * str) {
+	if (!UmbraConfig::debug) return;
+	if (out == NULL) initialise();
+	time(&rawTime);
+	timeInfo = localtime(&rawTime);
+	std::string arrows;
+	for (int i = 0; i < indent; i++)
+		if (i < indent - 1) arrows += " |  ";
+		else arrows += " |> ";
+	fprintf(out,"\n%s %02d:%02d:%02d.%03d %s%s", levelString[logLevel], timeInfo->tm_hour, timeInfo->tm_min, timeInfo->tm_sec, 0, arrows.c_str(), str);
+	fflush(out);
+	fprintf(stderr,"%s\n",str);
+}
+
+void UmbraLog::output(int logLevel, std::string str) {
+	if (!UmbraConfig::debug) return;
+	if (out == NULL) initialise();
+	time(&rawTime);
+	timeInfo = localtime(&rawTime);
+	std::string arrows;
+	for (int i = 0; i < indent; i++)
+		if (i < indent - 1) arrows += " |  ";
+		else arrows += " |> ";
+	fprintf(out,"\n%s %02d:%02d:%02d.%03d %s%s", levelString[logLevel], timeInfo->tm_hour, timeInfo->tm_min, timeInfo->tm_sec, 0, str.c_str());
+	fflush(out);
+	fprintf(stderr,"%s\n",str.c_str());
+}
+
+void UmbraLog::openBlock(const char* str, ...) {
 	char s[2048];
 	va_list ap;
 	va_start(ap,str);
 	vsprintf(s,str,ap);
 	va_end(ap);
-
-	if (!UmbraConfig::debug) return;
-	if (out == NULL) initialise();
-
-	time(&rawTime);
-	timeInfo = localtime(&rawTime);
-
-	fprintf(out,"\n%02d:%02d:%02d - %s", timeInfo->tm_hour, timeInfo->tm_min, timeInfo->tm_sec, s);
-	fflush(out);
+	output(UMBRA_LOG_INFO,s);
+	++indent;
 }
 
-void UmbraLog::add(std::string str) {
-	if (!UmbraConfig::debug) return;
-	if (out == NULL) initialise();
-
-	time(&rawTime);
-	timeInfo = localtime(&rawTime);
-
-	fprintf(out,"\n%02d:%02d:%02d - %s", timeInfo->tm_hour, timeInfo->tm_min, timeInfo->tm_sec, str.c_str());
-	fflush(out);
+void UmbraLog::openBlock(std::string str) {
+	output(UMBRA_LOG_INFO,str);
+	++indent;
 }
 
-void UmbraLog::add(UmbraLogResult result) {
-	if (!UmbraConfig::debug) return;
-	if (result == UMBRA_LOG_FAILURE)
-		fprintf(out," [FAILED]");
-	if (result == UMBRA_LOG_SUCCESS)
-		fprintf(out," [  OK  ]");
+void UmbraLog::info(const char * str, ...) {
+	char s[2048];
+	va_list ap;
+	va_start(ap,str);
+	vsprintf(s,str,ap);
+	va_end(ap);
+	output(UMBRA_LOG_INFO,s);
 }
 
-void UmbraLog::add(UmbraLogEntry entry) {
-	if (!UmbraConfig::debug) return;
-	if (out == NULL) initialise();
+void UmbraLog::info(std::string str) {
+	output(UMBRA_LOG_INFO,str);
+}
 
+void UmbraLog::warning(const char * str, ...) {
+	char s[2048];
+	va_list ap;
+	va_start(ap,str);
+	vsprintf(s,str,ap);
+	va_end(ap);
+	output(UMBRA_LOG_WARN,s);
+}
+
+void UmbraLog::warning(std::string str) {
+	output(UMBRA_LOG_WARN,str);
+}
+
+void UmbraLog::error(const char * str, ...) {
+	char s[2048];
+	va_list ap;
+	va_start(ap,str);
+	vsprintf(s,str,ap);
+	va_end(ap);
+	output(UMBRA_LOG_ERROR,s);
+}
+
+void UmbraLog::error(std::string str) {
+	output(UMBRA_LOG_ERROR,str);
+}
+
+void UmbraLog::fatalError(const char * str, ...) {
+	char s[2048];
+	va_list ap;
+	va_start(ap,str);
+	vsprintf(s,str,ap);
+	va_end(ap);
+	output(UMBRA_LOG_FATAL,s);
+}
+
+void UmbraLog::fatalError(std::string str) {
+	output(UMBRA_LOG_FATAL,str);
+}
+
+void UmbraLog::closeBlock(UmbraLogResult result) {
+	if (!UmbraConfig::debug) return;
 	time(&rawTime);
 	timeInfo = localtime(&rawTime);
-
-	fprintf(out,"\n%02d:%02d:%02d through %02d:%02d:%02d - %s %s",
-	            entry.timeInfo->tm_hour, entry.timeInfo->tm_min, entry.timeInfo->tm_sec,
-	            timeInfo->tm_hour, timeInfo->tm_min, timeInfo->tm_sec,
-	            entry.message.c_str(), entry.result == UMBRA_LOG_SUCCESS ? "[  OK  ]" : "[FAILED]");
-	fflush(out);
+	std::string arrows;
+	for (int i = 0; i < indent; i++)
+		if (i < indent - 1) arrows += " |  ";
+		else arrows += " \\> ";
+	fprintf(out,"\n%s %02d:%02d:%02d.%03d %s%s", levelString[UMBRA_LOG_INFO], timeInfo->tm_hour, timeInfo->tm_min, timeInfo->tm_sec, 0, arrows.c_str(), resultString[result]);
+	--indent;
 }

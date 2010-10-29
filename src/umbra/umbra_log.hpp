@@ -27,19 +27,8 @@
 
 enum UmbraLogResult {
 	UMBRA_LOG_FAILURE,
-	UMBRA_LOG_SUCCESS
-};
-
-class UmbraLogEntry {
-	friend class UmbraLog;
-public:
-	std::string message;
-	UmbraLogResult result;
-	UmbraLogEntry();
-	void set(const char * str, ...);
-private:
-	time_t rawTime;
-	struct tm * timeInfo;
+	UMBRA_LOG_SUCCESS,
+	UMBRA_LOG_NONE
 };
 
 class UmbraLog {
@@ -49,11 +38,23 @@ private:
 	static FILE * out;
 	static time_t rawTime;
 	static struct tm * timeInfo;
+	static int indent;
 	static void save();
 	static void initialise();
+	static void output(int logLevel, const char * str);
+	static void output(int logLevel, std::string str);
 public:
-	static void add(const char * str, ...);
-	static void add(std::string str);
-	static void add(UmbraLogResult result);
-	static void add(UmbraLogEntry entry);
+	static void openBlock(const char * str, ...);
+	static void openBlock(std::string str);
+	static void info(const char * str, ...);
+	static void info(std::string str);
+	static void notice(const char * str, ...);
+	static void notice(std::string str);
+	static void warning(const char * str, ...);
+	static void warning(std::string str);
+	static void error(const char * str, ...);
+	static void error(std::string str);
+	static void fatalError(const char * str, ...);
+	static void fatalError(std::string str);
+	static void closeBlock(UmbraLogResult result = UMBRA_LOG_NONE);
 };

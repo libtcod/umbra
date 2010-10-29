@@ -61,6 +61,7 @@ class UmbraEngine {
 		UmbraEngine (UmbraRegisterCallbackFlag flag);
 		UmbraEngine ();
 
+		bool isNameFree(const char * name);
 		/**
 		 * Registers a module for usage in the application. Unregistered modules cannot be activated. Registering is done only once per application run.<br><i>Note: this method only registers the module, but doesn't activate it. Activation is performed using the UmbraEngine::activateModule(*) methods!</i>
 		 * @param module a pointer to the module to be registered. Creating the module using the <code>new</code> keyword is strongly encouraged, eg. <code>registerModule(new myModule());</code>
@@ -180,6 +181,7 @@ class UmbraEngine {
 		 */
 		void deactivateAll ();
 
+		inline bool getDebug() { return UmbraConfig::debug; }
 		/**
 		 * Retrieves the paused state of the engine.
 		 * @return <code>true</code> if the engine is currently paused, <code>false</code> otherwise

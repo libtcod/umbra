@@ -64,8 +64,7 @@ public :
 			}
 		} else if (strcmp(str->getName(),"module") == 0 && !skip) {
 			//parse a module for current chain
-			module = UmbraEngine::getInstance()->getModule(name);
-			if (!module) {
+			if (UmbraEngine::getInstance()->isNameFree(name)) {
 				// module doesn't exist yet. try to get it from the factory
 				if (factory) {
 					module = factory->createModule(name);
@@ -185,7 +184,7 @@ UmbraEngine::UmbraEngine (const char *fileName, UmbraRegisterCallbackFlag flag):
 	if (flag & UMBRA_REGISTER_ADDITIONAL) {
 		registerCallback(new UmbraCallbackSpeedometer());
 	}
-	UmbraLog::add("UmbraEngine instance created.");
+	UmbraLog::info("UmbraEngine::UmbraEngine | UmbraEngine instance created.");
 }
 
 UmbraEngine::UmbraEngine (const char *fileName): keyboardMode(UMBRA_KEYBOARD_RELEASED) {
@@ -204,6 +203,7 @@ UmbraEngine::UmbraEngine (const char *fileName): keyboardMode(UMBRA_KEYBOARD_REL
 	registerCallback(new UmbraCallbackFontUp());
 	registerCallback(new UmbraCallbackFontDown());
 	registerCallback(new UmbraCallbackPause());
+	UmbraLog::info("UmbraEngine::UmbraEngine | UmbraEngine instance created.");
 }
 
 UmbraEngine::UmbraEngine (UmbraRegisterCallbackFlag flag): keyboardMode(UMBRA_KEYBOARD_RELEASED) {
@@ -227,6 +227,7 @@ UmbraEngine::UmbraEngine (UmbraRegisterCallbackFlag flag): keyboardMode(UMBRA_KE
 	if (flag & UMBRA_REGISTER_ADDITIONAL) {
 		registerCallback(new UmbraCallbackSpeedometer());
 	}
+	UmbraLog::info("UmbraEngine::UmbraEngine | UmbraEngine instance created.");
 }
 
 UmbraEngine::UmbraEngine (): keyboardMode(UMBRA_KEYBOARD_RELEASED) {
@@ -245,6 +246,7 @@ UmbraEngine::UmbraEngine (): keyboardMode(UMBRA_KEYBOARD_RELEASED) {
 	registerCallback(new UmbraCallbackFontUp());
 	registerCallback(new UmbraCallbackFontDown());
 	registerCallback(new UmbraCallbackPause());
+	UmbraLog::info("UmbraEngine::UmbraEngine | UmbraEngine instance created.");
 }
 
 void UmbraEngine::setWindowTitle (const char * title, ...) {
@@ -260,8 +262,17 @@ void UmbraEngine::setWindowTitle (std::string title) {
 	windowTitle = title.c_str();
 }
 
+//check whether there already exists a module with a given name
+bool UmbraEngine::isNameFree(const char * name) {
+	for (UmbraModule **it=modules.begin(); it != modules.end(); it++)
+		if ( (*it)->name.compare(name) == 0 ) return false;
+	return true;
+}
+
 //add a module to the modules list
 int UmbraEngine::registerModule (UmbraModule * module, const char * name) {
+	if (name != NULL) UmbraLog::info("UmbraEngine::registerModule | Registering a module named \"%s\".",name);
+	else UmbraLog::info("UmbraEngine::registerModule | Registering a module.");
 	modules.push(module);
 	char n[2048];
 	if (name == NULL) {
@@ -305,16 +316,16 @@ int UmbraEngine::getModuleId (const char * name) {
 
 //register a font
 void UmbraEngine::registerFont (int columns, int rows, const char * filename, int flags) {
-	UmbraLog::add("Registering font \"%s\"",filename);
+	UmbraLog::openBlock("Registering font \"%s\"",filename);
 	if (!UmbraError::fileExists(filename)) {
 		UmbraError::add(UMBRA_ERRORLEVEL_ERROR,"UmbraEngine::registerFont: Tried to register a font file that does not exist: %s.",filename);
-		UmbraLog::add(UMBRA_LOG_FAILURE);
+		UmbraLog::closeBlock(UMBRA_LOG_FAILURE);
 		return;
 	}
 	UmbraFont * file = new UmbraFont; //don't delete this later
 	file->initialise(columns,rows,filename,flags);
 	UmbraConfig::registerFont(file);
-	UmbraLog::add(UMBRA_LOG_SUCCESS);
+	UmbraLog::closeBlock(UMBRA_LOG_SUCCESS);
 }
 
 // temporary internal font storage structure
@@ -327,7 +338,7 @@ struct TmpFontData {
 };
 #define MAX_FONTS 16
 bool UmbraEngine::registerFonts () {
-	UmbraLog::add("Attempting to automatically register fonts.");
+	UmbraLog::openBlock("UmbraEngine::registerFonts | Attempting to automatically register fonts.");
 	// if fonts registered by the user, do nothing
 	if (getNbFonts() > 0) return true;
 	TmpFontData dat[MAX_FONTS];
@@ -388,19 +399,17 @@ bool UmbraEngine::registerFonts () {
 
 // load external module configuration
 bool UmbraEngine::loadModuleConfiguration(const char *filename, UmbraModuleFactory *factory, const char *chainName) {
-	UmbraLogEntry entry;
-	if (chainName == NULL) entry.set("Attempting to load a module configuration from file \"%s\".",chainName,filename);
-	else entry.set("Attempting to load \"%s\" module configuration from file \"%s\".",filename);
+	if (chainName == NULL && filename == NULL) UmbraLog::openBlock("UmbraEngine::loadModuleConfiguration | Attempting to load module configuration.");
+	else UmbraLog::openBlock("UmbraEngine::loadModuleConfiguration | Attempting to load \"%s\" module configuration from file \"%s\".",chainName,filename);
+	//TODO: add all options
 	if (!filename) {
 		UmbraError::add(UMBRA_ERRORLEVEL_ERROR,"UmbraEngine::loadModuleConfiguration: specified an empty filename.");
-		entry.result = UMBRA_LOG_FAILURE;
-		UmbraLog::add(entry);
+		UmbraLog::closeBlock(UMBRA_LOG_FAILURE);
 		return false; // no configuration file is defined
 	}
 	if (!UmbraError::fileExists(filename)) {
 		UmbraError::add(UMBRA_ERRORLEVEL_FATAL_ERROR,"UmbraEngine::loadModuleConfiguration: there exists no file with the specified filename.");
-		entry.result = UMBRA_LOG_FAILURE;
-		UmbraLog::add(entry);
+		UmbraLog::closeBlock(UMBRA_LOG_FAILURE);
 		return false; // file doesn't exist
 	}
 	TCODParser parser;
@@ -415,7 +424,7 @@ bool UmbraEngine::loadModuleConfiguration(const char *filename, UmbraModuleFacto
 		parser.run(filename,new UmbraModuleConfigParser(factory,UmbraConfig::moduleChain));
 	}
 	else parser.run(filename,new UmbraModuleConfigParser(factory,chainName));
-	UmbraLog::add(entry);
+	UmbraLog::closeBlock(UMBRA_LOG_SUCCESS);
 	return true;
 }
 
