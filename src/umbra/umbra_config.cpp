@@ -32,15 +32,25 @@ int UmbraConfig::rootWidth;
 int UmbraConfig::rootHeight;
 int UmbraConfig::fontID;
 bool UmbraConfig::fullScreen;
-bool UmbraConfig::debug;
+UmbraLogLevel UmbraConfig::logLevel;
 TCODList <UmbraFont *> UmbraConfig::fonts;
 UmbraFont * UmbraConfig::font = NULL;
 const char * UmbraConfig::fileName = NULL;
 const char * UmbraConfig::fontDir = NULL;
 const char * UmbraConfig::moduleChain = NULL;
 
+const char * logLevelName[] = {
+	"info",
+	"notice",
+	"warning",
+	"error",
+	"fatal error",
+	"none"
+};
+
 void UmbraConfig::load (const char *fileName) {
 	static bool loaded = false;
+	std::string l;
 	if (loaded && strcmp(UmbraConfig::fileName, fileName) == 0) return;
 	TCODParser parser;
 
@@ -51,7 +61,7 @@ void UmbraConfig::load (const char *fileName) {
 		config->addProperty("rootHeight",TCOD_TYPE_INT,true);
 		config->addProperty("fontID",TCOD_TYPE_INT,true);
 		config->addProperty("fullScreen",TCOD_TYPE_BOOL,true);
-		config->addProperty("debug",TCOD_TYPE_BOOL,true);
+		config->addProperty("logLevel",TCOD_TYPE_STRING,true);
 		//optional custom font directory
 		config->addProperty("fontDir",TCOD_TYPE_STRING,false);
 		//optional module chaining
@@ -65,7 +75,7 @@ void UmbraConfig::load (const char *fileName) {
 		rootHeight = 60;
 		fontID = 0;
 		fullScreen = false;
-		debug = true;
+		logLevel = UMBRA_LOGLEVEL_ERROR;
 		fontDir = "data/img";
 		UmbraConfig::save();
 	}
@@ -78,12 +88,16 @@ void UmbraConfig::load (const char *fileName) {
 	rootHeight = parser.getIntProperty("config.rootHeight");
 	fontID = parser.getIntProperty("config.fontID");
 	fullScreen = parser.getBoolProperty("config.fullScreen");
-	debug = parser.getBoolProperty("config.debug");
+	l = parser.getStringProperty("config.logLevel");
 	fontDir = parser.getStringProperty("config.fontDir");
 	moduleChain = parser.getStringProperty("config.moduleChain");
 	if (fontDir != NULL) fontDir = strdup(fontDir);
 	else fontDir = "data/img"; // default value
 	if (moduleChain != NULL) moduleChain = strdup(moduleChain);
+	//set log level
+	for (int i = 0; i <= (int)UMBRA_LOGLEVEL_NONE; i++) {
+		if (l == logLevelName[i]) logLevel = (UmbraLogLevel)i;
+	}
 	loaded = true;
 }
 
@@ -100,6 +114,25 @@ void UmbraConfig::save () {
 
 	fprintf(out,"/*\n"
 	            " * UMBRA CONFIGURATION FILE\n"
+	            " *\n"
+	            " * rootWidth (integer): width of the root console in cells\n"
+	            " * rootHeight (integer): height of the root console in cells\n"
+	            " * fontID (integer): the ID of the font that is to be used\n"
+	            " * fullScreen (boolean): whether the application should run in full screen.\n"
+	            " *                       * true = run in full screen mode\n"
+	            " *                       * false = run in windowed mode (default)\n"
+	            " * logLevel (string): which messages are supposed to be logged.\n"
+	            " *                    * \"info\" = all messages down to the info level\n"
+	            " *                                 (full debug mode)\n"
+	            " *                    * \"notice\" = all debug messages down to notices\n"
+	            " *                    * \"warning\" = all debug messages down to warnings\n"
+	            " *                    * \"error\" = log only errors and fatal errors\n"
+	            " *                                  (standard debug mode, default)\n"
+	            " *                    * \"fatal error\" = log only fatal errors\n"
+	            " *                    * \"none\" = don't create a logfile at all\n"
+	            " *                                 (debug mode off)\n"
+	            " * fontDir (string): the directory containing font files\n"
+	            " * moduleChain (string): the module chain to load (optional)\n"
 	            " */\n"
 	            "\n"
 	            "config {\n"
@@ -107,7 +140,7 @@ void UmbraConfig::save () {
 	            "  rootHeight = %d\n"
 	            "  fontID = %d\n"
 	            "  fullScreen = %s\n"
-	            "  debug = %s\n"
+	            "  logLevel = \"%s\"\n"
 	            "  fontDir = \"%s\"\n"
 	            "%s"
 	            "}\n",
@@ -115,7 +148,7 @@ void UmbraConfig::save () {
 	            rootHeight,
 	            fontID,
 	            (TCODConsole::isFullscreen()?"true":"false"),
-	            (debug?"true":"false"),
+	            logLevelName[logLevel],
 	            fontDir,
 	            modC.c_str());
 

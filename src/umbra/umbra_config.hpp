@@ -25,6 +25,17 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
+class UmbraFont;
+
+enum UmbraLogLevel {
+	UMBRA_LOGLEVEL_INFO,
+	UMBRA_LOGLEVEL_NOTICE,
+	UMBRA_LOGLEVEL_WARN,
+	UMBRA_LOGLEVEL_ERROR,
+	UMBRA_LOGLEVEL_FATAL,
+	UMBRA_LOGLEVEL_NONE
+};
+
 class UmbraConfig {
 	friend class UmbraEngine;
 	friend class UmbraLog;
@@ -32,7 +43,7 @@ class UmbraConfig {
 		static int rootWidth;
 		static int rootHeight;
 		static bool fullScreen;
-		static bool debug; //debug mode (displays messages if set to true)
+		static UmbraLogLevel logLevel;
 		static UmbraFont * font;
 		static const char * fileName;
 		static const char * fontDir;

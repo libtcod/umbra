@@ -25,24 +25,48 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
+#include <sys/time.h>
+
 enum UmbraLogResult {
-	UMBRA_LOG_FAILURE,
-	UMBRA_LOG_SUCCESS,
-	UMBRA_LOG_NONE
+	UMBRA_LOGRESULT_FAILURE,
+	UMBRA_LOGRESULT_SUCCESS,
+	UMBRA_LOGRESULT_NONE
+};
+
+enum UmbraLogType {
+	UMBRA_LOGTYPE_INFO,
+	UMBRA_LOGTYPE_NOTICE,
+	UMBRA_LOGTYPE_WARNING,
+	UMBRA_LOGTYPE_ERROR,
+	UMBRA_LOGTYPE_FATAL
 };
 
 class UmbraLog {
 	friend class UmbraEngine;
-	friend class UmbraModule;
+	class UmbraLogMessage {
+		friend class UmbraLog;
+		struct timeInfo {
+			uint8 h, m, s;
+			uint16 ms;
+		};
+		std::string msg;
+		timeInfo time;
+		UmbraLogResult result;
+		UmbraLogType logType;
+		int indent;
+	};
 private:
-	static FILE * out;
-	static time_t rawTime;
+	static FILE * logOut;
+	static FILE * errOut;
+	static struct timeval rawTime;
 	static struct tm * timeInfo;
 	static int indent;
+	static TCODList <UmbraLogMessage*> messages;
 	static void save();
-	static void initialise();
-	static void output(int logLevel, const char * str);
-	static void output(int logLevel, std::string str);
+	static void logInitialise();
+	static void errInitialise();
+	static void output(UmbraLogType type, UmbraLogResult result, const char * str);
+	static void output(UmbraLogType type, UmbraLogResult result, std::string str);
 public:
 	static void openBlock(const char * str, ...);
 	static void openBlock(std::string str);
@@ -56,5 +80,5 @@ public:
 	static void error(std::string str);
 	static void fatalError(const char * str, ...);
 	static void fatalError(std::string str);
-	static void closeBlock(UmbraLogResult result = UMBRA_LOG_NONE);
+	static void closeBlock(UmbraLogResult result = UMBRA_LOGRESULT_NONE);
 };

@@ -181,7 +181,7 @@ class UmbraEngine {
 		 */
 		void deactivateAll ();
 
-		inline bool getDebug() { return UmbraConfig::debug; }
+		inline UmbraLogLevel getLogLevel() { return UmbraConfig::logLevel; }
 		/**
 		 * Retrieves the paused state of the engine.
 		 * @return <code>true</code> if the engine is currently paused, <code>false</code> otherwise

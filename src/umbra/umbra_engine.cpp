@@ -316,16 +316,16 @@ int UmbraEngine::getModuleId (const char * name) {
 
 //register a font
 void UmbraEngine::registerFont (int columns, int rows, const char * filename, int flags) {
-	UmbraLog::openBlock("Registering font \"%s\"",filename);
+	UmbraLog::openBlock("UmbraEngine::registerFont | Registering font \"%s\"",filename);
 	if (!UmbraError::fileExists(filename)) {
 		UmbraError::add(UMBRA_ERRORLEVEL_ERROR,"UmbraEngine::registerFont: Tried to register a font file that does not exist: %s.",filename);
-		UmbraLog::closeBlock(UMBRA_LOG_FAILURE);
+		UmbraLog::closeBlock(UMBRA_LOGRESULT_FAILURE);
 		return;
 	}
 	UmbraFont * file = new UmbraFont; //don't delete this later
 	file->initialise(columns,rows,filename,flags);
 	UmbraConfig::registerFont(file);
-	UmbraLog::closeBlock(UMBRA_LOG_SUCCESS);
+	UmbraLog::closeBlock(UMBRA_LOGRESULT_SUCCESS);
 }
 
 // temporary internal font storage structure
@@ -386,15 +386,20 @@ bool UmbraEngine::registerFonts () {
 		}
 	}
 	else {
+		UmbraLog::closeBlock(UMBRA_LOGRESULT_FAILURE);
 		UmbraError::add(UMBRA_ERRORLEVEL_FATAL_ERROR,"UmbraEngine::registerFonts: No fonts registered. The font directory %s is empty.",getFontDir());
 		return false;
 	}
 
 	if (getNbFonts() == 0) {
 		UmbraError::add(UMBRA_ERRORLEVEL_FATAL_ERROR,"UmbraEngine::registerFonts: No fonts registered. Autodetection found no fonts matching the naming pattern font<WIDTH>x<HEIGHT>[_<LAYOUT>].png in the specified directory %s.",getFontDir());
+		UmbraLog::closeBlock(UMBRA_LOGRESULT_FAILURE);
 		return false;
 	}
-	else return true;
+	else {
+		UmbraLog::closeBlock(UMBRA_LOGRESULT_SUCCESS);
+		return true;
+	}
 }
 
 // load external module configuration
@@ -404,12 +409,12 @@ bool UmbraEngine::loadModuleConfiguration(const char *filename, UmbraModuleFacto
 	//TODO: add all options
 	if (!filename) {
 		UmbraError::add(UMBRA_ERRORLEVEL_ERROR,"UmbraEngine::loadModuleConfiguration: specified an empty filename.");
-		UmbraLog::closeBlock(UMBRA_LOG_FAILURE);
+		UmbraLog::closeBlock(UMBRA_LOGRESULT_FAILURE);
 		return false; // no configuration file is defined
 	}
 	if (!UmbraError::fileExists(filename)) {
 		UmbraError::add(UMBRA_ERRORLEVEL_FATAL_ERROR,"UmbraEngine::loadModuleConfiguration: there exists no file with the specified filename.");
-		UmbraLog::closeBlock(UMBRA_LOG_FAILURE);
+		UmbraLog::closeBlock(UMBRA_LOGRESULT_FAILURE);
 		return false; // file doesn't exist
 	}
 	TCODParser parser;
@@ -424,7 +429,7 @@ bool UmbraEngine::loadModuleConfiguration(const char *filename, UmbraModuleFacto
 		parser.run(filename,new UmbraModuleConfigParser(factory,UmbraConfig::moduleChain));
 	}
 	else parser.run(filename,new UmbraModuleConfigParser(factory,chainName));
-	UmbraLog::closeBlock(UMBRA_LOG_SUCCESS);
+	UmbraLog::closeBlock(UMBRA_LOGRESULT_SUCCESS);
 	return true;
 }
 
@@ -697,7 +702,7 @@ void UmbraEngine::registerInternalModule (UmbraInternalModuleID id, UmbraModule 
 }
 
 void UmbraEngine::displayError () {
-	if (UmbraConfig::debug && TCODConsole::root != NULL) {
+	if (TCODConsole::root != NULL) {
 		if (internalModules[UMBRA_INTERNAL_BSOD]->getActive())
 			toDeactivate.push(internalModules[UMBRA_INTERNAL_BSOD]);
 		toActivate.push(internalModules[UMBRA_INTERNAL_BSOD]);
