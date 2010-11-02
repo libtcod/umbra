@@ -177,9 +177,10 @@ class UmbraEngine {
 		 */
 		void deactivateModule (const char *name);
 		/**
-		 * Deactivates all modules, including the internal ones, causing the program to end normally (returning <code>0</code>)
+		 * Deactivates all active modules, either letting their respective fallbacks to get activated, or ignoring fallbacks completely.
+		 * @param ignoreFallbacks <code>true</code> if the fallbacks should be ignored, <code>false</code> or default value if the fallbacks should be allowed to get activated.
 		 */
-		void deactivateAll ();
+		void deactivateAll (bool ignoreFallbacks = false);
 
 		inline UmbraLogLevel getLogLevel() { return UmbraConfig::logLevel; }
 		/**

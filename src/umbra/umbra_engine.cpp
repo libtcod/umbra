@@ -550,9 +550,9 @@ void UmbraEngine::deactivateModule (const char *name) {
 	}
 }
 
-void UmbraEngine::deactivateAll () {
+void UmbraEngine::deactivateAll (bool ignoreFallbacks) {
 	for (UmbraModule ** mod = activeModules.begin(); mod != activeModules.end(); mod++) {
-		(*mod)->setFallback(-1);
+		if (ignoreFallbacks) (*mod)->setFallback(-1);
 		deactivateModule((*mod));
 	}
 }

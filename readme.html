@@ -3567,24 +3567,28 @@ engine.activateModule(UMBRA_INTERNAL_SPEEDOMETER); //internal module ID
 !See also
 &lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;moduleStatus&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;moduleStatus&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;moduleStatus&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
 </div>
-<div title="UmbraEngine::deactivateAll" modifier="Mingos" created="200911082255" modified="201010232217" tags="api method engineClass module moduleStatus" changecount="15">
+<div title="UmbraEngine::deactivateAll" modifier="Mingos" created="200911082255" modified="201011021322" tags="api method engineClass module moduleStatus" changecount="16">
 <pre>!Description
-Deactivates all active modules in order to end the program.
+Deactivates all active modules.
 !Construction
 &lt;code C++&gt;
 void deactivateAll (
+    bool ignoreFallbacks = false
 );
 &lt;/code&gt;
+!Parametres
+*{{{bool ignoreFallbacks}}}: whether the fallbacks should be ignored or not.
 !Access level
 {{{public}}}
 !Remarks
-If the program is supposed to end, calling this method will deactivate all modules and thus end the main program loop.
+If the active modules' respective fallbacks are supposed to be activated, the {{{ignoreFallbacks}}} parametre can be omitted or set to {{{false}}}.
+If the program is supposed to end, the {{{ignoreFallbacks}}} parametre can be set to {{{true}}}. This will ignore all active modules' respective fallbacks, effectively ending the application.
 !Example
 &lt;code c++&gt;
 class MyModule : public UmbraModule {
     ...
     void MyModule::shutdown (void) {
-        getEngine()-&gt;deactivateAll();
+        getEngine()-&gt;deactivateAll(true);
     }
 };
 &lt;/code&gt;
@@ -5753,6 +5757,9 @@ There's also a special kind of module, called widget, that offers extra interact
 Widgets include special areas that can be defined to make the widget become interactive. Per default, a widget has a drag zone, a close button and a minimise button. If they are given legal values, they can be shown in the widget, and also react to mouse movement and clicks.
 
 It is not recommended to use widgets in games that only use keyboard control, since they are slower than normal modules and will be able to offer the same functionality.</pre>
+</div>
+<div title="add a Credits internal module" modifier="Mingos" created="201011021256" tags="issueTracker RFE open" changecount="1">
+<pre>There should be an internal module that displays the credits for Umbra, pretty much like libtcod's credits() function.</pre>
 </div>
 <div title="make console clearing by the engine configureable" modifier="Mingos" created="201011021217" tags="issueTracker RFE open" changecount="1">
 <pre>Currently, the engine clears the console each frame. Not all games need this and the console clearing results in a waste of CPU ticks. This should be made configureable - the whole console clearing might then be substituted with a sinmple {{{if}}} statement, saving some CPU ticks.</pre>
