@@ -5754,6 +5754,9 @@ Widgets include special areas that can be defined to make the widget become inte
 
 It is not recommended to use widgets in games that only use keyboard control, since they are slower than normal modules and will be able to offer the same functionality.</pre>
 </div>
+<div title="make console clearing by the engine configureable" modifier="Mingos" created="201011021217" tags="issueTracker RFE open" changecount="1">
+<pre>Currently, the engine clears the console each frame. Not all games need this and the console clearing results in a waste of CPU ticks. This should be made configureable - the whole console clearing might then be substituted with a sinmple {{{if}}} statement, saving some CPU ticks.</pre>
+</div>
 <div title="module activation bug when no lower priority modules are present" modifier="Mingos" created="201010132148" modified="201010132200" tags="issueTracker bug closed" changecount="3">
 <pre>When there's at least one module active and another one is being activated, but with a lower priority setting (ie, higher priority number), it is not placed at the end of the active modules list, but rather before the last module, resulting in it not being on the bottom, as expected.
 
