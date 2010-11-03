@@ -25,8 +25,6 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#include <sys/time.h>
-
 enum UmbraLogResult {
 	UMBRA_LOGRESULT_FAILURE,
 	UMBRA_LOGRESULT_SUCCESS,
@@ -45,26 +43,18 @@ class UmbraLog {
 	friend class UmbraEngine;
 	class UmbraLogMessage {
 		friend class UmbraLog;
-		struct timeInfo {
-			uint8 h, m, s;
-			uint16 ms;
-		};
 		std::string msg;
-		timeInfo time;
+		uint32 time;
 		UmbraLogResult result;
 		UmbraLogType logType;
 		int indent;
 	};
 private:
-	static FILE * logOut;
-	static FILE * errOut;
-	static struct timeval rawTime;
-	static struct tm * timeInfo;
+	static FILE * out;
 	static int indent;
 	static TCODList <UmbraLogMessage*> messages;
 	static void save();
-	static void logInitialise();
-	static void errInitialise();
+	static void initialise();
 	static void output(UmbraLogType type, UmbraLogResult result, const char * str);
 	static void output(UmbraLogType type, UmbraLogResult result, std::string str);
 public:

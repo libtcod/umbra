@@ -1,12 +1,35 @@
+/*
+* Umbra
+* Copyright (c) 2009 Mingos
+* All rights reserved.
+*
+* Redistribution and use in source and binary forms, with or without
+* modification, are permitted provided that the following conditions are met:
+*     * Redistributions of source code must retain the above copyright
+*       notice, this list of conditions and the following disclaimer.
+*     * Redistributions in binary form must reproduce the above copyright
+*       notice, this list of conditions and the following disclaimer in the
+*       documentation and/or other materials provided with the distribution.
+*     * The name of Mingos may not be used to endorse or promote products
+*       derived from this software without specific prior written permission.
+*
+* THIS SOFTWARE IS PROVIDED BY MINGOS ``AS IS'' AND ANY
+* EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+* WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+* DISCLAIMED. IN NO EVENT SHALL MINGOS BE LIABLE FOR ANY
+* DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+* (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+* ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+* (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+* SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
+
 #include "umbra.hpp"
-#include <time.h>
 #include <stdarg.h>
 #include <stdio.h>
 
-FILE * UmbraLog::logOut = NULL;
-FILE * UmbraLog::errOut = NULL;
-struct timeval UmbraLog::rawTime;
-struct tm * UmbraLog::timeInfo;
+FILE * UmbraLog::out = NULL;
 int UmbraLog::indent = 0;
 
 const char * logTypeString[] = {
@@ -31,11 +54,9 @@ const char * resultString[] = {
 	"[END BLOCK]"
 };
 
-void UmbraLog::logInitialise() {
-	logOut = fopen("log.txt","w");
-	gettimeofday(&rawTime,NULL);
-	timeInfo = localtime(&(rawTime.tv_sec));
-	fprintf(logOut,"%s ver. %s (%s) Log file, created on %04d-%02d-%02d, %02d:%02d:%02d.%03d.\n"
+void UmbraLog::initialise() {
+	out = fopen("log.txt","w");
+	fprintf(out,UMBRA_TITLE" ver. "UMBRA_VERSION" ("UMBRA_STATUS") Log file, Running time on creation: %dms.\n"
 	            "---===---\n"
 	            "INF. = INFORMATION. Informative message.\n"
 	            "NOT. = NOTICE. Something unexpected that does not affect the program execution.\n"
@@ -43,63 +64,41 @@ void UmbraLog::logInitialise() {
 	            "ERR. = ERROR. An error that is guaranteed to provoke some misbehaviour.\n"
 	            "FAT. = FATAL ERROR. An error that prevents the program from continuing.\n"
 	            "---===---",
-	            UMBRA_TITLE, UMBRA_VERSION, UMBRA_STATUS,
-	            timeInfo->tm_year, timeInfo->tm_mon, timeInfo->tm_mday, timeInfo->tm_hour, timeInfo->tm_min, timeInfo->tm_sec, rawTime.tv_usec/1000);
-	fflush(logOut);
-}
-
-void UmbraLog::errInitialise() {
-	errOut = fopen("errorlog.txt","w");
-	gettimeofday(&rawTime,NULL);
-	timeInfo = localtime(&(rawTime.tv_sec));
-	fprintf(errOut,"%s ver. %s (%s) Error log file, created on %04d-%02d-%02d, %02d:%02d:%02d.%03d.\n"
-	            "---===---",
-	            UMBRA_TITLE, UMBRA_VERSION, UMBRA_STATUS,
-	            timeInfo->tm_year, timeInfo->tm_mon, timeInfo->tm_mday, timeInfo->tm_hour, timeInfo->tm_min, timeInfo->tm_sec, rawTime.tv_usec/1000);
-	fflush(errOut);
+	            TCODSystem::getElapsedMilli());
+	fflush(out);
 }
 
 void UmbraLog::save() {
 	indent = 0;
 	UmbraLog::info("Log file saved.");
-	if (logOut != NULL) fclose(logOut);
-	if (errOut != NULL) fclose(errOut);
+	if (out != NULL) fclose(out);
 }
 
 void UmbraLog::output(UmbraLogType type, UmbraLogResult res, const char * str) {
 	if (UmbraConfig::logLevel > (UmbraLogLevel)type) return;
-	if (logOut == NULL) {
-		logInitialise();
-		if (res >= UMBRA_LOGRESULT_FAILURE || indent == 0) {
+	if (out == NULL) {
+		initialise();
+		if (res >= UMBRA_LOGRESULT_FAILURE && indent == 0) {
 			error("UmbraLog::closeBlock | Tried to close a block, but it hasn't been opened in the first place.");
 			return;
 		}
 	}
-	gettimeofday(&rawTime,NULL);
-	timeInfo = localtime(&(rawTime.tv_sec));
 	UmbraLogMessage * msg = new UmbraLogMessage();
-	msg->msg = str;
-	msg->logType = type;
-	msg->indent = indent;
-	msg->result = res;
-	msg->time.h = timeInfo->tm_hour;
-	msg->time.m = timeInfo->tm_min;
-	msg->time.s = timeInfo->tm_sec;
-	msg->time.ms = rawTime.tv_usec/1000;
-	if (type >= UMBRA_LOGTYPE_WARNING) {
-		if (errOut == NULL) errInitialise();
-		fprintf(logOut,"\n%s %02d:%02d:%02d.%03d %s", logTypeStringLong[type], msg->time.h, msg->time.m, msg->time.s, msg->time.ms, str);
-	}
+	//create the arrows marking the indent level
 	std::string arrows;
 	for (int i = 0; i < indent; i++)
-		if (i < indent - 1) arrows += " |  ";
-		else arrows += " |> ";
-	if (res < UMBRA_LOGRESULT_FAILURE) {
-		fprintf(logOut,"\n%s %02d:%02d:%02d.%03d %s%s", logTypeString[type], msg->time.h, msg->time.m, msg->time.s, msg->time.ms, arrows.c_str(), str);
-		fprintf(stderr,"%s: %s\n", logTypeString[type], str);
-	}
-	else fprintf(logOut,"\n%s %02d:%02d:%02d.%03d %s%s", logTypeString[UMBRA_LOGTYPE_INFO], msg->time.h, msg->time.m, msg->time.s, msg->time.ms, arrows.c_str(), resultString[res]);
-	fflush(logOut);
+		if (i < indent - 1) arrows += "|   ";
+		else {
+			if (res >= UMBRA_LOGRESULT_FAILURE) arrows += "\\---";
+			else arrows += "|   ";
+		}
+	//ir result is a negative number, then it's not a block close
+	if (res < UMBRA_LOGRESULT_FAILURE)
+		fprintf(out,"\n%s %06d %s%s", logTypeString[type], TCODSystem::getElapsedMilli(), arrows.c_str(), str);
+	//else we're closing a block (no message, just block close notification)
+	else
+		fprintf(out,"\n%s %06d %s%s", logTypeString[UMBRA_LOGTYPE_INFO], TCODSystem::getElapsedMilli(), arrows.c_str(), resultString[res]);
+	fflush(out);
 }
 
 void UmbraLog::output(UmbraLogType type, UmbraLogResult res, std::string str) {
