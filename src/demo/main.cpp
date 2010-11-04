@@ -47,23 +47,6 @@ int main()
 {
     //set window title
     engine.setWindowTitle("Umbra demo");
-    //register fonts
-    /*
-    No need. It's done automagically !
-    engine.registerFont(32,8,"data/img/font8x8.png",TCOD_FONT_LAYOUT_TCOD|TCOD_FONT_TYPE_GRAYSCALE);
-    engine.registerFont(32,8,"data/img/font10x10.png",TCOD_FONT_LAYOUT_TCOD|TCOD_FONT_TYPE_GRAYSCALE);
-    engine.registerFont(32,8,"data/img/font12x12.png",TCOD_FONT_LAYOUT_TCOD|TCOD_FONT_TYPE_GRAYSCALE);
-    */
-    
-    //declare modules
-    /*
-    No need. It's done automagically through the factory
-    engine.registerModule(new Matrix(),"matrix");
-    engine.registerModule(new Demo(),"demo");
-    engine.registerModule(new RabbitWidget(),"rabbit");
-    engine.registerModule(new Panel(),"panel");
-    engine.registerModule(new Credits(),"credits");
-    */
     //initialise and run the engine
     if (engine.loadModuleConfiguration("data/cfg/module.txt", new ModuleFactory()) && engine.initialise()) return engine.run();
     else return 1;

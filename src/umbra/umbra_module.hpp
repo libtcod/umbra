@@ -68,8 +68,6 @@ public:
 	 * @param ms a reference to the mouse event object
 	 */
 	virtual void mouse (TCOD_mouse_t &ms) { } //module-specific mouse
-
-	//setters
 	/**
 	 * Activates or deactivates the module.
 	 * @param active <code>true</code> if the module is to be activated, <code>false</code> otherwise
@@ -80,8 +78,6 @@ public:
 	 * @param paused <code>true</code> if the module is to be paused, <code>false</code> otherwise
 	 */
 	void setPause (bool paused);
-
-	//getters
 	/**
 	 * Gets the ID number of the fallback module.
 	 * @return ID number of the fallback module
@@ -117,7 +113,6 @@ public:
 	 * @return the module's ID number, assigned by UmbraEngine::registerModule().
 	 */
 	inline int getID () { return id; }
-
 	/**
 	 * Get a boolean parameter from the module configuration file
 	 * @param name the parameter name
@@ -162,7 +157,6 @@ public:
 	inline TCOD_dice_t getDiceParam (const char *name) { return getParametre(name).value.dice; }
 
 protected:
-	int priority; // update order (inverse of render order)
 	/**
 	 * Custom code that is executed once and only once, when the module is activated for the first time.<br>It is used mainly to allocate resources that might be unavailable at the moment of the module's instantiation.
 	 */
@@ -221,17 +215,18 @@ private:
 	};
 	TCODList <UmbraModuleParametre> params;
 	UmbraModuleStatus status;
+	int priority; // update order (inverse of render order)
 	int fallback; //fallback module's index
 	int id; //module's ID number
 	uint32 timeout;
 	uint32 timeoutEnd;
 	std::string name;
 	/**
-	 * get a parameter (internal helper function)
+	 * get a parametre (internal helper function)
 	 */
 	UmbraModuleParametre &getParametre (const char *name);
 	/**
-	 * Sets a parametere (only used by module.txt file parser)
+	 * Sets a parametre (only used by module.txt file parser)
 	 * @param name the parametre's name
 	 * @param value the parametre's value
 	 */

@@ -36,7 +36,6 @@ Demo::Demo () {
 
 void Demo::onInitialise () {
     img = new TCODImage(getEngine()->getRootWidth(),getEngine()->getRootHeight());
-    logo = new TCODImage("data/img/umbra.png");
 }
 
 bool Demo::update () {
@@ -57,12 +56,11 @@ bool Demo::update () {
 
 void Demo::render () {
     img->blit(TCODConsole::root,getEngine()->getRootWidth()/2,getEngine()->getRootHeight()/2);
-    logo->blit(TCODConsole::root,getEngine()->getRootWidth()/2,getEngine()->getRootHeight()/2,TCOD_BKGND_LIGHTEN);
-    TCODConsole::root->print(1,3,"Read custom parameters from module.txt :");
-    TCODConsole::root->print(1,5,"chainParam1:%s",getStringParam("chainParam1"));
-    TCODConsole::root->print(1,6,"chainParam2:%s",getStringParam("chainParam2"));
-    TCODConsole::root->print(1,7,"chainParam3:%s",getStringParam("chainParam3"));
-    TCODConsole::root->print(1,8,"moduleParam:%s",getStringParam("moduleParam"));
+    TCODConsole::root->print(1,3,"Read custom parameters from module.txt:");
+    TCODConsole::root->print(1,5,"chainParam1: %s",getStringParam("chainParam1"));
+    TCODConsole::root->print(1,6,"chainParam2: %s",getStringParam("chainParam2"));
+    TCODConsole::root->print(1,7,"chainParam3: %s",getStringParam("chainParam3"));
+    TCODConsole::root->print(1,8,"moduleParam: %s",getStringParam("moduleParam"));
 }
 
 void Demo::keyboard (TCOD_key_t &key) {
