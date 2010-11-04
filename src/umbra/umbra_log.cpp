@@ -54,7 +54,7 @@ const char * resultString[] = {
 	"[END BLOCK]"
 };
 
-void UmbraLog::initialise() {
+void UmbraLog::initialise () {
 	out = fopen("log.txt","w");
 	fprintf(out,UMBRA_TITLE" ver. "UMBRA_VERSION" ("UMBRA_STATUS") Log file, Running time on creation: %dms.\n"
 	            "---===---\n"
@@ -68,13 +68,13 @@ void UmbraLog::initialise() {
 	fflush(out);
 }
 
-void UmbraLog::save() {
+void UmbraLog::save () {
 	indent = 0;
 	UmbraLog::info("Log file saved.");
 	if (out != NULL) fclose(out);
 }
 
-void UmbraLog::output(UmbraLogType type, UmbraLogResult res, const char * str) {
+void UmbraLog::output (UmbraLogType type, UmbraLogResult res, const char * str) {
 	if (UmbraConfig::logLevel > (UmbraLogLevel)type) return;
 	if (out == NULL) {
 		initialise();
@@ -101,11 +101,11 @@ void UmbraLog::output(UmbraLogType type, UmbraLogResult res, const char * str) {
 	fflush(out);
 }
 
-void UmbraLog::output(UmbraLogType type, UmbraLogResult res, std::string str) {
+void UmbraLog::output (UmbraLogType type, UmbraLogResult res, std::string str) {
 	output(type,res,str.c_str());
 }
 
-void UmbraLog::openBlock(const char* str, ...) {
+void UmbraLog::openBlock (const char* str, ...) {
 	char s[2048];
 	va_list ap;
 	va_start(ap,str);
@@ -115,12 +115,12 @@ void UmbraLog::openBlock(const char* str, ...) {
 	++indent;
 }
 
-void UmbraLog::openBlock(std::string str) {
+void UmbraLog::openBlock (std::string str) {
 	output(UMBRA_LOGTYPE_INFO,(UmbraLogResult)(-1),str);
 	++indent;
 }
 
-void UmbraLog::info(const char * str, ...) {
+void UmbraLog::info (const char * str, ...) {
 	char s[2048];
 	va_list ap;
 	va_start(ap,str);
@@ -129,11 +129,11 @@ void UmbraLog::info(const char * str, ...) {
 	output(UMBRA_LOGTYPE_INFO,(UmbraLogResult)(-1),s);
 }
 
-void UmbraLog::info(std::string str) {
+void UmbraLog::info (std::string str) {
 	output(UMBRA_LOGTYPE_INFO,(UmbraLogResult)(-1),str);
 }
 
-void UmbraLog::warning(const char * str, ...) {
+void UmbraLog::warning (const char * str, ...) {
 	char s[2048];
 	va_list ap;
 	va_start(ap,str);
@@ -142,11 +142,11 @@ void UmbraLog::warning(const char * str, ...) {
 	output(UMBRA_LOGTYPE_WARNING,(UmbraLogResult)(-1),s);
 }
 
-void UmbraLog::warning(std::string str) {
+void UmbraLog::warning (std::string str) {
 	output(UMBRA_LOGTYPE_WARNING,(UmbraLogResult)(-1),str);
 }
 
-void UmbraLog::error(const char * str, ...) {
+void UmbraLog::error (const char * str, ...) {
 	char s[2048];
 	va_list ap;
 	va_start(ap,str);
@@ -155,11 +155,11 @@ void UmbraLog::error(const char * str, ...) {
 	output(UMBRA_LOGTYPE_ERROR,(UmbraLogResult)(-1),s);
 }
 
-void UmbraLog::error(std::string str) {
+void UmbraLog::error (std::string str) {
 	output(UMBRA_LOGTYPE_ERROR,(UmbraLogResult)(-1),str);
 }
 
-void UmbraLog::fatalError(const char * str, ...) {
+void UmbraLog::fatalError (const char * str, ...) {
 	char s[2048];
 	va_list ap;
 	va_start(ap,str);
@@ -168,11 +168,11 @@ void UmbraLog::fatalError(const char * str, ...) {
 	output(UMBRA_LOGTYPE_FATAL,(UmbraLogResult)(-1),s);
 }
 
-void UmbraLog::fatalError(std::string str) {
+void UmbraLog::fatalError (std::string str) {
 	output(UMBRA_LOGTYPE_FATAL,(UmbraLogResult)(-1),str);
 }
 
-void UmbraLog::closeBlock(UmbraLogResult result) {
+void UmbraLog::closeBlock (UmbraLogResult result) {
 	output(UMBRA_LOGTYPE_INFO,result,"");
 	if (indent > 0) --indent;
 }

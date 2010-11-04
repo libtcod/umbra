@@ -25,22 +25,28 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
+/**
+ * The results of closing a log block.
+ */
 enum UmbraLogResult {
 	UMBRA_LOGRESULT_FAILURE,
 	UMBRA_LOGRESULT_SUCCESS,
 	UMBRA_LOGRESULT_NONE
 };
 
-enum UmbraLogType {
-	UMBRA_LOGTYPE_INFO,
-	UMBRA_LOGTYPE_NOTICE,
-	UMBRA_LOGTYPE_WARNING,
-	UMBRA_LOGTYPE_ERROR,
-	UMBRA_LOGTYPE_FATAL
-};
-
+/**
+ * The message log, used for debugging. It logs messages in a nested hierarchy, showing not only the place and time of saving the message, but also the caller-callee dependency (if used in both the caller and callee methods).
+ */
 class UmbraLog {
 	friend class UmbraEngine;
+private:
+	enum UmbraLogType {
+		UMBRA_LOGTYPE_INFO,
+		UMBRA_LOGTYPE_NOTICE,
+		UMBRA_LOGTYPE_WARNING,
+		UMBRA_LOGTYPE_ERROR,
+		UMBRA_LOGTYPE_FATAL
+	};
 	class UmbraLogMessage {
 		friend class UmbraLog;
 		std::string msg;
@@ -49,26 +55,83 @@ class UmbraLog {
 		UmbraLogType logType;
 		int indent;
 	};
-private:
 	static FILE * out;
 	static int indent;
 	static TCODList <UmbraLogMessage*> messages;
-	static void save();
-	static void initialise();
-	static void output(UmbraLogType type, UmbraLogResult result, const char * str);
-	static void output(UmbraLogType type, UmbraLogResult result, std::string str);
+	static void save ();
+	static void initialise ();
+	static void output (UmbraLogType type, UmbraLogResult result, const char * str);
+	static void output (UmbraLogType type, UmbraLogResult result, std::string str);
 public:
-	static void openBlock(const char * str, ...);
-	static void openBlock(std::string str);
-	static void info(const char * str, ...);
-	static void info(std::string str);
-	static void notice(const char * str, ...);
-	static void notice(std::string str);
-	static void warning(const char * str, ...);
-	static void warning(std::string str);
-	static void error(const char * str, ...);
-	static void error(std::string str);
-	static void fatalError(const char * str, ...);
-	static void fatalError(std::string str);
-	static void closeBlock(UmbraLogResult result = UMBRA_LOGRESULT_NONE);
+	/**
+	 * Opens a block in the log (increases the indent). The log level of this message is <code>INFO</code>.
+     * @param str the log message string, <code>printf</code>-like formatted
+     * @param ... optional parametres for the message formatting
+     */
+	static void openBlock (const char * str, ...);
+	/**
+	 * Opens a block in the log (increases the indent). The log level of this message is <code>INFO</code>.
+     * @param str the log message string, as a C++ string
+     */
+	static void openBlock (std::string str);
+	/**
+	 * Puts a message with the log level <code>INFO</code> in the log.
+     * @param str the log message string, <code>printf</code>-like formatted
+     * @param ... optional parametres for the message formatting
+     */
+	static void info (const char * str, ...);
+	/**
+	 * Puts a message with the log level <code>INFO</code> in the log.
+     * @param str the log message string, as a C++ string
+     */
+	static void info (std::string str);
+	/**
+	 * Puts a message with the log level <code>NOTICE</code> in the log.
+     * @param str the log message string, <code>printf</code>-like formatted
+     * @param ... optional parametres for the message formatting
+     */
+	static void notice (const char * str, ...);
+	/**
+	 * Puts a message with the log level <code>NOTICE</code> in the log.
+     * @param str the log message string, as a C++ string
+     */
+	static void notice (std::string str);
+	/**
+	 * Puts a message with the log level <code>WARNING</code> in the log.
+     * @param str the log message string, <code>printf</code>-like formatted
+     * @param ... optional parametres for the message formatting
+     */
+	static void warning (const char * str, ...);
+	/**
+	 * Puts a message with the log level <code>NOTICE</code> in the log.
+     * @param str the log message string, as a C++ string
+     */
+	static void warning (std::string str);
+	/**
+	 * Puts a message with the log level <code>ERROR</code> in the log.
+     * @param str the log message string, <code>printf</code>-like formatted
+     * @param ... optional parametres for the message formatting
+     */
+	static void error (const char * str, ...);
+	/**
+	 * Puts a message with the log level <code>ERROR</code> in the log.
+     * @param str the log message string, as a C++ string
+     */
+	static void error (std::string str);
+	/**
+	 * Puts a message with the log level <code>FATAL ERROR</code> in the log.
+     * @param str the log message string, <code>printf</code>-like formatted
+     * @param ... optional parametres for the message formatting
+     */
+	static void fatalError (const char * str, ...);
+	/**
+	 * Puts a message with the log level <code>FATAL ERROR</code> in the log.
+     * @param str the log message string, as a C++ string
+     */
+	static void fatalError (std::string str);
+	/**
+	 * Closes a block in the log (decreases the indent). The log level is <code>INFO</code>.
+     * @param result (optional) the result of the block (success or failure). A failure will typically be preceded with a logged message describing the reason for the block to end with a failure.
+     */
+	static void closeBlock (UmbraLogResult result = UMBRA_LOGRESULT_NONE);
 };
