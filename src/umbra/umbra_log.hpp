@@ -60,8 +60,8 @@ private:
 	static TCODList <UmbraLogMessage*> messages;
 	static void save ();
 	static void initialise ();
-	static void output (UmbraLogType type, UmbraLogResult result, const char * str);
-	static void output (UmbraLogType type, UmbraLogResult result, std::string str);
+	static void output (UmbraLogType type, UmbraLogResult result, int indent, const char * str);
+	static void output (UmbraLogType type, UmbraLogResult result, int indent, std::string str);
 public:
 	/**
 	 * Opens a block in the log (increases the indent). The log level of this message is <code>INFO</code>.

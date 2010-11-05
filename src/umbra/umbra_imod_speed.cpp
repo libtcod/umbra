@@ -40,7 +40,7 @@ UmbraModSpeed::UmbraModSpeed (): cumulatedElapsed(0.0f), updateTime(0.0f), rende
 	//the buttons:
 	minimiseButton.set(MAXIMISED_MODE_WIDTH-3,0);
 	closeButton.set(MAXIMISED_MODE_WIDTH-2,0);
-	priority=0; // higher prio for internal modules
+	setPriority(-2000000000); // high priority for internal modules
 	timeBar = new TCODImage(TIMEBAR_LENGTH,2);
 	setName("umbraSpeedometer");
 }
