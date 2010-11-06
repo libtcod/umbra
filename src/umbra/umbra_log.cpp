@@ -41,6 +41,14 @@ const char * logTypeString[] = {
 	"FAT."
 };
 
+const char * logTypeStringFull[] = {
+	"INFO",
+	"NOTICE",
+	"WARNING",
+	"ERROR",
+	"FATAL ERROR"
+};
+
 const char * logTypeStringLong[] = {
 	"INFO",
 	"NOTIFICATION",
@@ -75,13 +83,12 @@ void UmbraLog::save () {
 	if (out != NULL) fclose(out);
 }
 
-void UmbraLog::output (UmbraLogType type, UmbraLogResult res, int ind, const char * str) {
-	if (UmbraConfig::logLevel > (UmbraLogLevel)type) return;
+int UmbraLog::output (UmbraLogType type, UmbraLogResult res, int ind, const char * str) {
+	if (UmbraConfig::logLevel > (UmbraLogLevel)type) return 0;
 	if (out == NULL) {
 		initialise();
 		if (res >= UMBRA_LOGRESULT_FAILURE && indent == 0) {
-			error("UmbraLog::closeBlock | Tried to close a block, but it hasn't been opened in the first place.");
-			return;
+			return error("UmbraLog::closeBlock | Tried to close a block, but it hasn't been opened in the first place.");
 		}
 	}
 	//create the message
@@ -108,77 +115,104 @@ void UmbraLog::output (UmbraLogType type, UmbraLogResult res, int ind, const cha
 	fflush(out);
 	indent += ind;
 	messages.push(msg);
+	return messages.size();
 }
 
-void UmbraLog::output (UmbraLogType type, UmbraLogResult res, int ind, std::string str) {
-	output(type,res,ind,str.c_str());
+int UmbraLog::output (UmbraLogType type, UmbraLogResult res, int ind, std::string str) {
+	return output(type,res,ind,str.c_str());
 }
 
-void UmbraLog::openBlock (const char* str, ...) {
+int UmbraLog::openBlock (const char* str, ...) {
 	char s[2048];
 	va_list ap;
 	va_start(ap,str);
 	vsprintf(s,str,ap);
 	va_end(ap);
-	output(UMBRA_LOGTYPE_INFO,(UmbraLogResult)(-1),1,s);
+	return output(UMBRA_LOGTYPE_INFO,(UmbraLogResult)(-1),1,s);
 }
 
-void UmbraLog::openBlock (std::string str) {
-	output(UMBRA_LOGTYPE_INFO,(UmbraLogResult)(-1),1,str);
+int UmbraLog::openBlock (std::string str) {
+	return output(UMBRA_LOGTYPE_INFO,(UmbraLogResult)(-1),1,str);
 }
 
-void UmbraLog::info (const char * str, ...) {
+int UmbraLog::info (const char * str, ...) {
 	char s[2048];
 	va_list ap;
 	va_start(ap,str);
 	vsprintf(s,str,ap);
 	va_end(ap);
-	output(UMBRA_LOGTYPE_INFO,(UmbraLogResult)(-1),0,s);
+	return output(UMBRA_LOGTYPE_INFO,(UmbraLogResult)(-1),0,s);
 }
 
-void UmbraLog::info (std::string str) {
-	output(UMBRA_LOGTYPE_INFO,(UmbraLogResult)(-1),0,str);
+int UmbraLog::info (std::string str) {
+	return output(UMBRA_LOGTYPE_INFO,(UmbraLogResult)(-1),0,str);
 }
 
-void UmbraLog::warning (const char * str, ...) {
+int UmbraLog::warning (const char * str, ...) {
 	char s[2048];
 	va_list ap;
 	va_start(ap,str);
 	vsprintf(s,str,ap);
 	va_end(ap);
-	output(UMBRA_LOGTYPE_WARNING,(UmbraLogResult)(-1),0,s);
+	return output(UMBRA_LOGTYPE_WARNING,(UmbraLogResult)(-1),0,s);
 }
 
-void UmbraLog::warning (std::string str) {
-	output(UMBRA_LOGTYPE_WARNING,(UmbraLogResult)(-1),0,str);
+int UmbraLog::warning (std::string str) {
+	return output(UMBRA_LOGTYPE_WARNING,(UmbraLogResult)(-1),0,str);
 }
 
-void UmbraLog::error (const char * str, ...) {
+int UmbraLog::error (const char * str, ...) {
 	char s[2048];
 	va_list ap;
 	va_start(ap,str);
 	vsprintf(s,str,ap);
 	va_end(ap);
-	output(UMBRA_LOGTYPE_ERROR,(UmbraLogResult)(-1),0,s);
+	return output(UMBRA_LOGTYPE_ERROR,(UmbraLogResult)(-1),0,s);
 }
 
-void UmbraLog::error (std::string str) {
-	output(UMBRA_LOGTYPE_ERROR,(UmbraLogResult)(-1),0,str);
+int UmbraLog::error (std::string str) {
+	return output(UMBRA_LOGTYPE_ERROR,(UmbraLogResult)(-1),0,str);
 }
 
-void UmbraLog::fatalError (const char * str, ...) {
+int UmbraLog::fatalError (const char * str, ...) {
 	char s[2048];
 	va_list ap;
 	va_start(ap,str);
 	vsprintf(s,str,ap);
 	va_end(ap);
-	output(UMBRA_LOGTYPE_FATAL,(UmbraLogResult)(-1),0,s);
+	return output(UMBRA_LOGTYPE_FATAL,(UmbraLogResult)(-1),0,s);
 }
 
-void UmbraLog::fatalError (std::string str) {
-	output(UMBRA_LOGTYPE_FATAL,(UmbraLogResult)(-1),0,str);
+int UmbraLog::fatalError (std::string str) {
+	return output(UMBRA_LOGTYPE_FATAL,(UmbraLogResult)(-1),0,str);
 }
 
-void UmbraLog::closeBlock (UmbraLogResult result) {
-	output(UMBRA_LOGTYPE_INFO,result,-1,"");
+int UmbraLog::closeBlock (UmbraLogResult result) {
+	return output(UMBRA_LOGTYPE_INFO,result,-1,"");
+}
+
+int UmbraLog::size(UmbraLogType type) {
+	int count = 0;
+	if (type < UMBRA_LOGTYPE_INFO || type > UMBRA_LOGTYPE_FATAL) {
+		error("UmbraLog::size | Specified an invalid log message type.");
+		return 0;
+	}
+	for (UmbraLogMessage ** msg = messages.begin(); msg != messages.end(); msg++)
+		if ((*msg)->logType == type) ++count;
+	return count;
+}
+
+const char * UmbraLog::get (int idx) {
+	UmbraLogMessage * msg;
+	std::string ret = "";
+	if (idx == -1) msg = messages.peek();
+	else if (idx < -1 || idx >= messages.size()) {
+		error ("UmbraLog::get | Tried to retrieve a message with index %d, but such an index does not exist.",idx);
+		msg = messages.peek();
+	}
+	else msg = messages.get(idx);
+	ret = logTypeStringFull[msg->logType];
+	ret += ": ";
+	ret += msg->msg;
+	return ret.c_str();
 }

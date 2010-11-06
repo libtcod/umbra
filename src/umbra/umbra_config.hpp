@@ -25,6 +25,9 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
+#ifndef UMBRA_CONFIG_HPP
+#define UMBRA_CONFIG_HPP
+
 class UmbraFont;
 
 enum UmbraLogLevel {
@@ -71,3 +74,5 @@ private:
 	 */
 	static void registerFont (UmbraFont * _font);
 };
+
+#endif

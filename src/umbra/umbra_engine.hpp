@@ -25,6 +25,10 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
+#ifndef UMBRA_ENGINE_HPP
+#define UMBRA_ENGINE_HPP
+
+#include "umbra_config.hpp"
 #include <iostream>
 
 class UmbraModule;
@@ -333,3 +337,5 @@ private:
        */
 	void registerInternalModule (UmbraInternalModuleID id, UmbraModule * module);
 };
+
+#endif
