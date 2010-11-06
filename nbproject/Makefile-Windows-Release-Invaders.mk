@@ -46,7 +46,6 @@ OBJECTFILES= \
 	${OBJECTDIR}/src/umbra/umbra_config.o \
 	${OBJECTDIR}/src/umbra/umbra_imod_bsod.o \
 	${OBJECTDIR}/src/invaders/main.o \
-	${OBJECTDIR}/src/umbra/umbra_error.o \
 	${OBJECTDIR}/src/umbra/umbra_widget.o \
 	${OBJECTDIR}/src/umbra/umbra_callback.o \
 	${OBJECTDIR}/src/invaders/gameview.o \
@@ -143,11 +142,6 @@ ${OBJECTDIR}/src/invaders/main.o: src/invaders/main.cpp
 	${MKDIR} -p ${OBJECTDIR}/src/invaders
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -I../libtcod/include -Isrc/umbra -Isrc/invaders -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/invaders/main.o src/invaders/main.cpp
-
-${OBJECTDIR}/src/umbra/umbra_error.o: src/umbra/umbra_error.cpp 
-	${MKDIR} -p ${OBJECTDIR}/src/umbra
-	${RM} $@.d
-	$(COMPILE.cc) -O2 -I../libtcod/include -Isrc/umbra -Isrc/invaders -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/umbra/umbra_error.o src/umbra/umbra_error.cpp
 
 ${OBJECTDIR}/src/umbra/umbra_widget.o: src/umbra/umbra_widget.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/umbra

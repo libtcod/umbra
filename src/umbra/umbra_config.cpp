@@ -68,8 +68,8 @@ void UmbraConfig::load (const char *fileName) {
 		config->addProperty("moduleChain",TCOD_TYPE_STRING,false);
 
 	//check if the config file exists
-	if (!UmbraError::fileExists(fileName)) {
-		UmbraError::add(UMBRA_ERRORLEVEL_WARNING,"Configuration file %s is bad or missing. Attempting to create a new one.", fileName);
+	if (!TCODSystem::fileExists(fileName)) {
+		UmbraLog::notice("Configuration file %s is bad or missing. Attempting to create a new one.", fileName);
 		//assign defaults
 		rootWidth = 80;
 		rootHeight = 60;

@@ -27,16 +27,16 @@
 
 #include "umbra_engine.hpp"
 
-	/**
-	 * Type of message placed in the log.
-	 */
-	enum UmbraLogType {
-		UMBRA_LOGTYPE_INFO,
-		UMBRA_LOGTYPE_NOTICE,
-		UMBRA_LOGTYPE_WARNING,
-		UMBRA_LOGTYPE_ERROR,
-		UMBRA_LOGTYPE_FATAL
-	};
+/**
+ * Type of message placed in the log.
+ */
+enum UmbraLogType {
+	UMBRA_LOGTYPE_INFO,
+	UMBRA_LOGTYPE_NOTICE,
+	UMBRA_LOGTYPE_WARNING,
+	UMBRA_LOGTYPE_ERROR,
+	UMBRA_LOGTYPE_FATAL
+};
 
 /**
  * The results of closing a log block.

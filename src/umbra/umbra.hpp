@@ -35,7 +35,6 @@
 
 #include "libtcod.hpp"
 
-#include "umbra_error.hpp"
 #include "umbra_log.hpp"
 #include "umbra_font.hpp"
 #include "umbra_config.hpp"

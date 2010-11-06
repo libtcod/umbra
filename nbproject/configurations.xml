@@ -20,7 +20,6 @@
         <itemPath>src/umbra/umbra_imod_bsod.hpp</itemPath>
         <itemPath>src/umbra/umbra_imod_speed.hpp</itemPath>
         <itemPath>src/umbra/umbra_key.hpp</itemPath>
-        <itemPath>src/umbra/umbra_log.hpp</itemPath>
         <itemPath>src/umbra/umbra_module.hpp</itemPath>
         <itemPath>src/umbra/umbra_module_factory.hpp</itemPath>
         <itemPath>src/umbra/umbra_point.hpp</itemPath>
@@ -33,7 +32,6 @@
         <itemPath>src/umbra/umbra_callback.cpp</itemPath>
         <itemPath>src/umbra/umbra_config.cpp</itemPath>
         <itemPath>src/umbra/umbra_engine.cpp</itemPath>
-        <itemPath>src/umbra/umbra_error.cpp</itemPath>
         <itemPath>src/umbra/umbra_font.cpp</itemPath>
         <itemPath>src/umbra/umbra_imod_bsod.cpp</itemPath>
         <itemPath>src/umbra/umbra_imod_speed.cpp</itemPath>

@@ -46,7 +46,6 @@ OBJECTFILES= \
 	${OBJECTDIR}/src/umbra/umbra_config.o \
 	${OBJECTDIR}/src/umbra/umbra_imod_bsod.o \
 	${OBJECTDIR}/src/fov/fov_results.o \
-	${OBJECTDIR}/src/umbra/umbra_error.o \
 	${OBJECTDIR}/src/fov/bsp_helper.o \
 	${OBJECTDIR}/src/umbra/umbra_widget.o \
 	${OBJECTDIR}/src/umbra/umbra_callback.o \
@@ -144,11 +143,6 @@ ${OBJECTDIR}/src/fov/fov_results.o: src/fov/fov_results.cpp
 	${MKDIR} -p ${OBJECTDIR}/src/fov
 	${RM} $@.d
 	$(COMPILE.cc) -g -I../libtcod/include -Isrc/umbra -Isrc/fov -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/fov/fov_results.o src/fov/fov_results.cpp
-
-${OBJECTDIR}/src/umbra/umbra_error.o: src/umbra/umbra_error.cpp 
-	${MKDIR} -p ${OBJECTDIR}/src/umbra
-	${RM} $@.d
-	$(COMPILE.cc) -g -I../libtcod/include -Isrc/umbra -Isrc/fov -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/umbra/umbra_error.o src/umbra/umbra_error.cpp
 
 ${OBJECTDIR}/src/fov/bsp_helper.o: src/fov/bsp_helper.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/fov

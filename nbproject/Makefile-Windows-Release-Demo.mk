@@ -45,7 +45,6 @@ OBJECTFILES= \
 	${OBJECTDIR}/src/demo/rabbit.o \
 	${OBJECTDIR}/src/umbra/umbra_imod_bsod.o \
 	${OBJECTDIR}/src/demo/main.o \
-	${OBJECTDIR}/src/umbra/umbra_error.o \
 	${OBJECTDIR}/src/demo/demo.o \
 	${OBJECTDIR}/src/umbra/umbra_widget.o \
 	${OBJECTDIR}/src/umbra/umbra_callback.o \
@@ -139,11 +138,6 @@ ${OBJECTDIR}/src/demo/main.o: src/demo/main.cpp
 	${MKDIR} -p ${OBJECTDIR}/src/demo
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -I../libtcod/include -Isrc/umbra -Isrc/demo -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/demo/main.o src/demo/main.cpp
-
-${OBJECTDIR}/src/umbra/umbra_error.o: src/umbra/umbra_error.cpp 
-	${MKDIR} -p ${OBJECTDIR}/src/umbra
-	${RM} $@.d
-	$(COMPILE.cc) -O2 -I../libtcod/include -Isrc/umbra -Isrc/demo -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/umbra/umbra_error.o src/umbra/umbra_error.cpp
 
 ${OBJECTDIR}/src/demo/demo.o: src/demo/demo.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/demo

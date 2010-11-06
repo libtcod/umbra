@@ -148,6 +148,19 @@ int UmbraLog::info (std::string str) {
 	return output(UMBRA_LOGTYPE_INFO,(UmbraLogResult)(-1),0,str);
 }
 
+int UmbraLog::notice (const char * str, ...) {
+	char s[2048];
+	va_list ap;
+	va_start(ap,str);
+	vsprintf(s,str,ap);
+	va_end(ap);
+	return output(UMBRA_LOGTYPE_NOTICE,(UmbraLogResult)(-1),0,s);
+}
+
+int UmbraLog::notice (std::string str) {
+	return output(UMBRA_LOGTYPE_NOTICE,(UmbraLogResult)(-1),0,str);
+}
+
 int UmbraLog::warning (const char * str, ...) {
 	char s[2048];
 	va_list ap;

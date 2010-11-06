@@ -67,7 +67,7 @@ void Demo::keyboard (TCOD_key_t &key) {
     if (key.vk == TCODK_SPACE) getEngine()->activateModule(666);
     else if (key.vk == TCODK_ENTER) {
         std::string e = "This is a test error";
-        UmbraError::add(UMBRA_ERRORLEVEL_ERROR,e);
+        UmbraLog::error(e);
         getEngine()->displayError();
     }
     else if (key.vk == TCODK_ESCAPE) getEngine()->deactivateAll();

@@ -71,7 +71,7 @@ void UmbraModule::setFallback(const char *name) {
 	if (mod) {
 		setFallback(mod->getID());
 	} else {
-		UmbraError::add(UMBRA_ERRORLEVEL_ERROR,"UmbraModule::setFallback: Unknown module \"%s\".", name);
+		UmbraLog::error("UmbraModule::setFallback | Unknown module \"%s\".", name);
 	}
 }
 

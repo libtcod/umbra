@@ -39,7 +39,7 @@ UmbraModBSOD::UmbraModBSOD () {
 
 void UmbraModBSOD::activate () {
 	startTime = TCODSystem::getElapsedMilli();
-	msgString = UmbraError::getLastMessage();
+	msgString = UmbraLog::get();
 }
 
 bool UmbraModBSOD::update () {
@@ -53,7 +53,7 @@ void UmbraModBSOD::render () {
 	bsod->clear();
 	bsod->setDefaultForeground(TCODColor::white);
 	bsod->printFrame(0,0,30,8,true,TCOD_BKGND_NONE,"Umbra BSOD");
-	bsod->printRectEx(15,2,28,5,TCOD_BKGND_NONE,TCOD_CENTER,UmbraError::getLastMessage());
+	bsod->printRectEx(15,2,28,5,TCOD_BKGND_NONE,TCOD_CENTER,UmbraLog::get());
 	if (closeButton.mouseHover)
 		bsod->setDefaultForeground(TCODColor::red);
 	bsod->putChar(closeButton.x,closeButton.y,'X',TCOD_BKGND_NONE);
