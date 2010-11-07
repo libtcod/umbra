@@ -53,5 +53,6 @@
 
 #include "umbra_imod_speed.hpp"
 #include "umbra_imod_bsod.hpp"
+#include "umbra_imod_credits.hpp"
 
 #endif

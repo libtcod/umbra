@@ -173,6 +173,7 @@ UmbraEngine::UmbraEngine (const char *fileName, UmbraRegisterCallbackFlag flag):
 	//register internal modules
 	registerInternalModule(UMBRA_INTERNAL_SPEEDOMETER,new UmbraModSpeed());
 	registerInternalModule(UMBRA_INTERNAL_BSOD,new UmbraModBSOD());
+	registerInternalModule(UMBRA_INTERNAL_CREDITS,new UmbraModCredits());
 	//register default callbacks
 	if (flag & UMBRA_REGISTER_DEFAULT) {
 		registerCallback(new UmbraCallbackQuit());
@@ -198,6 +199,7 @@ UmbraEngine::UmbraEngine (const char *fileName): keyboardMode(UMBRA_KEYBOARD_REL
 	//register internal modules
 	registerInternalModule(UMBRA_INTERNAL_SPEEDOMETER,new UmbraModSpeed());
 	registerInternalModule(UMBRA_INTERNAL_BSOD,new UmbraModBSOD());
+	registerInternalModule(UMBRA_INTERNAL_CREDITS,new UmbraModCredits());
 	//register default callbacks
 	registerCallback(new UmbraCallbackQuit());
 	registerCallback(new UmbraCallbackFullscreen());
@@ -218,6 +220,7 @@ UmbraEngine::UmbraEngine (UmbraRegisterCallbackFlag flag): keyboardMode(UMBRA_KE
 	//register internal modules
 	registerInternalModule(UMBRA_INTERNAL_SPEEDOMETER,new UmbraModSpeed());
 	registerInternalModule(UMBRA_INTERNAL_BSOD,new UmbraModBSOD());
+	registerInternalModule(UMBRA_INTERNAL_CREDITS,new UmbraModCredits());
 	//register default callbacks
 	if (flag & UMBRA_REGISTER_DEFAULT) {
 		registerCallback(new UmbraCallbackQuit());
@@ -243,6 +246,7 @@ UmbraEngine::UmbraEngine (): keyboardMode(UMBRA_KEYBOARD_RELEASED) {
 	//register internal modules
 	registerInternalModule(UMBRA_INTERNAL_SPEEDOMETER,new UmbraModSpeed());
 	registerInternalModule(UMBRA_INTERNAL_BSOD,new UmbraModBSOD());
+	registerInternalModule(UMBRA_INTERNAL_CREDITS,new UmbraModCredits());
 	//register default callbacks
 	registerCallback(new UmbraCallbackQuit());
 	registerCallback(new UmbraCallbackFullscreen());
@@ -733,4 +737,9 @@ void UmbraEngine::displayError () {
 			toDeactivate.push(internalModules[UMBRA_INTERNAL_BSOD]);
 		toActivate.push(internalModules[UMBRA_INTERNAL_BSOD]);
 	}
+}
+
+void UmbraEngine::printCredits (int x, int y, uint32 duration) {
+	((UmbraModCredits *)internalModules[UMBRA_INTERNAL_CREDITS])->set(x,y,duration);
+	activateModule(internalModules[UMBRA_INTERNAL_CREDITS]);
 }

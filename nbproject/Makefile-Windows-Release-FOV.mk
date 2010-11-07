@@ -39,6 +39,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/src/invaders/notification.o \
 	${OBJECTDIR}/src/fov/main.o \
 	${OBJECTDIR}/src/umbra/umbra_widget_button.o \
+	${OBJECTDIR}/src/umbra/umbra_imod_credits.o \
 	${OBJECTDIR}/src/umbra/umbra_log.o \
 	${OBJECTDIR}/src/demo/circle.o \
 	${OBJECTDIR}/src/umbra/umbra_module.o \
@@ -108,6 +109,11 @@ ${OBJECTDIR}/src/umbra/umbra_widget_button.o: src/umbra/umbra_widget_button.cpp
 	${MKDIR} -p ${OBJECTDIR}/src/umbra
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -I../libtcod/include -Isrc/umbra -Isrc/fov -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/umbra/umbra_widget_button.o src/umbra/umbra_widget_button.cpp
+
+${OBJECTDIR}/src/umbra/umbra_imod_credits.o: src/umbra/umbra_imod_credits.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src/umbra
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -I../libtcod/include -Isrc/umbra -Isrc/fov -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/umbra/umbra_imod_credits.o src/umbra/umbra_imod_credits.cpp
 
 ${OBJECTDIR}/src/umbra/umbra_log.o: src/umbra/umbra_log.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/umbra

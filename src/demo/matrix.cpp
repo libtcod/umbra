@@ -77,3 +77,7 @@ void Matrix::render () {
         TCODConsole::blit(TCODConsole::root,0,0,engine.getRootWidth(),engine.getRootHeight(),MatrixLead::matrix,0,0,1.0f,0.0f);
     }
 }
+
+void Matrix::onActivate() {
+	getEngine()->printCredits(51,1);
+}

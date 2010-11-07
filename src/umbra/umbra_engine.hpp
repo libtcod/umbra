@@ -53,6 +53,7 @@ enum UmbraKeyboardMode {
 enum UmbraInternalModuleID {
 	UMBRA_INTERNAL_SPEEDOMETER,
 	UMBRA_INTERNAL_BSOD,
+	UMBRA_INTERNAL_CREDITS,
 	UMBRA_INTERNAL_MAX
 };
 
@@ -303,6 +304,13 @@ public:
        * @param h the root console's height
        */
 	static void setRootDimensions (int w, int h) { UmbraConfig::rootWidth = w; UmbraConfig::rootHeight = h; getInstance()->reinitialise(renderer); }
+	/**
+	 * Displays a credits line.
+     * @param x the <code>x</code> coordinate of the credits line placement on the root console
+     * @param y the <code>y</code> coordinate of the credits line placement on the root console
+     * @param duration the total duration of the display (half of which is the fade out)
+     */
+	void printCredits(int x, int y, uint32 duration = 10000);
 private:
 	static UmbraEngine * engineInstance;
 	std::string windowTitle;

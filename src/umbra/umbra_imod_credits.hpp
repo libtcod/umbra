@@ -25,29 +25,24 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef MODULE_CREDITS_HPP
-#define MODULE_CREDITS_HPP
+#ifndef UMBRA_IMOD_CREDITS_HPP
+#define	UMBRA_IMOD_CREDITS_HPP
 
-class MatrixLead {
+class UmbraModCredits: public UmbraModule {
+	friend void UmbraEngine::printCredits(int x, int y, uint32 duration);
 public:
-	MatrixLead ();
-	static TCODRandom * random;
-	int x, y; //coordinates
-	uint32 lastY; //last y increment
-	uint32 yDuration; //how long it takes to increment y
-	static TCODConsole * matrix;
-	void render (uint32 time);
-};
-
-
-class Matrix: public UmbraModule {
-public:
-	bool update ();
-	void render ();
+	UmbraModCredits();
+	bool update();
+	void render();
 	void onActivate();
-
 private:
-	TCODList <MatrixLead *> leads;
+	void set(int x, int y, uint32 duration);
+	TCODConsole * con;
+	UmbraPoint coords;
+	uint32 startTime;
+	float alpha;
+	uint32 duration;
 };
 
-#endif
+#endif	/* UMBRA_IMOD_CREDITS_HPP */
+

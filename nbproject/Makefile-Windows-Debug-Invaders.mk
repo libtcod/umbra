@@ -38,6 +38,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/src/invaders/notification.o \
 	${OBJECTDIR}/src/umbra/umbra_widget_button.o \
 	${OBJECTDIR}/src/invaders/utilities.o \
+	${OBJECTDIR}/src/umbra/umbra_imod_credits.o \
 	${OBJECTDIR}/src/invaders/entities.o \
 	${OBJECTDIR}/src/umbra/umbra_log.o \
 	${OBJECTDIR}/src/demo/circle.o \
@@ -102,6 +103,11 @@ ${OBJECTDIR}/src/invaders/utilities.o: src/invaders/utilities.cpp
 	${MKDIR} -p ${OBJECTDIR}/src/invaders
 	${RM} $@.d
 	$(COMPILE.cc) -g -I../libtcod/include -Isrc/umbra -Isrc/invaders -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/invaders/utilities.o src/invaders/utilities.cpp
+
+${OBJECTDIR}/src/umbra/umbra_imod_credits.o: src/umbra/umbra_imod_credits.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src/umbra
+	${RM} $@.d
+	$(COMPILE.cc) -g -I../libtcod/include -Isrc/umbra -Isrc/invaders -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/umbra/umbra_imod_credits.o src/umbra/umbra_imod_credits.cpp
 
 ${OBJECTDIR}/src/invaders/entities.o: src/invaders/entities.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/invaders

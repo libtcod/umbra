@@ -592,10 +592,11 @@ Please note that this module requires the console emulator to be active, otherwi
 *[[UmbraCallbackScreenshot]]
 *[[UmbraCallbackSpeedometer]]</pre>
 </div>
-<div title="Change log" modifier="Mingos" created="201008111354" modified="201011070205" tags="changeLog" changecount="36">
+<div title="Change log" modifier="Mingos" created="201008111354" modified="201011072126" tags="changeLog" changecount="37">
 <pre>&lt;&lt;tiddler ChangeLogSymbols&gt;&gt;
 !Current HEAD revision
 |!Category|!Committed on|!Change|!Committed by|
+|NEW|7-Nov-2010|Added a credits display method|Mingos|
 |NEW|6-Nov-2010|~UmbraLog introduced as a more powerful successor of ~UmbraError|Mingos|
 |REM|6-Nov-2010|~UmbraError has been removed|Mingos|
 |NEW|2-Nov-2010|deactivateAll now has an optional parametre controlling whether to ignore module fallbacks or not|Mingos|
@@ -899,12 +900,15 @@ speed-&gt;putChar(closeButton.x,closeButton.y,'X',TCOD_BKGND_SET);
 &lt;/code&gt;
 In the above code snippet, {{{speed}}} is the offscreen console the widget uses. Note that {{{mouseHover}}} variable is used to determine the colour of the button character.</pre>
 </div>
-<div title="Credits" modifier="Mingos" created="200910272033" modified="201008111414" changecount="15">
+<div title="Credits" modifier="Mingos" created="201011072117" tags="tutorial internalModule" changecount="1">
+<pre>This module displays a simple credits line: &quot;Powered by Umbra [version] [status]&quot;. It can be triggered using the method [[UmbraEngine::printCredits]].</pre>
+</div>
+<div title="CreditsPage" modifier="Mingos" created="200910272033" modified="201011072049" changecount="18">
 <pre>The following people had a say in the creation of Umbra:
 
 ;[[Mingos]]
-:Main developer of Umbra. The developer of a talkie game Umbrarum Regnum and co-developer of llibtcod. Web designer.
-:*http://umbrarumregnum.110mb.com
+:Main developer of Umbra. The developer of a talkie game Umbrarum Regnum and co-developer of libtcod.
+:*http://www.umbrarumregnum.net
 :*http://www.umbraprojekt.pl
 ;Jice
 :Main developer of Umbra. The guy behind libtcod (The Doryen Library), TCOD (The Chronicles of Doryen) and The Cave (the first project using Umbra).
@@ -2055,13 +2059,13 @@ These are the internal callbacks, which can be registered automatically, providi
 <div title="IssueTrackerRfesOpen" modifier="Mingos" created="201008191749" tags="issueTracker RFE openRFE" changecount="1">
 <pre>&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;issueTracker&quot;,&quot;RFE&quot;,&quot;open&quot;])'&gt;&gt;</pre>
 </div>
-<div title="MainMenu" modifier="Mingos" created="200910241817" modified="201008111259" changecount="3">
+<div title="MainMenu" modifier="Mingos" created="200910241817" modified="201011072047" changecount="4">
 <pre>[[About Umbra]]
 [[Using Umbra]]
 [[API reference]]
 [[Issue tracker]]
 [[Change log]]
-[[Credits]]</pre>
+[[Credits|CreditsPage]]</pre>
 </div>
 <div title="Methods" modifier="Mingos" created="200911042331" modified="201011070021" tags="api method" changecount="46">
 <pre>&lt;&lt;tabs methods
@@ -2077,10 +2081,10 @@ These are the internal callbacks, which can be registered automatically, providi
     &quot;Log&quot; &quot;UmbraLog methods&quot; [[UmbraLogMethods]]
 &gt;&gt;</pre>
 </div>
-<div title="Mingos" modifier="Mingos" created="200910241825" modified="201007252151" changecount="5">
+<div title="Mingos" modifier="Mingos" created="200910241825" modified="201011072049" changecount="6">
 <pre>One of the developers of this humble engine. Please visit my websites for more details about what I do.
 *http://www.umbraprojekt.pl/
-*http://umbrarumregnum.110mb.com/</pre>
+*http://www.umbrarumregnum.net/</pre>
 </div>
 <div title="Module ID" modifier="Mingos" created="201009182113" modified="201009182157" tags="tutorial module" changecount="8">
 <pre>Module ID, as the name implies, is a unique identification number assigned to a module.
@@ -3943,6 +3947,33 @@ else return 1;
 !See also
 &lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;moduleConfiguration&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;moduleConfiguration&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
 </div>
+<div title="UmbraEngine::printCredits" modifier="Mingos" created="201011072118" modified="201011072124" tags="api method engineClass" changecount="2">
+<pre>!Description
+Displays a credits line.
+!Construction
+&lt;code C++&gt;
+void printCredits (
+    int x,
+    int y,
+    uint32 duration = 10000
+);
+&lt;/code&gt;
+!Parametres
+*{{{int x}}}: the {{{x}}} position on the root console where the credits should be printed
+*{{{int y}}}: the {{{y}}} position on the root console where the credits should be printed
+*{{{uint32 duration}}} (optional): the duration, in milliseconds, of the credits display
+!Access level
+{{{public}}}
+!Remarks
+The credits will simply output a credits line. It will start fading away at exactly half the specified duration, and fade out completely after the other half has passed.
+This method may be used as many times as needed.
+!Example
+&lt;code c++&gt;
+void MyModule::onActivate() {
+    getEngine()-&gt;printCredits(20,20);
+}
+&lt;/code&gt;</pre>
+</div>
 <div title="UmbraEngine::registerCallback" modifier="Mingos" created="201008111159" modified="201010232222" tags="api method engineClass init callback" changecount="2">
 <pre>!Description
 Registers a callback, creating an active listener.
@@ -4162,15 +4193,6 @@ else return 1;
 <div title="UmbraEngineMethods" modifier="Mingos" created="201007271125" modified="201010142302" tags="methodlist" changecount="19">
 <pre>&lt;&lt;forEachTiddler where 'tiddler.tags.containsAll([&quot;method&quot;,&quot;engineClass&quot;])' sortBy 'tiddler.title'&gt;&gt;</pre>
 </div>
-<div title="UmbraError::getLastMessage" modifier="Mingos" created="201008191716" modified="201011070159" tags="api method error" changecount="6">
-<pre>to be removed...</pre>
-</div>
-<div title="UmbraError::getMessage" modifier="Mingos" created="201008191723" modified="201011070159" tags="api method error" changecount="4">
-<pre>to be removed</pre>
-</div>
-<div title="UmbraError::getNbErrors" modifier="Mingos" created="201008191714" modified="201011070200" tags="api method error" changecount="6">
-<pre>to be removed</pre>
-</div>
 <div title="UmbraInternalModuleID" modifier="YourName" created="200911081536" modified="201010141445" tags="api enum module internalModule moduleReference" changecount="14">
 <pre>!Description
 ID numbers for all internal modules available in Umbra.
@@ -4328,6 +4350,130 @@ Should a message be logged during the program execution, a log file called {{{lo
 !Methods
 &lt;&lt;tiddler UmbraLogMethods&gt;&gt;</pre>
 </div>
+<div title="UmbraLog::closeBlock" modifier="Mingos" created="201011072137" tags="api method error" changecount="1">
+<pre>!Description
+Closes a block in the message log.
+!Construction
+&lt;code C++&gt;
+static int closeBlock (
+    UmbraLogResult result = UMBRA_LOGRESULT_NONE
+);
+&lt;/code&gt;
+!Parametres
+*{{{UmbraLogResult result}}} (optional): the result of the block (success, failure or none)
+!Return value
+{{{int}}}: message ID number in the log.
+!Access level
+{{{public}}}
+!Remarks
+Using this method will append an info message the the log.
+The returned ID number may be used to retrieve the message later using [[UmbraLog::get]].
+Should the closing block end with a failure, it is wise to add a message before calling closeBlock, specifying what prevented the block from ending successfully.
+!Example
+&lt;code C++&gt;
+UmbraLog::openBlock(&quot;Checking file existence.&quot;);
+if (!TCODSystem::fileExists(&quot;myfile.txt&quot;) {
+    UmbraLog::error(&quot;File not found&quot;);
+    UmbraLog::closeBlock(UMBRA_LOGRESULT_FAILURE);
+}
+else {
+    UmbraLog::info(&quot;File found&quot;);
+    UmbraLog::closeBlock(UMBRA_LOGRESULT_SUCCESS);
+}
+&lt;/code&gt;
+!See also
+&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;error&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;error&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;error&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
+</div>
+<div title="UmbraLog::error" modifier="Mingos" created="201011072130" tags="api method error" changecount="1">
+<pre>!Description
+Appends an error message to the log.
+!Construction
+&lt;code C++&gt;
+static int error (
+    const char * str,
+    ...
+);
+&lt;/code&gt;
+&lt;code C++&gt;
+static int error (
+    std::string str
+);
+&lt;/code&gt;
+!Parametres
+*{{{const char * str}}}: the string contaning the error message. The string uses {{{printf}}}-like formatting.
+*{{{std::string str}}}: the string contaning the error message.
+!Return value
+{{{int}}}: message ID number in the log.
+!Access level
+{{{public}}}
+!Remarks
+The returned ID number may be used to retrieve the message later using [[UmbraLog::get]].
+!Example
+&lt;code C++&gt;
+const char * s = &quot;error&quot;;
+UmbraLog::error(&quot;This is an %s message.&quot;,s);
+&lt;/code&gt;
+!See also
+&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;error&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;error&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;error&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
+</div>
+<div title="UmbraLog::fatalError" modifier="Mingos" created="201011072131" tags="api method error" changecount="1">
+<pre>!Description
+Appends a fatal error message to the log.
+!Construction
+&lt;code C++&gt;
+static int fatalError (
+    const char * str,
+    ...
+);
+&lt;/code&gt;
+&lt;code C++&gt;
+static int fatalError (
+    std::string str
+);
+&lt;/code&gt;
+!Parametres
+*{{{const char * str}}}: the string contaning the fatal error message. The string uses {{{printf}}}-like formatting.
+*{{{std::string str}}}: the string contaning the fatal error message.
+!Return value
+{{{int}}}: message ID number in the log.
+!Access level
+{{{public}}}
+!Remarks
+The returned ID number may be used to retrieve the message later using [[UmbraLog::get]].
+!Example
+&lt;code C++&gt;
+const char * s = &quot;fatal error&quot;;
+UmbraLog::fatalError(&quot;This is a %s message.&quot;,s);
+&lt;/code&gt;
+!See also
+&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;error&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;error&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;error&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
+</div>
+<div title="UmbraLog::get" modifier="Mingos" created="201011072146" changecount="1">
+<pre>!Description
+Retrieves a message string from the log.
+!Construction
+&lt;code C++&gt;
+static const char * get (
+    int idx = -1
+);
+&lt;/code&gt;
+!Parametres
+*{{{int idx}}} (optional): the message index to retrieve
+!Return value
+{{{const char *}}}: a message string
+!Access level
+{{{public}}}
+!Remarks
+Should the parametre be omitted, the last logged message will be retrieved.
+The message index is returned by each method that appends a new message to the log.
+!Example
+&lt;code C++&gt;
+std::cout &lt;&lt; &quot;The first message reads: &quot; &lt;&lt; UmbraLog::get(0) &lt;&lt; std::endl;
+std::cout &lt;&lt; &quot;The last message reads: &quot; &lt;&lt; UmbraLog::get() &lt;&lt; std::endl;
+&lt;/code&gt;
+!See also
+&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;error&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;error&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;error&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
+</div>
 <div title="UmbraLog::info" modifier="Mingos" created="201003301940" modified="201011070158" tags="api method error" changecount="12">
 <pre>!Description
 Appends an info message to the log.
@@ -4356,6 +4502,38 @@ The returned ID number may be used to retrieve the message later using [[UmbraLo
 &lt;code C++&gt;
 const char * s = &quot;info&quot;;
 UmbraLog::info(&quot;This is an %s message.&quot;,s);
+&lt;/code&gt;
+!See also
+&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;error&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;error&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;error&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
+</div>
+<div title="UmbraLog::notice" modifier="Mingos" created="201011072128" modified="201011072128" tags="api method error" changecount="2">
+<pre>!Description
+Appends a notice message to the log.
+!Construction
+&lt;code C++&gt;
+static int notice (
+    const char * str,
+    ...
+);
+&lt;/code&gt;
+&lt;code C++&gt;
+static int notice (
+    std::string str
+);
+&lt;/code&gt;
+!Parametres
+*{{{const char * str}}}: the string contaning the notice message. The string uses {{{printf}}}-like formatting.
+*{{{std::string str}}}: the string contaning the notice message.
+!Return value
+{{{int}}}: message ID number in the log.
+!Access level
+{{{public}}}
+!Remarks
+The returned ID number may be used to retrieve the message later using [[UmbraLog::get]].
+!Example
+&lt;code C++&gt;
+const char * s = &quot;notice&quot;;
+UmbraLog::notice(&quot;This is a %s message.&quot;,s);
 &lt;/code&gt;
 !See also
 &lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;error&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;error&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;error&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
@@ -4389,6 +4567,66 @@ The returned ID number may be used to retrieve the message later using [[UmbraLo
 &lt;code C++&gt;
 const char * s = &quot;opening block&quot;;
 UmbraLog::openBlock(&quot;This is an %s.&quot;,s);
+&lt;/code&gt;
+!See also
+&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;error&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;error&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;error&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
+</div>
+<div title="UmbraLog::size" modifier="Mingos" created="201011072142" tags="api method error" changecount="1">
+<pre>!Description
+Checks how many messages have been placed in the log so far. It can be used to count all messages or only ones that are of a given type.
+!Construction
+&lt;code C++&gt;
+static int size (
+);
+&lt;/code&gt;
+&lt;code C++&gt;
+static int size (
+    UmbraLogType type
+);
+&lt;/code&gt;
+!Parametres
+*{{{UmbraLogType type}}}: message type to count
+!Return value
+{{{int}}}: number of messages in the log
+!Access level
+{{{public}}}
+!Example
+&lt;code C++&gt;
+std::cout &lt;&lt; &quot;The log contains &quot; &lt;&lt; UmbraLog::size()
+    &lt;&lt; &quot; messages, out of which &quot; &lt;&lt; UmbraLog::size(UMBRA_LOGTYPE_ERROR)
+    &lt;&lt; &quot; are errors.&quot; &lt;&lt; std::endl;
+&lt;/code&gt;
+!See also
+&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;error&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;error&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;error&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
+</div>
+<div title="UmbraLog::warning" modifier="Mingos" created="201011072129" tags="api method error" changecount="1">
+<pre>!Description
+Appends a warning message to the log.
+!Construction
+&lt;code C++&gt;
+static int warning (
+    const char * str,
+    ...
+);
+&lt;/code&gt;
+&lt;code C++&gt;
+static int warning (
+    std::string str
+);
+&lt;/code&gt;
+!Parametres
+*{{{const char * str}}}: the string contaning the warning message. The string uses {{{printf}}}-like formatting.
+*{{{std::string str}}}: the string contaning the warning message.
+!Return value
+{{{int}}}: message ID number in the log.
+!Access level
+{{{public}}}
+!Remarks
+The returned ID number may be used to retrieve the message later using [[UmbraLog::get]].
+!Example
+&lt;code C++&gt;
+const char * s = &quot;warning&quot;;
+UmbraLog::warning(&quot;This is a %s message.&quot;,s);
 &lt;/code&gt;
 !See also
 &lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;error&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;error&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;error&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
@@ -5601,7 +5839,7 @@ UmbraEngine engine = UmbraEngine(&quot;data/cfg/umbra.txt&quot;,UMBRA_REGISTER_A
 <pre>*[[UmbraWidget::mouse]]
 *[[UmbraWidget::setDragZone]]</pre>
 </div>
-<div title="Using Umbra" modifier="Mingos" created="200910241814" modified="201010180819" tags="tutorial" changecount="50">
+<div title="Using Umbra" modifier="Mingos" created="200910241814" modified="201011072046" tags="tutorial" changecount="51">
 <pre>#Basics
 ##[[Starting a project using Umbra]]
 ##[[Umbra Hello World]]
@@ -5631,6 +5869,7 @@ UmbraEngine engine = UmbraEngine(&quot;data/cfg/umbra.txt&quot;,UMBRA_REGISTER_A
 ##Internal modules
 ###[[Speed-o-meter]]
 ###[[BSOD]]
+###[[Credits]]
 ##[[Accessing modules and widgets]]
 ##[[Initialisation versus activation]]
 ##[[Module priority]]
@@ -5715,7 +5954,7 @@ Widgets include special areas that can be defined to make the widget become inte
 
 It is not recommended to use widgets in games that only use keyboard control, since they are slower than normal modules and will be able to offer the same functionality.</pre>
 </div>
-<div title="add a Credits internal module" modifier="Mingos" created="201011021256" tags="issueTracker RFE open" changecount="1">
+<div title="add a Credits internal module" modifier="Mingos" created="201011021256" modified="201011072147" tags="issueTracker RFE closed" changecount="2">
 <pre>There should be an internal module that displays the credits for Umbra, pretty much like libtcod's credits() function.</pre>
 </div>
 <div title="make console clearing by the engine configureable" modifier="Mingos" created="201011021217" tags="issueTracker RFE open" changecount="1">
