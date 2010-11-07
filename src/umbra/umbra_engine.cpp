@@ -164,6 +164,7 @@ public :
 
 //constructor
 UmbraEngine::UmbraEngine (const char *fileName, UmbraRegisterCallbackFlag flag): keyboardMode(UMBRA_KEYBOARD_RELEASED) {
+	UmbraLog::openBlock("UmbraEngine::UmbraEngine | Instantiating the engine object.");
 	//load configuration variables
 	UmbraConfig::load(fileName);
 	paused = false;
@@ -184,10 +185,11 @@ UmbraEngine::UmbraEngine (const char *fileName, UmbraRegisterCallbackFlag flag):
 	if (flag & UMBRA_REGISTER_ADDITIONAL) {
 		registerCallback(new UmbraCallbackSpeedometer());
 	}
-	UmbraLog::info("UmbraEngine::UmbraEngine | UmbraEngine instance created.");
+	UmbraLog::closeBlock(UMBRA_LOGRESULT_SUCCESS);
 }
 
 UmbraEngine::UmbraEngine (const char *fileName): keyboardMode(UMBRA_KEYBOARD_RELEASED) {
+	UmbraLog::openBlock("UmbraEngine::UmbraEngine | Instantiating the engine object.");
 	//load configuration variables
 	UmbraConfig::load(fileName);
 	paused = false;
@@ -203,10 +205,11 @@ UmbraEngine::UmbraEngine (const char *fileName): keyboardMode(UMBRA_KEYBOARD_REL
 	registerCallback(new UmbraCallbackFontUp());
 	registerCallback(new UmbraCallbackFontDown());
 	registerCallback(new UmbraCallbackPause());
-	UmbraLog::info("UmbraEngine::UmbraEngine | UmbraEngine instance created.");
+	UmbraLog::closeBlock(UMBRA_LOGRESULT_SUCCESS);
 }
 
 UmbraEngine::UmbraEngine (UmbraRegisterCallbackFlag flag): keyboardMode(UMBRA_KEYBOARD_RELEASED) {
+	UmbraLog::openBlock("UmbraEngine::UmbraEngine | Instantiating the engine object.");
 	//load configuration variables
 	UmbraConfig::load("data/cfg/umbra.txt");
 	paused = false;
@@ -227,10 +230,11 @@ UmbraEngine::UmbraEngine (UmbraRegisterCallbackFlag flag): keyboardMode(UMBRA_KE
 	if (flag & UMBRA_REGISTER_ADDITIONAL) {
 		registerCallback(new UmbraCallbackSpeedometer());
 	}
-	UmbraLog::info("UmbraEngine::UmbraEngine | UmbraEngine instance created.");
+	UmbraLog::closeBlock(UMBRA_LOGRESULT_SUCCESS);
 }
 
 UmbraEngine::UmbraEngine (): keyboardMode(UMBRA_KEYBOARD_RELEASED) {
+	UmbraLog::openBlock("UmbraEngine::UmbraEngine | Instantiating the engine object.");
 	//load configuration variables
 	UmbraConfig::load("data/cfg/umbra.txt");
 	paused = false;
@@ -246,7 +250,7 @@ UmbraEngine::UmbraEngine (): keyboardMode(UMBRA_KEYBOARD_RELEASED) {
 	registerCallback(new UmbraCallbackFontUp());
 	registerCallback(new UmbraCallbackFontDown());
 	registerCallback(new UmbraCallbackPause());
-	UmbraLog::info("UmbraEngine::UmbraEngine | UmbraEngine instance created.");
+	UmbraLog::closeBlock(UMBRA_LOGRESULT_SUCCESS);
 }
 
 void UmbraEngine::setWindowTitle (const char * title, ...) {
@@ -407,8 +411,10 @@ bool UmbraEngine::registerFonts () {
 // load external module configuration
 bool UmbraEngine::loadModuleConfiguration(const char *filename, UmbraModuleFactory *factory, const char *chainName) {
 	if (chainName == NULL && filename == NULL) UmbraLog::openBlock("UmbraEngine::loadModuleConfiguration | Attempting to load module configuration.");
+	else if (chainName == NULL && filename != NULL) UmbraLog::openBlock("UmbraEngine::loadModuleConfiguration | Attempting to load a module configuration from file \"%s\".",filename);
+	else if (chainName != NULL && filename == NULL) UmbraLog::openBlock("UmbraEngine::loadModuleConfiguration | Attempting to load \"%s\" module configuration.",chainName);
 	else UmbraLog::openBlock("UmbraEngine::loadModuleConfiguration | Attempting to load \"%s\" module configuration from file \"%s\".",chainName,filename);
-	//TODO: add all options
+	//TODO: if file name == NULL, retrieve from UmbraConfig
 	if (!filename) {
 		UmbraLog::fatalError("UmbraEngine::loadModuleConfiguration | specified an empty filename.");
 		UmbraLog::closeBlock(UMBRA_LOGRESULT_FAILURE);
@@ -465,6 +471,7 @@ void UmbraEngine::activateModule (UmbraInternalModuleID id) {
 void UmbraEngine::activateModule(UmbraModule *module) {
 	if (module != NULL && ! module->getActive()) {
 		toActivate.push(module);
+		UmbraLog::info("UmbraEngine::activateModule | Activated module \"%s\" (ID: %d).",module->getName(),module->getID());
 	}
 }
 
@@ -522,6 +529,7 @@ void UmbraEngine::deactivateModule(UmbraModule *module) {
 	if (module != NULL && module->getActive()) {
 		toDeactivate.push(module);
 		module->setActive(false);
+		UmbraLog::info("UmbraEngine::deactivateModule | Deactivated \"%s\" module (ID: %d).",module->getName(),module->getID());
 	}
 	else if (module != NULL && !module->getActive()) {
 		UmbraLog::notice("UmbraEngine::deactivateModule | Tried to deactivate a module, but it's already inactive.");
@@ -553,15 +561,19 @@ void UmbraEngine::deactivateModule (const char *name) {
 }
 
 void UmbraEngine::deactivateAll (bool ignoreFallbacks) {
+	UmbraLog::openBlock("UmbraEngine::deactivateAll | Deactivating all modules%s.",ignoreFallbacks ? ", ignoring fallbacks" : "");
 	for (UmbraModule ** mod = activeModules.begin(); mod != activeModules.end(); mod++) {
 		if (ignoreFallbacks) (*mod)->setFallback(-1);
 		deactivateModule((*mod));
 	}
+	UmbraLog::closeBlock(UMBRA_LOGRESULT_SUCCESS);
 }
 
 bool UmbraEngine::initialise (TCOD_renderer_t renderer) {
 	// autodetect fonts if needed
-	bool retVal = registerFonts();
+	bool retVal;
+	UmbraLog::openBlock("UmbraEngine::initialise | Initialising the root console.");
+	retVal = registerFonts();
 	//activate the base font
 	if (retVal) {
 		UmbraEngine::renderer=renderer;
@@ -571,8 +583,10 @@ bool UmbraEngine::initialise (TCOD_renderer_t renderer) {
 		TCODConsole::initRoot(getRootWidth(),getRootHeight(),windowTitle.c_str(), UmbraConfig::fullScreen, renderer);
 		TCODSystem::setFps(25);
 		TCODMouse::showCursor(true);
+		if (TCODConsole::root != NULL) UmbraLog::closeBlock(UMBRA_LOGRESULT_SUCCESS);
+		else UmbraLog::closeBlock(UMBRA_LOGRESULT_FAILURE);
 	}
-	else UmbraLog::fatalError("UmbraEngine::initialise | Root console initialisation failed.");
+	else UmbraLog::closeBlock(UMBRA_LOGRESULT_FAILURE);
 	return retVal;
 }
 
@@ -580,8 +594,11 @@ int UmbraEngine::run () {
 	TCOD_key_t key;
 	TCOD_mouse_t mouse;
 
+	UmbraLog::openBlock("UmbraEngine::run | Running the engine.");
+
 	if (modules.size() == 0) {
 		UmbraLog::fatalError("UmbraEngine::run | No modules have been registered!");
+		UmbraLog::closeBlock(UMBRA_LOGRESULT_FAILURE);
 		return 1;
 	}
 
@@ -668,6 +685,8 @@ int UmbraEngine::run () {
 		TCODConsole::root->flush();
 	}
 	UmbraConfig::save();
+	UmbraLog::closeBlock(UMBRA_LOGRESULT_SUCCESS);
+	UmbraLog::save();
 	return 0;
 }
 
@@ -693,14 +712,18 @@ void UmbraEngine::keyboard (TCOD_key_t &key) {
 }
 
 void UmbraEngine::reinitialise (TCOD_renderer_t renderer) {
+	UmbraLog::openBlock("UmbraEngine::reinitialise | Reinitialising the root console.");
 	delete TCODConsole::root;
 	TCODConsole::root = NULL;
 	TCODConsole::setCustomFont(UmbraConfig::font->filename(),UmbraConfig::font->flags(),UmbraConfig::font->columns(),UmbraConfig::font->rows());
 	UmbraEngine::renderer=renderer;
 	TCODConsole::initRoot(getRootWidth(),getRootHeight(),windowTitle.c_str(), UmbraConfig::fullScreen, this->renderer);
+	if (TCODConsole::root != NULL) UmbraLog::closeBlock(UMBRA_LOGRESULT_SUCCESS);
+	else UmbraLog::closeBlock(UMBRA_LOGRESULT_FAILURE);
 }
 
 void UmbraEngine::registerInternalModule (UmbraInternalModuleID id, UmbraModule * module) {
+	UmbraLog::info("UmbraEngine::registerInternalModule | Registering an internal module.");
 	internalModules[id] = module;
 }
 

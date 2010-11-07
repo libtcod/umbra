@@ -51,8 +51,13 @@ const char * logLevelName[] = {
 void UmbraConfig::load (const char *fileName) {
 	static bool loaded = false;
 	std::string l;
-	if (loaded && strcmp(UmbraConfig::fileName, fileName) == 0) return;
 	TCODParser parser;
+	UmbraLog::openBlock("UmbraConfig::load | Loading configuration variables.");
+	if (loaded && strcmp(UmbraConfig::fileName, fileName) == 0) {
+		UmbraLog::notice("UmbraConfig::load | Configuraion variables have been loaded previously. Aborting.");
+		UmbraLog::closeBlock(UMBRA_LOGRESULT_FAILURE);
+		return;
+	}
 
 	UmbraConfig::fileName = strdup(fileName);
 	//register configuration variables
@@ -99,13 +104,17 @@ void UmbraConfig::load (const char *fileName) {
 		if (l == logLevelName[i]) logLevel = (UmbraLogLevel)i;
 	}
 	loaded = true;
+	UmbraLog::closeBlock(UMBRA_LOGRESULT_SUCCESS);
 }
 
 void UmbraConfig::save () {
 	FILE * out;
+	std::string modC = "";
+
+	UmbraLog::info("UmbraConfig::save | Saving configuration variables.");
+
 	out = fopen(fileName,"w");
 
-	std::string modC = "";
 	if (moduleChain != NULL) {
 		modC += "  moduleChain = \"";
 		modC += moduleChain;
@@ -156,14 +165,14 @@ void UmbraConfig::save () {
 }
 
 void UmbraConfig::registerFont (UmbraFont * _font) {
+	UmbraLog::info("UmbraConfig::registerFont | Registered a font.");
 	fonts.push(_font);
 }
 
 bool UmbraConfig::activateFont (int shift) {
 	int s = CLAMP(-1,1,shift);
 	//check if there are any registered fonts
-	if (fonts.size() == 0)
-		return false; // can happen if a user uses the default terminal.png without registering any font
+	if (fonts.size() == 0) return false; // can happen if a user uses the default terminal.png without registering any font
 	//check if the requested ID isn't out of range
 	if (fontID+s < 0 || fontID+s >= fonts.size()) return false;
 	//check if the font needs changing at all

@@ -15,7 +15,6 @@
         <itemPath>src/umbra/umbra_circle.hpp</itemPath>
         <itemPath>src/umbra/umbra_config.hpp</itemPath>
         <itemPath>src/umbra/umbra_engine.hpp</itemPath>
-        <itemPath>src/umbra/umbra_error.hpp</itemPath>
         <itemPath>src/umbra/umbra_font.hpp</itemPath>
         <itemPath>src/umbra/umbra_imod_bsod.hpp</itemPath>
         <itemPath>src/umbra/umbra_imod_speed.hpp</itemPath>
