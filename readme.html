@@ -569,19 +569,19 @@ Module activation is extremely simple. Once a module is registered, it is given 
 <div title="Add module-level keyboard listeners" modifier="Mingos" created="201010082248" tags="issueTracker RFE open" changecount="1">
 <pre>It would be nice if there were keyboard callbacks also in module scope, not only globally.</pre>
 </div>
-<div title="BSOD" modifier="Mingos" created="200911092016" modified="201010021201" tags="tutorial internalModule error" changecount="8">
-<pre>The BSOD is an internal module created with the sole purpose of notifying the developer that a non fatal error has occurred in the program. It is supposed to be used in conjunction with the [[UmbraError::add]] method.
+<div title="BSOD" modifier="Mingos" created="200911092016" modified="201011070050" tags="tutorial internalModule error" changecount="9">
+<pre>The BSOD is an internal module created with the sole purpose of notifying the developer that a non fatal error has occurred in the program. It is supposed to be used in conjunction with the methods in the [[UmbraLog]] class.
 
 The BSOD is, as the name implies, a blue screen. It's not as annoying as its namesake, as it has the form of a small, semitransparent blue box that disappears a few seconds after it is displayed. Additionally, it can be moved around in case it happens to cover something important or even closed with a close button in the top right corner.
 
-The module, when triggered using the method [[UmbraEngine::displayError]], will display the last registered error mesage (or the line &quot;No errors registered&quot; in case it is displayed before any errors have been added to the log). Here is an example use:
+The module, when triggered using the method [[UmbraEngine::displayError]], will display the last registered log mesage (or the line &quot;No messages logged&quot; in case it is displayed before any messages have been added to the log). Here is an example use:
 &lt;code C++&gt;
 if (errorCondition) {
-    UmbraError::add(UMBRA_ERRORLEVEL_ERROR, &quot;Example error message.&quot;);
+    UmbraLog::error(&quot;Example error message.&quot;);
     UmbraEngine::getInstance()-&gt;displayError();
 }
 &lt;/code&gt;
-Please note that this module requires the console emulator to be active, otherwise it won't be displayed. For this reason, the BSOD is only useful for displaying non fatal errors. In case a fatal error is encountered, it will typically call {{{exit(1);}}} instead of {{{displayError();}}}. The BSOD is useless in such situations, and the error message can only be retrieved from the error log saved to the disc.</pre>
+Please note that this module requires the console emulator to be active, otherwise it won't be displayed. For this reason, the BSOD is only useful for displaying non fatal errors that occur after the engine initialisation. In case a fatal error is encountered, it will typically call {{{exit(1);}}} instead of {{{displayError();}}}. The BSOD is useless in such situations, and the error message can only be retrieved from the log file saved to the disc.</pre>
 </div>
 <div title="Callbacks" modifier="Mingos" created="201008020041" modified="201008191016" tags="api callback" changecount="5">
 <pre>*[[UmbraCallbackFontDown]]
@@ -592,10 +592,13 @@ Please note that this module requires the console emulator to be active, otherwi
 *[[UmbraCallbackScreenshot]]
 *[[UmbraCallbackSpeedometer]]</pre>
 </div>
-<div title="Change log" modifier="Mingos" created="201008111354" modified="201010232312" tags="changeLog" changecount="33">
+<div title="Change log" modifier="Mingos" created="201008111354" modified="201011070205" tags="changeLog" changecount="36">
 <pre>&lt;&lt;tiddler ChangeLogSymbols&gt;&gt;
 !Current HEAD revision
 |!Category|!Committed on|!Change|!Committed by|
+|NEW|6-Nov-2010|~UmbraLog introduced as a more powerful successor of ~UmbraError|Mingos|
+|REM|6-Nov-2010|~UmbraError has been removed|Mingos|
+|NEW|2-Nov-2010|deactivateAll now has an optional parametre controlling whether to ignore module fallbacks or not|Mingos|
 |API|24-Oct-2010|Several methods' access level changed from public to protected in ~UmbraModule|Mingos|
 |NEW|24-Oct-2010|~UmbraEngine::getModuleId method now can be used with module name instead of a module pointer|Mingos|
 |NEW|24-Oct-2010|~UmbraModule::getID method added. ~UmbraEngine::getModuleId(~UmbraModule*) is thus deprecated|Mingos|
@@ -623,7 +626,7 @@ Please note that this module requires the console emulator to be active, otherwi
 |API|changed feature and/or API break|
 |BUG|bug fix|</pre>
 </div>
-<div title="Classes" modifier="Mingos" created="200911042330" modified="201010271053" tags="api class" changecount="14">
+<div title="Classes" modifier="Mingos" created="200911042330" modified="201011070020" tags="api class" changecount="15">
 <pre>&lt;&lt;tabs methods
     &quot;Engine&quot; &quot;UmbraEngine&quot; [[UmbraEngine]]
     &quot;Module&quot; &quot;UmbraModule&quot; [[UmbraModule]]
@@ -634,7 +637,7 @@ Please note that this module requires the console emulator to be active, otherwi
     &quot;Point&quot; &quot;UmbraPoint&quot; [[UmbraPoint]]
     &quot;Rect&quot; &quot;UmbraRect&quot; [[UmbraRect]]
     &quot;Circle&quot; &quot;UmbraCircle&quot; [[UmbraCircle]]
-    &quot;Error&quot; &quot;UmbraError&quot; [[UmbraError]]
+    &quot;Log&quot; &quot;UmbraLog&quot; [[UmbraLog]]
 &gt;&gt;</pre>
 </div>
 <div title="Configuration variables" modifier="Mingos" created="201010142247" modified="201010142258" tags="tutorial basics init" changecount="4">
@@ -911,7 +914,7 @@ In the above code snippet, {{{speed}}} is the offscreen console the widget uses.
 ;[[Scautura]]
 :Documentation proofreading - thanks a million, mate!</pre>
 </div>
-<div title="DeactivateAll() failing with fallbacks" modifier="Mingos" created="201008111315" modified="201008111413" tags="issueTracker bug open" changecount="3">
+<div title="DeactivateAll() failing with fallbacks" modifier="Mingos" created="201008111315" modified="201011070206" tags="issueTracker bug closed" changecount="4">
 <pre>[[UmbraEngine::deactivateAll]] fails to close an application when the active modules have fallbacks. The fallbacks are activated upon module deactivation and the application continues.</pre>
 </div>
 <div title="DefaultTiddlers" modifier="Mingos" created="200910241745" modified="200910241818" changecount="2">
@@ -983,14 +986,14 @@ In the module structure, several properties can be defined (they're all optional
 * {{{active}}}: if this flag is present, the module is activated during the engine initialisation.
 </pre>
 </div>
-<div title="Displaying an error" modifier="Mingos" created="200911111643" modified="201007252156" tags="tutorial error" changecount="2">
-<pre>The errors that have been appended to the log using the method [[UmbraError::add]] can be displayed in a variety of ways.
+<div title="Displaying an error" modifier="Mingos" created="200911111643" modified="201011070009" tags="tutorial error" changecount="3">
+<pre>The errors that have been appended to the log using the method [[UmbraLog::error]] and the like can be displayed in a variety of ways.
 
 Probably the easiest way is to use [[UmbraEngine::displayError]] method. It will activate the [[BSOD]] module and automatically display the last registered error. It can be called at any time and will work only if the root console is initialised.
 
-If only the last message is of interest, but for some reason BSOD use is not an option, the last registered error message can also be retrieved with [[UmbraError::getLastMessage]].
+If only the last message is of interest, but for some reason BSOD use is not an option, the last registered error message can also be retrieved with [[UmbraLog::get]].
 
-Any other message can be retrieved as well using the [[UmbraError::getMessage]] method. You can specify the message index you wish to retrieve. In case you don't know how many errors have been registered so far, you can always check this with [[UmbraError::getNbErrors]].</pre>
+Any other message can be retrieved as well using the [[UmbraLog::get]] method as well. It's possible to specify the message index that needs to be retrieved. In case it's necessary to check how many messages have been logged so far, [[UmbraLog::size]] will do that (it can count all logged messages or just ones that have a specific error level).</pre>
 </div>
 <div title="Engine instantiation versus initialisation" modifier="Mingos" created="200911111512" modified="201008111257" tags="tutorial engine" changecount="5">
 <pre>The difference between the two concepts is very important. The engine needs to be instantiated in order to become available at all, but in order to run it also needs to be configured.
@@ -1015,16 +1018,15 @@ if (engine.initialise()) return engine.run();
 else return 1;
 &lt;/code&gt;</pre>
 </div>
-<div title="Enums" modifier="Mingos" created="200911042341" modified="201010021147" changecount="5">
-<pre>*[[UmbraErrorLevel]]
-*[[UmbraInternalModuleID]]
-*[[UmbraKeyboardMode]]
-*[[UmbraModuleStatus]]</pre>
+<div title="Enums" modifier="Mingos" created="200911042341" modified="201011070107" changecount="6">
+<pre>&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;enum&quot;])'&gt;&gt;</pre>
 </div>
-<div title="Error log" modifier="Mingos" created="200911111602" modified="201007252156" tags="tutorial error" changecount="2">
-<pre>The error log is a list of error messages registered throughout a single run of the application. Errors can be appended to that list, and each time an error is reported, it will be sent to stderr (in case of console-based applications, stderr is the system console) and also to a text file {{{errorlog.txt}}} located in the application's working directory.
+<div title="Error log" modifier="Mingos" created="200911111602" modified="201011070004" tags="tutorial error" changecount="4">
+<pre>The error log is a list of error messages registered throughout a single run of the application. Errors can be appended to that list, and each time an error is reported, it will be sent to stderr (in case of console-based applications, stderr is the system console) and also to a text file {{{log.txt}}} located in the application's working directory.
 
-The errors are added automatically when something goes wrong inside Umbra, but the developer can also use the log to append custom error messages.</pre>
+The errors are added automatically when something goes wrong inside Umbra, but the developer can also use the log to append custom error messages.
+
+The messages are stored with useful information about them, including the exact time of occurrence, the error level (ranging from info to fatal error) and indenting (nesting) information. The nesting is used to locate the approximate place of occurrence in the call stack.</pre>
 </div>
 <div title="Fading support" modifier="Mingos" created="201010062148" tags="issueTracker RFE open" changecount="1">
 <pre>It would be nice to have fading in the modules.
@@ -2061,7 +2063,7 @@ These are the internal callbacks, which can be registered automatically, providi
 [[Change log]]
 [[Credits]]</pre>
 </div>
-<div title="Methods" modifier="Mingos" created="200911042331" modified="201010271054" tags="api method" changecount="45">
+<div title="Methods" modifier="Mingos" created="200911042331" modified="201011070021" tags="api method" changecount="46">
 <pre>&lt;&lt;tabs methods
     &quot;Engine&quot; &quot;UmbraEngine methods&quot; [[UmbraEngineMethods]]
     &quot;Module&quot; &quot;UmbraModule methods&quot; [[UmbraModuleMethods]]
@@ -2072,7 +2074,7 @@ These are the internal callbacks, which can be registered automatically, providi
     &quot;Point&quot; &quot;UmbraPoint methods&quot; [[UmbraPointMethods]]
     &quot;Rect&quot; &quot;UmbraRect methods&quot; [[UmbraRectMethods]]
     &quot;Circle&quot; &quot;UmbraCircle methods&quot; [[UmbraCircleMethods]]
-    &quot;Error&quot; &quot;UmbraError methods&quot; [[UmbraErrorMethods]]
+    &quot;Log&quot; &quot;UmbraLog methods&quot; [[UmbraLogMethods]]
 &gt;&gt;</pre>
 </div>
 <div title="Mingos" modifier="Mingos" created="200910241825" modified="201007252151" changecount="5">
@@ -2261,14 +2263,16 @@ engine.getModule(mod2)-&gt;method();
 Please read [[Accessing modules and widgets]] for more detailed information on this topic.
 </pre>
 </div>
-<div title="Reporting an error" modifier="Mingos" created="200911111608" modified="201010021201" tags="tutorial error" changecount="4">
+<div title="Reporting an error" modifier="Mingos" created="200911111608" modified="201011070006" tags="tutorial error" changecount="5">
 <pre>Reporting an error is extremely easy in Umbra. It's enough to add this line of code:
 &lt;code C++&gt;
-UmbraError::add(UMBRA_ERRORLEVEL_ERROR, &quot;Error message&quot;);
+UmbraLog::error(&quot;Error message&quot;);
 &lt;/code&gt;
-This method will send the specified error message to stderr, append it to the error list and also save the file {{{errorlog.txt}}}, containing all of the error messages registered so far, to the hard disc.
+This method will send the specified error message to stderr, append it to the error list and also save the file {{{log.txt}}}, containing all of the messages registered so far, to the hard disc.
 
-Bear in mind that this method accepts printf-like text formatting. Ultimately, you can also pass a {{{std::string}}} as the argument instead of {{{const char*}}}.</pre>
+Bear in mind that this method accepts printf-like text formatting. Ultimately, you can also pass a {{{std::string}}} as the argument instead of {{{const char*}}}.
+
+You can also log non-errors. There are specialised methods for closing and opening blocks, as well as separate methods for each error level.</pre>
 </div>
 <div title="Scautura" modifier="Scautura" created="200911111208" changecount="1">
 <pre>Proofreader. Nothing more.</pre>
@@ -4158,184 +4162,14 @@ else return 1;
 <div title="UmbraEngineMethods" modifier="Mingos" created="201007271125" modified="201010142302" tags="methodlist" changecount="19">
 <pre>&lt;&lt;forEachTiddler where 'tiddler.tags.containsAll([&quot;method&quot;,&quot;engineClass&quot;])' sortBy 'tiddler.title'&gt;&gt;</pre>
 </div>
-<div title="UmbraError" modifier="Mingos" created="201003301723" modified="201008191705" tags="api class error" changecount="11">
-<pre>~UmbraError is a class that does not take part in handling game itself. As its name implies, it is there to handle errors and aid in preventing the occurrence of errors. It is essentially a list of all logged errors, which you can use for debugging.
-
-~UmbraError has five public methods, all of which are static. You are welcome to call them at any point in your program.
-
-Umbra uses this class internally in many situations to notify you of any possible mistakes, such as trying to load a module that hasn't been initialised yet. The last logged message can be displayed on {{{stderr}}} (default behaviour), but if Umbra is in debug mode, it will also activate a warning prompt, humorously called the [[BSOD]].
-
-Should any error be logged during the program execution, an error log file called {{{errorlog.txt}}} will be created in the program's execution directory for your review. Please remember to read it if there are any issues, as it may contain indications regarding what you can do to repair the issue.
-!Methods
-&lt;&lt;tiddler UmbraErrorMethods&gt;&gt;</pre>
+<div title="UmbraError::getLastMessage" modifier="Mingos" created="201008191716" modified="201011070159" tags="api method error" changecount="6">
+<pre>to be removed...</pre>
 </div>
-<div title="UmbraError::add" modifier="Mingos" created="201003301902" modified="201010232252" tags="api method error" changecount="21">
-<pre>!Description
-Appends an error message to the error list in the log.
-!Construction
-&lt;code C++&gt;
-static int add (
-    UmbraErrorLevel errLev,
-    const char * errStr,
-    ...
-);
-&lt;/code&gt;
-&lt;code C++&gt;
-static int add (
-    UmbraErrorLevel errLev,
-    std::string errStr
-);
-&lt;/code&gt;
-!Parametres
-*{{{UmbraErrorLevel errLev}}}: the error level, as defined in [[UmbraErrorLevel]] enum.
-*{{{const char * errStr}}}: the string contaning the error message. The string uses {{{printf}}}-like formatting.
-*{{{std::string errStr}}}: the string contaning the error message.
-!Return value
-{{{int}}}: error ID number in the error log.
-!Access level
-{{{public}}}
-!Remarks
-Using this method will append an error the the error log, display it on {{{stderr}}} (typically, the console) and ensure that the error log is saved to a text file.
-The returned ID number may be used to retrieve the error later using [[UmbraError::getMessage]].
-!Example
-&lt;code C++&gt;
-if (errorCondition) {
-    UmbraError::add(UMBRA_ERRORLEVEL_ERROR, &quot;Oh my God, I'm an error!&quot;);
-    UmbraError::add(UMBRA_ERRORLEVEL_NOTICE, &quot;%d, %d, %d, format me!&quot;, 1, 2, 3);
-    std::string err = &quot;STL is good for error reporting too!&quot;;
-    UmbraError::add(UMBRA_ERRORLEVEL_NOTICE, err);
-}
-&lt;/code&gt;
-!See also
-&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;error&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;error&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;error&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
+<div title="UmbraError::getMessage" modifier="Mingos" created="201008191723" modified="201011070159" tags="api method error" changecount="4">
+<pre>to be removed</pre>
 </div>
-<div title="UmbraError::fileExists" modifier="Mingos" created="201003301940" modified="201010232259" tags="api method error" changecount="10">
-<pre>!Description
-Checks whether a given file exists.
-!Construction
-&lt;code C++&gt;
-static bool fileExists (
-    const char * filename,
-    ...
-);
-&lt;/code&gt;
-!Parametres
-*{{{const char * filename}}}: the name of the file whose existence needs to be confirmed. The string accepts {{{printf}}}-like formatting.
-!Return value
-{{{bool}}}: {{{true}}} if the specified file exists, {{{false}}} otherwise.
-!Access level
-{{{public}}}
-!Remarks
-This method is best used to prevent crashes due to a missing file. Useful for confirming the existence of data and configuration files.
-!Example
-&lt;code C++&gt;
-if (!UmbraError::fileExists(&quot;my/directory/missingfile.txt&quot;)) {
-    UmbraError::add(&quot;The file is missing!&quot;);
-    exit(1);
-}
-&lt;/code&gt;
-!See also
-&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;error&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;error&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;error&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
-</div>
-<div title="UmbraError::getLastMessage" modifier="Mingos" created="201008191716" modified="201010232300" tags="api method error" changecount="5">
-<pre>!Description
-Retrieves the last error message that has been placed in the message log.
-!Construction
-&lt;code C++&gt;
-static const char * getLastMessage (
-);
-&lt;/code&gt;
-!Return value
-{{{const char *}}}: The error message of the last logged error.
-!Access level
-{{{public}}}
-!Remarks
-If there are no errors in the log, this method will return the string {{{&quot;No errors registered.&quot;}}}. Otherwise, the last error log message is returned.
-!Example
-&lt;code C++&gt;
-int err = UmbraError::getNbErrors();
-if (err &gt; 0)
-    std::cout &lt;&lt; UmbraError::getLastMessage() &lt;&lt; std::endl;
-&lt;/code&gt;
-!See also
-&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;error&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;error&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;error&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
-</div>
-<div title="UmbraError::getMessage" modifier="Mingos" created="201008191723" modified="201010232300" tags="api method error" changecount="3">
-<pre>!Description
-Retrieves an error message that has been placed in the message log under the specified index position.
-!Construction
-&lt;code C++&gt;
-static const char * getMessage (
-    int idx
-);
-&lt;/code&gt;
-!Parametres
-*{{{int idx}}}: The index number of the message in the log.
-!Return value
-{{{const char *}}}: The error message of the requested error.
-!Access level
-{{{public}}}
-!Remarks
-Should an invalid index be specified, this method will return the string {{{&quot;Requested wrong error index.&quot;}}}.
-!Example
-&lt;code C++&gt;
-int err = UmbraError::getNbErrors();
-if (err &gt; 0) {
-    int i;
-    for (i = 0; i &lt; err; i++)
-        std::cout &lt;&lt; UmbraError::getMessage(i) &lt;&lt; std::endl;
-}
-&lt;/code&gt;
-!See also
-&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;error&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;error&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;error&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
-</div>
-<div title="UmbraError::getNbErrors" modifier="Mingos" created="201008191714" modified="201010232300" tags="api method error" changecount="5">
-<pre>!Description
-Retrieves the number of errors that have been placed in the error log from the application's start.
-!Construction
-&lt;code C++&gt;
-static int getNbErrors (
-);
-&lt;/code&gt;
-!Return value
-{{{int}}}: number of errors that have been logged so far.
-!Access level
-{{{public}}}
-!Example
-&lt;code C++&gt;
-int err = UmbraError::getNbErrors();
-if (err &gt; 0)
-    std::cout &lt;&lt; err &lt;&lt; &quot; errors have been encountered so far.&quot; &lt;&lt; std::endl;
-else
-    std::cout &lt;&lt; &quot;No errors so far, you lucky bastard!&quot; &lt;&lt; std::endl;
-&lt;/code&gt;
-!See also
-&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;error&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;error&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;error&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
-</div>
-<div title="UmbraErrorLevel" modifier="Mingos" created="201010021148" modified="201010021157" tags="api enum error" changecount="3">
-<pre>!Description
-Error levels are used while logging errors in the error log. Their role is purely informative.
-!Construction
-&lt;code C++&gt;
-enum UmbraErrorLevel {
-	UMBRA_ERRORLEVEL_NOTICE,
-	UMBRA_ERRORLEVEL_WARNING,
-	UMBRA_ERRORLEVEL_ERROR,
-	UMBRA_ERRORLEVEL_FATAL_ERROR
-};
-&lt;/code&gt;
-!Values
-*{{{UMBRA_ERRORLEVEL_NOTICE}}}: A notice. Used for situations that do not produce ill effects, but a message is nonetheless appropriate.
-*{{{UMBRA_ERRORLEVEL_WARNING}}}: A warning. Used for logging situations that don't interrupt the application, but may produce unwanted effects.
-*{{{UMBRA_KEYBOARD_RELEASED}}}: An error. Used for logging situations that don't interrupt the application, but are guaranteed to produce unwanted effects.
-*{{{UMBRA_KEYBOARD_PRESSED}}}: A fatal error: Used for logging unrecoverable errors that prevent the application from continuing.</pre>
-</div>
-<div title="UmbraErrorMethods" modifier="Mingos" created="201007271141" modified="201007271252" tags="methodlist" changecount="3">
-<pre>*[[UmbraError::add]]
-*[[UmbraError::fileExists]]
-*[[UmbraError::getLastMessage]]
-*[[UmbraError::getMessage]]
-*[[UmbraError::getNbErrors]]</pre>
+<div title="UmbraError::getNbErrors" modifier="Mingos" created="201008191714" modified="201011070200" tags="api method error" changecount="6">
+<pre>to be removed</pre>
 </div>
 <div title="UmbraInternalModuleID" modifier="YourName" created="200911081536" modified="201010141445" tags="api enum module internalModule moduleReference" changecount="14">
 <pre>!Description
@@ -4482,6 +4316,129 @@ enum UmbraKeyboardMode {
 *{{{UMBRA_KEYBOARD_RELEASED}}}: React only to key release events.
 *{{{UMBRA_KEYBOARD_PRESSED}}}: React only to key press events.
 *{{{UMBRA_KEYBOARD_PRESSED_RELEASED}}}: React to both key press and key release events.</pre>
+</div>
+<div title="UmbraLog" modifier="Mingos" created="201003301723" modified="201011070034" tags="api class error" changecount="12">
+<pre>~UmbraLog is a class that does not take part in handling the game itself. As its name implies, it is there to handle error logs and aid in preventing the occurrence of errors. It is essentially a list of all logged messages, which can be used use for debugging.
+
+~UmbraLog has only static methods, most of which as public. They can be called at any point in the program.
+
+Umbra uses this class internally in many situations to notify the developer of any possible mistakes, such as trying to load a module that hasn't been initialised yet. The last logged message can be displayed on {{{stderr}}} (default behaviour), but if Umbra is in debug mode, it will also activate a warning prompt, humorously called the [[BSOD]].
+
+Should a message be logged during the program execution, a log file called {{{log.txt}}} will be created in the program's execution directory for later review. Please remember to read it if there are any issues, as it may contain indications regarding what you can do to repair the issue.
+!Methods
+&lt;&lt;tiddler UmbraLogMethods&gt;&gt;</pre>
+</div>
+<div title="UmbraLog::info" modifier="Mingos" created="201003301940" modified="201011070158" tags="api method error" changecount="12">
+<pre>!Description
+Appends an info message to the log.
+!Construction
+&lt;code C++&gt;
+static int info (
+    const char * str,
+    ...
+);
+&lt;/code&gt;
+&lt;code C++&gt;
+static int info (
+    std::string str
+);
+&lt;/code&gt;
+!Parametres
+*{{{const char * str}}}: the string contaning the info message. The string uses {{{printf}}}-like formatting.
+*{{{std::string str}}}: the string contaning the info message.
+!Return value
+{{{int}}}: message ID number in the log.
+!Access level
+{{{public}}}
+!Remarks
+The returned ID number may be used to retrieve the message later using [[UmbraLog::get]].
+!Example
+&lt;code C++&gt;
+const char * s = &quot;info&quot;;
+UmbraLog::info(&quot;This is an %s message.&quot;,s);
+&lt;/code&gt;
+!See also
+&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;error&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;error&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;error&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
+</div>
+<div title="UmbraLog::openBlock" modifier="Mingos" created="201003301902" modified="201011070159" tags="api method error" changecount="26">
+<pre>!Description
+Opens a block in the message log.
+!Construction
+&lt;code C++&gt;
+static int openBlock (
+    const char * str,
+    ...
+);
+&lt;/code&gt;
+&lt;code C++&gt;
+static int openBlock (
+    std::string str
+);
+&lt;/code&gt;
+!Parametres
+*{{{const char * str}}}: the string contaning the block opening message. The string uses {{{printf}}}-like formatting.
+*{{{std::string str}}}: the string contaning the block opening message.
+!Return value
+{{{int}}}: message ID number in the log.
+!Access level
+{{{public}}}
+!Remarks
+Using this method will append an info message the the log.
+The returned ID number may be used to retrieve the message later using [[UmbraLog::get]].
+!Example
+&lt;code C++&gt;
+const char * s = &quot;opening block&quot;;
+UmbraLog::openBlock(&quot;This is an %s.&quot;,s);
+&lt;/code&gt;
+!See also
+&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;error&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;error&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;error&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
+</div>
+<div title="UmbraLogMethods" modifier="Mingos" created="201007271141" modified="201011070038" tags="methodlist" changecount="4">
+<pre>*[[UmbraLog::openBlock]]
+*[[UmbraLog::info]]
+*[[UmbraLog::notice]]
+*[[UmbraLog::warning]]
+*[[UmbraLog::error]]
+*[[UmbraLog::fatalError]]
+*[[UmbraLog::closeBlock]]
+*[[UmbraLog::size]]
+*[[UmbraLog::get]]</pre>
+</div>
+<div title="UmbraLogResult" modifier="Mingos" created="201011070100" modified="201011070106" tags="api enum error" changecount="3">
+<pre>!Description
+Log block closing results. Used to indicate whether a block is closed because of a successful or unsuccessful execution of a chunk of code.
+!Construction
+&lt;code C++&gt;
+enum UmbraLogResult {
+    UMBRA_LOGRESULT_FAILURE,
+    UMBRA_LOGRESULT_SUCCESS,
+    UMBRA_LOGRESULT_NONE
+};
+&lt;/code&gt;
+!Values
+*{{{UMBRA_LOGRESULT_FAILURE}}}: Failure: the block is closed because of some error.
+*{{{UMBRA_LOGRESULT_SUCCESS}}}: Success: whatever needed to be done in the block, was done successfully.
+*{{{UMBRA_LOGRESULT_NONE}}}: None: the block is closed with no or irrelevant end result.</pre>
+</div>
+<div title="UmbraLogType" modifier="Mingos" created="201010021148" modified="201011070057" tags="api enum error" changecount="4">
+<pre>!Description
+Log levels. They are used internally while logging messages in the log and when getting the log size with log type filtering.
+!Construction
+&lt;code C++&gt;
+enum UmbraLogType {
+    UMBRA_LOGTYPE_INFO,
+    UMBRA_LOGTYPE_NOTICE,
+    UMBRA_LOGTYPE_WARNING,
+    UMBRA_LOGTYPE_ERROR,
+    UMBRA_LOGTYPE_FATAL
+};
+&lt;/code&gt;
+!Values
+*{{{UMBRA_LOGTYPE_INFO}}}: Information: just an informative message.
+*{{{UMBRA_LOGTYPE_NOTICE}}}: A notice: an unexpected situation that does not produce ill effects, but a message is nonetheless appropriate.
+*{{{UMBRA_LOGTYPE_WARNING}}}: A warning: a situation that doesn't interrupt the application, but may produce unwanted effects.
+*{{{UMBRA_LOGTYPE_ERROR}}}: An error: a situation that donesn't interrupt the application, but is guaranteed to produce unwanted effects.
+*{{{UMBRA_LOGTYPE_FATAL}}}: A fatal error: an unrecoverable error that prevents the application from continuing.</pre>
 </div>
 <div title="UmbraModule" modifier="Mingos" created="200910241828" modified="201008050918" tags="api class module" changecount="39">
 <pre>UmbraModule is a single &quot;chunk&quot; of the game, with its own renderer and keybindings. It might be the main menu, the character creation screen, the overworld view, the trading screen or whatever might need a separate view. Modules might also be sub-screens like dialogs or widgets (the inventory dialog for example). Finally, modules can be some non-visual game logic one might want to easily enable or disable. In that case, it's only necessary override the {{{update()}}} method and leave an empty {{{render()}}} method.

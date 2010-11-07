@@ -218,7 +218,10 @@ int UmbraLog::size(UmbraLogType type) {
 const char * UmbraLog::get (int idx) {
 	UmbraLogMessage * msg;
 	std::string ret = "";
-	if (idx == -1) msg = messages.peek();
+	if (idx == -1) {
+		if (messages.size() > 0) msg = messages.peek();
+		else return "No messages logged.";
+	}
 	else if (idx < -1 || idx >= messages.size()) {
 		error ("UmbraLog::get | Tried to retrieve a message with index %d, but such an index does not exist.",idx);
 		msg = messages.peek();
