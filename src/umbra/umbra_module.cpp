@@ -27,9 +27,21 @@
 
 #include "umbra.hpp"
 
-UmbraModule::UmbraModule (): id(-1), priority(1), status(UMBRA_UNINITIALISED), fallback(-1), timeout(0), timeoutEnd(0xffffffff) {}
-
-UmbraModule::UmbraModule (const char *name): id(-1), priority(1), status(UMBRA_UNINITIALISED), fallback(-1), timeout(0), timeoutEnd(0xffffffff) {
+UmbraModule::UmbraModule () {
+	id = -1;
+	priority = 1;
+	status = UMBRA_UNINITIALISED;
+	fallback = -1;
+	timeout = 0;
+	timeoutEnd = 0xffffffff;
+}
+UmbraModule::UmbraModule (const char *name) {
+	id = -1;
+	priority = 1;
+	status = UMBRA_UNINITIALISED;
+	fallback = -1;
+	timeout = 0;
+	timeoutEnd = 0xffffffff;
 	setName(name);
 }
 
@@ -87,7 +99,7 @@ void UmbraModule::setParametre(const char *name,TCOD_value_t value) {
 	}
 	// new parametre
 	UmbraModuleParametre mod;
-	mod.name=strdup(name); 
+	mod.name=strdup(name);
 	mod.value=value;
 	params.push(mod);
 }
@@ -97,5 +109,5 @@ UmbraModule::UmbraModuleParametre &UmbraModule::getParametre(const char *name) {
 	for (UmbraModuleParametre *it=params.begin(); it != params.end(); it++) {
 		if (strcmp(it->name,name) == 0) return *it;
 	}
-	return def;	
+	return def;
 }

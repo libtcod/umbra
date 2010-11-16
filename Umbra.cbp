@@ -179,6 +179,20 @@
 			<Add directory="..\libtcod\include" />
 			<Add directory="src" />
 		</Compiler>
+		<Unit filename="src\demo\circle.cpp">
+			<Option virtualFolder="Umbra Demo\Sources\" />
+			<Option target="Demo Debug WIN" />
+			<Option target="Demo Release WIN" />
+			<Option target="Demo Debug LINUX" />
+			<Option target="Demo Release LINUX" />
+		</Unit>
+		<Unit filename="src\demo\circle.hpp">
+			<Option virtualFolder="Umbra Demo\Headers\" />
+			<Option target="Demo Debug WIN" />
+			<Option target="Demo Release WIN" />
+			<Option target="Demo Debug LINUX" />
+			<Option target="Demo Release LINUX" />
+		</Unit>
 		<Unit filename="src\demo\credits.cpp">
 			<Option virtualFolder="Umbra Demo\Sources\" />
 			<Option target="Demo Debug WIN" />
@@ -398,6 +412,9 @@
 		<Unit filename="src\umbra\umbra_callback.hpp">
 			<Option virtualFolder="Umbra\Headers\" />
 		</Unit>
+		<Unit filename="src\umbra\umbra_circle.hpp">
+			<Option virtualFolder="Umbra\Headers\" />
+		</Unit>
 		<Unit filename="src\umbra\umbra_config.cpp">
 			<Option virtualFolder="Umbra\Sources\" />
 		</Unit>
@@ -408,12 +425,6 @@
 			<Option virtualFolder="Umbra\Sources\" />
 		</Unit>
 		<Unit filename="src\umbra\umbra_engine.hpp">
-			<Option virtualFolder="Umbra\Headers\" />
-		</Unit>
-		<Unit filename="src\umbra\umbra_error.cpp">
-			<Option virtualFolder="Umbra\Sources\" />
-		</Unit>
-		<Unit filename="src\umbra\umbra_error.hpp">
 			<Option virtualFolder="Umbra\Headers\" />
 		</Unit>
 		<Unit filename="src\umbra\umbra_font.cpp">
@@ -428,6 +439,12 @@
 		<Unit filename="src\umbra\umbra_imod_bsod.hpp">
 			<Option virtualFolder="Umbra\Headers\" />
 		</Unit>
+		<Unit filename="src\umbra\umbra_imod_credits.cpp">
+			<Option virtualFolder="Umbra\Sources\" />
+		</Unit>
+		<Unit filename="src\umbra\umbra_imod_credits.hpp">
+			<Option virtualFolder="Umbra\Headers\" />
+		</Unit>
 		<Unit filename="src\umbra\umbra_imod_speed.cpp">
 			<Option virtualFolder="Umbra\Sources\" />
 		</Unit>
@@ -435,6 +452,12 @@
 			<Option virtualFolder="Umbra\Headers\" />
 		</Unit>
 		<Unit filename="src\umbra\umbra_key.hpp">
+			<Option virtualFolder="Umbra\Headers\" />
+		</Unit>
+		<Unit filename="src\umbra\umbra_log.cpp">
+			<Option virtualFolder="Umbra\Sources\" />
+		</Unit>
+		<Unit filename="src\umbra\umbra_log.hpp">
 			<Option virtualFolder="Umbra\Headers\" />
 		</Unit>
 		<Unit filename="src\umbra\umbra_module.cpp">
@@ -450,9 +473,6 @@
 			<Option virtualFolder="Umbra\Headers\" />
 		</Unit>
 		<Unit filename="src\umbra\umbra_rect.hpp">
-			<Option virtualFolder="Umbra\Headers\" />
-		</Unit>
-		<Unit filename="src\umbra\umbra_version.hpp">
 			<Option virtualFolder="Umbra\Headers\" />
 		</Unit>
 		<Unit filename="src\umbra\umbra_widget.cpp">
