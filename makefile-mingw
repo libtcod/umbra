@@ -26,7 +26,9 @@ OBJS_UMBRA_DEBUG= \
 	$(TEMP)/umbra/debug/umbra_error.o \
 	$(TEMP)/umbra/debug/umbra_font.o \
 	$(TEMP)/umbra/debug/umbra_imod_bsod.o \
+	$(TEMP)/umbra/debug/umbra_imod_credits.o \
 	$(TEMP)/umbra/debug/umbra_imod_speed.o \
+	$(TEMP)/umbra/debug/umbra_log.o \
 	$(TEMP)/umbra/debug/umbra_module.o \
 	$(TEMP)/umbra/debug/umbra_widget.o \
 	$(TEMP)/umbra/debug/umbra_widget_button.o \
@@ -54,7 +56,9 @@ OBJS_RELEASE= \
 	$(TEMP)/umbra/release/umbra_error.o \
 	$(TEMP)/umbra/release/umbra_font.o \
 	$(TEMP)/umbra/release/umbra_imod_bsod.o \
+	$(TEMP)/umbra/release/umbra_imod_credits.o \
 	$(TEMP)/umbra/release/umbra_imod_speed.o \
+	$(TEMP)/umbra/release/umbra_log.o \
 	$(TEMP)/umbra/release/umbra_module.o \
 	$(TEMP)/umbra/release/umbra_widget.o \
 	$(TEMP)/umbra/release/umbra_widget_button.o \
