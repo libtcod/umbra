@@ -27,14 +27,7 @@
 
 #include "main.hpp"
 
-ButtonQuit::ButtonQuit () {
-	text = "Quit the demonstration.";
-}
-
-void ButtonQuit::onMouseOver () {
-}
-
-void ButtonQuit::onMouseDown () {
+void Panel::onQuit(UmbraWidget *w,UmbraEvent ev) {
 	engine.deactivateAll();
 }
 
@@ -48,13 +41,14 @@ Panel::Panel () {
 	lastHover = 0;
 	delay = 3000;
 	bQuit.set(this,2,2,20,3,"Quit");
+	bQuit.onMouseClick.Connect(this,&Panel::onQuit);
 }
 
 void Panel::render () {
 	panel->setDefaultBackground(TCODColor::darkerGrey);
 	panel->setDefaultForeground(TCODColor::silver);
 	panel->printFrame(0,0,rect.w,rect.h,true,TCOD_BKGND_SET,NULL);
-	if (bQuit.area.mouseHover) panel->setDefaultForeground(TCODColor::white);
+	if (bQuit.rect.mouseHover) panel->setDefaultForeground(TCODColor::white);
 	bQuit.render(panel);
 	TCODConsole::blit(panel,0,0,rect.w,rect.h,TCODConsole::root,posx,posy,1.0f,0.5f);
 }

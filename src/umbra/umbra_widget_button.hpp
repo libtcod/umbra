@@ -32,8 +32,6 @@ class UmbraRect;
 
 class UmbraButton : public UmbraWidget {
 	public:
-		UmbraRect area; //the rectangle where the object is contained
-		UmbraWidget * parent; //reference to the widget that contains the object
 		bool visible; //visibility (can be toggled)
 		std::string tag; //the descriptive tag
 
@@ -65,16 +63,5 @@ class UmbraButton : public UmbraWidget {
 		 * Renders the button.
 		 */
 		virtual void render (TCODConsole * con);
-		/**
-		 * Checks the mouse status and calls <code>onMouseHover()</code> and <code>onMouseDown()</code> if necessary
-		 */
-		void mouse (TCOD_mouse_t &ms); //checks the status
-		/**
-		 * Custom code launched when the button is clicked
-		 */
-		virtual void onMouseDown () {}
-		/**
-		 * Custom code launched when the mouse cursor is over the button area
-		 */
-		virtual void onMouseOver () {}
+
 };

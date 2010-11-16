@@ -43,12 +43,13 @@ class UmbraWidget: public UmbraModule {
 		Signal2 <UmbraWidget*,UmbraEvent > onMouseEnter;
 		Signal2 <UmbraWidget*,UmbraEvent > onMouseLeave;
 		Signal2 <UmbraWidget*,UmbraEvent > onMouseMove;
-		Signal2 <UmbraWidget*,UmbraEvent > onMouseButtonPressed;
-		Signal2 <UmbraWidget*,UmbraEvent > onMouseButtonReleased;
-		Signal2 <UmbraWidget*,UmbraEvent > onMouseButtonClicked;
+		Signal2 <UmbraWidget*,UmbraEvent > onMousePress;
+		Signal2 <UmbraWidget*,UmbraEvent > onMouseRelease;
+		Signal2 <UmbraWidget*,UmbraEvent > onMouseClick;
 		
-	protected:
 		UmbraRect rect; // part of the screen where the widget is
+	protected:
+		UmbraWidget * parent; //reference to the widget that contains the object
 		UmbraRect dragZone; // part of the widget we can click to drag it
 		UmbraPoint minimiseButton; //minimise button coordinates
 		UmbraPoint closeButton; //close button coordinates

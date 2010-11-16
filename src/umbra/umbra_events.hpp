@@ -30,9 +30,9 @@ enum UmbraEventType {
 	NONE = 0,
 	MOUSE_ENTER, // UmbraMouseEvent
 	MOUSE_LEAVE, // UmbraMouseEvent
-	MOUSE_BUTTON_PRESS, // UmbraMouseEvent
-	MOUSE_BUTTON_CLICKED, // UmbraMouseEvent
-	MOUSE_BUTTON_RELEASE, // UmbraMouseEvent
+	MOUSE_PRESS, // UmbraMouseEvent
+	MOUSE_CLICK, // UmbraMouseEvent
+	MOUSE_RELEASE, // UmbraMouseEvent
 	MOUSE_MOVE, // UmbraMouseEvent
 };
 

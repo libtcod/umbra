@@ -43,7 +43,7 @@ RabbitWidget::RabbitWidget () {
 
 void RabbitWidget::onInitialise() {
 	// connect "button click" signal to onNextDemo slot
-	button.onMouseButtonClicked.Connect(this,&RabbitWidget::onNextDemo);
+	button.onMouseClick.Connect(this,&RabbitWidget::onNextDemo);
 }
 
 void RabbitWidget::mouse (TCOD_mouse_t &ms) {
@@ -65,7 +65,7 @@ void RabbitWidget::render () {
         rabbit->setDefaultBackground(TCODColor::lightRed);
         rabbit->rect(5,0,14,1,false,TCOD_BKGND_SET);
     }
-    if (button.area.mouseHover) rabbit->setDefaultForeground(TCODColor::lightGreen);
+    if (button.rect.mouseHover) rabbit->setDefaultForeground(TCODColor::lightGreen);
     else rabbit->setDefaultForeground(TCODColor::white);
     button.render(rabbit);
     TCODConsole::blit(rabbit,0,0,rect.w,rect.h,TCODConsole::root,rect.x,rect.y,1.0f,0.5f);

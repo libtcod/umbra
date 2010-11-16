@@ -31,7 +31,6 @@
 //class ButtonMatrix: public UmbraButton { public: ButtonMatrix (); void onMouseOver (); void onMouseDown (); std::string text; };
 //class ButtonNoise: public UmbraButton { public: ButtonNoise (); void onMouseOver (); void onMouseDown (); std::string text; };
 //class ButtonError: public UmbraButton { public: ButtonError (); void onMouseOver (); void onMouseDown (); std::string text; };
-class ButtonQuit: public UmbraButton { public: ButtonQuit (); void onMouseOver (); void onMouseDown (); std::string text; };
 
 class Panel: public UmbraWidget {
     public:
@@ -39,11 +38,12 @@ class Panel: public UmbraWidget {
         //ButtonMatrix bMatrix;
         //ButtonNoise bNoise;
         //ButtonError bError;
-        ButtonQuit bQuit;
+        UmbraButton bQuit;
         bool update ();
         void mouse (TCOD_mouse_t &ms);
         void render ();
         TCODConsole * panel;
+		void onQuit(UmbraWidget *w,UmbraEvent ev);
     private:
         int posx, posy, width, height;
         uint32 delay;
