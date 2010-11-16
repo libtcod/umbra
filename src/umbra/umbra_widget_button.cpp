@@ -56,6 +56,7 @@ void UmbraButton::set (UmbraWidget * parent, int x, int y, int w, int h, const c
 }
 
 void UmbraButton::mouse (TCOD_mouse_t &ms) {
+	UmbraWidget::mouse(ms);
 	if (!visible)
 		return;
 	if (area.contains(ms.cx-parent->rect.x, ms.cy-parent->rect.y)) {

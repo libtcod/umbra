@@ -38,6 +38,15 @@ class UmbraWidget: public UmbraModule {
 		 * @param ms reference to the mouse object
 		 */
 		void mouse (TCOD_mouse_t &ms);
+		
+		// signals
+		Signal2 <UmbraWidget*,UmbraEvent > onMouseEnter;
+		Signal2 <UmbraWidget*,UmbraEvent > onMouseLeave;
+		Signal2 <UmbraWidget*,UmbraEvent > onMouseMove;
+		Signal2 <UmbraWidget*,UmbraEvent > onMouseButtonPressed;
+		Signal2 <UmbraWidget*,UmbraEvent > onMouseButtonReleased;
+		Signal2 <UmbraWidget*,UmbraEvent > onMouseButtonClicked;
+		
 	protected:
 		UmbraRect rect; // part of the screen where the widget is
 		UmbraRect dragZone; // part of the widget we can click to drag it
@@ -59,5 +68,5 @@ class UmbraWidget: public UmbraModule {
 		 * after dragging the widget		  
 		 */		 		
 		virtual void onDragEnd() {}
-		
+				
 };

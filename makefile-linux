@@ -1,9 +1,10 @@
 # umbra mingw makefile
-# run "make -f makefile-mingw demo" 
+# run "make -f makefile-linux demo"
 SRCDIR=src
 LIBTCODDIR=../svn-libtcod
-CPP=mingw32-g++
-UPX=../mak/upx.exe
+CPP=g++
+UPX=upx
+TEMP=/tmp
 
 CFLAGS=$(FLAGS) -I$(LIBTCODDIR)/include -Wall
 
@@ -68,11 +69,11 @@ OBJS_RELEASE= \
 
 all : debug release
 
-debug : fovtc_debug.exe
+debug : fovtc_debug
 
-demo : demo_debug.exe
+demo : demo_debug
 
-release : fovtc.exe
+release : fovtc
 
 $(TEMP)/umbra/debug :
 	\mkdir -p $@
@@ -89,17 +90,17 @@ $(TEMP)/fov/debug :
 $(TEMP)/fov/release :
 	\mkdir -p $@
 	
-fovtc.exe : $(TEMP)/fov/release $(TEMP)/umbra/release $(OBJS_RELEASE)
-	$(CPP) $(OBJS_RELEASE) -o $@ -L$(LIBTCODDIR)/lib -ltcod-mingw -mwindows
+fovtc : $(TEMP)/fov/release $(TEMP)/umbra/release $(OBJS_RELEASE)
+	$(CPP) $(OBJS_RELEASE) -o $@ -L$(LIBTCODDIR) -ltcod -ltcodxx -Wl,-rpath,.
 
-fovtc_debug.exe : $(TEMP)/fov/debug $(TEMP)/umbra/debug $(OBJS_UMBRA_DEBUG) $(OBJS_FOVTC_DEBUG) 
-	$(CPP) $(OBJS_UMBRA_DEBUG) $(OBJS_FOVTC_DEBUG) -o $@ -L$(LIBTCODDIR)/lib -ltcod-mingw-debug -mwindows
+fovtc_debug : $(TEMP)/fov/debug $(TEMP)/umbra/debug $(OBJS_UMBRA_DEBUG) $(OBJS_FOVTC_DEBUG) 
+	$(CPP) $(OBJS_UMBRA_DEBUG) $(OBJS_FOVTC_DEBUG) -o $@ -L$(LIBTCODDIR) -ltcod_debug -ltcodxx_debug -Wl,-rpath,.
 
-demo_debug.exe : $(TEMP)/umbra/demo/debug $(TEMP)/umbra/debug $(OBJS_DEMO_DEBUG) $(OBJS_UMBRA_DEBUG)
-	$(CPP) $(OBJS_UMBRA_DEBUG) $(OBJS_DEMO_DEBUG) -o $@ -L$(LIBTCODDIR)/lib -ltcod-mingw-debug -mwindows
+demo_debug : $(TEMP)/umbra/demo/debug $(TEMP)/umbra/debug $(OBJS_DEMO_DEBUG) $(OBJS_UMBRA_DEBUG)
+	$(CPP) $(OBJS_UMBRA_DEBUG) $(OBJS_DEMO_DEBUG) -o $@ -L$(LIBTCODDIR) -ltcod_debug -ltcodxx_debug -Wl,-rpath,.
 
 clean :
-	\rm -f $(OBJS_RELEASE) fovtc.exe $(OBJS_FOVTC_DEBUG) $(OBJS_DEMO_DEBUG) fovtc_debug.exe demo_debug.exe 
+	\rm -f $(OBJS_RELEASE) fovtc $(OBJS_FOVTC_DEBUG) $(OBJS_DEMO_DEBUG) $(OBJS_UMBRA_DEBUG)  fovtc_debug demo_debug
 
 cleanall : clean
 	\rm -f $(OBJS_UMBRA_DEBUG)

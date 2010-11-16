@@ -30,7 +30,7 @@
 class UmbraWidget;
 class UmbraRect;
 
-class UmbraButton {
+class UmbraButton : public UmbraWidget {
 	public:
 		UmbraRect area; //the rectangle where the object is contained
 		UmbraWidget * parent; //reference to the widget that contains the object

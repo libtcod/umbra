@@ -27,10 +27,12 @@
 
 #include "main.hpp"
 
+/*
 void RabbitButton::onMouseDown () {
     parent->setActive(false);
     engine.getModule("matrix")->setActive(false);
 }
+*/
 
 RabbitWidget::RabbitWidget () {
     rabbit = new TCODConsole(24,12);
@@ -39,9 +41,19 @@ RabbitWidget::RabbitWidget () {
     button.set(this,10,7,4,3,"OK");
 }
 
+void RabbitWidget::onInitialise() {
+	// connect "button click" signal to onNextDemo slot
+	button.onMouseButtonClicked.Connect(this,&RabbitWidget::onNextDemo);
+}
+
 void RabbitWidget::mouse (TCOD_mouse_t &ms) {
     UmbraWidget::mouse(ms);
     button.mouse(ms);
+}
+
+void RabbitWidget::onNextDemo(UmbraWidget *w,UmbraEvent ev) {
+    setActive(false);
+    engine.getModule("matrix")->setActive(false);	
 }
 
 void RabbitWidget::render () {

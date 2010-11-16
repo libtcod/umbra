@@ -35,6 +35,11 @@
 
 #include "libtcod.hpp"
 
+// signal/slot utility
+#include "Delegate.h"
+#include "Signal.h"
+using namespace Gallant;
+
 #include "umbra_log.hpp"
 #include "umbra_font.hpp"
 #include "umbra_config.hpp"
@@ -46,6 +51,7 @@
 #include "umbra_point.hpp"
 #include "umbra_rect.hpp"
 #include "umbra_circle.hpp"
+#include "umbra_events.hpp"
 #include "umbra_widget.hpp"
 
 #include "umbra_widget_button.hpp"
