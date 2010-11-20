@@ -8,7 +8,7 @@
 		<Option virtualFolders="Torture Chamber\;Torture Chamber\;Torture Chamber\;Torture Chamber\Sources\;Torture Chamber\Headers\;Torture Chamber\;Torture Chamber\;Umbra Demo\Sources\;Umbra Demo\Headers\;Umbra Invaders\Sources\;Umbra Invaders\Headers\;Umbra\Sources\;Umbra\Headers\;" />
 		<Build>
 			<Target title="Demo Debug WIN">
-				<Option output="umbra-demo-debug" prefix_auto="0" extension_auto="1" />
+				<Option output="..\..\umbra-demo-debug" prefix_auto="0" extension_auto="1" />
 				<Option working_dir="..\..\." />
 				<Option object_output="obj\" />
 				<Option type="1" />
@@ -22,7 +22,7 @@
 				</Linker>
 			</Target>
 			<Target title="Demo Release WIN">
-				<Option output="umbra-demo-release" prefix_auto="0" extension_auto="1" />
+				<Option output="..\..\umbra-demo-release" prefix_auto="0" extension_auto="1" />
 				<Option working_dir="..\..\." />
 				<Option object_output="obj\" />
 				<Option type="0" />
@@ -37,7 +37,7 @@
 				</Linker>
 			</Target>
 			<Target title="Demo Debug LINUX">
-				<Option output="umbra-demo-debug" prefix_auto="0" extension_auto="1" />
+				<Option output="..\..\umbra-demo-debug" prefix_auto="0" extension_auto="1" />
 				<Option working_dir="..\..\." />
 				<Option object_output="obj\" />
 				<Option type="1" />
@@ -54,7 +54,7 @@
 				</Linker>
 			</Target>
 			<Target title="Demo Release LINUX">
-				<Option output="umbra-demo-release" prefix_auto="0" extension_auto="1" />
+				<Option output="..\..\umbra-demo-release" prefix_auto="0" extension_auto="1" />
 				<Option working_dir="..\..\." />
 				<Option object_output="obj\" />
 				<Option type="0" />
@@ -71,7 +71,7 @@
 				</Linker>
 			</Target>
 			<Target title="Fovbench Debug WIN">
-				<Option output="fovbench-debug" prefix_auto="0" extension_auto="1" />
+				<Option output="..\..\fovbench-debug" prefix_auto="0" extension_auto="1" />
 				<Option working_dir="..\..\." />
 				<Option object_output="obj\" />
 				<Option type="1" />
@@ -85,7 +85,7 @@
 				</Linker>
 			</Target>
 			<Target title="Fovbench Release WIN">
-				<Option output="fovbench-release" prefix_auto="0" extension_auto="1" />
+				<Option output="..\..\fovbench-release" prefix_auto="0" extension_auto="1" />
 				<Option working_dir="..\..\." />
 				<Option object_output="obj\" />
 				<Option type="0" />
@@ -100,7 +100,7 @@
 				</Linker>
 			</Target>
 			<Target title="Fovbench Debug LINUX">
-				<Option output="fovbench-debug" prefix_auto="0" extension_auto="1" />
+				<Option output="..\..\fovbench-debug" prefix_auto="0" extension_auto="1" />
 				<Option working_dir="..\..\." />
 				<Option object_output="obj\" />
 				<Option type="1" />
@@ -117,7 +117,7 @@
 				</Linker>
 			</Target>
 			<Target title="Fovbench Release LINUX">
-				<Option output="fovbench-release" prefix_auto="0" extension_auto="1" />
+				<Option output="..\..\fovbench-release" prefix_auto="0" extension_auto="1" />
 				<Option working_dir="..\..\." />
 				<Option object_output="obj\" />
 				<Option type="0" />
@@ -134,7 +134,7 @@
 				</Linker>
 			</Target>
 			<Target title="Invaders Debug WIN">
-				<Option output="invaders-debug" prefix_auto="0" extension_auto="1" />
+				<Option output="..\..\invaders-debug" prefix_auto="0" extension_auto="1" />
 				<Option working_dir="..\..\." />
 				<Option object_output="obj\" />
 				<Option type="1" />
@@ -148,7 +148,7 @@
 				</Linker>
 			</Target>
 			<Target title="Invaders Release WIN">
-				<Option output="invaders-release" prefix_auto="0" extension_auto="1" />
+				<Option output="..\..\invaders-release" prefix_auto="0" extension_auto="1" />
 				<Option working_dir="..\..\." />
 				<Option object_output="obj\" />
 				<Option type="0" />
@@ -163,7 +163,7 @@
 				</Linker>
 			</Target>
 			<Target title="Invaders Debug LINUX">
-				<Option output="invaders-debug" prefix_auto="0" extension_auto="1" />
+				<Option output="..\..\invaders-debug" prefix_auto="0" extension_auto="1" />
 				<Option working_dir="..\..\." />
 				<Option object_output="obj\" />
 				<Option type="1" />
@@ -180,7 +180,7 @@
 				</Linker>
 			</Target>
 			<Target title="Invaders Release LINUX">
-				<Option output="invaders-release" prefix_auto="0" extension_auto="1" />
+				<Option output="..\..\invaders-release" prefix_auto="0" extension_auto="1" />
 				<Option working_dir="..\..\." />
 				<Option object_output="obj\" />
 				<Option type="0" />
