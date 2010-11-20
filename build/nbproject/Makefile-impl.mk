@@ -24,7 +24,7 @@ CLEAN_SUBPROJECTS=${CLEAN_SUBPROJECTS_${SUBPROJECTS}}
 
 
 # Project Name
-PROJECTNAME=Umbra
+PROJECTNAME=build
 
 # Active Configuration
 DEFAULTCONF=Windows-Debug-Demo

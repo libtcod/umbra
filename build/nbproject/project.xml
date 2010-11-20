@@ -7,12 +7,10 @@
             <make-project-type>0</make-project-type>
             <c-extensions/>
             <cpp-extensions>cpp</cpp-extensions>
-            <header-extensions>hpp</header-extensions>
+            <header-extensions>h,hpp</header-extensions>
             <sourceEncoding>UTF-8</sourceEncoding>
             <make-dep-projects/>
-            <sourceRootList>
-                <sourceRootElem>src/umbra</sourceRootElem>
-            </sourceRootList>
+            <sourceRootList/>
             <confList>
                 <confElem>Windows-Debug-Demo</confElem>
                 <confElem>Windows-Release-Demo</confElem>
