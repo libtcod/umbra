@@ -28,26 +28,19 @@
 #ifndef RABBIT_HPP
 #define RABBIT_HPP
 
-/*
-class RabbitButton: public UmbraButton {
-    public:
-        //RabbitButton ();
-        void onMouseDown ();
-};
-*/
+class RabbitButton: public UmbraButton {};
 
 class RabbitWidget: public UmbraWidget {
-    public:
-        RabbitWidget ();
-        void mouse (TCOD_mouse_t &ms);
-        void render ();
-        UmbraButton button;
-        TCODConsole * rabbit;
-		
-		//slots
-		void onNextDemo(UmbraWidget *w,UmbraEvent ev);
+public:
+	RabbitWidget ();
+	void mouse (TCOD_mouse_t &ms);
+	void render ();
+	UmbraButton button;
+	TCODConsole * rabbit;
+	//slots
+	void onNextDemo (UmbraWidget *w, UmbraEvent ev);	
 protected :
-		void onInitialise();
+	void onInitialise();
 };
 
 #endif

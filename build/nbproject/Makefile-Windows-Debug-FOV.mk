@@ -36,8 +36,8 @@ OBJECTDIR=build/${CND_CONF}/${CND_PLATFORM}
 OBJECTFILES= \
 	${OBJECTDIR}/_ext/659855571/bsp_helper.o \
 	${OBJECTDIR}/_ext/1520178433/umbra_font.o \
-	${OBJECTDIR}/_ext/1520178433/umbra_log.o \
 	${OBJECTDIR}/_ext/659855571/main.o \
+	${OBJECTDIR}/_ext/1520178433/umbra_log.o \
 	${OBJECTDIR}/_ext/1520178433/umbra_widget.o \
 	${OBJECTDIR}/_ext/1520178433/umbra_config.o \
 	${OBJECTDIR}/_ext/1520178433/umbra_widget_button.o \
@@ -89,15 +89,15 @@ ${OBJECTDIR}/_ext/1520178433/umbra_font.o: ../src/umbra/umbra_font.cpp
 	${RM} $@.d
 	$(COMPILE.cc) -g -Werror -I../../libtcod/include -I../src/umbra -I../src/demo -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/1520178433/umbra_font.o ../src/umbra/umbra_font.cpp
 
-${OBJECTDIR}/_ext/1520178433/umbra_log.o: ../src/umbra/umbra_log.cpp 
-	${MKDIR} -p ${OBJECTDIR}/_ext/1520178433
-	${RM} $@.d
-	$(COMPILE.cc) -g -Werror -I../../libtcod/include -I../src/umbra -I../src/demo -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/1520178433/umbra_log.o ../src/umbra/umbra_log.cpp
-
 ${OBJECTDIR}/_ext/659855571/main.o: ../src/fov/main.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/659855571
 	${RM} $@.d
 	$(COMPILE.cc) -g -Werror -I../../libtcod/include -I../src/umbra -I../src/demo -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/659855571/main.o ../src/fov/main.cpp
+
+${OBJECTDIR}/_ext/1520178433/umbra_log.o: ../src/umbra/umbra_log.cpp 
+	${MKDIR} -p ${OBJECTDIR}/_ext/1520178433
+	${RM} $@.d
+	$(COMPILE.cc) -g -Werror -I../../libtcod/include -I../src/umbra -I../src/demo -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/1520178433/umbra_log.o ../src/umbra/umbra_log.cpp
 
 ${OBJECTDIR}/_ext/1520178433/umbra_widget.o: ../src/umbra/umbra_widget.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/1520178433

@@ -27,13 +27,6 @@
 
 #include "main.hpp"
 
-/*
-void RabbitButton::onMouseDown () {
-    parent->setActive(false);
-    engine.getModule("matrix")->setActive(false);
-}
-*/
-
 RabbitWidget::RabbitWidget () {
     rabbit = new TCODConsole(24,12);
     rect.set(engine.getRootWidth()/2-12,engine.getRootHeight()/2-6,24,12);
@@ -42,8 +35,8 @@ RabbitWidget::RabbitWidget () {
 }
 
 void RabbitWidget::onInitialise() {
-	// connect "button click" signal to onNextDemo slot
-	button.onMouseClick.Connect(this,&RabbitWidget::onNextDemo);
+	// connect signals to their respective slots
+	button.onMouseClick.connect(this,&RabbitWidget::onNextDemo);
 }
 
 void RabbitWidget::mouse (TCOD_mouse_t &ms) {

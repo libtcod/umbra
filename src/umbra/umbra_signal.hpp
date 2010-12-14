@@ -27,41 +27,41 @@ private:
 	DelegateList delegateList;
 
 public:
-	void Connect( _Delegate delegate )
+	void connect( _Delegate delegate )
 	{
 		delegateList.insert( delegate );
 	}
 
 	template< class X, class Y >
-	void Connect( Y * obj, void (X::*func)() )
+	void connect( Y * obj, void (X::*func)() )
 	{
 		delegateList.insert( MakeDelegate( obj, func ) );
 	}
 
 	template< class X, class Y >
-	void Connect( Y * obj, void (X::*func)() const )
+	void connect( Y * obj, void (X::*func)() const )
 	{
 		delegateList.insert( MakeDelegate( obj, func ) );
 	}
 
-	void Disconnect( _Delegate delegate )
+	void disconnect( _Delegate delegate )
 	{
 		delegateList.erase( delegate );
 	}
 
 	template< class X, class Y >
-	void Disconnect( Y * obj, void (X::*func)() )
+	void disconnect( Y * obj, void (X::*func)() )
 	{
 		delegateList.erase( MakeDelegate( obj, func ) );
 	}
 
 	template< class X, class Y >
-	void Disconnect( Y * obj, void (X::*func)() const )
+	void disconnect( Y * obj, void (X::*func)() const )
 	{
 		delegateList.erase( MakeDelegate( obj, func ) );
 	}
 
-	void Emit() const
+	void emit() const
 	{
 		for (DelegateIterator i = delegateList.begin(); i != delegateList.end(); ++i)
 		{
@@ -71,7 +71,7 @@ public:
 
 	void operator() () const
 	{
-		Emit();
+		emit();
 	}
 };
 
@@ -88,41 +88,41 @@ private:
 	DelegateList delegateList;
 
 public:
-	void Connect( _Delegate delegate )
+	void connect( _Delegate delegate )
 	{
 		delegateList.insert( delegate );
 	}
 
 	template< class X, class Y >
-	void Connect( Y * obj, void (X::*func)( Param1 p1 ) )
+	void connect( Y * obj, void (X::*func)( Param1 p1 ) )
 	{
 		delegateList.insert( MakeDelegate( obj, func ) );
 	}
 
 	template< class X, class Y >
-	void Connect( Y * obj, void (X::*func)( Param1 p1 ) const )
+	void connect( Y * obj, void (X::*func)( Param1 p1 ) const )
 	{
 		delegateList.insert( MakeDelegate( obj, func ) );
 	}
 
-	void Disconnect( _Delegate delegate )
+	void disconnect( _Delegate delegate )
 	{
 		delegateList.erase( delegate );
 	}
 
 	template< class X, class Y >
-	void Disconnect( Y * obj, void (X::*func)( Param1 p1 ) )
+	void disconnect( Y * obj, void (X::*func)( Param1 p1 ) )
 	{
 		delegateList.erase( MakeDelegate( obj, func ) );
 	}
 
 	template< class X, class Y >
-	void Disconnect( Y * obj, void (X::*func)( Param1 p1 ) const )
+	void disconnect( Y * obj, void (X::*func)( Param1 p1 ) const )
 	{
 		delegateList.erase( MakeDelegate( obj, func ) );
 	}
 
-	void Emit( Param1 p1 ) const
+	void emit( Param1 p1 ) const
 	{
 		for (DelegateIterator i = delegateList.begin(); i != delegateList.end(); ++i)
 		{
@@ -132,7 +132,7 @@ public:
 
 	void operator() ( Param1 p1 ) const
 	{
-		Emit( p1 );
+		emit( p1 );
 	}
 };
 
@@ -149,41 +149,41 @@ private:
 	DelegateList delegateList;
 
 public:
-	void Connect( _Delegate delegate )
+	void connect( _Delegate delegate )
 	{
 		delegateList.insert( delegate );
 	}
 
 	template< class X, class Y >
-	void Connect( Y * obj, void (X::*func)( Param1 p1, Param2 p2 ) )
+	void connect( Y * obj, void (X::*func)( Param1 p1, Param2 p2 ) )
 	{
 		delegateList.insert( MakeDelegate( obj, func ) );
 	}
 
 	template< class X, class Y >
-	void Connect( Y * obj, void (X::*func)( Param1 p1, Param2 p2 ) const )
+	void connect( Y * obj, void (X::*func)( Param1 p1, Param2 p2 ) const )
 	{
 		delegateList.insert( MakeDelegate( obj, func ) );
 	}
 
-	void Disconnect( _Delegate delegate )
+	void disconnect( _Delegate delegate )
 	{
 		delegateList.erase( delegate );
 	}
 
 	template< class X, class Y >
-	void Disconnect( Y * obj, void (X::*func)( Param1 p1, Param2 p2 ) )
+	void disconnect( Y * obj, void (X::*func)( Param1 p1, Param2 p2 ) )
 	{
 		delegateList.erase( MakeDelegate( obj, func ) );
 	}
 
 	template< class X, class Y >
-	void Disconnect( Y * obj, void (X::*func)( Param1 p1, Param2 p2 ) const )
+	void disconnect( Y * obj, void (X::*func)( Param1 p1, Param2 p2 ) const )
 	{
 		delegateList.erase( MakeDelegate( obj, func ) );
 	}
 
-	void Emit( Param1 p1, Param2 p2 ) const
+	void emit( Param1 p1, Param2 p2 ) const
 	{
 		for (DelegateIterator i = delegateList.begin(); i != delegateList.end(); ++i)
 		{
@@ -193,7 +193,7 @@ public:
 
 	void operator() ( Param1 p1, Param2 p2 ) const
 	{
-		Emit( p1, p2 );
+		emit( p1, p2 );
 	}
 };
 
@@ -210,41 +210,41 @@ private:
 	DelegateList delegateList;
 
 public:
-	void Connect( _Delegate delegate )
+	void connect( _Delegate delegate )
 	{
 		delegateList.insert( delegate );
 	}
 
 	template< class X, class Y >
-	void Connect( Y * obj, void (X::*func)( Param1 p1, Param2 p2, Param3 p3 ) )
+	void connect( Y * obj, void (X::*func)( Param1 p1, Param2 p2, Param3 p3 ) )
 	{
 		delegateList.insert( MakeDelegate( obj, func ) );
 	}
 
 	template< class X, class Y >
-	void Connect( Y * obj, void (X::*func)( Param1 p1, Param2 p2, Param3 p3 ) const )
+	void connect( Y * obj, void (X::*func)( Param1 p1, Param2 p2, Param3 p3 ) const )
 	{
 		delegateList.insert( MakeDelegate( obj, func ) );
 	}
 
-	void Disconnect( _Delegate delegate )
+	void disconnect( _Delegate delegate )
 	{
 		delegateList.erase( delegate );
 	}
 
 	template< class X, class Y >
-	void Disconnect( Y * obj, void (X::*func)( Param1 p1, Param2 p2, Param3 p3 ) )
+	void disconnect( Y * obj, void (X::*func)( Param1 p1, Param2 p2, Param3 p3 ) )
 	{
 		delegateList.erase( MakeDelegate( obj, func ) );
 	}
 
 	template< class X, class Y >
-	void Disconnect( Y * obj, void (X::*func)( Param1 p1, Param2 p2, Param3 p3 ) const )
+	void disconnect( Y * obj, void (X::*func)( Param1 p1, Param2 p2, Param3 p3 ) const )
 	{
 		delegateList.erase( MakeDelegate( obj, func ) );
 	}
 
-	void Emit( Param1 p1, Param2 p2, Param3 p3 ) const
+	void emit( Param1 p1, Param2 p2, Param3 p3 ) const
 	{
 		for (DelegateIterator i = delegateList.begin(); i != delegateList.end(); ++i)
 		{
@@ -254,7 +254,7 @@ public:
 
 	void operator() ( Param1 p1, Param2 p2, Param3 p3 ) const
 	{
-		Emit( p1, p2, p3 );
+		emit( p1, p2, p3 );
 	}
 };
 
@@ -271,41 +271,41 @@ private:
 	DelegateList delegateList;
 
 public:
-	void Connect( _Delegate delegate )
+	void connect( _Delegate delegate )
 	{
 		delegateList.insert( delegate );
 	}
 
 	template< class X, class Y >
-	void Connect( Y * obj, void (X::*func)( Param1 p1, Param2 p2, Param3 p3, Param4 p4 ) )
+	void connect( Y * obj, void (X::*func)( Param1 p1, Param2 p2, Param3 p3, Param4 p4 ) )
 	{
 		delegateList.insert( MakeDelegate( obj, func ) );
 	}
 
 	template< class X, class Y >
-	void Connect( Y * obj, void (X::*func)( Param1 p1, Param2 p2, Param3 p3, Param4 p4 ) const )
+	void connect( Y * obj, void (X::*func)( Param1 p1, Param2 p2, Param3 p3, Param4 p4 ) const )
 	{
 		delegateList.insert( MakeDelegate( obj, func ) );
 	}
 
-	void Disconnect( _Delegate delegate )
+	void disconnect( _Delegate delegate )
 	{
 		delegateList.erase( delegate );
 	}
 
 	template< class X, class Y >
-	void Disconnect( Y * obj, void (X::*func)( Param1 p1, Param2 p2, Param3 p3, Param4 p4 ) )
+	void disconnect( Y * obj, void (X::*func)( Param1 p1, Param2 p2, Param3 p3, Param4 p4 ) )
 	{
 		delegateList.erase( MakeDelegate( obj, func ) );
 	}
 
 	template< class X, class Y >
-	void Disconnect( Y * obj, void (X::*func)( Param1 p1, Param2 p2, Param3 p3, Param4 p4 ) const )
+	void disconnect( Y * obj, void (X::*func)( Param1 p1, Param2 p2, Param3 p3, Param4 p4 ) const )
 	{
 		delegateList.erase( MakeDelegate( obj, func ) );
 	}
 
-	void Emit( Param1 p1, Param2 p2, Param3 p3, Param4 p4 ) const
+	void emit( Param1 p1, Param2 p2, Param3 p3, Param4 p4 ) const
 	{
 		for (DelegateIterator i = delegateList.begin(); i != delegateList.end(); ++i)
 		{
@@ -315,7 +315,7 @@ public:
 
 	void operator() ( Param1 p1, Param2 p2, Param3 p3, Param4 p4 ) const
 	{
-		Emit( p1, p2, p3, p4 );
+		emit( p1, p2, p3, p4 );
 	}
 };
 
@@ -332,41 +332,41 @@ private:
 	DelegateList delegateList;
 
 public:
-	void Connect( _Delegate delegate )
+	void connect( _Delegate delegate )
 	{
 		delegateList.insert( delegate );
 	}
 
 	template< class X, class Y >
-	void Connect( Y * obj, void (X::*func)( Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5 ) )
+	void connect( Y * obj, void (X::*func)( Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5 ) )
 	{
 		delegateList.insert( MakeDelegate( obj, func ) );
 	}
 
 	template< class X, class Y >
-	void Connect( Y * obj, void (X::*func)( Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5 ) const )
+	void connect( Y * obj, void (X::*func)( Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5 ) const )
 	{
 		delegateList.insert( MakeDelegate( obj, func ) );
 	}
 
-	void Disconnect( _Delegate delegate )
+	void disconnect( _Delegate delegate )
 	{
 		delegateList.erase( delegate );
 	}
 
 	template< class X, class Y >
-	void Disconnect( Y * obj, void (X::*func)( Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5 ) )
+	void disconnect( Y * obj, void (X::*func)( Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5 ) )
 	{
 		delegateList.erase( MakeDelegate( obj, func ) );
 	}
 
 	template< class X, class Y >
-	void Disconnect( Y * obj, void (X::*func)( Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5 ) const )
+	void disconnect( Y * obj, void (X::*func)( Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5 ) const )
 	{
 		delegateList.erase( MakeDelegate( obj, func ) );
 	}
 
-	void Emit( Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5 ) const
+	void emit( Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5 ) const
 	{
 		for (DelegateIterator i = delegateList.begin(); i != delegateList.end(); ++i)
 		{
@@ -376,7 +376,7 @@ public:
 
 	void operator() ( Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5 ) const
 	{
-		Emit( p1, p2, p3, p4, p5 );
+		emit( p1, p2, p3, p4, p5 );
 	}
 };
 
@@ -393,41 +393,41 @@ private:
 	DelegateList delegateList;
 
 public:
-	void Connect( _Delegate delegate )
+	void connect( _Delegate delegate )
 	{
 		delegateList.insert( delegate );
 	}
 
 	template< class X, class Y >
-	void Connect( Y * obj, void (X::*func)( Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6 ) )
+	void connect( Y * obj, void (X::*func)( Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6 ) )
 	{
 		delegateList.insert( MakeDelegate( obj, func ) );
 	}
 
 	template< class X, class Y >
-	void Connect( Y * obj, void (X::*func)( Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6 ) const )
+	void connect( Y * obj, void (X::*func)( Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6 ) const )
 	{
 		delegateList.insert( MakeDelegate( obj, func ) );
 	}
 
-	void Disconnect( _Delegate delegate )
+	void disconnect( _Delegate delegate )
 	{
 		delegateList.erase( delegate );
 	}
 
 	template< class X, class Y >
-	void Disconnect( Y * obj, void (X::*func)( Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6 ) )
+	void disconnect( Y * obj, void (X::*func)( Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6 ) )
 	{
 		delegateList.erase( MakeDelegate( obj, func ) );
 	}
 
 	template< class X, class Y >
-	void Disconnect( Y * obj, void (X::*func)( Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6 ) const )
+	void disconnect( Y * obj, void (X::*func)( Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6 ) const )
 	{
 		delegateList.erase( MakeDelegate( obj, func ) );
 	}
 
-	void Emit( Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6 ) const
+	void emit( Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6 ) const
 	{
 		for (DelegateIterator i = delegateList.begin(); i != delegateList.end(); ++i)
 		{
@@ -437,7 +437,7 @@ public:
 
 	void operator() ( Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6 ) const
 	{
-		Emit( p1, p2, p3, p4, p5, p6 );
+		emit( p1, p2, p3, p4, p5, p6 );
 	}
 };
 
@@ -454,41 +454,41 @@ private:
 	DelegateList delegateList;
 
 public:
-	void Connect( _Delegate delegate )
+	void connect( _Delegate delegate )
 	{
 		delegateList.insert( delegate );
 	}
 
 	template< class X, class Y >
-	void Connect( Y * obj, void (X::*func)( Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6, Param7 p7 ) )
+	void connect( Y * obj, void (X::*func)( Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6, Param7 p7 ) )
 	{
 		delegateList.insert( MakeDelegate( obj, func ) );
 	}
 
 	template< class X, class Y >
-	void Connect( Y * obj, void (X::*func)( Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6, Param7 p7 ) const )
+	void connect( Y * obj, void (X::*func)( Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6, Param7 p7 ) const )
 	{
 		delegateList.insert( MakeDelegate( obj, func ) );
 	}
 
-	void Disconnect( _Delegate delegate )
+	void disconnect( _Delegate delegate )
 	{
 		delegateList.erase( delegate );
 	}
 
 	template< class X, class Y >
-	void Disconnect( Y * obj, void (X::*func)( Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6, Param7 p7 ) )
+	void disconnect( Y * obj, void (X::*func)( Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6, Param7 p7 ) )
 	{
 		delegateList.erase( MakeDelegate( obj, func ) );
 	}
 
 	template< class X, class Y >
-	void Disconnect( Y * obj, void (X::*func)( Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6, Param7 p7 ) const )
+	void disconnect( Y * obj, void (X::*func)( Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6, Param7 p7 ) const )
 	{
 		delegateList.erase( MakeDelegate( obj, func ) );
 	}
 
-	void Emit( Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6, Param7 p7 ) const
+	void emit( Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6, Param7 p7 ) const
 	{
 		for (DelegateIterator i = delegateList.begin(); i != delegateList.end(); ++i)
 		{
@@ -498,7 +498,7 @@ public:
 
 	void operator() ( Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6, Param7 p7 ) const
 	{
-		Emit( p1, p2, p3, p4, p5, p6, p7 );
+		emit( p1, p2, p3, p4, p5, p6, p7 );
 	}
 };
 
@@ -515,41 +515,41 @@ private:
 	DelegateList delegateList;
 
 public:
-	void Connect( _Delegate delegate )
+	void connect( _Delegate delegate )
 	{
 		delegateList.insert( delegate );
 	}
 
 	template< class X, class Y >
-	void Connect( Y * obj, void (X::*func)( Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6, Param7 p7, Param8 p8 ) )
+	void connect( Y * obj, void (X::*func)( Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6, Param7 p7, Param8 p8 ) )
 	{
 		delegateList.insert( MakeDelegate( obj, func ) );
 	}
 
 	template< class X, class Y >
-	void Connect( Y * obj, void (X::*func)( Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6, Param7 p7, Param8 p8 ) const )
+	void connect( Y * obj, void (X::*func)( Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6, Param7 p7, Param8 p8 ) const )
 	{
 		delegateList.insert( MakeDelegate( obj, func ) );
 	}
 
-	void Disconnect( _Delegate delegate )
+	void disconnect( _Delegate delegate )
 	{
 		delegateList.erase( delegate );
 	}
 
 	template< class X, class Y >
-	void Disconnect( Y * obj, void (X::*func)( Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6, Param7 p7, Param8 p8 ) )
+	void disconnect( Y * obj, void (X::*func)( Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6, Param7 p7, Param8 p8 ) )
 	{
 		delegateList.erase( MakeDelegate( obj, func ) );
 	}
 
 	template< class X, class Y >
-	void Disconnect( Y * obj, void (X::*func)( Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6, Param7 p7, Param8 p8 ) const )
+	void disconnect( Y * obj, void (X::*func)( Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6, Param7 p7, Param8 p8 ) const )
 	{
 		delegateList.erase( MakeDelegate( obj, func ) );
 	}
 
-	void Emit( Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6, Param7 p7, Param8 p8 ) const
+	void emit( Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6, Param7 p7, Param8 p8 ) const
 	{
 		for (DelegateIterator i = delegateList.begin(); i != delegateList.end(); ++i)
 		{
@@ -559,7 +559,7 @@ public:
 
 	void operator() ( Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6, Param7 p7, Param8 p8 ) const
 	{
-		Emit( p1, p2, p3, p4, p5, p6, p7, p8 );
+		emit( p1, p2, p3, p4, p5, p6, p7, p8 );
 	}
 };
 

@@ -25,7 +25,9 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-// events triggered by the widget system
+/**
+ * Events triggered by the widget system
+ */ 
 enum UmbraEventType {
 	NONE = 0,
 	MOUSE_ENTER, // UmbraMouseEvent

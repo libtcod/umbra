@@ -28,7 +28,7 @@
 #include "main.hpp"
 
 void Panel::onQuit(UmbraWidget *w,UmbraEvent ev) {
-	engine.deactivateAll();
+	engine.deactivateAll(true);
 }
 
 Panel::Panel () {
@@ -41,7 +41,7 @@ Panel::Panel () {
 	lastHover = 0;
 	delay = 3000;
 	bQuit.set(this,2,2,20,3,"Quit");
-	bQuit.onMouseClick.Connect(this,&Panel::onQuit);
+	bQuit.onMouseClick.connect(this,&Panel::onQuit);
 }
 
 void Panel::render () {

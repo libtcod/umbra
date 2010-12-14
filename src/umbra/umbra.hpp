@@ -36,8 +36,8 @@
 #include "libtcod.hpp"
 
 // signal/slot utility
-#include "Delegate.h"
-#include "Signal.h"
+#include "umbra_delegate.hpp"
+#include "umbra_signal.hpp"
 using namespace Gallant;
 
 #include "umbra_log.hpp"

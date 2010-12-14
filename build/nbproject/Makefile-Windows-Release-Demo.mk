@@ -47,8 +47,8 @@ OBJECTFILES= \
 	${OBJECTDIR}/_ext/1520178433/umbra_module.o \
 	${OBJECTDIR}/_ext/1520178433/umbra_imod_speed.o \
 	${OBJECTDIR}/_ext/1019383139/demo.o \
-	${OBJECTDIR}/_ext/1019383139/main.o \
 	${OBJECTDIR}/_ext/1520178433/umbra_imod_credits.o \
+	${OBJECTDIR}/_ext/1019383139/main.o \
 	${OBJECTDIR}/_ext/1520178433/umbra_imod_bsod.o \
 	${OBJECTDIR}/_ext/1520178433/umbra_engine.o \
 	${OBJECTDIR}/_ext/1520178433/umbra_callback.o \
@@ -146,15 +146,15 @@ ${OBJECTDIR}/_ext/1019383139/demo.o: ../src/demo/demo.cpp
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -Werror -s -I../../libtcod/include -I../src/umbra -I../src/demo -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/1019383139/demo.o ../src/demo/demo.cpp
 
-${OBJECTDIR}/_ext/1019383139/main.o: ../src/demo/main.cpp 
-	${MKDIR} -p ${OBJECTDIR}/_ext/1019383139
-	${RM} $@.d
-	$(COMPILE.cc) -O2 -Werror -s -I../../libtcod/include -I../src/umbra -I../src/demo -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/1019383139/main.o ../src/demo/main.cpp
-
 ${OBJECTDIR}/_ext/1520178433/umbra_imod_credits.o: ../src/umbra/umbra_imod_credits.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/1520178433
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -Werror -s -I../../libtcod/include -I../src/umbra -I../src/demo -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/1520178433/umbra_imod_credits.o ../src/umbra/umbra_imod_credits.cpp
+
+${OBJECTDIR}/_ext/1019383139/main.o: ../src/demo/main.cpp 
+	${MKDIR} -p ${OBJECTDIR}/_ext/1019383139
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -Werror -s -I../../libtcod/include -I../src/umbra -I../src/demo -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/1019383139/main.o ../src/demo/main.cpp
 
 ${OBJECTDIR}/_ext/1520178433/umbra_imod_bsod.o: ../src/umbra/umbra_imod_bsod.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/1520178433
