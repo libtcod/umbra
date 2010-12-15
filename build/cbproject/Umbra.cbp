@@ -441,12 +441,6 @@
 			<Option target="Invaders Debug LINUX" />
 			<Option target="Invaders Release LINUX" />
 		</Unit>
-		<Unit filename="..\..\src\umbra\Delegate.h">
-			<Option virtualFolder="Umbra\Headers\" />
-		</Unit>
-		<Unit filename="..\..\src\umbra\Signal.h">
-			<Option virtualFolder="Umbra\Headers\" />
-		</Unit>
 		<Unit filename="..\..\src\umbra\umbra.hpp">
 			<Option virtualFolder="Umbra\Headers\" />
 		</Unit>
@@ -463,6 +457,9 @@
 			<Option virtualFolder="Umbra\Sources\" />
 		</Unit>
 		<Unit filename="..\..\src\umbra\umbra_config.hpp">
+			<Option virtualFolder="Umbra\Headers\" />
+		</Unit>
+		<Unit filename="..\..\src\umbra\umbra_delegate.hpp">
 			<Option virtualFolder="Umbra\Headers\" />
 		</Unit>
 		<Unit filename="..\..\src\umbra\umbra_engine.cpp">
@@ -520,6 +517,9 @@
 			<Option virtualFolder="Umbra\Headers\" />
 		</Unit>
 		<Unit filename="..\..\src\umbra\umbra_rect.hpp">
+			<Option virtualFolder="Umbra\Headers\" />
+		</Unit>
+		<Unit filename="..\..\src\umbra\umbra_signal.hpp">
 			<Option virtualFolder="Umbra\Headers\" />
 		</Unit>
 		<Unit filename="..\..\src\umbra\umbra_widget.cpp">
