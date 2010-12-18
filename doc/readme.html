@@ -592,10 +592,13 @@ Please note that this module requires the console emulator to be active, otherwi
 *[[UmbraCallbackScreenshot]]
 *[[UmbraCallbackSpeedometer]]</pre>
 </div>
-<div title="Change log" modifier="Mingos" created="201008111354" modified="201011131803" tags="changeLog" changecount="40">
+<div title="Change log" modifier="Mingos" created="201008111354" modified="201012180252" tags="changeLog" changecount="47">
 <pre>&lt;&lt;tiddler ChangeLogSymbols&gt;&gt;
 !Current HEAD revision
 |!Category|!Committed on|!Change|!Committed by|
+|NEW|18-Dec-2010|Widgets now use a style sheet to define their appearance in various circumstances|Mingos|
+|MOD|18-Dec-2010|{{{Umbra*::contains}}} functions now set the {{{mouseHover}}} property|Mingos|
+|NEW|18-Dec-2010|Added functions for setting mouse cursor status on points, rectangles and circles|Mingos|
 !Current release
 !!!Umbra 10.11 Alpha, 13-November-2010
 |!Category|!Committed on|!Change|!Committed by|
@@ -623,11 +626,12 @@ Please note that this module requires the console emulator to be active, otherwi
 |!Category|!Committed on|!Change|!Committed by|
 |NEW|19-Sep-2010|First official release of Umbra|Mingos &amp; Jice|</pre>
 </div>
-<div title="ChangeLogSymbols" modifier="Mingos" created="201008111356" modified="201008111409" tags="changeLog" changecount="7">
+<div title="ChangeLogSymbols" modifier="Mingos" created="201008111356" modified="201012180249" tags="changeLog" changecount="8">
 <pre>|!Symbol|!Meaning|
 |NEW|new feature|
 |REM|removed feature|
-|API|changed feature and/or API break|
+|MOD|modified feature|
+|API|API break|
 |BUG|bug fix|</pre>
 </div>
 <div title="Classes" modifier="Mingos" created="200911042330" modified="201011070020" tags="api class" changecount="15">
@@ -5527,7 +5531,7 @@ UmbraPoint p1;
 UmbraPoint p2(10,20);
 &lt;/code&gt;</pre>
 </div>
-<div title="UmbraPoint::is" modifier="Mingos" created="201008152221" modified="201010232251" tags="api method point" changecount="7">
+<div title="UmbraPoint::is" modifier="Mingos" created="201008152221" modified="201012180254" tags="api method point" changecount="8">
 <pre>!Description
 Checks whether a given set of coordinates match those of an UmbraPoint object.
 !Construction
