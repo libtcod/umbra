@@ -13,8 +13,6 @@
 #include "umbra_delegate.hpp"
 #include <set>
 
-namespace Gallant {
-
 template< class Param0 = void >
 class Signal0
 {
@@ -562,8 +560,5 @@ public:
 		emit( p1, p2, p3, p4, p5, p6, p7, p8 );
 	}
 };
-
-
-} // namespace
 
 #endif //_SIGNAL_H_

@@ -52,6 +52,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/_ext/1520178433/umbra_imod_bsod.o \
 	${OBJECTDIR}/_ext/1520178433/umbra_engine.o \
 	${OBJECTDIR}/_ext/1520178433/umbra_callback.o \
+	${OBJECTDIR}/_ext/1520178433/umbra_stylesheet.o \
 	${OBJECTDIR}/_ext/1019383139/matrix.o
 
 
@@ -170,6 +171,11 @@ ${OBJECTDIR}/_ext/1520178433/umbra_callback.o: ../src/umbra/umbra_callback.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/1520178433
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -Werror -s -I../../libtcod/include -I../src/umbra -I../src/demo -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/1520178433/umbra_callback.o ../src/umbra/umbra_callback.cpp
+
+${OBJECTDIR}/_ext/1520178433/umbra_stylesheet.o: ../src/umbra/umbra_stylesheet.cpp 
+	${MKDIR} -p ${OBJECTDIR}/_ext/1520178433
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -Werror -s -I../../libtcod/include -I../src/umbra -I../src/demo -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/1520178433/umbra_stylesheet.o ../src/umbra/umbra_stylesheet.cpp
 
 ${OBJECTDIR}/_ext/1019383139/matrix.o: ../src/demo/matrix.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/1019383139

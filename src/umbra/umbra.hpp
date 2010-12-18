@@ -38,7 +38,6 @@
 // signal/slot utility
 #include "umbra_delegate.hpp"
 #include "umbra_signal.hpp"
-using namespace Gallant;
 
 #include "umbra_log.hpp"
 #include "umbra_font.hpp"

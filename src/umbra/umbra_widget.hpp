@@ -25,49 +25,75 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
+#include "umbra_stylesheet.hpp"
+
 class UmbraPoint;
 class UmbraRect;
 
 class UmbraWidget: public UmbraModule {
 	friend class UmbraCheckbox;
 	friend class UmbraButton;
-	public:
-		UmbraWidget ();
-		/**
-		 * Custom, widget-specific code interpreting the mouse input.
-		 * @param ms reference to the mouse object
-		 */
-		void mouse (TCOD_mouse_t &ms);
-		
-		// signals
-		Signal2 <UmbraWidget*,UmbraEvent > onMouseEnter;
-		Signal2 <UmbraWidget*,UmbraEvent > onMouseLeave;
-		Signal2 <UmbraWidget*,UmbraEvent > onMouseMove;
-		Signal2 <UmbraWidget*,UmbraEvent > onMousePress;
-		Signal2 <UmbraWidget*,UmbraEvent > onMouseRelease;
-		Signal2 <UmbraWidget*,UmbraEvent > onMouseClick;
-		
-		UmbraRect rect; // part of the screen where the widget is
-	protected:
-		UmbraWidget * parent; //reference to the widget that contains the object
-		UmbraRect dragZone; // part of the widget we can click to drag it
-		UmbraPoint minimiseButton; //minimise button coordinates
-		UmbraPoint closeButton; //close button coordinates
-		int mousex, mousey;
-		int dragx, dragy;
-		bool canDrag, isDragging;
-		/**
-		 * Sets the widget's active zone reacting to dragging.
-		 * @param x the drag zone's top left corner's <i>x</i> coordinate
-		 * @param y the drag zone's top left corner's <i>y</i> coordinate
-		 * @param w the drag zone's width
-		 * @param h the drag zone's height
-		 */
-		void setDragZone (int x, int y, int w, int h);
-		/**
-		 * Custom code that is executed when the user release the mouse button
-		 * after dragging the widget		  
-		 */		 		
-		virtual void onDragEnd() {}
-				
+public:
+	UmbraWidget ();
+	/**
+	 * Custom, widget-specific code interpreting the mouse input.
+	 * @param ms reference to the mouse object
+	 */
+	void mouse (TCOD_mouse_t &ms);
+
+	/**
+	 * Signal launched when the mouse cursor enters the widget.
+	 */
+	Signal2 <UmbraWidget*,UmbraEvent> onMouseEnter;
+	/**
+	 * Signal launched when the mouse cursor leaves the widget.
+	 */
+	Signal2 <UmbraWidget*,UmbraEvent> onMouseLeave;
+	/**
+	 * Signal lauched when the mouse cursor moves inside the widget.
+	 */
+	Signal2 <UmbraWidget*,UmbraEvent> onMouseMove;
+	/**
+	 * Signal launched when the mouse button is pressed when hovering over the widget. Corresponds to JavaScript's <code>onmousedown</code> event.
+	 */
+	Signal2 <UmbraWidget*,UmbraEvent> onMousePress;
+	/**
+	 * Signal launched when the mouse button is released when hovering over the widget. Corresponds to JavaScript's <code>onmouseup</code> event.
+	 */
+	Signal2 <UmbraWidget*,UmbraEvent> onMouseRelease;
+	/**
+	 * Signal launched when the mouse button is clicked when hovering over the widget. Corresponds to JavaScript's <code>onclick</code> event.
+	 * <strong>TODO:</strong> With the current implementation, this signal behaves identically to <code>onMouseRelease</code>.
+	 */
+	Signal2 <UmbraWidget*,UmbraEvent> onMouseClick;
+
+	/**
+	 * Part of the screen where the widget is
+	 */
+	UmbraRect rect;
+	/**
+	 * The style sheet containing information about the widget's appearance
+	 */
+	UmbraStyleSheet style;
+protected:
+	UmbraWidget * parent; //reference to the widget that contains the object
+	UmbraRect dragZone; // part of the widget we can click to drag it
+	UmbraPoint minimiseButton; //minimise button coordinates
+	UmbraPoint closeButton; //close button coordinates
+	int mousex, mousey;
+	int dragx, dragy;
+	bool canDrag, isDragging;
+	/**
+	 * Sets the widget's active zone reacting to dragging.
+	 * @param x the drag zone's top left corner's <i>x</i> coordinate
+	 * @param y the drag zone's top left corner's <i>y</i> coordinate
+	 * @param w the drag zone's width
+	 * @param h the drag zone's height
+	 */
+	void setDragZone (int x, int y, int w, int h);
+	/**
+	 * Custom code that is executed when the user release the mouse button
+	 * after dragging the widget		  
+	 */		 		
+	virtual void onDragEnd() {}	
 };

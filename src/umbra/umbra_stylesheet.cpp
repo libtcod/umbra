@@ -25,43 +25,25 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#include "notification.hpp"
-#include "gameview.hpp"
+#include <umbra.hpp>
+#include <umbra_stylesheet.hpp>
+#include <string.h>
 
-void QuitButton::onMouseDown () {
-    UmbraEngine::getInstance()->deactivateAll();
+UmbraStyleSheet::UmbraStyleSheet () {
+	setColour(TCODColor::white, "normal");
+	setColour(TCODColor::lighterBlue, "hover");
+	setColour(TCODColor::yellow, "active");
 }
 
-Notification::Notification () {
-    notification = new TCODConsole(24,12);
-    rect.set(UmbraEngine::getInstance()->getRootWidth()/2-12,UmbraEngine::getInstance()->getRootHeight()/2-6,24,12);
-    //setDragZone(0,0,24,1);
-    button.set(this,10,7,4,3,"OK");
-}
-
-void Notification::mouse (TCOD_mouse_t &ms) {
-    UmbraWidget::mouse(ms);
-    button.mouse(ms);
-}
-
-void Notification::render () {
-    notification->setDefaultForeground(TCODColor::white);
-    notification->setDefaultBackground(TCODColor::darkerAzure);
-    notification->printFrame(0,0,24,12,true,TCOD_BKGND_SET,NULL);
-    notification->printRectEx(12,2,24,6,TCOD_BKGND_NONE,TCOD_CENTER,text.c_str());
-    if (dragZone.mouseHover || isDragging) {
-        notification->setDefaultBackground(TCODColor::lightRed);
-        notification->rect(5,0,14,1,false,TCOD_BKGND_SET);
-    }
-    if (button.rect.mouseHover) notification->setDefaultForeground(TCODColor::lightGreen);
-    else notification->setDefaultForeground(TCODColor::white);
-    button.render(notification);
-    TCODConsole::blit(notification,0,0,rect.w,rect.h,TCODConsole::root,rect.x,rect.y,1.0f,0.5f);
-}
-
-void Notification::activate() {
-	if (((GameView*)(UmbraEngine::getInstance()->getModule(MOD_GAME_VIEW)))->alienCount == 0)
-		text = "Congratulations!\nYou won!";
+void UmbraStyleSheet::setColour (TCODColor c, const char* pseudoClass) {
+	if (pseudoClass == NULL)
+		normal.colour = hover.colour = active.colour = c;
+	else if (strcmp(pseudoClass,"normal") == 0)
+		normal.colour = c;
+	else if (strcmp(pseudoClass,"hover") == 0)
+		hover.colour = c;
+	else if (strcmp(pseudoClass,"active") == 0)
+		active.colour = c;
 	else
-		text = "Oops, you lose!\nTry again!";
+		UmbraLog::error("UmbraStyleSheet::setColour | unknown pseudoclass \"%s\".", pseudoClass);
 }

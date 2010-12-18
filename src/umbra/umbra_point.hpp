@@ -38,13 +38,33 @@ class UmbraPoint {
 		 * @param y the point's <i>y</i> coordinate
 		 */
 		inline void set (int x, int y) { this->x=x; this->y=y; }
+		
 		/**
 		 * Checks whether the point's coordinates match the provided pair.
 		 * @param px the <i>x</i> coordinate to be compared
 		 * @param py the <i>y</i> coordinate to be compared
 		 * @return <code>true</code> if the coordinates match, <code>false</code> if they don't
 		 */
-		inline bool is (int px, int py) { return px == x && py == y; }
+		inline bool is (int px, int py) { return mouseHover = px == x && py == y; }
+		/**
+		 * Checks whether the point's coordinates match the provided pair.
+		 * @param p the point to be checked against
+		 * @return <code>true</code> if the coordinates match, <code>false</code> if they don't
+		 */
+		inline bool is (UmbraPoint &p) { return mouseHover = p.x == x && p.y == y; }
+		/**
+		 * Sets the <code>mouseHover</code> and <code>mouseDown</code> statuses for the rectangle.
+         * @param px the <i>x</i> coordinate to be compared
+         * @param py the <i>y</i> coordinate to be compared
+         * @param ms a reference to the mouse event object
+         */
+		inline void mouse (int px, int py, TCOD_mouse_t &ms) { mouseHover = is(px,py); mouseDown = mouseHover & ms.lbutton; }
+		/**
+		 * Sets the <code>mouseHover</code> and <code>mouseDown</code> statuses for the rectangle.
+         * @param p the point to be checked against
+         * @param ms a reference to the mouse event object
+         */
+		inline void mouse (UmbraPoint &p, TCOD_mouse_t &ms) { mouseHover = is(p); mouseDown = mouseHover & ms.lbutton; }
 		inline bool operator == (const UmbraPoint &p1) { return p1.x == x && p1.y == y; }
 };
 

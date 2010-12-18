@@ -7,6 +7,7 @@
                    kind="SOURCE_LOGICAL_FOLDER">
       <itemPath>../data/cfg/module.txt</itemPath>
       <itemPath>../data/cfg/umbra.txt</itemPath>
+      <itemPath>../data/cfg/widget.txt</itemPath>
     </logicalFolder>
     <logicalFolder name="f1" displayName="Umbra" projectFiles="true">
       <logicalFolder name="f1" displayName="Headers" projectFiles="true">
@@ -28,6 +29,7 @@
         <itemPath>../src/umbra/umbra_point.hpp</itemPath>
         <itemPath>../src/umbra/umbra_rect.hpp</itemPath>
         <itemPath>../src/umbra/umbra_signal.hpp</itemPath>
+        <itemPath>../src/umbra/umbra_stylesheet.hpp</itemPath>
         <itemPath>../src/umbra/umbra_widget.hpp</itemPath>
         <itemPath>../src/umbra/umbra_widget_button.hpp</itemPath>
         <itemPath>../src/umbra/umbra_widget_checkbox.hpp</itemPath>
@@ -42,6 +44,7 @@
         <itemPath>../src/umbra/umbra_imod_speed.cpp</itemPath>
         <itemPath>../src/umbra/umbra_log.cpp</itemPath>
         <itemPath>../src/umbra/umbra_module.cpp</itemPath>
+        <itemPath>../src/umbra/umbra_stylesheet.cpp</itemPath>
         <itemPath>../src/umbra/umbra_widget.cpp</itemPath>
         <itemPath>../src/umbra/umbra_widget_button.cpp</itemPath>
         <itemPath>../src/umbra/umbra_widget_checkbox.cpp</itemPath>

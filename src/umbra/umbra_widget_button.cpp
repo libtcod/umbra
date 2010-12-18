@@ -56,12 +56,18 @@ void UmbraButton::set (UmbraWidget * parent, int x, int y, int w, int h, const c
 }
 
 void UmbraButton::render (TCODConsole * con) {
-	if (!visible)
-		return;
-	TCODColor col=con->getDefaultForeground();
-	con->setDefaultForeground(rect.mouseHover ? TCODColor::white : TCODColor::lighterBlue); //placeholder!
+	if (!visible) return;
+	TCODColor col = con->getDefaultForeground();
+	if (rect.mouseHover) {
+		if (rect.mouseDown) con->setDefaultForeground(style.active.colour);
+		else con->setDefaultForeground(style.hover.colour);
+	} else con->setDefaultForeground(style.normal.colour);
 	con->printFrame(rect.x,rect.y,rect.w,rect.h,false,TCOD_BKGND_NONE,NULL);
 	if (!tag.empty())
 		con->printRectEx(rect.x+(rect.w/2),rect.y+(rect.h/2),rect.w-2,rect.h-2,TCOD_BKGND_NONE,TCOD_CENTER,tag.c_str());
 	con->setDefaultForeground(col);
+	if (rect.mouseHover) {
+		if (rect.mouseDown) std::cout << "active\n";
+		else std::cout << "hover\n";
+	} else std::cout << "normal\n";
 }

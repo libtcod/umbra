@@ -25,43 +25,50 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#include "notification.hpp"
-#include "gameview.hpp"
+#ifndef UMBRA_STYLESHEET_HPP
+#define	UMBRA_STYLESHEET_HPP
 
-void QuitButton::onMouseDown () {
-    UmbraEngine::getInstance()->deactivateAll();
-}
+/**
+ * The style sheet class. It stores the information about a widget's appearance.
+ */
+class UmbraStyleSheet {
+private:
+	/**
+	 * The struct that holds the information about a styles set. Used internally by the <code>UmbraStyleSheet</code> class.
+	 */
+	class styleSheet {
+	public:
+		/**
+		 * Text foreground colour.
+		 */
+		TCODColor colour;	
+	};
+public: // style sheets
+	/**
+	 * Default style sheet for the widget.
+	 */
+	styleSheet normal;
+	/**
+	 * Style sheet that overrides the default appearance when the mouse cursor is hovering over the widget.
+	 */
+	styleSheet hover;
+	/**
+	 * Style sheet that overrides the default appearance when the mouse cursor is pressed while hovering over the widget.
+	 */
+	styleSheet active;
+public: // setters
+	/**
+	 * Sets the style sheet's <code>colour</code> property.
+     * @param c the colour that the property is to be set to
+     * @param pseudoClass can be either <code>"normal"</code>, <code>"hover"</code>, <code>"active"</code> or <code>NULL</code>.<br />Used to specify which pseudo class property is to be changed. If the parametre is ommitted, all pseudo classes will receive the colour. The 
+     */
+	void setColour (TCODColor c, const char * pseudoClass = NULL);
+public: // ctor
+	/**
+	 * The constructor for the style sheet class. Fills all styles with default values.
+     */
+	UmbraStyleSheet();
+};
 
-Notification::Notification () {
-    notification = new TCODConsole(24,12);
-    rect.set(UmbraEngine::getInstance()->getRootWidth()/2-12,UmbraEngine::getInstance()->getRootHeight()/2-6,24,12);
-    //setDragZone(0,0,24,1);
-    button.set(this,10,7,4,3,"OK");
-}
+#endif	/* UMBRA_STYLESHEET_HPP */
 
-void Notification::mouse (TCOD_mouse_t &ms) {
-    UmbraWidget::mouse(ms);
-    button.mouse(ms);
-}
-
-void Notification::render () {
-    notification->setDefaultForeground(TCODColor::white);
-    notification->setDefaultBackground(TCODColor::darkerAzure);
-    notification->printFrame(0,0,24,12,true,TCOD_BKGND_SET,NULL);
-    notification->printRectEx(12,2,24,6,TCOD_BKGND_NONE,TCOD_CENTER,text.c_str());
-    if (dragZone.mouseHover || isDragging) {
-        notification->setDefaultBackground(TCODColor::lightRed);
-        notification->rect(5,0,14,1,false,TCOD_BKGND_SET);
-    }
-    if (button.rect.mouseHover) notification->setDefaultForeground(TCODColor::lightGreen);
-    else notification->setDefaultForeground(TCODColor::white);
-    button.render(notification);
-    TCODConsole::blit(notification,0,0,rect.w,rect.h,TCODConsole::root,rect.x,rect.y,1.0f,0.5f);
-}
-
-void Notification::activate() {
-	if (((GameView*)(UmbraEngine::getInstance()->getModule(MOD_GAME_VIEW)))->alienCount == 0)
-		text = "Congratulations!\nYou won!";
-	else
-		text = "Oops, you lose!\nTry again!";
-}

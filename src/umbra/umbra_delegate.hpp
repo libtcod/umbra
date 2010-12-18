@@ -161,9 +161,6 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-
-namespace Gallant {
-
 namespace detail {	// we'll hide the implementation details in a nested namespace.
 
 //		implicit_cast< >
@@ -2130,8 +2127,6 @@ Delegate8<Param1, Param2, Param3, Param4, Param5, Param6, Param7, Param8, FASTDL
 
  // clean up after ourselves...
 #undef FASTDLGT_RETTYPE
-
-} // namespace
 
 #endif //_DELEGATES_H_
 

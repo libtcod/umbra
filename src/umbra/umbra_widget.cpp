@@ -26,9 +26,15 @@
 */
 
 #include "umbra.hpp"
+#include "umbra_stylesheet.hpp"
 
-UmbraWidget::UmbraWidget(): parent(NULL),mousex(-1),mousey(-1),
-	canDrag(false),isDragging(false) {
+UmbraWidget::UmbraWidget():
+	parent(NULL),
+	mousex(-1),
+	mousey(-1),
+	canDrag(false),
+	isDragging(false) {
+	style = UmbraStyleSheet();
 }
 
 void UmbraWidget::mouse(TCOD_mouse_t &ms) {
@@ -39,40 +45,36 @@ void UmbraWidget::mouse(TCOD_mouse_t &ms) {
 		mousex -= parent->rect.x;
 		mousey -= parent->rect.y;
 	}
-	rect.mouseHover = rect.contains(mousex,mousey);
+	rect.mouse(mousex,mousey,ms);
 	mousex-=rect.x;
 	mousey-=rect.y;
-	//check if the mouse is hovering over a button/rectangle
-	minimiseButton.mouseHover = minimiseButton.is(mousex,mousey);
-	closeButton.mouseHover = closeButton.is(mousex,mousey);
-	dragZone.mouseHover = dragZone.contains(mousex,mousey);
+	//check the mouse status (hover, down) for rectangles and points:
+	minimiseButton.mouse(mousex,mousey,ms);
+	closeButton.mouse(mousex,mousey,ms);
+	dragZone.mouse(mousex,mousey,ms);
 	bool wasHover=rect.mouseHover;
 	if (!wasHover && rect.mouseHover) onMouseEnter(this,UmbraMouseEvent(MOUSE_ENTER,ms));
-	else if (wasHover && ! rect.mouseHover) onMouseLeave(this,UmbraMouseEvent(MOUSE_LEAVE,ms));
-	else if (rect.mouseHover && ( ms.dx != 0 || ms.dy != 0 ) ) onMouseMove(this,UmbraMouseEvent(MOUSE_MOVE,ms));
+	else if (wasHover && !rect.mouseHover) onMouseLeave(this,UmbraMouseEvent(MOUSE_LEAVE,ms));
+	else if (rect.mouseHover && !(ms.dx == 0 && ms.dy == 0) ) onMouseMove(this,UmbraMouseEvent(MOUSE_MOVE,ms));
 	if (ms.lbutton_pressed && rect.mouseHover) onMouseClick(this,UmbraMouseEvent(MOUSE_CLICK,ms));
-	//check whether the mouse is down on a button
-	if (ms.lbutton && minimiseButton.mouseHover) minimiseButton.mouseDown = true;
-	else minimiseButton.mouseDown = false;
-	if (ms.lbutton && closeButton.mouseHover) closeButton.mouseDown = true;
-	else closeButton.mouseDown = false;
 	//deal with dragging
 	if (canDrag) {
-		if (ms.lbutton && !isDragging && dragZone.contains(mousex,mousey)) {
+		if (ms.lbutton && !isDragging && dragZone.mouseHover) {
 			isDragging = true;
 			dragx = mousex;
-			dragy = mousey; // position where the widget is drag
+			dragy = mousey; // position where the widget is dragged
 			ms.lbutton = false; // erase event
 		} else if (isDragging && !ms.lbutton) {
 			isDragging = false;
-			ms.lbutton_pressed=false; // erase event
+			ms.lbutton_pressed = false; // erase event
 			onDragEnd();
 		} else if (isDragging) {
-			ms.lbutton=false; // erase event
+			ms.lbutton = false; // erase event
 			rect.x = CLAMP(0,getEngine()->getRootWidth()-rect.w, ms.cx-dragx);
 			rect.y = CLAMP(0,getEngine()->getRootHeight()-rect.h,ms.cy-dragy);
-			mousex=dragx; mousey=dragy;
-			ms.cx=ms.cy=ms.x=ms.y=ms.dx=ms.dy=ms.dcx=ms.dcy=0; // erase mouse move event
+			mousex = dragx;
+			mousey = dragy;
+			ms.cx = ms.cy = ms.x = ms.y = ms.dx = ms.dy = ms.dcx = ms.dcy = 0; // erase mouse move event
 		}
 	}
 }

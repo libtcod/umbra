@@ -36,9 +36,9 @@ class UmbraButton : public UmbraWidget {
 		std::string tag; //the descriptive tag
 
 		UmbraButton ();
-		virtual ~UmbraButton() {}
 		UmbraButton (UmbraWidget * parent, int x, int y, int w, int h, const char * tag = "");
 		UmbraButton (UmbraWidget * parent, int x, int y, int w, int h, std::string tag = "");
+		virtual ~UmbraButton() {}
         /**
 		 * Sets the basic properties of the button: parent widget, position in the console, size and tag.
 		 * @param parent a pointer to the UmbraWidget containing the button
