@@ -73,13 +73,13 @@ class UmbraCircle {
 		 * @param py the <i>y</i> coordinate to be checked
 		 * @return <code>true</code> if the coordinates are within the circle, <code>false</code> otherwise
 		 */
-		inline bool contains (int px, int py) { return mouseHover = (x - px) * (x - px) + (y - py) * (y - py) <= r * r; }
+		inline bool contains (int px, int py) { return (x - px) * (x - px) + (y - py) * (y - py) <= r * r; }
 		/**
 		 * Checks whether a point is contained within the circle.
 		 * @param p the point to be checked
 		 * @return <code>true</code> if the point is within the circle, <code>false</code> otherwise
 		 */
-		inline bool contains (const UmbraPoint &p) { return mouseHover = (((x-p.x)*(x-p.x))+((y-p.y)*(y-p.y))) <= (r*r); }
+		inline bool contains (const UmbraPoint &p) { return (((x-p.x)*(x-p.x))+((y-p.y)*(y-p.y))) <= (r*r); }
 		/**
 		 * Sets the <code>mouseHover</code> and <code>mouseDown</code> statuses for the circle.
          * @param px the <i>x</i> coordinate to be checked

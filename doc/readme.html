@@ -516,11 +516,12 @@ Also see [[AdvancedOptions]]</pre>
 </div>
 <!--POST-SHADOWAREA-->
 <div id="storeArea">
-<div title="API reference" modifier="Mingos" created="200910241815" modified="201010232254" tags="api" changecount="16">
+<div title="API reference" modifier="Mingos" created="200910241815" modified="201012191726" tags="api" changecount="20">
 <pre>This is the API rference for Umbra. Please note that it only covers the part of the API that is exposed to the developer, id est, public and protected class members.
 &lt;&lt;tabs api
     &quot;Classes&quot; &quot;Classes&quot; [[Classes]]
     &quot;Methods&quot; &quot;Methods&quot; [[Methods]]
+    &quot;Properties&quot; &quot;Properties&quot; [[Properties]]
     &quot;Operators&quot; &quot;Operators&quot; [[Operators]]
     &quot;Callbacks&quot; &quot;Callbacks&quot; [[Callbacks]]
     &quot;Enums&quot; &quot;Enums&quot; [[Enums]]
@@ -2206,6 +2207,15 @@ Furthermore, module names are a requisite if an [[external module configuration|
 &lt;/div&gt;
 &lt;!--}}}--&gt;</pre>
 </div>
+<div title="Properties" modifier="Mingos" created="201012191516" modified="201012191620" tags="api property" changecount="4">
+<pre>&lt;&lt;tabs properties
+    &quot;Widget&quot; &quot;UmbraWidget&quot; [[UmbraWidgetProperties]]
+    &quot;Key&quot; &quot;UmbraKey&quot; [[UmbraKeyProperties]]
+    &quot;Point&quot; &quot;UmbraPoint&quot; [[UmbraPointProperties]]
+    &quot;Rect&quot; &quot;UmbraRect&quot; [[UmbraRectProperties]]
+    &quot;Circle&quot; &quot;UmbraCircle&quot; [[UmbraCircleProperties]]
+&gt;&gt;</pre>
+</div>
 <div title="Referencing the engine" modifier="Mingos" created="200911110037" modified="201007271423" tags="tutorial engine engineReference" changecount="14">
 <pre>Since the engine is the basic and most important class in all Umbra-powered applications, it is obvious that it needs to be referenced across the code. There are three ways of achieving this:
 #Via a global variable,
@@ -3069,7 +3079,7 @@ This class contains a pure virtual method and thus cannot be instantiated withou
 !Methods
 &lt;&lt;tiddler UmbraCallbackMethods&gt;&gt;</pre>
 </div>
-<div title="UmbraCallback::action" modifier="Mingos" created="201008050951" modified="201010232215" tags="api method callback autoCalling" changecount="5">
+<div title="UmbraCallback::action" modifier="Mingos" created="201008050951" modified="201012191601" tags="api method callback autoCalling callbackClass" changecount="6">
 <pre>!Description
 Contains custom code, executed when the callback listener detects the keystroke it listens to.
 !Construction
@@ -3084,7 +3094,7 @@ This method is declared as pure virtual, thus it is mandatory to override it. It
 !See also
 &lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;callback&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;callback&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;callback&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
 </div>
-<div title="UmbraCallback::evaluate" modifier="Mingos" created="201008111208" modified="201010232215" tags="api method callback autoCalling" changecount="3">
+<div title="UmbraCallback::evaluate" modifier="Mingos" created="201008111208" modified="201012191601" tags="api method callback autoCalling callbackClass" changecount="4">
 <pre>!Description
 Custom code for the callback listener, evaluating whether the keystroke it catches matches the keystroke it is supposed to be listening to.
 !Construction
@@ -3104,7 +3114,7 @@ This method is called automatically by the engine. It should not be overlodaded 
 !See also
 &lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;callback&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;callback&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;callback&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
 </div>
-<div title="UmbraCallback::getEngine" modifier="Mingos" created="201008111211" modified="201010232215" tags="api method callback engineReference" changecount="5">
+<div title="UmbraCallback::getEngine" modifier="Mingos" created="201008111211" modified="201012191601" tags="api method callback engineReference callbackClass" changecount="6">
 <pre>!Description
 Provides a pointer to the engine.
 !Construction
@@ -3168,10 +3178,8 @@ Registered automatically if default callbacks are enabled during engine initiali
 UmbraEngine::getInstance()-&gt;registerCallback(new UmbraCallbackFullscreen());
 &lt;/code&gt;</pre>
 </div>
-<div title="UmbraCallbackMethods" modifier="Mingos" created="201008050917" modified="201008111215" tags="methodlist" changecount="2">
-<pre>*[[UmbraCallback::action]]
-*[[UmbraCallback::evaluate]]
-*[[UmbraCallback::getEngine]]</pre>
+<div title="UmbraCallbackMethods" modifier="Mingos" created="201008050917" modified="201012191601" tags="methodlist" changecount="5">
+<pre>&lt;&lt;forEachTiddler where 'tiddler.tags.containsAll([&quot;api&quot;,&quot;callbackClass&quot;,&quot;method&quot;])' sortBy 'tiddler.title' ascending&gt;&gt;</pre>
 </div>
 <div title="UmbraCallbackPause" modifier="Mingos" created="201008050827" modified="201008050952" tags="api callback internalCallback" changecount="2">
 <pre>!Description
@@ -5432,8 +5440,8 @@ UmbraModule * MyModuleFactory::createModule(const char *name) {
 <div title="UmbraModuleFactoryMethods" modifier="Mingos" created="201010182110" tags="api class" changecount="1">
 <pre>*[[UmbraModuleFactory::createModule]]</pre>
 </div>
-<div title="UmbraModuleMethods" modifier="Mingos" created="201007271154" modified="201010062009" tags="methodlist" changecount="9">
-<pre>&lt;&lt;forEachTiddler where 'tiddler.tags.containsAll([&quot;method&quot;,&quot;moduleClass&quot;])' sortBy 'tiddler.title'&gt;&gt;</pre>
+<div title="UmbraModuleMethods" modifier="Mingos" created="201007271154" modified="201012191648" tags="methodlist" changecount="10">
+<pre>&lt;&lt;forEachTiddler where 'tiddler.tags.containsAll([&quot;method&quot;,&quot;moduleClass&quot;])' sortBy 'tiddler.title' ascending&gt;&gt;</pre>
 </div>
 <div title="UmbraModuleStatus" modifier="Mingos" created="201007271045" modified="201007271728" tags="api enum module moduleStatus" changecount="6">
 <pre>!Description
@@ -5453,7 +5461,7 @@ enum UmbraModuleStatus {
 *{{{UMBRA_ACTIVE}}}: When a module is activated, it will have this state.
 *{{{UMBRA_PAUSED}}}: An active module, if paused, will be marked with this status.</pre>
 </div>
-<div title="UmbraPoint" modifier="Mingos" created="201007211209" modified="201008191659" tags="api class point mouse" changecount="17">
+<div title="UmbraPoint" modifier="Mingos" created="201007211209" modified="201012191612" tags="api class point mouse" changecount="19">
 <pre>The class UmbraPoint is one of the additions to the [[UmbraWidget]] that differentiate it from an [[UmbraModule]]. As the name implies, it defines the behaviour of a single point (or, more accurately, a single cell on the console).
 
 The UmbraPoint is used within every [[UmbraWidget]] to define the behaviour of 2 points: the minimise button and the close button. The method [[UmbraWidget::mouse]], which is supposed to be called in each iteration of the main application loop (see below), will automatically register mouse hover and mouse down events, which may then be used to trigger events such as a rollover, etc.
@@ -5468,39 +5476,14 @@ The second constructor addresses the necessity of setting a point's position wit
 &lt;code C++&gt;
 UmbraPoint p(10,1);
 &lt;/code&gt;
-The mouse events are set to false initially.
-!Mouse events in a widget
-A widget declaration should also contain the mouse parser method declaration:
-&lt;code C++&gt;
-class MyWidget: public UmbraWidget {
-    ...
-    void mouse(TCOD_mouse_t &amp;ms);
-    ...
-};
-&lt;/code&gt;
-The problem is that the developer shouldn't be forced to think about UmbraPoint and [[UmbraRect]] mouse events updating in each widget separately. That's why [[UmbraWidget]] overrides this method as well and takes care of the mouse events for [[UmbraPoint]]s and [[UmbraRect]]s present par default in every widget.
-
-Unfortunately, this method needs to be called manually. This is done by calling [[UmbraWidget::mouse]] at the beginning of the mouse parsing method:
-&lt;code C++&gt;
-void MyWidget::mouse(TCOD_mouse_t &amp;ms) {
-    UmbraWidget::mouse(ms);
-    ...
-}
-&lt;/code&gt;
-This ensures the possibility to write custom mouse code (for instance, when defining additional elements that should react to the mouse) while at the same time retaining the functionality of the default widget elements. For more information, please refer to [[UmbraWidget::mouse]].
-!Setting and getting mouse events
-The UmbraPoint has two boolean members that are used to indicate the mouse status relative to the point: {{{mouseHover}}} and {{{mouseDown}}}. They are public members, so they can be set and retrieved directly:
-&lt;code C++&gt;
-UmbraPoint p;
-... //some code here
-p.mouseHover = false;
-if (p.mouseDown) doSomething();
-&lt;/code&gt;
-The member function [[UmbraPoint::is]] is used for detecting mouse hover - please refer to this method description for additional information.
+The mouse events are set to false initially. They can be collected using the [[UmbraPoint::is]] and [[UmbraPoint::mouse]] methods.
 !Methods
 &lt;&lt;tiddler UmbraPointMethods&gt;&gt;
+!Properties
+&lt;&lt;tiddler UmbraPointProperties&gt;&gt;
 !See also
 *[[UmbraRect]]
+*[[UmbraCircle]]
 *[[UmbraWidget]]
 *[[UmbraWidget::mouse]]</pre>
 </div>
@@ -5531,7 +5514,7 @@ UmbraPoint p1;
 UmbraPoint p2(10,20);
 &lt;/code&gt;</pre>
 </div>
-<div title="UmbraPoint::is" modifier="Mingos" created="201008152221" modified="201012180254" tags="api method point" changecount="8">
+<div title="UmbraPoint::is" modifier="Mingos" created="201008152221" modified="201012191634" tags="api method point" changecount="12">
 <pre>!Description
 Checks whether a given set of coordinates match those of an UmbraPoint object.
 !Construction
@@ -5541,18 +5524,89 @@ bool is (
     int py
 );
 &lt;/code&gt;
+&lt;code C++&gt;
+bool is (
+    UmbraPoint &amp;p
+);
+&lt;/code&gt;
 !Parametres
 *{{{int px}}}: the X coordinate to be checked
 *{{{int py}}}: the Y coordinate to be checked
+*{{{UmbraPoint &amp;p}}}: the UmbraPoint to be checked
 !Return value
 {{{bool}}}: {{{true}}} if the coordinates match those of the UmbraPoint object, {{{false}}} otherwise.
 !Access level
 {{{public}}}
 !Remarks
-This method is typically used to check whether the mouse cursor is hovering over a given point.
-Should it be necessary to check the coordinates of two UmbraPoint instances against one another, [[UmbraPoint::operator ==]] provides that functionality.
+This method is typically used to check whether the mouse cursor is hovering over a given point, however, if multiple calls are necessary, it's more convenient to use [[UmbraPoint::mouse]].
+Should it be necessary to check the coordinates of two UmbraPoint instances against one another, [[UmbraPoint::operator ==]] provides that functionality, so the second version of this method is essentially redundant.
 !See also
 &lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;point&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;point&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;point&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
+</div>
+<div title="UmbraPoint::mouse" modifier="Mingos" created="201012191622" modified="201012191631" tags="api point method" changecount="2">
+<pre>!Description
+Sets the mouse status properties for the point
+!Construction
+&lt;code C++&gt;
+void mouse (
+    int px,
+    int py,
+    TCOD_mouse_t &amp;ms
+);
+&lt;/code&gt;
+&lt;code C++&gt;
+void mouse (
+    UmbraPoint &amp;p,
+    TCOD_mouse_t &amp;ms
+);
+&lt;/code&gt;
+!Parametres
+*{{{int px}}}: the X coordinate to be checked
+*{{{int py}}}: the Y coordinate to be checked
+*{{{TCOD_mouse_t &amp;ms}}}: a reference to the mouse event object
+*{{{UmbraPoint &amp;p}}}: an UmbraPoint to be checked
+!Access level
+{{{public}}}
+!Remarks
+This method should be called only once per frame. After it has been called, the properties [[UmbraPoint::mouseHover]] and [[UmbraPoint::mouseDown]] should be used.
+!See also
+&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;point&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;point&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;point&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
+</div>
+<div title="UmbraPoint::mouseDown" modifier="Mingos" created="201012191614" modified="201012191616" tags="api point property" changecount="3">
+<pre>!Description
+Used to check whether the mouse button is down over the point.
+!Type
+{{{bool}}}
+!Access level
+{{{public}}}
+!Remarks
+It's meant to be retrieved directly:
+&lt;code C++&gt;
+if (point.mouseDown) doSomething();
+&lt;/code&gt;
+However, it should not be set directly, as there is a method that serves this purpose: [[UmbraPoint::mouse]].
+Note that you do not need to check for [[UmbraPoint::mouseHover]], as it needs to be true in order for this property to become true as well.
+!See also
+[[UmbraPoint::mouseHover]]
+[[UmbraPoint::mouse]]</pre>
+</div>
+<div title="UmbraPoint::mouseHover" modifier="Mingos" created="201012191616" tags="api point property" changecount="1">
+<pre>!Description
+Used to check whether the mouse cursor is hovering over the point.
+!Type
+{{{bool}}}
+!Access level
+{{{public}}}
+!Remarks
+It's meant to be retrieved directly:
+&lt;code C++&gt;
+if (point.mouseHover) doSomething();
+&lt;/code&gt;
+However, it should not be set directly, as there are methods that serve this purpose: [[UmbraPoint::is]] and [[UmbraPoint::mouse]].
+!See also
+[[UmbraPoint::mouseDown]]
+[[UmbraPoint::is]]
+[[UmbraPoint::mouse]]</pre>
 </div>
 <div title="UmbraPoint::operator ==" modifier="Mingos" created="201008152339" modified="201008152341" tags="api operator point" changecount="5">
 <pre>!Description
@@ -5593,12 +5647,39 @@ UmbraPoint p2 = p1;
 !See also
 &lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;point&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;point&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;point&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
 </div>
-<div title="UmbraPointMethods" modifier="Mingos" created="201007271204" modified="201008152348" tags="methodlist" changecount="4">
-<pre>*[[UmbraPoint::is]]
-*[[UmbraPoint::set]]
-*[[UmbraPoint::UmbraPoint]]</pre>
+<div title="UmbraPoint::x" modifier="Mingos" created="201012191557" modified="201012191612" tags="api point property" changecount="2">
+<pre>!Description
+The point's {{{x}}} coordinate within the parent widget
+!Type
+{{{int}}}
+!Access level
+{{{public}}}
+!Remarks
+It's meant to be retrieved directly. Setting is done using the setter methods.
+!See also
+[[UmbraPoint::set]]
+[[UmbraRect::y]]</pre>
 </div>
-<div title="UmbraRect" modifier="Mingos" created="201008132227" modified="201008191703" tags="api class rect mouse" changecount="9">
+<div title="UmbraPoint::y" modifier="Mingos" created="201012191613" tags="api point property" changecount="1">
+<pre>!Description
+The point's {{{y}}} coordinate within the parent widget
+!Type
+{{{int}}}
+!Access level
+{{{public}}}
+!Remarks
+It's meant to be retrieved directly. Setting is done using the setter methods.
+!See also
+[[UmbraPoint::set]]
+[[UmbraRect::x]]</pre>
+</div>
+<div title="UmbraPointMethods" modifier="Mingos" created="201007271204" modified="201012191635" tags="methodlist" changecount="11">
+<pre>&lt;&lt;forEachTiddler where 'tiddler.tags.containsAll([&quot;api&quot;,&quot;point&quot;,&quot;method&quot;])' sortBy 'tiddler.title' ascending&gt;&gt;</pre>
+</div>
+<div title="UmbraPointProperties" modifier="Mingos" created="201012191556" tags="api propertyList" changecount="1">
+<pre>&lt;&lt;forEachTiddler where 'tiddler.tags.containsAll([&quot;api&quot;,&quot;point&quot;,&quot;property&quot;])' sortBy 'tiddler.title' ascending&gt;&gt;</pre>
+</div>
+<div title="UmbraRect" modifier="Mingos" created="201008132227" modified="201012191609" tags="api class rect mouse" changecount="13">
 <pre>UmbraRect is one of the additions to UmbraWidget, along with UmbraPoint. It defines a rectangle as well as interactions with the mouse cursor and an UmbraPoint. Every UmbraWidget includes two UmbraRect objects: the [[widget area|Widget area]] and the [[drag zone|Drag zone]].
 !Constructor
 UmbraRect takes four arguments in the constructor: the [x,y] coordinates of the top left corner, the width and the height. It can be instantiated like this:
@@ -5609,26 +5690,18 @@ The above code will, of course, create a rectangle that occupies the entire root
 
 Calling the constructor with no arguments will create a rectangle object as well, but all values default to 0 and thus require to be set manually, for instance using [[UmbraRect::set]].
 !Mouse events
-In case of the rectangles present in an UmbraWidget par default, the mouse events are interpreted automatically, provided the widget's [[UmbraWidget::mouse]] is overridden correctly. For other uses, it is possible to check whether the mouse cursor is within the rectangle using [[UmbraRect::isInside]]. The generalised code may look like this:
-&lt;code C++&gt;
-SomeClass::mouse(TCOD_mouse_t &amp;ms) {
-    if (rectangle.isInside(ms.cx,ms,cy) {
-        rectangle.mouseHover = true;
-        if (ms.lbutton) rectangle.mouseDown = true;
-        else rectangle.mouseDown = false;
-    }
-    else rectangle.mouseHover = rectangle.mouseDown = false;
-}
-&lt;/code&gt;
-Using code that's functionally equivalent to the example above makes it possible to use the {{{mouseHover}}} and {{{mouseDown}}} public members of the UmbraRect class:
+In case of the rectangles present in an UmbraWidget par default, the mouse events are interpreted automatically, provided the widget's [[UmbraWidget::mouse]] is overridden correctly. For other uses, it is possible to check whether the mouse cursor is within the rectangle using [[UmbraRect::contains]] or [[UmbraRect::mouse]]. Once the latter is called, it's possible to read the rectangle's mouse status properties directly:
 &lt;code C++&gt;
 if (rectangle.mouseHover) doSomething();
 if (rectangle.mouseDown) doSomethingMore();
 &lt;/code&gt;
 !Methods
 &lt;&lt;tiddler UmbraRectMethods&gt;&gt;
+!Properties
+&lt;&lt;tiddler UmbraRectProperties&gt;&gt;
 !See also
 *[[UmbraPoint]]
+*[[UmbraCircle]]
 *[[UmbraWidget]]
 *[[UmbraWidget::mouse]]</pre>
 </div>
@@ -5693,7 +5766,7 @@ UmbraRect r1;
 UmbraRect r2(10,20,5,10);
 &lt;/code&gt;</pre>
 </div>
-<div title="UmbraRect::contains" modifier="Mingos" created="201008161317" modified="201010280919" tags="api method rect" changecount="8">
+<div title="UmbraRect::contains" modifier="Mingos" created="201008161317" modified="201012191514" tags="api method rect" changecount="9">
 <pre>!Description
 Checks whether a given set of coordinates or UmbraPoint instance are within a rectangle.
 !Construction
@@ -5718,6 +5791,7 @@ bool contains (
 {{{public}}}
 !Remarks
 This method is typically used to check whether the mouse cursor is hovering over a given rectangle.
+Although it will return {{{true}}} or {{{false}}}, it also sets the value of [[UmbraRect::mouseHover]], so it's not necessary to call this method more than once per frame.
 !Example
 &lt;code C++&gt;
 UmbraPoint p1(10,10), p2(20,20);
@@ -5733,6 +5807,58 @@ printf(&quot;%s, %s, %s, %s\n&quot;,
 {{{true, false, true, false}}}
 !See also
 &lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;rect&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;rect&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;rect&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
+</div>
+<div title="UmbraRect::h" modifier="Mingos" created="201012191554" tags="api rect property" changecount="1">
+<pre>!Description
+The rectangle's height.
+!Type
+{{{int}}}
+!Access level
+{{{public}}}
+!Remarks
+It's meant to be retrieved directly. Setting is done using the setter methods.
+!See also
+[[UmbraRect::set]]
+[[UmbraRect::setSize]]
+[[UmbraRect::x]]
+[[UmbraRect::y]]
+[[UmbraRect::w]]</pre>
+</div>
+<div title="UmbraRect::mouseDown" modifier="Mingos" created="201012191535" modified="201012191536" tags="api rect property" changecount="4">
+<pre>!Description
+Used to check whether the mouse button is down over the rectangle.
+!Type
+{{{bool}}}
+!Access level
+{{{public}}}
+!Remarks
+It's meant to be retrieved directly:
+&lt;code C++&gt;
+if (rect.mouseDown) doSomething();
+&lt;/code&gt;
+However, it should not be set directly, as there is a method that serves this purpose: [[UmbraRect::mouse]].
+Note that you do not need to check for [[UmbraRect::mouseHover]], as it needs to be true in order for this property to become true as well.
+!See also
+[[UmbraRect::mouseHover]]
+[[UmbraRect::mouse]]</pre>
+</div>
+<div title="UmbraRect::mouseHover" modifier="Mingos" created="201012191532" modified="201012191532" tags="api rect property" changecount="3">
+<pre>!Description
+Used to check whether the mouse cursor is hovering over the rectangle.
+!Type
+{{{bool}}}
+!Access level
+{{{public}}}
+!Remarks
+It's meant to be retrieved directly:
+&lt;code C++&gt;
+if (rect.mouseHover) doSomething();
+&lt;/code&gt;
+However, it should not be set directly, as there are methods that serve this purpose: [[UmbraRect::contains]] and [[UmbraRect::mouse]].
+!See also
+[[UmbraRect::mouseDown]]
+[[UmbraRect::contains]]
+[[UmbraRect::mouse]]</pre>
 </div>
 <div title="UmbraRect::set" modifier="Mingos" created="201008161338" modified="201010280837" tags="api method rect" changecount="5">
 <pre>!Description
@@ -5813,12 +5939,59 @@ This method only resizes a rectangle, leaving its top left corner at the same po
 !See also
 &lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;rect&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;rect&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;rect&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
 </div>
-<div title="UmbraRectMethods" modifier="Mingos" created="201007271236" modified="201008161258" tags="methodlist" changecount="4">
-<pre>*[[UmbraRect::contains]]
-*[[UmbraRect::set]]
-*[[UmbraRect::setPos]]
-*[[UmbraRect::setSize]]
-*[[UmbraRect::UmbraRect]]</pre>
+<div title="UmbraRect::w" modifier="Mingos" created="201012191553" tags="api rect property" changecount="1">
+<pre>!Description
+The rectangle's width.
+!Type
+{{{int}}}
+!Access level
+{{{public}}}
+!Remarks
+It's meant to be retrieved directly. Setting is done using the setter methods.
+!See also
+[[UmbraRect::set]]
+[[UmbraRect::setSize]]
+[[UmbraRect::x]]
+[[UmbraRect::y]]
+[[UmbraRect::h]]</pre>
+</div>
+<div title="UmbraRect::x" modifier="Mingos" created="201012191540" modified="201012191543" tags="api rect property" changecount="2">
+<pre>!Description
+The rectangle's top left corner's {{{x}}} coordinate within the parent widget.
+!Type
+{{{int}}}
+!Access level
+{{{public}}}
+!Remarks
+It's meant to be retrieved directly. Setting is done using the setter methods.
+!See also
+[[UmbraRect::set]]
+[[UmbraRect::setPos]]
+[[UmbraRect::y]]
+[[UmbraRect::w]]
+[[UmbraRect::h]]</pre>
+</div>
+<div title="UmbraRect::y" modifier="Mingos" created="201012191543" tags="api rect property" changecount="1">
+<pre>!Description
+The rectangle's top left corner's {{{y}}} coordinate within the parent widget.
+!Type
+{{{int}}}
+!Access level
+{{{public}}}
+!Remarks
+It's meant to be retrieved directly. Setting is done using the setter methods.
+!See also
+[[UmbraRect::set]]
+[[UmbraRect::setPos]]
+[[UmbraRect::x]]
+[[UmbraRect::w]]
+[[UmbraRect::h]]</pre>
+</div>
+<div title="UmbraRectMethods" modifier="Mingos" created="201007271236" modified="201012191522" tags="api methodlist" changecount="9">
+<pre>&lt;&lt;forEachTiddler where 'tiddler.tags.containsAll([&quot;api&quot;,&quot;rect&quot;,&quot;method&quot;])' sortBy 'tiddler'&gt;&gt;</pre>
+</div>
+<div title="UmbraRectProperties" modifier="Mingos" created="201012191523" modified="201012191552" tags="api propertyList" changecount="10">
+<pre>&lt;&lt;forEachTiddler where 'tiddler.tags.containsAll([&quot;api&quot;,&quot;rect&quot;,&quot;property&quot;])' sortBy 'tiddler.title' ascending&gt;&gt;</pre>
 </div>
 <div title="UmbraRegisterCallbackFlag" modifier="Mingos" created="201008111252" tags="api flag callback engine" changecount="1">
 <pre>!Description

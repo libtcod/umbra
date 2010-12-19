@@ -38,20 +38,20 @@ class UmbraPoint {
 		 * @param y the point's <i>y</i> coordinate
 		 */
 		inline void set (int x, int y) { this->x=x; this->y=y; }
-		
+
 		/**
 		 * Checks whether the point's coordinates match the provided pair.
 		 * @param px the <i>x</i> coordinate to be compared
 		 * @param py the <i>y</i> coordinate to be compared
 		 * @return <code>true</code> if the coordinates match, <code>false</code> if they don't
 		 */
-		inline bool is (int px, int py) { return mouseHover = px == x && py == y; }
+		inline bool is (int px, int py) { return px == x && py == y; }
 		/**
 		 * Checks whether the point's coordinates match the provided pair.
 		 * @param p the point to be checked against
 		 * @return <code>true</code> if the coordinates match, <code>false</code> if they don't
 		 */
-		inline bool is (UmbraPoint &p) { return mouseHover = p.x == x && p.y == y; }
+		inline bool is (UmbraPoint &p) { return p.x == x && p.y == y; }
 		/**
 		 * Sets the <code>mouseHover</code> and <code>mouseDown</code> statuses for the rectangle.
          * @param px the <i>x</i> coordinate to be compared
