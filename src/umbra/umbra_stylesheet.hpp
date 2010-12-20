@@ -28,6 +28,43 @@
 #ifndef UMBRA_STYLESHEET_HPP
 #define	UMBRA_STYLESHEET_HPP
 
+enum UmbraStyleSheetSpecificity {
+	UMBRA_SPECIFICITY_DEFAULT,
+	UMBRA_SPECIFICITY_TAG,
+	UMBRA_SPECIFICITY_CLASS,
+	UMBRA_SPECIFICITY_ID,
+	UMBRA_SPECIFICITY_MANUAL
+};
+
+/**
+ * A template of a stylesheet property, including the property's value and the level at which it has been set.
+ */
+template <class T1> class UmbraStyleSheetProperty {
+private:
+	/**
+	 * The property's value.
+	 */
+	T1 val;
+	/**
+	 * The level at which the property has been set (tag, class, ID or manual). Used to determine the precedence.
+	 */
+	UmbraStyleSheetSpecificity specificity;
+public:
+	/**
+	 * Fetches the property's value.
+	 * @return the property's value
+	 */
+	inline T1 value() { return val; }
+	inline UmbraStyleSheetProperty& operator = (const T1& x) { val = x; specificity = UMBRA_SPECIFICITY_MANUAL; return *this; }
+private:
+	/**
+	 * Sets the property's value and level.
+	 * @param x the property's value
+	 * @param l the property's level
+	 */
+	inline void set (const T1& x, UmbraStyleSheetSpecificity s) { val = x; specificity = s; }
+};
+
 /**
  * The style sheet class. It stores the information about a widget's appearance.
  */
@@ -41,7 +78,7 @@ private:
 		/**
 		 * Text foreground colour.
 		 */
-		TCODColor colour;	
+		UmbraStyleSheetProperty <TCODColor> colour;	
 	};
 public: // style sheets
 	/**
