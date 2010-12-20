@@ -66,8 +66,4 @@ void UmbraButton::render (TCODConsole * con) {
 	if (!tag.empty())
 		con->printRectEx(rect.x+(rect.w/2),rect.y+(rect.h/2),rect.w-2,rect.h-2,TCOD_BKGND_NONE,TCOD_CENTER,tag.c_str());
 	con->setDefaultForeground(col);
-	if (rect.mouseHover) {
-		if (rect.mouseDown) std::cout << "active\n";
-		else std::cout << "hover\n";
-	} else std::cout << "normal\n";
 }

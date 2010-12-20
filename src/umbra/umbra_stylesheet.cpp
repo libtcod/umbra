@@ -30,6 +30,7 @@
 #include <string.h>
 
 UmbraStyleSheet::UmbraStyleSheet () {
+	//placeholder --- hardcoded values
 	setColour(TCODColor::white, "normal");
 	setColour(TCODColor::lighterBlue, "hover");
 	setColour(TCODColor::yellow, "active");

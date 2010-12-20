@@ -522,6 +522,12 @@
 		<Unit filename="..\..\src\umbra\umbra_signal.hpp">
 			<Option virtualFolder="Umbra\Headers\" />
 		</Unit>
+		<Unit filename="..\..\src\umbra\umbra_stylesheet.cpp">
+			<Option virtualFolder="Umbra\Sources\" />
+		</Unit>
+		<Unit filename="..\..\src\umbra\umbra_stylesheet.hpp">
+			<Option virtualFolder="Umbra\Headers\" />
+		</Unit>
 		<Unit filename="..\..\src\umbra\umbra_widget.cpp">
 			<Option virtualFolder="Umbra\Sources\" />
 		</Unit>
