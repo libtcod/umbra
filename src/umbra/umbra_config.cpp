@@ -62,16 +62,16 @@ void UmbraConfig::load (const char *fileName) {
 	UmbraConfig::fileName = strdup(fileName);
 	
 	//register configuration variables
-	TCODParserStruct * config = parser.newStructure("config");
-	config->addProperty("rootWidth",TCOD_TYPE_INT,true);
-	config->addProperty("rootHeight",TCOD_TYPE_INT,true);
-	config->addProperty("fontID",TCOD_TYPE_INT,true);
-	config->addProperty("fullScreen",TCOD_TYPE_BOOL,true);
-	config->addProperty("logLevel",TCOD_TYPE_STRING,true);
-	//optional custom font directory
-	config->addProperty("fontDir",TCOD_TYPE_STRING,false);
-	//optional module chaining
-	config->addProperty("moduleChain",TCOD_TYPE_STRING,false);
+	parser.newStructure("config")
+		->addProperty("rootWidth",TCOD_TYPE_INT,true)
+		->addProperty("rootHeight",TCOD_TYPE_INT,true)
+		->addProperty("fontID",TCOD_TYPE_INT,true)
+		->addProperty("fullScreen",TCOD_TYPE_BOOL,true)
+		->addProperty("logLevel",TCOD_TYPE_STRING,true)
+		//optional custom font directory
+		->addProperty("fontDir",TCOD_TYPE_STRING,false)
+		//optional module chaining
+		->addProperty("moduleChain",TCOD_TYPE_STRING,false);
 	
 	//check if the config file exists
 	if (!TCODSystem::fileExists(fileName)) {
