@@ -76,13 +76,28 @@ public:
 	 */
 	UmbraStyleSheet style;
 protected:
+	/**
+	 * Pointer to the containing (parent) widget
+	 */
 	UmbraWidget * parent; //reference to the widget that contains the object
+	/**
+	 * The drag zone: the are within the widget that can be clicked in order to drag it
+	 */
 	UmbraRect dragZone; // part of the widget we can click to drag it
+	/**
+	 * Coordinates of the minimise button
+	 */
 	UmbraPoint minimiseButton; //minimise button coordinates
+	/**
+	 * Coordinates of the close button
+	 */
 	UmbraPoint closeButton; //close button coordinates
-	int mousex, mousey;
-	int dragx, dragy;
-	bool canDrag, isDragging;
+	int mousex;
+	int mousey;
+	int dragx;
+	int dragy;
+	bool canDrag;
+	bool isDragging;
 	/**
 	 * Sets the widget's active zone reacting to dragging.
 	 * @param x the drag zone's top left corner's <i>x</i> coordinate

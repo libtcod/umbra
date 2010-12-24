@@ -66,40 +66,57 @@ private:
 };
 
 /**
+ * The class that holds the information about a styles set. Used internally by the <code>UmbraStyleSheet</code> class.
+ */
+class UmbraStyleSheetSet {
+public:
+	/**
+	 * Text foreground colour.
+	 */
+	UmbraStyleSheetProperty <TCODColor> colour;
+	UmbraStyleSheetProperty <TCODColor> backgroundColour;
+	UmbraStyleSheetProperty <TCODColor> borderColour;
+};
+
+/**
  * The style sheet class. It stores the information about a widget's appearance.
  */
 class UmbraStyleSheet {
 private:
-	/**
-	 * The struct that holds the information about a styles set. Used internally by the <code>UmbraStyleSheet</code> class.
-	 */
-	class styleSheet {
-	public:
-		/**
-		 * Text foreground colour.
-		 */
-		UmbraStyleSheetProperty <TCODColor> colour;	
-	};
+
+	static TCODParser parser;
 public: // style sheets
 	/**
 	 * Default style sheet for the widget.
 	 */
-	styleSheet normal;
+	UmbraStyleSheetSet normal;
 	/**
 	 * Style sheet that overrides the default appearance when the mouse cursor is hovering over the widget.
 	 */
-	styleSheet hover;
+	UmbraStyleSheetSet hover;
 	/**
 	 * Style sheet that overrides the default appearance when the mouse cursor is pressed while hovering over the widget.
 	 */
-	styleSheet active;
+	UmbraStyleSheetSet active;
 public: // setters
 	/**
 	 * Sets the style sheet's <code>colour</code> property.
-     * @param c the colour that the property is to be set to
-     * @param pseudoClass can be either <code>"normal"</code>, <code>"hover"</code>, <code>"active"</code> or <code>NULL</code>.<br />Used to specify which pseudo class property is to be changed. If the parametre is ommitted, all pseudo classes will receive the colour. The 
+     * @param val the property's value
+     * @param pseudoClass can be either <code>"normal"</code>, <code>"hover"</code>, <code>"active"</code> or <code>NULL</code>.<br />Used to specify which pseudo class property is to be changed. If the parametre is ommitted, all pseudo classes will receive the colour.
      */
-	void setColour (TCODColor c, const char * pseudoClass = NULL);
+	void colour (TCODColor val, const char * pseudoClass = NULL);
+	/**
+	 * Sets the style sheet's <code>backgroundColour</code> property.
+     * @param val the property's value
+     * @param pseudoClass can be either <code>"normal"</code>, <code>"hover"</code>, <code>"active"</code> or <code>NULL</code>.<br />Used to specify which pseudo class property is to be changed. If the parametre is ommitted, all pseudo classes will receive the colour. 
+     */
+	void backgroundColour (TCODColor val, const char * pseudoClass = NULL);
+	/**
+	 * Sets the style sheet's <code>borderColour</code> property.
+     * @param val the property's value
+     * @param pseudoClass can be either <code>"normal"</code>, <code>"hover"</code>, <code>"active"</code> or <code>NULL</code>.<br />Used to specify which pseudo class property is to be changed. If the parametre is ommitted, all pseudo classes will receive the colour. 
+     */
+	void borderColour (TCODColor val, const char * pseudoClass = NULL);
 public: // ctor
 	/**
 	 * The constructor for the style sheet class. Fills all styles with default values.

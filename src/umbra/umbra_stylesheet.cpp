@@ -31,20 +31,52 @@
 
 UmbraStyleSheet::UmbraStyleSheet () {
 	//placeholder --- hardcoded values
-	setColour(TCODColor::white, "normal");
-	setColour(TCODColor::lighterBlue, "hover");
-	setColour(TCODColor::yellow, "active");
+	colour(TCODColor::white, "normal");
+	colour(TCODColor::lighterGrey, "hover");
+	colour(TCODColor::yellow, "active");
+	backgroundColour(TCODColor::darkerRed, "normal");
+	backgroundColour(TCODColor::darkRed, "hover");
+	backgroundColour(TCODColor::red, "active");
+	borderColour(TCODColor::blue, "normal");
+	borderColour(TCODColor::lightBlue, "hover");
+	borderColour(TCODColor::lighterBlue, "active");
 }
 
-void UmbraStyleSheet::setColour (TCODColor c, const char* pseudoClass) {
+void UmbraStyleSheet::colour (TCODColor val, const char* pseudoClass) {
 	if (pseudoClass == NULL)
-		normal.colour = hover.colour = active.colour = c;
+		normal.colour = hover.colour = active.colour = val;
 	else if (strcmp(pseudoClass,"normal") == 0)
-		normal.colour = c;
+		normal.colour = val;
 	else if (strcmp(pseudoClass,"hover") == 0)
-		hover.colour = c;
+		hover.colour = val;
 	else if (strcmp(pseudoClass,"active") == 0)
-		active.colour = c;
+		active.colour = val;
 	else
-		UmbraLog::error("UmbraStyleSheet::setColour | unknown pseudoclass \"%s\".", pseudoClass);
+		UmbraLog::error("UmbraStyleSheet::colour | unknown pseudoclass \"%s\".", pseudoClass);
+}
+
+void UmbraStyleSheet::backgroundColour (TCODColor val, const char* pseudoClass) {
+	if (pseudoClass == NULL)
+		normal.backgroundColour = hover.backgroundColour = active.backgroundColour = val;
+	else if (strcmp(pseudoClass,"normal") == 0)
+		normal.backgroundColour = val;
+	else if (strcmp(pseudoClass,"hover") == 0)
+		hover.backgroundColour = val;
+	else if (strcmp(pseudoClass,"active") == 0)
+		active.backgroundColour = val;
+	else
+		UmbraLog::error("UmbraStyleSheet::backgroundColour | unknown pseudoclass \"%s\".", pseudoClass);
+}
+
+void UmbraStyleSheet::borderColour (TCODColor val, const char* pseudoClass) {
+	if (pseudoClass == NULL)
+		normal.borderColour = hover.borderColour = active.borderColour = val;
+	else if (strcmp(pseudoClass,"normal") == 0)
+		normal.borderColour = val;
+	else if (strcmp(pseudoClass,"hover") == 0)
+		hover.borderColour = val;
+	else if (strcmp(pseudoClass,"active") == 0)
+		active.borderColour = val;
+	else
+		UmbraLog::error("UmbraStyleSheet::backgroundColour | unknown pseudoclass \"%s\".", pseudoClass);
 }
