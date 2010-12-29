@@ -64,10 +64,10 @@ void UmbraButton::render (TCODConsole * con) {
 		else s = &style.hover;
 	} else s = &style.normal;
 	
-	con->setDefaultForeground(s->borderColour.value());
-	con->setDefaultBackground(s->backgroundColour.value());
+	con->setDefaultForeground(s->borderColour());
+	con->setDefaultBackground(s->backgroundColour());
 	con->printFrame(rect.x,rect.y,rect.w,rect.h,true,TCOD_BKGND_SET,NULL);
-	con->setDefaultForeground(s->colour.value());
+	con->setDefaultForeground(s->colour());
 	if (!tag.empty())
 		con->printRectEx(rect.x+(rect.w/2),rect.y+(rect.h/2),rect.w-2,rect.h-2,TCOD_BKGND_NONE,TCOD_CENTER,tag.c_str());
 	con->setDefaultForeground(col);

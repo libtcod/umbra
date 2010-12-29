@@ -56,6 +56,7 @@ public:
 	 */
 	inline T1 value() { return val; }
 	inline UmbraStyleSheetProperty& operator = (const T1& x) { val = x; specificity = UMBRA_SPECIFICITY_MANUAL; return *this; }
+	inline T1& operator () () { return val; }
 private:
 	/**
 	 * Sets the property's value and level.
