@@ -609,7 +609,7 @@ int UmbraEngine::run () {
 	while(!TCODConsole::isWindowClosed()) {
 		//execute only when paused
 		if (paused) {
-			key = TCODConsole::checkForKeypress(TCOD_KEY_RELEASED);
+			TCODSystem::checkForEvent(TCOD_EVENT_KEY_RELEASE|TCOD_EVENT_MOUSE_PRESS,&key,&mouse);
 			keyboard(key);
 			TCODConsole::root->flush();
 			continue; //don't update or render anything anew
@@ -633,23 +633,22 @@ int UmbraEngine::run () {
 		// update all active modules
 		switch (keyboardMode) {
 			case UMBRA_KEYBOARD_WAIT :
-				key = TCODConsole::waitForKeypress(true) ;
+				TCODSystem::waitForEvent(TCOD_EVENT_KEY_PRESS|TCOD_EVENT_MOUSE,&key,&mouse,true) ;
 				break;
 			case UMBRA_KEYBOARD_WAIT_NOFLUSH :
-				key = TCODConsole::waitForKeypress(false) ;
+				TCODSystem::waitForEvent(TCOD_EVENT_KEY_PRESS|TCOD_EVENT_MOUSE,&key,&mouse,false) ;
 				break;
 			case UMBRA_KEYBOARD_PRESSED :
-				key = TCODConsole::checkForKeypress(TCOD_KEY_PRESSED) ;
+				TCODSystem::checkForEvent(TCOD_EVENT_KEY_PRESS|TCOD_EVENT_MOUSE,&key,&mouse) ;
 				break;
 			case UMBRA_KEYBOARD_PRESSED_RELEASED :
-				key = TCODConsole::checkForKeypress(TCOD_KEY_PRESSED | TCOD_KEY_RELEASED) ;
+				TCODSystem::checkForEvent(TCOD_EVENT_KEY|TCOD_EVENT_MOUSE,&key,&mouse) ;
 				break;
 			case UMBRA_KEYBOARD_RELEASED :
 			default :
-				key = TCODConsole::checkForKeypress(TCOD_KEY_RELEASED) ;
+				TCODSystem::checkForEvent(TCOD_EVENT_KEY_RELEASE|TCOD_EVENT_MOUSE,&key,&mouse) ;
 				break;
 		}
-		mouse = TCODMouse::getStatus();
 		keyboard(key);
 		uint32 startTime=TCODSystem::getElapsedMilli();
 		// update all active modules by priority order

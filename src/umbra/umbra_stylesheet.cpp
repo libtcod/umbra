@@ -25,8 +25,8 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#include <umbra.hpp>
-#include <umbra_stylesheet.hpp>
+#include "umbra.hpp"
+#include "umbra_stylesheet.hpp"
 #include <string.h>
 
 UmbraStyleSheetSet::UmbraStyleSheetSet() {
