@@ -695,7 +695,7 @@ int UmbraEngine::run () {
 }
 
 void UmbraEngine::keyboard (TCOD_key_t &key) {
-	if (key.vk == TCODK_NONE || key.pressed) return;
+	if (key.vk == TCODK_NONE || (keyboardMode != UMBRA_KEYBOARD_PRESSED && key.pressed)) return;
 
 	UmbraKey k(key.vk, key.c, key.ralt|key.lalt, key.rctrl|key.lctrl, key.shift);
 
