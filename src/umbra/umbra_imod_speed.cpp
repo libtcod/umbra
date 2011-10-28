@@ -143,11 +143,11 @@ void UmbraModSpeed::render () {
 	if (! isMinimised ) timeBar->blit2x(TCODConsole::root,rect.x+2,rect.y+4);
 }
 
-void UmbraModSpeed::activate () {
+void UmbraModSpeed::onActivate () {
 	fps = TCODSystem::getFps();
 	TCODSystem::setFps(0);
 }
 
-void UmbraModSpeed::deactivate () {
+void UmbraModSpeed::onDeactivate () {
 	TCODSystem::setFps(fps);
 }

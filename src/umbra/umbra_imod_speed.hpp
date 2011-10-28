@@ -60,11 +60,11 @@ class UmbraModSpeed: public UmbraWidget {
 		/**
 		 * Removes the frames per second limit in order to attempt to enforce a 100% load on the CPU.
          */
-		void activate ();
+		void onActivate ();
 		/**
 		 * Restores the frames per second limit from before Speedo activation.
          */
-		void deactivate ();
+		void onDeactivate ();
 		/**
 		 * Uptades the update and render times.
 		 * @param updateTime the time spend on <code>update()</code> methods
