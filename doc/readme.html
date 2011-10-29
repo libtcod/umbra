@@ -567,9 +567,6 @@ Bear in mind that this method, although more intuitive and easier to use, is als
 
 Module activation is extremely simple. Once a module is registered, it is given an ID number, which the developer can deduce from the order in which the modules were registered. This number can then be used to activate a module. The method that actually does the trick is [[UmbraModule::activateModule]]. Instead of the ID number, the method also accepts the module reference as an argument. In both cases, the chosen module will be put on a separate list of modules destinated for activation in the next frame. The engine should run with no problems once a module is active.</pre>
 </div>
-<div title="Add module-level keyboard listeners" modifier="Mingos" created="201010082248" tags="issueTracker RFE open" changecount="1">
-<pre>It would be nice if there were keyboard callbacks also in module scope, not only globally.</pre>
-</div>
 <div title="BSOD" modifier="Mingos" created="200911092016" modified="201011070050" tags="tutorial internalModule error" changecount="9">
 <pre>The BSOD is an internal module created with the sole purpose of notifying the developer that a non fatal error has occurred in the program. It is supposed to be used in conjunction with the methods in the [[UmbraLog]] class.
 
@@ -593,10 +590,11 @@ Please note that this module requires the console emulator to be active, otherwi
 *[[UmbraCallbackScreenshot]]
 *[[UmbraCallbackSpeedometer]]</pre>
 </div>
-<div title="Change log" modifier="Mingos" created="201008111354" modified="201012180252" tags="changeLog" changecount="47">
+<div title="Change log" modifier="Mingos" created="201008111354" modified="201110291359" tags="changeLog" changecount="50">
 <pre>&lt;&lt;tiddler ChangeLogSymbols&gt;&gt;
 !Current HEAD revision
 |!Category|!Committed on|!Change|!Committed by|
+|BUG|28-Oct-2011|Fixed incorrect method names in the Speedo module|Merc|
 |NEW|18-Dec-2010|Widgets now use a style sheet to define their appearance in various circumstances|Mingos|
 |MOD|18-Dec-2010|{{{Umbra*::contains}}} functions now set the {{{mouseHover}}} property|Mingos|
 |NEW|18-Dec-2010|Added functions for setting mouse cursor status on points, rectangles and circles|Mingos|
@@ -926,9 +924,6 @@ In the above code snippet, {{{speed}}} is the offscreen console the widget uses.
 ;[[Scautura]]
 :Documentation proofreading - thanks a million, mate!</pre>
 </div>
-<div title="DeactivateAll() failing with fallbacks" modifier="Mingos" created="201008111315" modified="201011070206" tags="issueTracker bug closed" changecount="4">
-<pre>[[UmbraEngine::deactivateAll]] fails to close an application when the active modules have fallbacks. The fallbacks are activated upon module deactivation and the application continues.</pre>
-</div>
 <div title="DefaultTiddlers" modifier="Mingos" created="200910241745" modified="200910241818" changecount="2">
 <pre>[[About Umbra]]</pre>
 </div>
@@ -1040,11 +1035,6 @@ The errors are added automatically when something goes wrong inside Umbra, but t
 
 The messages are stored with useful information about them, including the exact time of occurrence, the error level (ranging from info to fatal error) and indenting (nesting) information. The nesting is used to locate the approximate place of occurrence in the call stack.</pre>
 </div>
-<div title="Fading support" modifier="Mingos" created="201010062148" tags="issueTracker RFE open" changecount="1">
-<pre>It would be nice to have fading in the modules.
-The general idea is to make the module store the fade value between 0.0 and 1.0, without actually implementing any visual effects (because fading can mean any effect: opacity change, whiteout/blackout, console position change, displayed area change...).
-It is not yet certain how the mechanism should work. To be discussed.</pre>
-</div>
 <div title="Fallbacks" modifier="Mingos" created="200911091937" modified="201007271701" tags="tutorial module fallback" changecount="12">
 <pre>A fallback (not to be confused with a callback) is a simple integer ID number that can be assigned to any registered module.
 
@@ -1106,9 +1096,6 @@ If you want a finer control on the way fonts are loaded, you can register them m
 
 ;see also:
 :[[Registering fonts]]</pre>
-</div>
-<div title="Font switching fails when fonts have different layouts" modifier="Mingos" created="201009152158" tags="issueTracker bug open" changecount="1">
-<pre>Apparently, if there are multiple fonts registered and their layout is not the same, switching between them using Umbra inbuilt font switcher doesn't work. This might be a libtcod-specific bug though.</pre>
 </div>
 <div title="ForEachTiddlerMacro" modifier="YourName" created="200512081501" modified="200707300922" tags="Documentation ForEachTiddlerMacro Macro" server.type="file" server.host="tiddlywiki.abego-software.de/#ForEachTiddlerPlugin" server.page.revision="200707300922">
 <pre>//~~(Part of the [[ForEachTiddlerPlugin]])~~//
@@ -2015,10 +2002,6 @@ DAMAGE.
 
 </pre>
 </div>
-<div title="Fullscreen font changing" modifier="Mingos" created="201009182107" tags="issueTracker bug open" changecount="1">
-<pre>Changing the font when in fullscreen mode reverts back to windowed mode. While not a fatal bug, this can be annoying.
-The source of the bug may be Umbra or libtcod - to be investigated.</pre>
-</div>
 <div title="Initialisation versus activation" modifier="Mingos" created="200911162110" modified="201007271722" tags="tutorial module" changecount="6">
 <pre>The [[UmbraModule]] provides two virtual methods which can be overridden in a custom module. These are [[UmbraModule::initialise]] and [[UmbraModule::activate]]. The difference between the two might seem a bit blurry, so let's have a closer look at what they do.
 !Initialisation
@@ -2037,41 +2020,10 @@ Paired with [[UmbraModule::activate]] is also [[UmbraModule::deactivate]]. In ca
 
 These are the internal callbacks, which can be registered automatically, providing the engine is initialised with a [[flag|UmbraRegisterCallbackFlag]] that enables this. They can also be registered manually - please refer to the individual callbacks in order to check how they can be registered.</pre>
 </div>
-<div title="Issue tracker" modifier="Mingos" created="201008111302" modified="201008191746" tags="issueTracker" changecount="8">
-<pre>&lt;&lt;tabs api
-    &quot;Bug reports&quot; &quot;Bug reports&quot; [[IssueTrackerBugs]]
-    &quot;RFEs&quot; &quot;Requests for enhancement&quot; [[IssueTrackerRfes]]
-&gt;&gt;</pre>
-</div>
-<div title="IssueTrackerBugs" modifier="Mingos" created="201008111303" modified="201008191749" tags="issueTracker bug" changecount="8">
-<pre>&lt;&lt;tabs bugs
-    &quot;Open&quot; &quot;Open bugs&quot; [[IssueTrackerBugsOpen]]
-    &quot;Closed&quot; &quot;Closed bugs&quot; [[IssueTrackerBugsClosed]]
-&gt;&gt;</pre>
-</div>
-<div title="IssueTrackerBugsClosed" modifier="Mingos" created="201008191747" tags="issueTracker bug closedBugs" changecount="1">
-<pre>&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;issueTracker&quot;,&quot;bug&quot;,&quot;closed&quot;])'&gt;&gt;</pre>
-</div>
-<div title="IssueTrackerBugsOpen" modifier="Mingos" created="201008191745" modified="201008191745" tags="issueTracker bug openBugs" changecount="3">
-<pre>&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;issueTracker&quot;,&quot;bug&quot;,&quot;open&quot;])'&gt;&gt;</pre>
-</div>
-<div title="IssueTrackerRfes" modifier="Mingos" created="201008111303" modified="201008191751" tags="issueTracker RFE" changecount="6">
-<pre>&lt;&lt;tabs rfes
-    &quot;Open&quot; &quot;Open RFEs&quot; [[IssueTrackerRfesOpen]]
-    &quot;Closed&quot; &quot;Closed RFEs&quot; [[IssueTrackerRfesClosed]]
-&gt;&gt;</pre>
-</div>
-<div title="IssueTrackerRfesClosed" modifier="Mingos" created="201008191750" tags="issueTracker RFE closedRFE" changecount="1">
-<pre>&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;issueTracker&quot;,&quot;RFE&quot;,&quot;closed&quot;])'&gt;&gt;</pre>
-</div>
-<div title="IssueTrackerRfesOpen" modifier="Mingos" created="201008191749" tags="issueTracker RFE openRFE" changecount="1">
-<pre>&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;issueTracker&quot;,&quot;RFE&quot;,&quot;open&quot;])'&gt;&gt;</pre>
-</div>
-<div title="MainMenu" modifier="Mingos" created="200910241817" modified="201011072047" changecount="4">
+<div title="MainMenu" modifier="Mingos" created="200910241817" modified="201110291402" changecount="5">
 <pre>[[About Umbra]]
 [[Using Umbra]]
 [[API reference]]
-[[Issue tracker]]
 [[Change log]]
 [[Credits|CreditsPage]]</pre>
 </div>
@@ -2150,11 +2102,6 @@ mod1-&gt;setPriority(2);
 Let's assume both {{{mod1}}} and {{{mod2}}} have similar keyboard parsing, sharing some keyboard events. Since {{{mod1}}} has a priority of 1, it will be parsed before {{{mod2}}}. If {{{mod1}}} detects a keystroke it reacts to, it will clear that keyboard event, so when {{{mod2}}} gets updated, the keyboard event list will be empty.
 !Rendering
 On the other hand, module rendering is done in the inverse order. What this means is that if {{{mod1}}} and {{{mod2}}} overlap each other on the screen, {{{mod1}}} will be rendered after {{{mod2}}}, thus it will appear on top of {{{mod2}}}.</pre>
-</div>
-<div title="Module timeout" modifier="Mingos" created="201010051123" modified="201010062016" tags="issueTracker RFE closed" changecount="3">
-<pre>There should be an ~UmbraModule method for setting a timeout on a module.
-The module would store the activation time and deactivate itself automatically after the time specified in the timeout has passed.
-Good for things like credits screens that are supposed to be displayed only during a few seconds.</pre>
 </div>
 <div title="Naming modules" modifier="Mingos" created="201010142205" modified="201010182056" tags="tutorial module moduleReference" changecount="6">
 <pre>Every module that is registered in the engine has a name that is stored internally. There are several ways to set the module's name: by calling the ~UmbraModule constructor, by using an extra parametre to the [[UmbraEngine::registerModule]] method or by calling the [[UmbraModule::setName]] method.
@@ -2297,9 +2244,6 @@ You can also log non-errors. There are specialised methods for closing and openi
 </div>
 <div title="Scautura" modifier="Scautura" created="200911111208" changecount="1">
 <pre>Proofreader. Nothing more.</pre>
-</div>
-<div title="Setting the renderer" modifier="Mingos" created="201010051127" tags="issueTracker bug open" changecount="1">
-<pre>The renderer should be specified in the config file, not passed to the engine's initialisation function. The user should be able to change it in case the default one doesn't work.</pre>
 </div>
 <div title="SideBarOptions" modifier="Mingos" created="200701130013" modified="201008111353" server.type="file" server.host="tiddlythemes.com/empties/LewcidOrange.html" server.page.revision="200708091512" changecount="15">
 <pre>&lt;&lt;closeAll&gt;&gt;
@@ -5377,7 +5321,7 @@ virtual bool update (
 :This method will be called automatically each frame. It shouldn't be called manually, but rather overloaded in each module.
 :The developer is expected to adhere to the rules concerning the return value. Making the method return a value of {{{false}}} will deactivate the module.</pre>
 </div>
-<div title="UmbraModuleFactory" modifier="Mingos" created="201010152103" modified="201010181952" tags="API class" changecount="6">
+<div title="UmbraModuleFactory" modifier="Mingos" created="201010152103" modified="201110291406" tags="api class" changecount="7">
 <pre>Create a class that inherits UmbraModuleFactory to allow automatic registration of your modules. There's a single method to implement: [[UmbraModuleFactory::createModule]].
 &lt;code C++&gt;
 class UmbraModuleFactory {
@@ -6133,27 +6077,6 @@ There's also a special kind of module, called widget, that offers extra interact
 Widgets include special areas that can be defined to make the widget become interactive. Per default, a widget has a drag zone, a close button and a minimise button. If they are given legal values, they can be shown in the widget, and also react to mouse movement and clicks.
 
 It is not recommended to use widgets in games that only use keyboard control, since they are slower than normal modules and will be able to offer the same functionality.</pre>
-</div>
-<div title="add a Credits internal module" modifier="Mingos" created="201011021256" modified="201011072147" tags="issueTracker RFE closed" changecount="2">
-<pre>There should be an internal module that displays the credits for Umbra, pretty much like libtcod's credits() function.</pre>
-</div>
-<div title="make console clearing by the engine configureable" modifier="Mingos" created="201011021217" tags="issueTracker RFE open" changecount="1">
-<pre>Currently, the engine clears the console each frame. Not all games need this and the console clearing results in a waste of CPU ticks. This should be made configureable - the whole console clearing might then be substituted with a sinmple {{{if}}} statement, saving some CPU ticks.</pre>
-</div>
-<div title="module activation bug when no lower priority modules are present" modifier="Mingos" created="201010132148" modified="201010132200" tags="issueTracker bug closed" changecount="3">
-<pre>When there's at least one module active and another one is being activated, but with a lower priority setting (ie, higher priority number), it is not placed at the end of the active modules list, but rather before the last module, resulting in it not being on the bottom, as expected.
-
-This is caused by the ~UmbraEngine::doActivateModule() method inserting modules only before another element. If the list has been scanned until the end and no suitable place was found, it should simply push the new module at the end of the list.
-
-It is now fixed.</pre>
-</div>
-<div title="module chain loading" modifier="Mingos" created="201010140839" modified="201010180829" tags="issueTracker RFE closed" changecount="2">
-<pre>Modules should contain a string with a custom module name (set via the ctor and possibly a setName() method). This would bring the following advantages:
-- possibility to activate and deactivate modules by name: engine.activateModule(&quot;demo&quot;), engine.deactivateModule(&quot;demo&quot;), engine.getModule(&quot;name&quot;)
-- possibility to externalise the module activation sequence (controlled by a text config file).</pre>
-</div>
-<div title="registerFont should look in the default font directory" modifier="Mingos" created="201010051104" modified="201010051104" tags="issueTracker RFE open" changecount="2">
-<pre>The [[UmbraEngine::registerFont]] method currently only accepts the filename with full path. It should also accept the filename with no path and look in the default fonts directory.</pre>
 </div>
 </div>
 <!--POST-STOREAREA-->
