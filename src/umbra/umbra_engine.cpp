@@ -1,33 +1,35 @@
 /*
-* Umbra
-* Copyright (c) 2009, 2010 Mingos, Jice
-* All rights reserved.
-*
-* Redistribution and use in source and binary forms, with or without
-* modification, are permitted provided that the following conditions are met:
-*     * Redistributions of source code must retain the above copyright
-*       notice, this list of conditions and the following disclaimer.
-*     * Redistributions in binary form must reproduce the above copyright
-*       notice, this list of conditions and the following disclaimer in the
-*       documentation and/or other materials provided with the distribution.
-*     * The names of Mingos or Jice may not be used to endorse or promote products
-*       derived from this software without specific prior written permission.
-*
-* THIS SOFTWARE IS PROVIDED BY MINGOS & JICE ``AS IS'' AND ANY
-* EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-* WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-* DISCLAIMED. IN NO EVENT SHALL MINGOS OR JICE BE LIABLE FOR ANY
-* DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-* (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-* LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
-* ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-* (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-* SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
+ * Umbra
+ * Copyright (c) 2009, 2010 Mingos, Jice
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *     * Redistributions of source code must retain the above copyright
+ *       notice, this list of conditions and the following disclaimer.
+ *     * Redistributions in binary form must reproduce the above copyright
+ *       notice, this list of conditions and the following disclaimer in the
+ *       documentation and/or other materials provided with the distribution.
+ *     * The names of Mingos or Jice may not be used to endorse or promote products
+ *       derived from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY MINGOS & JICE ``AS IS'' AND ANY
+ * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL MINGOS OR JICE BE LIABLE FOR ANY
+ * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
 
 #include "umbra.hpp"
 #include <stdio.h>
 #include <stdarg.h>
+
+#include <iostream>
 
 TCOD_renderer_t UmbraEngine::renderer = TCOD_RENDERER_SDL;
 UmbraEngine * UmbraEngine::engineInstance = NULL;
@@ -51,7 +53,7 @@ private:
 	TCODList<UmbraModule::UmbraModuleParametre> chainParameters;
 	// all the modules in the chain
 	TCODList<UmbraModule *> chainModules;
-public :
+	public :
 	UmbraModuleConfigParser(UmbraModuleFactory *factory,const char *chainName): chainName(chainName), module(NULL),skip(false),chainDone(false),factory(factory) {
 	}
     bool parserNewStruct(TCODParser * parser, const TCODParserStruct * str, const char * name) {
@@ -399,7 +401,7 @@ bool UmbraEngine::registerFonts () {
 		UmbraLog::closeBlock(UMBRA_LOGRESULT_FAILURE);
 		return false;
 	}
-
+	
 	if (getNbFonts() == 0) {
 		UmbraLog::fatalError("UmbraEngine::registerFonts | No fonts registered. Autodetection found no fonts matching the naming pattern font<WIDTH>x<HEIGHT>[_<LAYOUT>].png in the specified directory \"%s\".",getFontDir());
 		UmbraLog::closeBlock(UMBRA_LOGRESULT_FAILURE);
@@ -491,10 +493,10 @@ void UmbraEngine::activateModule (const char *name) {
 
 // the internal function actually putting a module in active list
 void UmbraEngine::doActivateModule( UmbraModule *mod ) {
-  if (!mod->getActive()) {
-	mod->setActive(true);
-	mod->initialiseTimeout();
-	//insert the module at the right pos, sorted by priority
+	if (!mod->getActive()) {
+		mod->setActive(true);
+		mod->initialiseTimeout();
+		//insert the module at the right pos, sorted by priority
 		int idx = 0;
 		while (idx < activeModules.size() && activeModules.get(idx)->getPriority() < mod->getPriority()) idx++;
 		if (idx < activeModules.size()) activeModules.insertBefore(mod,idx);
@@ -585,6 +587,8 @@ bool UmbraEngine::initialise (TCOD_renderer_t renderer) {
 		//initialise console
 		TCODConsole::setCustomFont(UmbraConfig::font->filename(),UmbraConfig::font->flags(),UmbraConfig::font->columns(),UmbraConfig::font->rows());
 		TCODConsole::initRoot(getRootWidth(),getRootHeight(),windowTitle.c_str(), UmbraConfig::fullScreen, renderer);
+		
+		registerCustomCharacters();
 		TCODSystem::setFps(25);
 		TCODMouse::showCursor(true);
 		if (TCODConsole::root != NULL) UmbraLog::closeBlock(UMBRA_LOGRESULT_SUCCESS);
@@ -598,15 +602,15 @@ int UmbraEngine::run () {
 	TCOD_key_t key;
 	TCOD_mouse_t mouse;
 	memset(&mouse,0,sizeof(TCOD_mouse_t));
-
+	
 	UmbraLog::openBlock("UmbraEngine::run | Running the engine.");
-
+	
 	if (modules.size() == 0) {
 		UmbraLog::fatalError("UmbraEngine::run | No modules have been registered!");
 		UmbraLog::closeBlock(UMBRA_LOGRESULT_FAILURE);
 		return 1;
 	}
-
+	
 	while(!TCODConsole::isWindowClosed()) {
 		//execute only when paused
 		if (paused) {
@@ -615,22 +619,22 @@ int UmbraEngine::run () {
 			TCODConsole::root->flush();
 			continue; //don't update or render anything anew
 		}
-
+		
 		// deactivate modules
 		for (UmbraModule ** mod = toDeactivate.begin(); mod != toDeactivate.end(); mod++) {
 			(*mod)->setActive(false);
 			activeModules.remove(*mod);
 		}
 		toDeactivate.clear();
-
+		
 		// activate new modules
 		for (UmbraModule ** mod = toActivate.begin(); mod != toActivate.end(); mod++) {
 			doActivateModule(*mod);
 		}
 		toActivate.clear();
-
+		
 		if (activeModules.size() == 0) break; // exit game
-
+		
 		// update all active modules
 		switch (keyboardMode) {
 			case UMBRA_KEYBOARD_WAIT :
@@ -696,11 +700,11 @@ int UmbraEngine::run () {
 
 void UmbraEngine::keyboard (TCOD_key_t &key) {
 	if (key.vk == TCODK_NONE || (keyboardMode != UMBRA_KEYBOARD_PRESSED && key.pressed)) return;
-
+	
 	UmbraKey k(key.vk, key.c, key.ralt|key.lalt, key.rctrl|key.lctrl, key.shift);
-
+	
 	bool val = false;
-
+	
 	for (UmbraCallback ** cbk = callbacks.begin(); cbk != callbacks.end(); cbk++) {
 		if ((*cbk)->evaluate(k)) {
 			(*cbk)->action();
@@ -708,7 +712,7 @@ void UmbraEngine::keyboard (TCOD_key_t &key) {
 			break;
 		}
 	}
-
+	
 	if (val) {
 		// "erase" key event
 		memset(&key,0,sizeof(TCOD_key_t));
@@ -722,6 +726,7 @@ void UmbraEngine::reinitialise (TCOD_renderer_t renderer) {
 	TCODConsole::setCustomFont(UmbraConfig::font->filename(),UmbraConfig::font->flags(),UmbraConfig::font->columns(),UmbraConfig::font->rows());
 	UmbraEngine::renderer=renderer;
 	TCODConsole::initRoot(getRootWidth(),getRootHeight(),windowTitle.c_str(), UmbraConfig::fullScreen, this->renderer);
+	registerCustomCharacters();
 	if (TCODConsole::root != NULL) UmbraLog::closeBlock(UMBRA_LOGRESULT_SUCCESS);
 	else UmbraLog::closeBlock(UMBRA_LOGRESULT_FAILURE);
 }
@@ -742,4 +747,26 @@ void UmbraEngine::displayError () {
 void UmbraEngine::printCredits (int x, int y, uint32 duration) {
 	((UmbraModCredits *)internalModules[UMBRA_INTERNAL_CREDITS])->set(x,y,duration);
 	activateModule(internalModules[UMBRA_INTERNAL_CREDITS]);
+}
+
+void UmbraEngine::addCustomCharacter( int x, int y, int code ) {
+	UmbraCustomCharMap * cMap = new UmbraCustomCharMap() ;
+	cMap->x = x;
+	cMap->y = y;
+	cMap->code = code;
+	
+	this->customChars.push( cMap );
+	
+}
+
+void UmbraEngine::registerCustomCharacters() {
+	if( this->customChars.isEmpty() )
+		return;
+	
+	for( int i = 0; i < this->customChars.size(); i++ ) {
+		UmbraCustomCharMap * tmp = this->customChars.get( i );
+		TCODConsole::root->mapAsciiCodeToFont( tmp->code, tmp->x, tmp->y );
+	}
+	
+	UmbraLog::info("UmbraEngine::registerCustomCharacters | Custom character mappings registered.");
 }

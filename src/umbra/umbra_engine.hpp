@@ -1,29 +1,29 @@
 /*
-* Umbra
-* Copyright (c) 2009, 2010 Mingos, Jice
-* All rights reserved.
-*
-* Redistribution and use in source and binary forms, with or without
-* modification, are permitted provided that the following conditions are met:
-*     * Redistributions of source code must retain the above copyright
-*       notice, this list of conditions and the following disclaimer.
-*     * Redistributions in binary form must reproduce the above copyright
-*       notice, this list of conditions and the following disclaimer in the
-*       documentation and/or other materials provided with the distribution.
-*     * The names of Mingos or Jice may not be used to endorse or promote products
-*       derived from this software without specific prior written permission.
-*
-* THIS SOFTWARE IS PROVIDED BY MINGOS & JICE ``AS IS'' AND ANY
-* EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-* WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-* DISCLAIMED. IN NO EVENT SHALL MINGOS OR JICE BE LIABLE FOR ANY
-* DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-* (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-* LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
-* ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-* (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-* SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
+ * Umbra
+ * Copyright (c) 2009, 2010 Mingos, Jice
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *     * Redistributions of source code must retain the above copyright
+ *       notice, this list of conditions and the following disclaimer.
+ *     * Redistributions in binary form must reproduce the above copyright
+ *       notice, this list of conditions and the following disclaimer in the
+ *       documentation and/or other materials provided with the distribution.
+ *     * The names of Mingos or Jice may not be used to endorse or promote products
+ *       derived from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY MINGOS & JICE ``AS IS'' AND ANY
+ * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL MINGOS OR JICE BE LIABLE FOR ANY
+ * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
 
 #ifndef UMBRA_ENGINE_HPP
 #define UMBRA_ENGINE_HPP
@@ -67,6 +67,12 @@ enum UmbraRegisterCallbackFlag {
 	UMBRA_REGISTER_ALL		  = 0xFFFFFFFF
 };
 
+struct UmbraCustomCharMap {
+	int x;
+	int y;
+	int code;
+};
+
 //the main engine
 class UmbraEngine {
 public:
@@ -90,6 +96,15 @@ public:
 	 * The constructor. Takes no parametres and uses only the defaults.
 	 */
 	UmbraEngine ();
+	
+	/**
+	 * Adds custom char mapping. Mappings are put on queue for UmbraEngine::initialise()/reinitialise() to call them.
+	 * @param x position of character in font file
+	 * @param y position of character in font file
+	 * @param ascii code associated with the character
+	 */
+	void addCustomCharacter( int x, int y, int code );
+	
 	/**
 	 * Checks whether a module name has already been used in order to prevent registering modules with the same name.
 	 * @param name the module name to be checked
@@ -132,7 +147,7 @@ public:
 	 * @return <code>true</code> if initialisation is successful, <code>false</code> if errors were encountered
 	 */
 	bool initialise (TCOD_renderer_t renderer = TCOD_RENDERER_SDL);
-      /**
+	/**
 	 * Reinitialises an already initialised engine. Used mainly when the console font or the window title change.
 	 * @param renderer the renderer to be used (defaults to SDL)
 	 */
@@ -252,7 +267,7 @@ public:
 	 * @return the module's id
 	 */
 	int getModuleId (UmbraModule *mod);
-      /**
+	/**
 	 * Fetches a pointer to an internal module.
 	 * @param id the identification number of the internal module to which a pointer is to be fetched
 	 * @return a pointer to the requested internal module
@@ -269,40 +284,40 @@ public:
 	void displayError ();
 	/**
 	 * Activates a different font.
-       * @param shift a number indicating whether to activate the next or the previous font in the registered fonts list.<br>This can be -1 (switch down) or 1 (switch up). All other numbers will be clamped to these values.<br>A value of 0 results in doing nothing.
-       * @return <code>true</code> if the font has been successfully changed, <code>false</code> otherwise
-       */
+	 * @param shift a number indicating whether to activate the next or the previous font in the registered fonts list.<br>This can be -1 (switch down) or 1 (switch up). All other numbers will be clamped to these values.<br>A value of 0 results in doing nothing.
+	 * @return <code>true</code> if the font has been successfully changed, <code>false</code> otherwise
+	 */
 	inline bool activateFont (int shift = 0) { return UmbraConfig::activateFont(shift); }
 	/**
 	 * Retrieves the width of the console in cells.
-       * @return the console's width
-       */
+	 * @return the console's width
+	 */
 	inline int getRootWidth () { return UmbraConfig::rootWidth; }
 	/**
 	 * Retrieves the height of the console in cells.
-       * @return the console's height
-       */
+	 * @return the console's height
+	 */
 	inline int getRootHeight () { return UmbraConfig::rootHeight; }
 	/**
 	 * Retrieves the ID number of the currently used font.
-       * @return current font's ID
-       */
+	 * @return current font's ID
+	 */
 	inline int getFontID () { return UmbraConfig::fontID; }
 	/**
 	 * Retrieves the total number of registered fonts.
-       * @return number of registered fonts
-       */
+	 * @return number of registered fonts
+	 */
 	inline int getNbFonts () { return UmbraConfig::fonts.size(); }
 	/**
 	 * Retrieves the font directory.
-       * @return the font direcory
-       */
+	 * @return the font direcory
+	 */
 	inline const char * getFontDir () { return UmbraConfig::fontDir; }
 	/**
 	 * Sets the root console's dimensions in cells.
-       * @param w the root console's width
-       * @param h the root console's height
-       */
+	 * @param w the root console's width
+	 * @param h the root console's height
+	 */
 	static void setRootDimensions (int w, int h) { UmbraConfig::rootWidth = w; UmbraConfig::rootHeight = h; getInstance()->reinitialise(renderer); }
 	/**
 	 * Displays a credits line.
@@ -311,11 +326,14 @@ public:
      * @param duration the total duration of the display (half of which is the fade out)
      */
 	void printCredits(int x, int y, uint32 duration = 10000);
-private:
+private:	
+	void registerCustomCharacters(); // Registers the custom characters
+	
 	static UmbraEngine * engineInstance;
 	std::string windowTitle;
 	bool paused;
 	static TCOD_renderer_t renderer;
+	TCODList <UmbraCustomCharMap*> customChars; // List of custom chars to add
 	TCODList <UmbraModule*> modules; // list of all registered modules
 	TCODList <UmbraModule*> activeModules; // currently active modules
 	TCODList <UmbraModule*> toActivate; // modules to activate next frame
@@ -325,24 +343,24 @@ private:
 	TCODList <UmbraCallback *> callbacks; //the keybinding callbacks
 	/**
 	 * Parses the keyboard input and passes it to the registered callbacks.
-       * @param key a reference to the keyboard event object
-       */
+	 * @param key a reference to the keyboard event object
+	 */
 	void keyboard (TCOD_key_t &key);
 	/**
 	 * Puts the newly activated module in the active modules list.
-       * @param mod a pointer to the module that's being activated
-       */
+	 * @param mod a pointer to the module that's being activated
+	 */
 	void doActivateModule (UmbraModule *mod);
 	/**
 	 * Performs font autodetection and registered any found fonts.
-       * @return <code>true</code> if at least one font has been registered, <code>false</code> otherwise
-       */
+	 * @return <code>true</code> if at least one font has been registered, <code>false</code> otherwise
+	 */
 	bool registerFonts ();
 	/**
 	 * Registers an internal module for usage in the application.
-       * @param id the ID number of an internal module
-       * @param module a pointer to the internal module to be registered.
-       */
+	 * @param id the ID number of an internal module
+	 * @param module a pointer to the internal module to be registered.
+	 */
 	void registerInternalModule (UmbraInternalModuleID id, UmbraModule * module);
 };
 
