@@ -590,10 +590,11 @@ Please note that this module requires the console emulator to be active, otherwi
 *[[UmbraCallbackScreenshot]]
 *[[UmbraCallbackSpeedometer]]</pre>
 </div>
-<div title="Change log" modifier="Mingos" created="201008111354" modified="201110291359" tags="changeLog" changecount="50">
+<div title="Change log" modifier="Mingos" created="201008111354" modified="201111011336" tags="changeLog" changecount="51">
 <pre>&lt;&lt;tiddler ChangeLogSymbols&gt;&gt;
 !Current HEAD revision
 |!Category|!Committed on|!Change|!Committed by|
+|NEW|30-Oct-2011|Added the {{{UmbraEngine::addCustomCharacter}}} method|Merc|
 |BUG|28-Oct-2011|Fixed incorrect method names in the Speedo module|Merc|
 |NEW|18-Dec-2010|Widgets now use a style sheet to define their appearance in various circumstances|Mingos|
 |MOD|18-Dec-2010|{{{Umbra*::contains}}} functions now set the {{{mouseHover}}} property|Mingos|
@@ -3533,6 +3534,28 @@ engine.activateModule(UMBRA_INTERNAL_SPEEDOMETER); //internal module ID
 &lt;/code&gt;
 !See also
 &lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;moduleStatus&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;moduleStatus&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;moduleStatus&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
+</div>
+<div title="UmbraEngine::addCustomCharacter" modifier="Mingos" created="201111011344" tags="api method engineClass font" changecount="1">
+<pre>!Description
+Adds a custom character mapping. The changes don't take effect until [[UmbraEngine::initialise]] or [[UmbraEngine::reinitialise]] is called.
+!Construction
+&lt;code C++&gt;
+void UmbraEngine::addCustomCharacter (
+    int x,
+    int y, 
+    int code
+);
+&lt;/code&gt;
+!Parametres
+*{{{int x}}}: the X position of the character in the font file
+*{{{int y}}}: the Y position of the character in the font file
+*{{{int code}}}: ASCII code corresponding to the character
+!Access level
+{{{public}}}
+!Remarks
+The character mappings aren't instantaneous; they are applied automatically when [[UmbraEngine::initialise]] or [[UmbraEngine::reinitialise]] is called.
+!See also
+&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;font&quot;,&quot;enum&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;font&quot;,&quot;method&quot;])'&gt;&gt;&lt;&lt;forEachTiddler where 'tiddler != context.inTiddler &amp;&amp; tiddler.tags.containsAll([&quot;font&quot;,&quot;tutorial&quot;])'&gt;&gt;</pre>
 </div>
 <div title="UmbraEngine::deactivateAll" modifier="Mingos" created="200911082255" modified="201011021322" tags="api method engineClass module moduleStatus" changecount="16">
 <pre>!Description
