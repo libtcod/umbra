@@ -98,12 +98,12 @@ public:
 	UmbraEngine ();
 	
 	/**
-	 * Adds custom char mapping. Mappings are put on queue for UmbraEngine::initialise()/reinitialise() to call them.
+	 * Add custom character mapping. Mappings are put on queue for UmbraEngine::initialise()/reinitialise() to call them.
 	 * @param x position of character in font file
 	 * @param y position of character in font file
 	 * @param ascii code associated with the character
 	 */
-	void addCustomCharacter( int x, int y, int code );
+	void addCustomCharacter(int x, int y, int code);
 	
 	/**
 	 * Checks whether a module name has already been used in order to prevent registering modules with the same name.
@@ -327,7 +327,10 @@ public:
      */
 	void printCredits(int x, int y, uint32 duration = 10000);
 private:	
-	void registerCustomCharacters(); // Registers the custom characters
+	/**
+	 * Register custom characters
+	 */	 	
+	void registerCustomCharacters();
 	
 	static UmbraEngine * engineInstance;
 	std::string windowTitle;

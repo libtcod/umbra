@@ -749,23 +749,22 @@ void UmbraEngine::printCredits (int x, int y, uint32 duration) {
 	activateModule(internalModules[UMBRA_INTERNAL_CREDITS]);
 }
 
-void UmbraEngine::addCustomCharacter( int x, int y, int code ) {
+void UmbraEngine::addCustomCharacter(int x, int y, int code) {
 	UmbraCustomCharMap * cMap = new UmbraCustomCharMap() ;
 	cMap->x = x;
 	cMap->y = y;
 	cMap->code = code;
 	
-	this->customChars.push( cMap );
-	
+	this->customChars.push(cMap);
 }
 
 void UmbraEngine::registerCustomCharacters() {
-	if( this->customChars.isEmpty() )
+	if(this->customChars.isEmpty())
 		return;
 	
-	for( int i = 0; i < this->customChars.size(); i++ ) {
-		UmbraCustomCharMap * tmp = this->customChars.get( i );
-		TCODConsole::root->mapAsciiCodeToFont( tmp->code, tmp->x, tmp->y );
+	for(int i = 0; i < this->customChars.size(); i++) {
+		UmbraCustomCharMap * tmp = this->customChars.get(i);
+		TCODConsole::root->mapAsciiCodeToFont(tmp->code, tmp->x, tmp->y);
 	}
 	
 	UmbraLog::info("UmbraEngine::registerCustomCharacters | Custom character mappings registered.");
