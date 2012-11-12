@@ -29,6 +29,7 @@ OBJS_UMBRA_DEBUG= \
 	$(TEMP)/umbra/debug/umbra_imod_speed.o \
 	$(TEMP)/umbra/debug/umbra_log.o \
 	$(TEMP)/umbra/debug/umbra_module.o \
+	$(TEMP)/umbra/debug/umbra_stylesheet.o \
 	$(TEMP)/umbra/debug/umbra_widget.o \
 	$(TEMP)/umbra/debug/umbra_widget_button.o \
 	$(TEMP)/umbra/debug/umbra_widget_checkbox.o 
@@ -59,6 +60,7 @@ OBJS_RELEASE= \
 	$(TEMP)/umbra/release/umbra_imod_speed.o \
 	$(TEMP)/umbra/release/umbra_log.o \
 	$(TEMP)/umbra/release/umbra_module.o \
+	$(TEMP)/umbra/release/umbra_stylesheet.o \
 	$(TEMP)/umbra/release/umbra_widget.o \
 	$(TEMP)/umbra/release/umbra_widget_button.o \
 	$(TEMP)/umbra/release/umbra_widget_checkbox.o \
