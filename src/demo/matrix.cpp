@@ -40,7 +40,7 @@ MatrixLead::MatrixLead () {
     if (!matrix) matrix = new TCODConsole(engine.getRootWidth(),engine.getRootHeight());
 }
 
-void MatrixLead::render (uint32 time) {
+void MatrixLead::render (uint32_t time) {
     char c = random->get('A','Z');
     if (random->get(0,1) == 1)
         c += 0x20;
@@ -63,7 +63,7 @@ bool Matrix::update () {
 }
 
 void Matrix::render () {
-    uint32 t = TCODSystem::getElapsedMilli();
+    uint32_t t = TCODSystem::getElapsedMilli();
     if (leads.size() > 0) {
         for (MatrixLead ** mx = leads.begin(); mx != leads.end(); mx++) {
             (*mx)->render(t);

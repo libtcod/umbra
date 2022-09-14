@@ -54,7 +54,7 @@ void Panel::render () {
 }
 
 bool Panel::update () {
-	uint32 time = TCODSystem::getElapsedMilli();
+	uint32_t time = TCODSystem::getElapsedMilli();
 	if (rect.mouseHover) {
 		lastHover = time;
 		posx += 3;

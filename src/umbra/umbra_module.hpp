@@ -191,7 +191,7 @@ protected:
 	 * Sets the module's timeout.
 	 * @param val the number of milliseconds that the module will be allowed to run before timing out. Set to 0 if the timeout is to be removed.
 	 */
-	inline void setTimeout (uint32 val) { timeout = val; }
+	inline void setTimeout (uint32_t val) { timeout = val; }
 	/**
 	 * Sets the module's priority.<br>The priority works like a weight setting: a lower number results in the module being updated earlier and rendered on top of others, while a high number will put the module under the others.
 	 * @param priority the module's priority
@@ -218,8 +218,8 @@ private:
 	int priority; // update order (inverse of render order)
 	int fallback; //fallback module's index
 	int id; //module's ID number
-	uint32 timeout;
-	uint32 timeoutEnd;
+	uint32_t timeout;
+	uint32_t timeoutEnd;
 	std::string name;
 	/**
 	 * get a parametre (internal helper function)
@@ -239,5 +239,5 @@ private:
 	 * Checks whether the module has timed out and is eligible for deactivation.
 	 * @param currentTime the program execution elapsed time, in milliseconds
 	 */
-	inline bool isTimedOut (uint32 currentTime) { return (timeoutEnd > currentTime) ? false : true; }
+	inline bool isTimedOut (uint32_t currentTime) { return (timeoutEnd > currentTime) ? false : true; }
 };

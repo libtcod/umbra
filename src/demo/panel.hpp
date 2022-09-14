@@ -39,8 +39,8 @@ class Panel: public UmbraWidget {
 		void onQuit(UmbraWidget *w,UmbraEvent ev);
     private:
         int posx, posy, width, height;
-        uint32 delay;
-        uint32 lastHover; //the time the mouse last hovered over the panel
+        uint32_t delay;
+        uint32_t lastHover; //the time the mouse last hovered over the panel
 };
 
 #endif

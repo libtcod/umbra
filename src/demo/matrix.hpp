@@ -33,10 +33,10 @@ public:
 	MatrixLead ();
 	static TCODRandom * random;
 	int x, y; //coordinates
-	uint32 lastY; //last y increment
-	uint32 yDuration; //how long it takes to increment y
+	uint32_t lastY; //last y increment
+	uint32_t yDuration; //how long it takes to increment y
 	static TCODConsole * matrix;
-	void render (uint32 time);
+	void render (uint32_t time);
 };
 
 

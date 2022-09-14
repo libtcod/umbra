@@ -325,7 +325,7 @@ public:
      * @param y the <code>y</code> coordinate of the credits line placement on the root console
      * @param duration the total duration of the display (half of which is the fade out)
      */
-	void printCredits(int x, int y, uint32 duration = 10000);
+	void printCredits(int x, int y, uint32_t duration = 10000);
 private:
 	/**
 	 * Register custom characters

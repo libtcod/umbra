@@ -29,19 +29,19 @@
 #define	UMBRA_IMOD_CREDITS_HPP
 
 class UmbraModCredits: public UmbraModule {
-	friend void UmbraEngine::printCredits(int x, int y, uint32 duration);
+	friend void UmbraEngine::printCredits(int x, int y, uint32_t duration);
 public:
 	UmbraModCredits();
 	bool update();
 	void render();
 	void onActivate();
 private:
-	void set(int x, int y, uint32 duration);
+	void set(int x, int y, uint32_t duration);
 	TCODConsole * con;
 	UmbraPoint coords;
-	uint32 startTime;
+	uint32_t startTime;
 	float alpha;
-	uint32 duration;
+	uint32_t duration;
 };
 
 #endif	/* UMBRA_IMOD_CREDITS_HPP */

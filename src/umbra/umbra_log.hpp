@@ -59,7 +59,7 @@ private:
 	class UmbraLogMessage {
 		friend class UmbraLog;
 		std::string msg;
-		uint32 time;
+		uint32_t time;
 		UmbraLogResult result;
 		UmbraLogType logType;
 		int indent;

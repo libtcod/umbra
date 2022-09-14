@@ -23,7 +23,7 @@ void UmbraModCredits::render() {
 	TCODConsole::blit(con,0,0,strlen(str),1,TCODConsole::root,coords.x,coords.y,alpha,0.0f);
 }
 
-void UmbraModCredits::set(int x, int y, uint32 d) {
+void UmbraModCredits::set(int x, int y, uint32_t d) {
 	duration = d/2;
 	coords.set(x,y);
 }

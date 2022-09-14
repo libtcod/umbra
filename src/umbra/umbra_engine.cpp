@@ -655,7 +655,7 @@ int UmbraEngine::run () {
 				break;
 		}
 		keyboard(key);
-		uint32 startTime=TCODSystem::getElapsedMilli();
+		uint32_t startTime=TCODSystem::getElapsedMilli();
 		// update all active modules by priority order
 		UmbraModule ** tmpMod;
 		for (tmpMod = activeModules.begin(); tmpMod != activeModules.end(); tmpMod++) {
@@ -677,7 +677,7 @@ int UmbraEngine::run () {
 				}
 			}
 		}
-		uint32 updateTime=TCODSystem::getElapsedMilli() - startTime;
+		uint32_t updateTime=TCODSystem::getElapsedMilli() - startTime;
 		TCODConsole::root->setDefaultBackground(TCODColor::black);
 		TCODConsole::root->clear();
 		// render active modules by inverted priority order
@@ -685,7 +685,7 @@ int UmbraEngine::run () {
 			tmpMod--;
 			(*tmpMod)->render();
 		}
-		uint32 renderTime = TCODSystem::getElapsedMilli() - startTime - updateTime;
+		uint32_t renderTime = TCODSystem::getElapsedMilli() - startTime - updateTime;
 		if ( internalModules[UMBRA_INTERNAL_SPEEDOMETER]->getActive() ) {
 			((UmbraModSpeed *)internalModules[UMBRA_INTERNAL_SPEEDOMETER])->setTimes(updateTime,renderTime);
 		}
@@ -744,7 +744,7 @@ void UmbraEngine::displayError () {
 	}
 }
 
-void UmbraEngine::printCredits (int x, int y, uint32 duration) {
+void UmbraEngine::printCredits (int x, int y, uint32_t duration) {
 	((UmbraModCredits *)internalModules[UMBRA_INTERNAL_CREDITS])->set(x,y,duration);
 	activateModule(internalModules[UMBRA_INTERNAL_CREDITS]);
 }
