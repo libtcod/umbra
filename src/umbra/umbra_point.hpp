@@ -24,46 +24,61 @@
 * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
+#pragma once
+#include <libtcod/mouse_types.h>
 
-class UmbraPoint {
-	public:
-		int x, y;
-		bool mouseHover;
-		bool mouseDown;
-		UmbraPoint (): x(0),y(0),mouseHover(false) {}
-		UmbraPoint (int x, int y): x(x),y(y),mouseHover(false) {}
-		/**
-		 * Sets the point's coordinates.
-		 * @param x the point's <i>x</i> coordinate
-		 * @param y the point's <i>y</i> coordinate
-		 */
-		inline void set (int x, int y) { this->x=x; this->y=y; }
-
-		/**
-		 * Checks whether the point's coordinates match the provided pair.
-		 * @param px the <i>x</i> coordinate to be compared
-		 * @param py the <i>y</i> coordinate to be compared
-		 * @return <code>true</code> if the coordinates match, <code>false</code> if they don't
-		 */
-		inline bool is (int px, int py) { return px == x && py == y; }
-		/**
-		 * Checks whether the point's coordinates match the provided pair.
-		 * @param p the point to be checked against
-		 * @return <code>true</code> if the coordinates match, <code>false</code> if they don't
-		 */
-		inline bool is (UmbraPoint &p) { return p.x == x && p.y == y; }
-		/**
-		 * Sets the <code>mouseHover</code> and <code>mouseDown</code> statuses for the rectangle.
-         * @param px the <i>x</i> coordinate to be compared
-         * @param py the <i>y</i> coordinate to be compared
-         * @param ms a reference to the mouse event object
-         */
-		inline void mouse (int px, int py, TCOD_mouse_t &ms) { mouseHover = is(px,py); mouseDown = mouseHover & ms.lbutton; }
-		/**
-		 * Sets the <code>mouseHover</code> and <code>mouseDown</code> statuses for the rectangle.
-         * @param p the point to be checked against
-         * @param ms a reference to the mouse event object
-         */
-		inline void mouse (UmbraPoint &p, TCOD_mouse_t &ms) { mouseHover = is(p); mouseDown = mouseHover & ms.lbutton; }
-		inline bool operator == (const UmbraPoint &p1) { return p1.x == x && p1.y == y; }
+struct UmbraPoint {
+	constexpr UmbraPoint() noexcept = default;
+	constexpr UmbraPoint(int new_x, int new_y) noexcept: x{new_x}, y{new_y} {}
+	/**
+	 * Sets the point's coordinates.
+	 * @param x the point's <i>x</i> coordinate
+	 * @param y the point's <i>y</i> coordinate
+	 */
+	constexpr void set(int new_x, int new_y) noexcept {
+		x=new_x;
+		y=new_y;
+	}
+	/**
+	 * Checks whether the point's coordinates match the provided pair.
+	 * @param px the <i>x</i> coordinate to be compared
+	 * @param py the <i>y</i> coordinate to be compared
+	 * @return <code>true</code> if the coordinates match, <code>false</code> if they don't
+	 */
+	[[nodiscard]] constexpr bool is(int px, int py) const noexcept { return px == x && py == y; }
+	/**
+	 * Checks whether the point's coordinates match the provided pair.
+	 * @param p the point to be checked against
+	 * @return <code>true</code> if the coordinates match, <code>false</code> if they don't
+	 */
+	[[nodiscard]] constexpr bool is(const UmbraPoint &p) const noexcept { return *this == p; }
+	/**
+	 * Sets the <code>mouseHover</code> and <code>mouseDown</code> statuses for the rectangle.
+	 * @param px the <i>x</i> coordinate to be compared
+	 * @param py the <i>y</i> coordinate to be compared
+	 * @param ms a reference to the mouse event object
+	 */
+	void mouse(int px, int py, TCOD_mouse_t &ms) noexcept {
+		mouseHover = is(px, py);
+		mouseDown = mouseHover & ms.lbutton;
+	}
+	/**
+	 * Sets the <code>mouseHover</code> and <code>mouseDown</code> statuses for the rectangle.
+	 * @param p the point to be checked against
+	 * @param ms a reference to the mouse event object
+	 */
+	void mouse(UmbraPoint &p, TCOD_mouse_t &ms) noexcept {
+		mouseHover = is(p);
+		mouseDown = mouseHover & ms.lbutton;
+	}
+	friend [[nodiscard]] constexpr bool operator==(const UmbraPoint& lhs, const UmbraPoint &rhs) noexcept {
+		return lhs.x == rhs.x && lhs.y == rhs.y;
+	}
+	friend [[nodiscard]] constexpr bool operator!=(const UmbraPoint& lhs, const UmbraPoint &rhs) noexcept {
+		return !(lhs == rhs);
+	}
+	int x = 0;
+	int y = 0;
+	bool mouseHover = false;
+	bool mouseDown = false;
 };

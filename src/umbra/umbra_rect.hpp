@@ -24,75 +24,96 @@
 * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
+#pragma once
+#include "umbra_point.hpp"
+#include <libtcod/mouse_types.h>
 
-class UmbraPoint;
-
-class UmbraRect {
-	public:
-		int x,y,w,h;
-		bool mouseHover;
-		bool mouseDown;
-		UmbraRect (): x(0),y(0),w(0),h(0),mouseHover(false) {}
-		UmbraRect (int x, int y): x(x),y(y),w(0),h(0),mouseHover(false) {}
-		UmbraRect (const UmbraPoint &p): x(p.x),y(p.y),w(0),h(0),mouseHover(false) {}
-		UmbraRect (int x, int y, int w, int h): x(x),y(y),w(w),h(h),mouseHover(false) {}
-		UmbraRect (const UmbraPoint &p, int w, int h): x(p.x),y(p.y),w(w),h(h),mouseHover(false) {}
-		/**
-		 * Sets the rectangle's position.
-		 * @param x the rectangle's top left corner's <i>x</i> coordinate
-		 * @param y the rectangle's top left corner's <i>y</i> coordinate
-		 */
-		inline void setPos (int x, int y) { this->x=x; this->y=y; }
-		/**
-		 * Sets the rectangle's position.
-		 * @param p the point whose coordinates are to become the rectangle's top letf corner's coordinates
-		 */
-		inline void setPos (const UmbraPoint &p) { x=p.x; y=p.y; }
-		/**
-		 * Sets the rectangle's size, keeping the top left corner's coordinates unchanged.
-		 * @param w the rectangle's width
-		 * @param h the rectangle's height
-		 */
-		inline void setSize (int w, int h) { this->w=w;this->h=h; }
-		/**
-		 * Sets the rectangle's position and size.
-		 * @param x the rectangle's top left corner's <i>x</i> coordinate
-		 * @param y the rectangle's top left corner's <i>y</i> coordinate
-		 * @param w the rectangle's width
-		 * @param h the rectangle's height
-		 */
-		inline void set (int x, int y, int w, int h) { setPos(x,y); setSize(w,h); }
-		/**
-		 * Sets the rectangle's position and size.
-		 * @param p the point whose coordinates are to become the rectangle's top letf corner's coordinates
-		 * @param w the rectangle's width
-		 * @param h the rectangle's height
-		 */
-		inline void set (const UmbraPoint &p, int w, int h) { setPos(p.x,p.y); setSize(w,h); }
-		/**
-		 * Checks whether a set of coordinates is contained within the rectangle. Sets the <code>mouseHover</code> status, so subsequent calls are not necessary within the same frame.
-		 * @param px the <i>x</i> coordinate to be checked
-		 * @param py the <i>y</i> coordinate to be checked
-		 * @return <code>true</code> if the coordinates are within the rectangle, <code>false</code> otherwise
-		 */
-		inline bool contains (int px, int py) { return px >= x && px < x+w && py >= y && py < y+h; }
-		/**
-		 * Checks whether a point is contained within the rectangle. Sets the <code>mouseHover</code> status, so subsequent calls are not necessary within the same frame.
-		 * @param p the point to be checked
-		 * @return <code>true</code> if the point is within the rectangle, <code>false</code> otherwise
-		 */
-		inline bool contains (const UmbraPoint &p) { return p.x >= x && p.x < x+w && p.y >= y && p.y < y+h; }
-		/**
-		 * Sets the <code>mouseHover</code> and <code>mouseDown</code> statuses for the rectangle.
-         * @param px the <i>x</i> coordinate to be checked
-         * @param py the <i>y</i> coordinate to be checked
-         * @param m a reference to the mouse event object
-         */
-		inline void mouse (int px, int py, TCOD_mouse_t &m) { mouseHover = contains(px,py); mouseDown = mouseHover & m.lbutton; }
-		/**
-		 * Sets the <code>mouseHover</code> and <code>mouseDown</code> statuses for the rectangle.
-         * @param p the point to be checked
-         * @param m a reference to the mouse event object
-         */
-		inline void mouse (const UmbraPoint &p, TCOD_mouse_t &m) { mouseHover = contains(p); mouseDown = mouseHover & m.lbutton; }
+struct UmbraRect {
+	constexpr UmbraRect() noexcept = default;
+	constexpr UmbraRect(int new_x, int new_y) noexcept: x{new_x}, y{new_y} {}
+	explicit constexpr UmbraRect(const UmbraPoint &p) noexcept: x{p.x}, y{p.y} {}
+	constexpr UmbraRect(int new_x, int new_y, int width, int height) noexcept
+	: x{new_x}, y{new_y}, w{width}, h{height} {}
+	constexpr UmbraRect(const UmbraPoint &p, int width, int height) noexcept: x{p.x}, y{p.y}, w{width}, h{height} {}
+	/**
+	 * Sets the rectangle's position.
+	 * @param x the rectangle's top left corner's <i>x</i> coordinate
+	 * @param y the rectangle's top left corner's <i>y</i> coordinate
+	 */
+	constexpr void setPos(int new_x, int new_y) noexcept {
+		x = new_x;
+		y = new_y;
+	}
+	/**
+	 * Sets the rectangle's position.
+	 * @param p the point whose coordinates are to become the rectangle's top letf corner's coordinates
+	 */
+	constexpr void setPos(const UmbraPoint &p) noexcept { x = p.x; y = p.y; }
+	/**
+	 * Sets the rectangle's size, keeping the top left corner's coordinates unchanged.
+	 * @param w the rectangle's width
+	 * @param h the rectangle's height
+	 */
+	constexpr void setSize(int width, int height) noexcept {
+		w = width;
+		h = height;
+	}
+	/**
+	 * Sets the rectangle's position and size.
+	 * @param x the rectangle's top left corner's <i>x</i> coordinate
+	 * @param y the rectangle's top left corner's <i>y</i> coordinate
+	 * @param w the rectangle's width
+	 * @param h the rectangle's height
+	 */
+	constexpr void set(int new_x, int new_y, int new_w, int new_h) noexcept {
+		setPos(new_x, new_y);
+		setSize(new_w, new_h);
+	}
+	/**
+	 * Sets the rectangle's position and size.
+	 * @param p the point whose coordinates are to become the rectangle's top letf corner's coordinates
+	 * @param w the rectangle's width
+	 * @param h the rectangle's height
+	 */
+	constexpr void set(const UmbraPoint &p, int new_w, int new_h) noexcept {
+		setPos(p.x, p.y);
+		setSize(new_w, new_h);
+	}
+	/**
+	 * Checks whether a set of coordinates is contained within the rectangle. Sets the <code>mouseHover</code> status, so subsequent calls are not necessary within the same frame.
+	 * @param px the <i>x</i> coordinate to be checked
+	 * @param py the <i>y</i> coordinate to be checked
+	 * @return <code>true</code> if the coordinates are within the rectangle, <code>false</code> otherwise
+	 */
+	[[nodiscard]] constexpr bool contains(int px, int py) const noexcept {
+		return px >= x && px < x+w && py >= y && py < y+h;
+	}
+	/**
+	 * Checks whether a point is contained within the rectangle. Sets the <code>mouseHover</code> status, so subsequent calls are not necessary within the same frame.
+	 * @param p the point to be checked
+	 * @return <code>true</code> if the point is within the rectangle, <code>false</code> otherwise
+	 */
+	[[nodiscard]] constexpr bool contains(const UmbraPoint &p) const noexcept { return contains(p.x, p.y); }
+	/**
+	 * Sets the <code>mouseHover</code> and <code>mouseDown</code> statuses for the rectangle.
+	 * @param px the <i>x</i> coordinate to be checked
+	 * @param py the <i>y</i> coordinate to be checked
+	 * @param m a reference to the mouse event object
+	 */
+	inline void mouse (int px, int py, TCOD_mouse_t &m) noexcept {
+		mouseHover = contains(px, py);
+		mouseDown = mouseHover & m.lbutton;
+	}
+	/**
+	 * Sets the <code>mouseHover</code> and <code>mouseDown</code> statuses for the rectangle.
+	 * @param p the point to be checked
+	 * @param m a reference to the mouse event object
+	 */
+	inline void mouse (const UmbraPoint &p, TCOD_mouse_t &m) noexcept { mouse(p.x, p.y, m); }
+	int x = 0;
+	int y = 0;
+	int w = 0;
+	int h = 0;
+	bool mouseHover = false;
+	bool mouseDown = false;
 };
