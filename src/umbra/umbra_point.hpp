@@ -67,4 +67,3 @@ class UmbraPoint {
 		inline void mouse (UmbraPoint &p, TCOD_mouse_t &ms) { mouseHover = is(p); mouseDown = mouseHover & ms.lbutton; }
 		inline bool operator == (const UmbraPoint &p1) { return p1.x == x && p1.y == y; }
 };
-

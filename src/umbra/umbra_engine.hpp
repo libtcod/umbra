@@ -96,7 +96,7 @@ public:
 	 * The constructor. Takes no parametres and uses only the defaults.
 	 */
 	UmbraEngine ();
-	
+
 	/**
 	 * Add custom character mapping. Mappings are put on queue for UmbraEngine::initialise()/reinitialise() to call them.
 	 * @param x position of character in font file
@@ -104,7 +104,7 @@ public:
 	 * @param ascii code associated with the character
 	 */
 	void addCustomCharacter(int x, int y, int code);
-	
+
 	/**
 	 * Checks whether a module name has already been used in order to prevent registering modules with the same name.
 	 * @param name the module name to be checked
@@ -132,7 +132,7 @@ public:
 	 * @param factory a module factory
 	 * @param chainName (optional) the name of the module chain to load. Leave at default to load the chain specified in <code>umbra.txt</code> or, in case it's not specified, the first module chain that's encountered in the module configuration file.
 	 * @return <code>true</code> if module configuration has been loaded successfully, <code>false</code> otherwise
-	 */		  		 		  		
+	 */
 	bool loadModuleConfiguration (const char *filename, UmbraModuleFactory *factory, const char *chainName = NULL);
 	/**
 	 * Read module configuration from the given filename, or the filename defined as moduleConfig in umbra.txt.<br>If there's no filename or the file cannot be read, return false.
@@ -257,9 +257,9 @@ public:
 	UmbraModule * getModule (const char *name);
 	/**
 	 * Retrieve the module id from its name
-	 * @param mod pointer to the module	 
-	 * @return the module's id		 		 		
-	 */		
+	 * @param mod pointer to the module
+	 * @return the module's id
+	 */
 	int getModuleId (const char * name);
 	/**
 	 * Retrieve the module id from its reference
@@ -326,12 +326,12 @@ public:
      * @param duration the total duration of the display (half of which is the fade out)
      */
 	void printCredits(int x, int y, uint32 duration = 10000);
-private:	
+private:
 	/**
 	 * Register custom characters
-	 */	 	
+	 */
 	void registerCustomCharacters();
-	
+
 	static UmbraEngine * engineInstance;
 	std::string windowTitle;
 	bool paused;
@@ -342,7 +342,7 @@ private:
 	TCODList <UmbraModule*> toActivate; // modules to activate next frame
 	TCODList <UmbraModule*> toDeactivate; // modules to deactivate next frame
 	UmbraModule * internalModules[UMBRA_INTERNAL_MAX];
-	UmbraKeyboardMode keyboardMode;	
+	UmbraKeyboardMode keyboardMode;
 	TCODList <UmbraCallback *> callbacks; //the keybinding callbacks
 	/**
 	 * Parses the keyboard input and passes it to the registered callbacks.

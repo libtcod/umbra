@@ -44,9 +44,9 @@ class UmbraModSpeed: public UmbraWidget {
 		void mouse (TCOD_mouse_t &ms);
 		/**
 		 * Sets the minimised state of the widget.
-		 * @param val <code>true</code> for minimised, <code>false</code> for maximised		 
-		 */     		
-		inline void setMinimised(bool val) { isMinimised=val; }       
+		 * @param val <code>true</code> for minimised, <code>false</code> for maximised
+		 */
+		inline void setMinimised(bool val) { isMinimised=val; }
 	private:
 		float cumulatedElapsed;
 		float updateTime;
@@ -72,4 +72,3 @@ class UmbraModSpeed: public UmbraWidget {
 		 */
 		void setTimes(long updateTime, long renderTime); // this is called by engine each frame
 };
-

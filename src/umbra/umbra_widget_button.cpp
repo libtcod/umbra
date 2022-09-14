@@ -63,7 +63,7 @@ void UmbraButton::render (TCODConsole * con) {
 		if (rect.mouseDown) s = &style.active;
 		else s = &style.hover;
 	} else s = &style.normal;
-	
+
 	con->setDefaultForeground(s->borderColour());
 	con->setDefaultBackground(s->backgroundColour());
 	con->printFrame(rect.x,rect.y,rect.w,rect.h,true,TCOD_BKGND_SET,NULL);

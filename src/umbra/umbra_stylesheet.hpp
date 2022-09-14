@@ -95,7 +95,7 @@ public:
 	inline T& operator () () { return val; }
 private:
 	/**
-	 * Sets the property's value and specificity. If 
+	 * Sets the property's value and specificity. If
 	 * @param x the property's value
 	 * @param l the property's specificity
 	 * @return the property object reference
@@ -173,4 +173,3 @@ public: // ctor
 };
 
 #endif	/* UMBRA_STYLESHEET_HPP */
-

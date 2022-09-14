@@ -58,9 +58,9 @@ void UmbraConfig::load (const char *fileName) {
 		UmbraLog::closeBlock(UMBRA_LOGRESULT_FAILURE);
 		return;
 	}
-	
+
 	UmbraConfig::fileName = strdup(fileName);
-	
+
 	//register configuration variables
 	parser.newStructure("config")
 		->addProperty("rootWidth",TCOD_TYPE_INT,true)
@@ -72,7 +72,7 @@ void UmbraConfig::load (const char *fileName) {
 		->addProperty("fontDir",TCOD_TYPE_STRING,false)
 		//optional module chaining
 		->addProperty("moduleChain",TCOD_TYPE_STRING,false);
-	
+
 	//check if the config file exists
 	if (!TCODSystem::fileExists(fileName)) {
 		UmbraLog::notice("Configuration file %s is bad or missing. Attempting to create a new one.", fileName);

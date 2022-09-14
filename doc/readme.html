@@ -725,7 +725,7 @@ Each module, along with [[UmbraModule]], inherits a set of virtual methods, whic
 It's recommended to give a name to the module. This makes it possible to manage this module through the external module configuration file.
 &lt;code C++&gt;
 MyModule::MyModule() : UmbraModule(&quot;myModule&quot;) { ... }
-// or 
+// or
 MyModule::MyModule() { setName(&quot;myModule&quot;); }
 &lt;/code&gt;
 
@@ -944,13 +944,13 @@ In the above code snippet, {{{speed}}} is the offscreen console the widget uses.
 &lt;code C++&gt;
 moduleChain &quot;myChain&quot; {
     module &quot;myModule&quot; {
-        bool aBoolParam = true 
-        char aCharParam = '@' 
-        int anIntParam = 4 
-        float aFloatParam = 3.14 
-        string aStringParam = &quot;aStringValue&quot; 
-        color aColourParam = #00FF00 
-        dice aDiceParam = &quot;3d20&quot; 
+        bool aBoolParam = true
+        char aCharParam = '@'
+        int anIntParam = 4
+        float aFloatParam = 3.14
+        string aStringParam = &quot;aStringValue&quot;
+        color aColourParam = #00FF00
+        dice aDiceParam = &quot;3d20&quot;
     }
 }
 &lt;/code&gt;
@@ -1082,7 +1082,7 @@ config {
 }
 &lt;/code&gt;
 If no font file is found, we fall back to the default libtcod behaviour: we'll try to use the default {{{&quot;./terminal.png&quot;}}} font file.
-Font files names must have the following format: 
+Font files names must have the following format:
 {{{font&lt;w&gt;x&lt;h&gt;[_&lt;layout&gt;].png}}}
 w and h represent the character width and height in the font.
 layout is either {{{TCOD}}}, {{{INCOL}}} or {{{INROW}}}. If missing, {{{TCOD}}} is assumed. Fonts must be grayscale (see libtcod setCustomFont documentation).
@@ -1103,7 +1103,7 @@ If you want a finer control on the way fonts are loaded, you can register them m
 
 Create customizable lists, tables etc. for your selections of tiddlers. Specify the tiddlers to include and their order through a powerful language.
 
-''Syntax:'' 
+''Syntax:''
 |&gt;|{{{&lt;&lt;}}}''forEachTiddler'' [''in'' //tiddlyWikiPath//] [''where'' //whereCondition//] [''sortBy'' //sortExpression// [''ascending'' //or// ''descending'']] [''script'' //scriptText//] [//action// [//actionParameters//]]{{{&gt;&gt;}}}|
 |//tiddlyWikiPath//|The filepath to the TiddlyWiki the macro should work on. When missing the current TiddlyWiki is used.|
 |//whereCondition//|(quoted) JavaScript boolean expression. May refer to the build-in variables {{{tiddler}}} and {{{context}}}.|
@@ -1140,8 +1140,8 @@ Sometimes you may want to use a certain ForEachTiddler definition in slight vari
 
 Replace the variable part of the ForEachTiddler definition with $1 ($2,... $9 are supported). E.g. you may create the tiddler &quot;ListTaggedTiddlers&quot; like this
 {{{
-&lt;&lt;forEachTiddler 
- where 
+&lt;&lt;forEachTiddler
+ where
  'tiddler.tags.contains(&quot;$1&quot;)'
 &gt;&gt;
 }}}
@@ -1171,7 +1171,7 @@ See also [[ForEachTiddlerExamples]].</pre>
 
 Create customizable lists, tables etc. for your selections of tiddlers. Specify the tiddlers to include and their order through a powerful language.
 
-''Syntax:'' 
+''Syntax:''
 |&gt;|{{{&lt;&lt;}}}''forEachTiddler'' [''in'' //tiddlyWikiPath//] [''where'' //whereCondition//] [''sortBy'' //sortExpression// [''ascending'' //or// ''descending'']] [''script'' //scriptText//] [//action// [//actionParameters//]]{{{&gt;&gt;}}}|
 |//tiddlyWikiPath//|The filepath to the TiddlyWiki the macro should work on. When missing the current TiddlyWiki is used.|
 |//whereCondition//|(quoted) JavaScript boolean expression. May refer to the build-in variables {{{tiddler}}} and  {{{context}}}.|
@@ -1200,18 +1200,18 @@ See details see [[ForEachTiddlerMacro]] and [[ForEachTiddlerExamples]].
 * v1.0.4 (2006-01-06)
 ** Support TiddlyWiki 2.0
 * v1.0.3 (2005-12-22)
-** Features: 
-*** Write output to a file supports multi-byte environments (Thanks to Bram Chen) 
+** Features:
+*** Write output to a file supports multi-byte environments (Thanks to Bram Chen)
 *** Provide API to access the forEachTiddler functionality directly through JavaScript (see getTiddlers and performMacro)
 ** Enhancements:
 *** Improved error messages on InternetExplorer.
 * v1.0.2 (2005-12-10)
-** Features: 
+** Features:
 *** context object also holds reference to store (TiddlyWiki)
-** Fixed Bugs: 
+** Fixed Bugs:
 *** ForEachTiddler 1.0.1 has broken support on win32 Opera 8.51 (Thanks to BrunoSabin for reporting)
 * v1.0.1 (2005-12-08)
-** Features: 
+** Features:
 *** Access tiddlers stored in separated TiddlyWikis through the &quot;in&quot; option. I.e. you are no longer limited to only work on the &quot;current TiddlyWiki&quot;.
 *** Write output to an external file using the &quot;toFile&quot; option of the &quot;write&quot; action. With this option you may write your customized tiddler exports.
 *** Use the &quot;script&quot; section to define &quot;helper&quot; JavaScript functions etc. to be used in the various JavaScript expressions (whereClause, sortClause, action arguments,...).
@@ -1224,7 +1224,7 @@ See details see [[ForEachTiddlerMacro]] and [[ForEachTiddlerExamples]].
 ***/
 //{{{
 
-	
+
 //============================================================================
 //============================================================================
 //		   ForEachTiddlerPlugin
@@ -1237,8 +1237,8 @@ if (!version.extensions.ForEachTiddlerPlugin) {
 if (!window.abego) window.abego = {};
 
 version.extensions.ForEachTiddlerPlugin = {
-	major: 1, minor: 0, revision: 8, 
-	date: new Date(2007,3,12), 
+	major: 1, minor: 0, revision: 8,
+	date: new Date(2007,3,12),
 	source: &quot;http://tiddlywiki.abego-software.de/#ForEachTiddlerPlugin&quot;,
 	licence: &quot;[[BSD open source license (abego Software)|http://www.abego-software.de/legal/apl-v10.html]]&quot;,
 	copyright: &quot;Copyright (c) abego Software GmbH, 2005-2007 (www.abego-software.de)&quot;
@@ -1262,7 +1262,7 @@ version.extensions.forEachTiddler = {
 	major: 1, minor: 0, revision: 8, date: new Date(2007,3,12), provider: &quot;http://tiddlywiki.abego-software.de&quot;};
 
 // ---------------------------------------------------------------------------
-// Configurations and constants 
+// Configurations and constants
 // ---------------------------------------------------------------------------
 
 config.macros.forEachTiddler = {
@@ -1278,13 +1278,13 @@ config.macros.forEachTiddler = {
 };
 
 // ---------------------------------------------------------------------------
-//  The forEachTiddler Macro Handler 
+//  The forEachTiddler Macro Handler
 // ---------------------------------------------------------------------------
 
 config.macros.forEachTiddler.getContainingTiddler = function(e) {
 	while(e &amp;&amp; !hasClass(e,&quot;tiddler&quot;))
 		e = e.parentNode;
-	var title = e ? e.getAttribute(&quot;tiddler&quot;) : null; 
+	var title = e ? e.getAttribute(&quot;tiddler&quot;) : null;
 	return title ? store.getTiddler(title) : null;
 };
 
@@ -1317,7 +1317,7 @@ config.macros.forEachTiddler.handler = function(place,macroName,params,wikifier,
 
 	// Parse the sort stuff
 	var sortClause = null;
-	var sortAscending = true; 
+	var sortAscending = true;
 	if ((i &lt; params.length) &amp;&amp; params[i] == &quot;sortBy&quot;) {
 		i++;
 		if (i &gt;= params.length) {
@@ -1341,7 +1341,7 @@ config.macros.forEachTiddler.handler = function(place,macroName,params,wikifier,
 		i++;
 	}
 
-	// Parse the action. 
+	// Parse the action.
 	// When we are already at the end use the default action
 	var actionName = &quot;addToList&quot;;
 	if (i &lt; params.length) {
@@ -1349,11 +1349,11 @@ config.macros.forEachTiddler.handler = function(place,macroName,params,wikifier,
 			this.handleError(place, &quot;Unknown action '&quot;+params[i]+&quot;'.&quot;);
 			return;
 		} else {
-			actionName = params[i]; 
+			actionName = params[i];
 			i++;
 		}
-	} 
-	
+	}
+
 	// Get the action parameter
 	// (the parsing is done inside the individual action implementation.)
 	var actionParameter = params.slice(i);
@@ -1362,14 +1362,14 @@ config.macros.forEachTiddler.handler = function(place,macroName,params,wikifier,
 	// --- Processing ------------------------------------------
 	try {
 		this.performMacro({
-				place: place, 
+				place: place,
 				inTiddler: tiddler,
-				whereClause: whereClause, 
-				sortClause: sortClause, 
-				sortAscending: sortAscending, 
-				actionName: actionName, 
-				actionParameter: actionParameter, 
-				scriptText: scriptText, 
+				whereClause: whereClause,
+				sortClause: sortClause,
+				sortAscending: sortAscending,
+				actionName: actionName,
+				actionParameter: actionParameter,
+				scriptText: scriptText,
 				tiddlyWikiPath: tiddlyWikiPath});
 
 	} catch (e) {
@@ -1391,7 +1391,7 @@ config.macros.forEachTiddler.getTiddlersAndContext = function(parameter) {
 
 	var tiddlyWiki = parameter.tiddlyWikiPath ? this.loadTiddlyWiki(parameter.tiddlyWikiPath) : store;
 	context[&quot;tiddlyWiki&quot;] = tiddlyWiki;
-	
+
 	// Get the tiddlers, as defined by the whereClause
 	var tiddlers = this.findTiddlers(parameter.whereClause, context, tiddlyWiki);
 	context[&quot;tiddlers&quot;] = tiddlers;
@@ -1428,7 +1428,7 @@ config.macros.forEachTiddler.getTiddlers = function(parameter) {
 //						scriptText
 //						tiddlyWikiPath
 //
-//					All properties are optional. 
+//					All properties are optional.
 //					For most actions the place property must be defined.
 //
 config.macros.forEachTiddler.performMacro = function(parameter) {
@@ -1447,7 +1447,7 @@ config.macros.forEachTiddler.performMacro = function(parameter) {
 };
 
 // ---------------------------------------------------------------------------
-//  The actions 
+//  The actions
 // ---------------------------------------------------------------------------
 
 // Internal.
@@ -1482,7 +1482,7 @@ abego.parseNamedParameter = function(name, parameter, i) {
 		if (i &gt;= parameter.length) {
 			throw &quot;Missing text behind '%0'&quot;.format([name]);
 		}
-		
+
 		return config.macros.forEachTiddler.paramEncode(parameter[i]);
 	}
 	return null;
@@ -1505,13 +1505,13 @@ config.macros.forEachTiddler.actions.write.handler = function(place, tiddlers, p
 
 	// Parse the &quot;begin&quot; option
 	var beginExpression = abego.parseNamedParameter(&quot;begin&quot;, parameter, p);
-	if (beginExpression !== null) 
+	if (beginExpression !== null)
 		p += 2;
 	var endExpression = abego.parseNamedParameter(&quot;end&quot;, parameter, p);
-	if (endExpression !== null) 
+	if (endExpression !== null)
 		p += 2;
 	var noneExpression = abego.parseNamedParameter(&quot;none&quot;, parameter, p);
-	if (noneExpression !== null) 
+	if (noneExpression !== null)
 		p += 2;
 
 	// Parse the &quot;toFile&quot; option
@@ -1523,7 +1523,7 @@ config.macros.forEachTiddler.actions.write.handler = function(place, tiddlers, p
 			this.handleError(place, &quot;Filename expected behind 'toFile' of 'write' action.&quot;);
 			return;
 		}
-		
+
 		filename = config.macros.forEachTiddler.getLocalPath(config.macros.forEachTiddler.paramEncode(parameter[p]));
 		p++;
 		if ((p &lt; parameter.length) &amp;&amp; parameter[p] == &quot;withLineSeparator&quot;) {
@@ -1536,7 +1536,7 @@ config.macros.forEachTiddler.actions.write.handler = function(place, tiddlers, p
 			p++;
 		}
 	}
-	
+
 	// Check for extra parameters
 	if (parameter.length &gt; p) {
 		config.macros.forEachTiddler.createExtraParameterErrorElement(place, &quot;write&quot;, parameter, p);
@@ -1549,18 +1549,18 @@ config.macros.forEachTiddler.actions.write.handler = function(place, tiddlers, p
 	var text = &quot;&quot;;
 	if (count &gt; 0 &amp;&amp; beginExpression)
 		text += config.macros.forEachTiddler.getEvalTiddlerFunction(beginExpression, context)(undefined, context, count, undefined);
-	
+
 	for (var i = 0; i &lt; count; i++) {
 		var tiddler = tiddlers[i];
 		text += func(tiddler, context, count, i);
 	}
-	
+
 	if (count &gt; 0 &amp;&amp; endExpression)
 		text += config.macros.forEachTiddler.getEvalTiddlerFunction(endExpression, context)(undefined, context, count, undefined);
 
-	if (count == 0 &amp;&amp; noneExpression) 
+	if (count == 0 &amp;&amp; noneExpression)
 		text += config.macros.forEachTiddler.getEvalTiddlerFunction(noneExpression, context)(undefined, context, count, undefined);
-		
+
 
 	if (filename) {
 		if (lineSeparator !== undefined) {
@@ -1583,12 +1583,12 @@ config.macros.forEachTiddler.actions.write.handler = function(place, tiddlers, p
 //
 config.macros.forEachTiddler.createContext = function(placeParam, whereClauseParam, sortClauseParam, sortAscendingParam, actionNameParam, actionParameterParam, scriptText, tiddlyWikiPathParam, inTiddlerParam) {
 	return {
-		place : placeParam, 
-		whereClause : whereClauseParam, 
-		sortClause : sortClauseParam, 
-		sortAscending : sortAscendingParam, 
+		place : placeParam,
+		whereClause : whereClauseParam,
+		sortClause : sortClauseParam,
+		sortAscending : sortAscendingParam,
 		script : scriptText,
-		actionName : actionNameParam, 
+		actionName : actionNameParam,
 		actionParameter : actionParameterParam,
 		tiddlyWikiPath : tiddlyWikiPathParam,
 		inTiddler : inTiddlerParam, // the tiddler containing the &lt;&lt;forEachTiddler ...&gt;&gt; macro call.
@@ -1598,7 +1598,7 @@ config.macros.forEachTiddler.createContext = function(placeParam, whereClausePar
 
 // Internal.
 //
-// Returns a TiddlyWiki with the tiddlers loaded from the TiddlyWiki of 
+// Returns a TiddlyWiki with the tiddlers loaded from the TiddlyWiki of
 // the given path.
 //
 config.macros.forEachTiddler.loadTiddlyWiki = function(path, idPrefix) {
@@ -1606,13 +1606,13 @@ config.macros.forEachTiddler.loadTiddlyWiki = function(path, idPrefix) {
 		idPrefix = &quot;store&quot;;
 	}
 	var lenPrefix = idPrefix.length;
-	
+
 	// Read the content of the given file
 	var content = loadFile(this.getLocalPath(path));
 	if(content === null) {
 		throw &quot;TiddlyWiki '&quot;+path+&quot;' not found.&quot;;
 	}
-	
+
 	var tiddlyWiki = new TiddlyWiki();
 
 	// Starting with TW 2.2 there is a helper function to import the tiddlers
@@ -1622,9 +1622,9 @@ config.macros.forEachTiddler.loadTiddlyWiki = function(path, idPrefix) {
 		tiddlyWiki.dirty = false;
 		return tiddlyWiki;
 	}
-	
+
 	// The legacy code, for TW &lt; 2.2
-	
+
 	// Locate the storeArea div's
 	var posOpeningDiv = content.indexOf(startSaveArea);
 	var posClosingDiv = content.lastIndexOf(endSaveArea);
@@ -1632,12 +1632,12 @@ config.macros.forEachTiddler.loadTiddlyWiki = function(path, idPrefix) {
 		throw &quot;File '&quot;+path+&quot;' is not a TiddlyWiki.&quot;;
 	}
 	var storageText = content.substr(posOpeningDiv + startSaveArea.length, posClosingDiv);
-	
+
 	// Create a &quot;div&quot; element that contains the storage text
 	var myStorageDiv = document.createElement(&quot;div&quot;);
 	myStorageDiv.innerHTML = storageText;
 	myStorageDiv.normalize();
-	
+
 	// Create all tiddlers in a new TiddlyWiki
 	// (following code is modified copy of TiddlyWiki.prototype.loadFromDiv)
 	var store = myStorageDiv.childNodes;
@@ -1659,12 +1659,12 @@ config.macros.forEachTiddler.loadTiddlyWiki = function(path, idPrefix) {
 };
 
 
-	
+
 // Internal.
 //
 // Returns a function that has a function body returning the given javaScriptExpression.
 // The function has the parameters:
-// 
+//
 //	 (tiddler, context, count, index)
 //
 config.macros.forEachTiddler.getEvalTiddlerFunction = function (javaScriptExpression, context) {
@@ -1700,32 +1700,32 @@ config.macros.forEachTiddler.createExtraParameterErrorElement = function(place, 
 // Internal.
 //
 config.macros.forEachTiddler.sortAscending = function(tiddlerA, tiddlerB) {
-	var result = 
-		(tiddlerA.forEachTiddlerSortValue == tiddlerB.forEachTiddlerSortValue) 
+	var result =
+		(tiddlerA.forEachTiddlerSortValue == tiddlerB.forEachTiddlerSortValue)
 			? 0
 			: (tiddlerA.forEachTiddlerSortValue &lt; tiddlerB.forEachTiddlerSortValue)
-			   ? -1 
-			   : +1; 
+			   ? -1
+			   : +1;
 	return result;
 };
 
 // Internal.
 //
 config.macros.forEachTiddler.sortDescending = function(tiddlerA, tiddlerB) {
-	var result = 
-		(tiddlerA.forEachTiddlerSortValue == tiddlerB.forEachTiddlerSortValue) 
+	var result =
+		(tiddlerA.forEachTiddlerSortValue == tiddlerB.forEachTiddlerSortValue)
 			? 0
 			: (tiddlerA.forEachTiddlerSortValue &lt; tiddlerB.forEachTiddlerSortValue)
-			   ? +1 
-			   : -1; 
+			   ? +1
+			   : -1;
 	return result;
 };
 
 // Internal.
 //
 config.macros.forEachTiddler.sortTiddlers = function(tiddlers, sortClause, ascending, context) {
-	// To avoid evaluating the sortClause whenever two items are compared 
-	// we pre-calculate the sortValue for every item in the array and store it in a 
+	// To avoid evaluating the sortClause whenever two items are compared
+	// we pre-calculate the sortValue for every item in the array and store it in a
 	// temporary property (&quot;forEachTiddlerSortValue&quot;) of the tiddlers.
 	var func = config.macros.forEachTiddler.getEvalTiddlerFunction(sortClause, context);
 	var count = tiddlers.length;
@@ -1738,7 +1738,7 @@ config.macros.forEachTiddler.sortTiddlers = function(tiddlers, sortClause, ascen
 	// Do the sorting
 	tiddlers.sort(ascending ? this.sortAscending : this.sortDescending);
 
-	// Delete the temporary property that holds the sortValue.	
+	// Delete the temporary property that holds the sortValue.
 	for (i = 0; i &lt; tiddlers.length; i++) {
 		delete tiddlers[i].forEachTiddlerSortValue;
 	}
@@ -1766,7 +1766,7 @@ config.macros.forEachTiddler.traceMacroCall = function(place,macroName,params) {
 // Internal.
 //
 // Creates an element that holds an error message
-// 
+//
 config.macros.forEachTiddler.createErrorElement = function(place, exception) {
 	var message = (exception.description) ? exception.description : exception.toString();
 	return createTiddlyElement(place,&quot;span&quot;,null,&quot;forEachTiddlerError&quot;,&quot;&lt;&lt;forEachTiddler ...&gt;&gt;: &quot;+message);
@@ -1788,7 +1788,7 @@ config.macros.forEachTiddler.handleError = function(place, exception) {
 //
 // Encodes the given string.
 //
-// Replaces 
+// Replaces
 //	 &quot;$))&quot; to &quot;&gt;&gt;&quot;
 //	 &quot;$)&quot; to &quot;&gt;&quot;
 //
@@ -1805,7 +1805,7 @@ config.macros.forEachTiddler.paramEncode = function(s) {
 //
 // Location information in the originalPath (i.e. the &quot;#&quot; and stuff following)
 // is stripped.
-// 
+//
 config.macros.forEachTiddler.getLocalPath = function(originalPath) {
 	// Remove any location part of the URL
 	var hashPos = originalPath.indexOf(&quot;#&quot;);
@@ -1826,7 +1826,7 @@ config.macros.forEachTiddler.getLocalPath = function(originalPath) {
 	else if(originalPath.indexOf(&quot;file:/&quot;) === 0) // mac/unix local file
 		localPath = unescape(originalPath.substr(5));
 	else // pc network file
-		localPath = &quot;\\\\&quot; + unescape(originalPath.substr(7)).replace(new RegExp(&quot;/&quot;,&quot;g&quot;),&quot;\\&quot;);	
+		localPath = &quot;\\\\&quot; + unescape(originalPath.substr(7)).replace(new RegExp(&quot;/&quot;,&quot;g&quot;),&quot;\\&quot;);
 	return localPath;
 };
 
@@ -1888,7 +1888,7 @@ String.prototype.contains = function(substring) {
 // Array.indexOf Function
 //============================================================================
 //
-// Returns the index of the first occurance of the given item in the array or 
+// Returns the index of the first occurance of the given item in the array or
 // -1 when no such item exists.
 //
 // @param item [may be null]
@@ -1908,7 +1908,7 @@ Array.prototype.indexOf = function(item) {
 // Array.contains Function
 //============================================================================
 //
-// Returns true when the array contains the given item, otherwise false. 
+// Returns true when the array contains the given item, otherwise false.
 //
 // @param item [may be null]
 //
@@ -1922,7 +1922,7 @@ Array.prototype.contains = function(item) {
 // Array.containsAny Function
 //============================================================================
 //
-// Returns true when the array contains at least one of the elements 
+// Returns true when the array contains at least one of the elements
 // of the item. Otherwise (or when items contains no elements) false is returned.
 //
 version.extensions[&quot;Array.containsAny&quot;] = {major: 1, minor: 0, revision: 0, date: new Date(2005,11,20), provider: &quot;http://tiddlywiki.abego-software.de&quot;};
@@ -1942,10 +1942,10 @@ Array.prototype.containsAny = function(items) {
 //============================================================================
 //
 // Returns true when the array contains all the items, otherwise false.
-// 
+//
 // When items is null false is returned (even if the array contains a null).
 //
-// @param items [may be null] 
+// @param items [may be null]
 //
 version.extensions[&quot;Array.containsAll&quot;] = {major: 1, minor: 0, revision: 0, date: new Date(2005,11,20), provider: &quot;http://tiddlywiki.abego-software.de&quot;};
 //
@@ -1965,8 +1965,8 @@ Array.prototype.containsAll = function(items) {
 // ... DOM
 /*global 	document */
 // ... TiddlyWiki Core
-/*global 	convertUnicodeToUTF8, createTiddlyElement, createTiddlyLink, 
-			displayMessage, endSaveArea, hasClass, loadFile, saveFile, 
+/*global 	convertUnicodeToUTF8, createTiddlyElement, createTiddlyLink,
+			displayMessage, endSaveArea, hasClass, loadFile, saveFile,
 			startSaveArea, store, wikify */
 //}}}
 
@@ -2284,7 +2284,7 @@ This CSS by ~DaveBirss.
 
 #sidebar {
  color: #000;
- background: transparent; 
+ background: transparent;
 }
 
 #sidebarOptions {
@@ -2543,7 +2543,7 @@ border: none; background:transparent; text-decoration:underline; color:#333;
 #sidebarOptions {margin-top:1em;}
 #sidebar {margin-right:1.35em;}
 
-#sidebarTabs .tabContents {	
+#sidebarTabs .tabContents {
 	font-family: arial,helvetica;}
 
 #sidebarOptions a, #sidebarOptions a:hover{border:none;color:#666;}
@@ -2743,7 +2743,7 @@ StyleSheet for ~SyntaxHighlighter
 /* clear styles */
 .dp-highlighter ol,
 .dp-highlighter ol li,
-.dp-highlighter ol li span 
+.dp-highlighter ol li span
 {
 	margin: 0;
 	padding: 0;
@@ -3524,7 +3524,7 @@ enum {
     MOD_CREDITS,
     MOD_MAIN_MENU
 };
-UmbraEngine engine;  
+UmbraEngine engine;
 engine.registerModule (new Module1(), MOD_CREDITS);
 UmbraModule * mod = new Module2();
 engine.registerModule (mod, MOD_MAIN_MENU);
@@ -3542,7 +3542,7 @@ Adds a custom character mapping. The changes don't take effect until [[UmbraEngi
 &lt;code C++&gt;
 void UmbraEngine::addCustomCharacter (
     int x,
-    int y, 
+    int y,
     int code
 );
 &lt;/code&gt;
@@ -3625,7 +3625,7 @@ enum {
     MOD_CREDITS,
     MOD_MAIN_MENU
 };
-UmbraEngine engine;  
+UmbraEngine engine;
 engine.registerModule (new Module1(), MOD_CREDITS);
 UmbraModule * mod = new Module2();
 engine.registerModule (mod, MOD_MAIN_MENU);
@@ -3985,9 +3985,9 @@ Registers a font file to be used by libtcod.
 !Construction
 &lt;code C++&gt;
 void UmbraEngine::registerFont (
-    int columns, 
+    int columns,
     int rows,
-    const char * filename, 
+    const char * filename,
     int flags
 );
 &lt;/code&gt;
@@ -4033,7 +4033,7 @@ The method registers the newly created module for further use and assigns it an 
 &lt;code C++&gt;
 UmbraEngine engine;
 int mod1 = engine.registerModule(new MyModule()); //mod1 = 0
-int mod2 = engine.registerModule(new MyModule2()); //mod2 = 1; 
+int mod2 = engine.registerModule(new MyModule2()); //mod2 = 1;
 engine.getModule(mod2)-&gt;setFallback(mod1); // mod2 falls back to the previous one
 &lt;/code&gt;
 !See also
@@ -4073,7 +4073,7 @@ int run (
 The engine needs to be run to initiate the application's main loop. The engine needs to be instantiated and successfully initialised before it can be run.
 !Example
 &lt;code c++&gt;
-UmbraEngine engine;  
+UmbraEngine engine;
 engine.registerModule (new MyModule());
 engine.activateModule(0);
 if (engine.initialise()) {
@@ -4161,11 +4161,11 @@ void setWindowTitle (
 This method should be used prior to calling [[UmbraEngine::initialise]]. Should the title change afterwards, the change will be seen only after calling [[UmbraEngine::reinitialise]].
 !Example
 &lt;code C++&gt;
-UmbraEngine engine;  
-engine.registerModule(new MyModule());  
+UmbraEngine engine;
+engine.registerModule(new MyModule());
 engine.activateModule(0);
-engine.setWindowTitle(&quot;My game window title&quot;); 
-if (engine.initialise()) return engine.run();  
+engine.setWindowTitle(&quot;My game window title&quot;);
+if (engine.initialise()) return engine.run();
 else return 1;
 }
 &lt;/code&gt;
@@ -4716,13 +4716,13 @@ module.txt:
 &lt;code C++&gt;
 moduleChain &quot;myChain&quot; {
     module &quot;myModule&quot; {
-        bool aBoolParam = true 
-        char aCharParam = '@' 
-        int anIntParam = 4 
-        float aFloatParam = 3.14 
-        string aStringParam = &quot;aStringValue&quot; 
-        color aColourParam = #00FF00 
-        dice aDiceParam = &quot;3d20&quot; 
+        bool aBoolParam = true
+        char aCharParam = '@'
+        int anIntParam = 4
+        float aFloatParam = 3.14
+        string aStringParam = &quot;aStringValue&quot;
+        color aColourParam = #00FF00
+        dice aDiceParam = &quot;3d20&quot;
     }
 }
 &lt;/code&gt;
@@ -4755,13 +4755,13 @@ module.txt:
 &lt;code C++&gt;
 moduleChain &quot;myChain&quot; {
     module &quot;myModule&quot; {
-        bool aBoolParam = true 
-        char aCharParam = '@' 
-        int anIntParam = 4 
-        float aFloatParam = 3.14 
-        string aStringParam = &quot;aStringValue&quot; 
-        color aColourParam = #00FF00 
-        dice aDiceParam = &quot;3d20&quot; 
+        bool aBoolParam = true
+        char aCharParam = '@'
+        int anIntParam = 4
+        float aFloatParam = 3.14
+        string aStringParam = &quot;aStringValue&quot;
+        color aColourParam = #00FF00
+        dice aDiceParam = &quot;3d20&quot;
     }
 }
 &lt;/code&gt;
@@ -4829,13 +4829,13 @@ module.txt:
 &lt;code C++&gt;
 moduleChain &quot;myChain&quot; {
     module &quot;myModule&quot; {
-        bool aBoolParam = true 
-        char aCharParam = '@' 
-        int anIntParam = 4 
-        float aFloatParam = 3.14 
-        string aStringParam = &quot;aStringValue&quot; 
-        color aColourParam = #00FF00 
-        dice aDiceParam = &quot;3d20&quot; 
+        bool aBoolParam = true
+        char aCharParam = '@'
+        int anIntParam = 4
+        float aFloatParam = 3.14
+        string aStringParam = &quot;aStringValue&quot;
+        color aColourParam = #00FF00
+        dice aDiceParam = &quot;3d20&quot;
     }
 }
 &lt;/code&gt;
@@ -4906,13 +4906,13 @@ module.txt:
 &lt;code C++&gt;
 moduleChain &quot;myChain&quot; {
     module &quot;myModule&quot; {
-        bool aBoolParam = true 
-        char aCharParam = '@' 
-        int anIntParam = 4 
-        float aFloatParam = 3.14 
-        string aStringParam = &quot;aStringValue&quot; 
-        color aColourParam = #00FF00 
-        dice aDiceParam = &quot;3d20&quot; 
+        bool aBoolParam = true
+        char aCharParam = '@'
+        int anIntParam = 4
+        float aFloatParam = 3.14
+        string aStringParam = &quot;aStringValue&quot;
+        color aColourParam = #00FF00
+        dice aDiceParam = &quot;3d20&quot;
     }
 }
 &lt;/code&gt;
@@ -4956,13 +4956,13 @@ module.txt:
 &lt;code C++&gt;
 moduleChain &quot;myChain&quot; {
     module &quot;myModule&quot; {
-        bool aBoolParam = true 
-        char aCharParam = '@' 
-        int anIntParam = 4 
-        float aFloatParam = 3.14 
-        string aStringParam = &quot;aStringValue&quot; 
-        color aColourParam = #00FF00 
-        dice aDiceParam = &quot;3d20&quot; 
+        bool aBoolParam = true
+        char aCharParam = '@'
+        int anIntParam = 4
+        float aFloatParam = 3.14
+        string aStringParam = &quot;aStringValue&quot;
+        color aColourParam = #00FF00
+        dice aDiceParam = &quot;3d20&quot;
     }
 }
 &lt;/code&gt;
@@ -5036,13 +5036,13 @@ module.txt:
 &lt;code C++&gt;
 moduleChain &quot;myChain&quot; {
     module &quot;myModule&quot; {
-        bool aBoolParam = true 
-        char aCharParam = '@' 
-        int anIntParam = 4 
-        float aFloatParam = 3.14 
-        string aStringParam = &quot;aStringValue&quot; 
-        color aColourParam = #00FF00 
-        dice aDiceParam = &quot;3d20&quot; 
+        bool aBoolParam = true
+        char aCharParam = '@'
+        int anIntParam = 4
+        float aFloatParam = 3.14
+        string aStringParam = &quot;aStringValue&quot;
+        color aColourParam = #00FF00
+        dice aDiceParam = &quot;3d20&quot;
     }
 }
 &lt;/code&gt;
@@ -5238,7 +5238,7 @@ void setFallback (
 );
 &lt;/code&gt;
 !Parametres
-*{{{int fback}}}: the ID number of the fallback module. 
+*{{{int fback}}}: the ID number of the fallback module.
 *{{{const char * moduleName}}}: the name of the fallback module.
 !Access level
 {{{protected}}}
@@ -5360,12 +5360,12 @@ public :
         if ( strcmp(name,&quot;matrix&quot;) == 0 ) return new Matrix();
         else if ( strcmp(name,&quot;demo&quot;) == 0 ) return new Demo();
         else if ( strcmp(name,&quot;rabbit&quot;) == 0 ) return new RabbitWidget();
-        else if ( strcmp(name,&quot;panel&quot;) == 0 ) return new Panel(); 
+        else if ( strcmp(name,&quot;panel&quot;) == 0 ) return new Panel();
         else if ( strcmp(name,&quot;credits&quot;) == 0 ) return new Credits();
         else {
             UmbraError::add(UMBRA_ERRORLEVEL_ERROR,&quot;ModuleFactory::createModule: encountered an unknown module name: %s.&quot;,name);
             return NULL;
-        }    
+        }
     }
 };
 &lt;/code&gt;</pre>
@@ -5393,7 +5393,7 @@ UmbraModule * MyModuleFactory::createModule(const char *name) {
     if ( strcmp(name,&quot;matrix&quot;) == 0 ) return new Matrix();
     else if ( strcmp(name,&quot;demo&quot;) == 0 ) return new Demo();
     else if ( strcmp(name,&quot;rabbit&quot;) == 0 ) return new RabbitWidget();
-    else if ( strcmp(name,&quot;panel&quot;) == 0 ) return new Panel(); 
+    else if ( strcmp(name,&quot;panel&quot;) == 0 ) return new Panel();
     else if ( strcmp(name,&quot;credits&quot;) == 0 ) return new Credits();
     else {
         UmbraError::add(UMBRA_ERRORLEVEL_ERROR,&quot;ModuleFactory::createModule: encountered an unknown module name: %s.&quot;,name);
@@ -6055,7 +6055,7 @@ public:
         if ( strcmp(name,&quot;matrix&quot;) == 0 ) return new Matrix();
         else if ( strcmp(name,&quot;demo&quot;) == 0 ) return new Demo();
         else if ( strcmp(name,&quot;rabbit&quot;) == 0 ) return new RabbitWidget();
-        else if ( strcmp(name,&quot;panel&quot;) == 0 ) return new Panel(); 
+        else if ( strcmp(name,&quot;panel&quot;) == 0 ) return new Panel();
         else if ( strcmp(name,&quot;credits&quot;) == 0 ) return new Credits();
         else {
             UmbraError::add(UMBRA_ERRORLEVEL_ERROR,&quot;ModuleFactory::createModule: encountered an unknown module name: %s.&quot;,name);
@@ -8183,8 +8183,8 @@ config.macros.tags.handler = function(place,macroName,params,wikifier,paramStrin
 	var prompt = tiddler.tags.length == 0 ? lingo.labelNoTags : lingo.labelTags;
 	createTiddlyElement(ul,"li",null,"listTitle",prompt.format([tiddler.title]));
 	for(var t=0; t<tiddler.tags.length; t++) {
-		var tag = store.getTiddler(tiddler.tags[t]); 
-		if(!tag || !tag.tags.contains("excludeLists")) { 
+		var tag = store.getTiddler(tiddler.tags[t]);
+		if(!tag || !tag.tags.contains("excludeLists")) {
 			createTagButton(createTiddlyElement(ul,"li"),tiddler.tags[t],tiddler.title);
 			if(t<tiddler.tags.length-1)
 				createTiddlyText(ul,sep);

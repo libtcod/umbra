@@ -36,10 +36,10 @@ public :
     	if ( strcmp(name,"matrix") == 0 ) return new Matrix();
     	else if ( strcmp(name,"demo") == 0 ) return new Demo();
 		else if ( strcmp(name,"rabbit") == 0 ) return new RabbitWidget();
-		else if ( strcmp(name,"panel") == 0 ) return new Panel(); 
+		else if ( strcmp(name,"panel") == 0 ) return new Panel();
 		else if ( strcmp(name,"credits") == 0 ) return new Credits();
 		else if ( strcmp(name,"circle") == 0 ) return new Circle();
-		else return NULL;    
+		else return NULL;
 	}
 };
 

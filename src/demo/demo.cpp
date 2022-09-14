@@ -72,4 +72,3 @@ void Demo::keyboard (TCOD_key_t &key) {
     }
     else if (key.vk == TCODK_ESCAPE) getEngine()->deactivateAll();
 }
-

@@ -27,7 +27,7 @@
 
 /**
  * Events triggered by the widget system
- */ 
+ */
 enum UmbraEventType {
 	NONE = 0,
 	MOUSE_ENTER, // UmbraMouseEvent
@@ -42,8 +42,8 @@ class UmbraEvent {
 public :
 	UmbraEventType type;
 	/** whether this event is caught by the current listener (true) or propagated to the next listener (false) */
-	bool accepted;	
-	
+	bool accepted;
+
 	UmbraEvent(UmbraEventType type) : type(type), accepted(false) {}
 };
 
@@ -53,4 +53,3 @@ public :
 
 	UmbraMouseEvent(UmbraEventType type, TCOD_mouse_t &mouse) : UmbraEvent(type),mouse(mouse) {}
 };
-

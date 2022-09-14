@@ -46,7 +46,7 @@ void RabbitWidget::mouse (TCOD_mouse_t &ms) {
 
 void RabbitWidget::onNextDemo(UmbraWidget *w,UmbraEvent ev) {
     setActive(false);
-    engine.getModule("matrix")->setActive(false);	
+    engine.getModule("matrix")->setActive(false);
 }
 
 void RabbitWidget::render () {

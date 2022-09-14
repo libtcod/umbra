@@ -38,7 +38,7 @@ public:
 	UmbraButton button;
 	TCODConsole * rabbit;
 	//slots
-	void onNextDemo (UmbraWidget *w, UmbraEvent ev);	
+	void onNextDemo (UmbraWidget *w, UmbraEvent ev);
 protected :
 	void onInitialise();
 };

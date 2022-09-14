@@ -124,7 +124,7 @@ private:
     		} else {
     			// at module chain level
 				UmbraModule::UmbraModuleParametre mod;
-				mod.name=strdup(name); 
+				mod.name=strdup(name);
 				mod.value=value;
 				chainParameters.push(mod);
 			}
@@ -139,13 +139,13 @@ private:
 				//finished parsing requested chain. skip other chains
 				// copy module chain parameters into modules
 				for (UmbraModule **mod=chainModules.begin();mod!=chainModules.end(); mod++) {
-					// inherits all chain parameters 
+					// inherits all chain parameters
 					// those parameters can be overloaded in the module declaration
 					for (UmbraModule::UmbraModuleParametre *chainParam=chainParameters.begin(); chainParam != chainParameters.end(); chainParam++) {
 						UmbraModule::UmbraModuleParametre moduleParam=(*mod)->getParametre(chainParam->name);
 						if( moduleParam.name == NULL ) {
 							(*mod)->setParametre(chainParam->name,chainParam->value);
-						} // else parameter overloaded by the module. 
+						} // else parameter overloaded by the module.
 					}
 				}
 				// activate active modules
@@ -401,7 +401,7 @@ bool UmbraEngine::registerFonts () {
 		UmbraLog::closeBlock(UMBRA_LOGRESULT_FAILURE);
 		return false;
 	}
-	
+
 	if (getNbFonts() == 0) {
 		UmbraLog::fatalError("UmbraEngine::registerFonts | No fonts registered. Autodetection found no fonts matching the naming pattern font<WIDTH>x<HEIGHT>[_<LAYOUT>].png in the specified directory \"%s\".",getFontDir());
 		UmbraLog::closeBlock(UMBRA_LOGRESULT_FAILURE);
@@ -587,7 +587,7 @@ bool UmbraEngine::initialise (TCOD_renderer_t renderer) {
 		//initialise console
 		TCODConsole::setCustomFont(UmbraConfig::font->filename(),UmbraConfig::font->flags(),UmbraConfig::font->columns(),UmbraConfig::font->rows());
 		TCODConsole::initRoot(getRootWidth(),getRootHeight(),windowTitle.c_str(), UmbraConfig::fullScreen, renderer);
-		
+
 		registerCustomCharacters();
 		TCODSystem::setFps(25);
 		TCODMouse::showCursor(true);
@@ -602,15 +602,15 @@ int UmbraEngine::run () {
 	TCOD_key_t key;
 	TCOD_mouse_t mouse;
 	memset(&mouse,0,sizeof(TCOD_mouse_t));
-	
+
 	UmbraLog::openBlock("UmbraEngine::run | Running the engine.");
-	
+
 	if (modules.size() == 0) {
 		UmbraLog::fatalError("UmbraEngine::run | No modules have been registered!");
 		UmbraLog::closeBlock(UMBRA_LOGRESULT_FAILURE);
 		return 1;
 	}
-	
+
 	while(!TCODConsole::isWindowClosed()) {
 		//execute only when paused
 		if (paused) {
@@ -619,22 +619,22 @@ int UmbraEngine::run () {
 			TCODConsole::root->flush();
 			continue; //don't update or render anything anew
 		}
-		
+
 		// deactivate modules
 		for (UmbraModule ** mod = toDeactivate.begin(); mod != toDeactivate.end(); mod++) {
 			(*mod)->setActive(false);
 			activeModules.remove(*mod);
 		}
 		toDeactivate.clear();
-		
+
 		// activate new modules
 		for (UmbraModule ** mod = toActivate.begin(); mod != toActivate.end(); mod++) {
 			doActivateModule(*mod);
 		}
 		toActivate.clear();
-		
+
 		if (activeModules.size() == 0) break; // exit game
-		
+
 		// update all active modules
 		switch (keyboardMode) {
 			case UMBRA_KEYBOARD_WAIT :
@@ -700,11 +700,11 @@ int UmbraEngine::run () {
 
 void UmbraEngine::keyboard (TCOD_key_t &key) {
 	if (key.vk == TCODK_NONE || (keyboardMode != UMBRA_KEYBOARD_PRESSED && key.pressed)) return;
-	
+
 	UmbraKey k(key.vk, key.c, key.ralt|key.lalt, key.rctrl|key.lctrl, key.shift);
-	
+
 	bool val = false;
-	
+
 	for (UmbraCallback ** cbk = callbacks.begin(); cbk != callbacks.end(); cbk++) {
 		if ((*cbk)->evaluate(k)) {
 			(*cbk)->action();
@@ -712,7 +712,7 @@ void UmbraEngine::keyboard (TCOD_key_t &key) {
 			break;
 		}
 	}
-	
+
 	if (val) {
 		// "erase" key event
 		memset(&key,0,sizeof(TCOD_key_t));
@@ -754,18 +754,18 @@ void UmbraEngine::addCustomCharacter(int x, int y, int code) {
 	cMap->x = x;
 	cMap->y = y;
 	cMap->code = code;
-	
+
 	this->customChars.push(cMap);
 }
 
 void UmbraEngine::registerCustomCharacters() {
 	if(this->customChars.isEmpty())
 		return;
-	
+
 	for(int i = 0; i < this->customChars.size(); i++) {
 		UmbraCustomCharMap * tmp = this->customChars.get(i);
 		TCODConsole::root->mapAsciiCodeToFont(tmp->code, tmp->x, tmp->y);
 	}
-	
+
 	UmbraLog::info("UmbraEngine::registerCustomCharacters | Custom character mappings registered.");
 }

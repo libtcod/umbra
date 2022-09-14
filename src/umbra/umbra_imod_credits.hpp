@@ -45,4 +45,3 @@ private:
 };
 
 #endif	/* UMBRA_IMOD_CREDITS_HPP */
-

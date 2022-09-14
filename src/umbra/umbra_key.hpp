@@ -48,4 +48,3 @@ class UmbraKey {
 		bool ctrl;
 		bool shift;
 };
-

@@ -108,7 +108,7 @@ protected:
 	void setDragZone (int x, int y, int w, int h);
 	/**
 	 * Custom code that is executed when the user release the mouse button
-	 * after dragging the widget		  
-	 */		 		
-	virtual void onDragEnd() {}	
+	 * after dragging the widget
+	 */
+	virtual void onDragEnd() {}
 };
