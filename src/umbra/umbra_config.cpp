@@ -50,7 +50,6 @@ const char * logLevelName[] = {
 
 void UmbraConfig::load (const char *fileName) {
 	static bool loaded = false;
-	std::string l;
 	TCODParser parser;
 	UmbraLog::openBlock("UmbraConfig::load | Loading configuration variables.");
 	if (loaded && strcmp(UmbraConfig::fileName, fileName) == 0) {
@@ -94,7 +93,8 @@ void UmbraConfig::load (const char *fileName) {
 	rootHeight = parser.getIntProperty("config.rootHeight");
 	fontID = parser.getIntProperty("config.fontID");
 	fullScreen = parser.getBoolProperty("config.fullScreen");
-	l = parser.getStringProperty("config.logLevel");
+	std::string configLogLevel = "info";
+	if (parser.hasProperty("config.logLevel")) configLogLevel = parser.getStringProperty("config.logLevel");
 	fontDir = parser.getStringProperty("config.fontDir");
 	moduleChain = parser.getStringProperty("config.moduleChain");
 	if (fontDir != NULL) fontDir = strdup(fontDir);
@@ -102,7 +102,7 @@ void UmbraConfig::load (const char *fileName) {
 	if (moduleChain != NULL) moduleChain = strdup(moduleChain);
 	//set log level
 	for (int i = 0; i <= (int)UMBRA_LOGLEVEL_NONE; i++) {
-		if (l == logLevelName[i]) logLevel = (UmbraLogLevel)i;
+		if (configLogLevel == logLevelName[i]) logLevel = (UmbraLogLevel)i;
 	}
 	loaded = true;
 	UmbraLog::closeBlock(UMBRA_LOGRESULT_SUCCESS);
