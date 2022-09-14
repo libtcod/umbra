@@ -29,6 +29,7 @@
 #include <stdio.h>
 #include <stdarg.h>
 
+#include <cassert>
 #include <iostream>
 
 TCOD_renderer_t UmbraEngine::renderer = TCOD_RENDERER_SDL;
@@ -66,7 +67,8 @@ private:
 			}
 		} else if (strcmp(str->getName(),"module") == 0 && !skip) {
 			//parse a module for current chain
-			if (UmbraEngine::getInstance()->isNameFree(name)) {
+			module = UmbraEngine::getInstance()->getModule(name);
+			if (!module) {
 				// module doesn't exist yet. try to get it from the factory
 				if (factory) {
 					module = factory->createModule(name);
@@ -80,6 +82,7 @@ private:
 					return false;
 				}
 			}
+			assert(module != NULL);
 			chainModules.push(module);
 		}
 		return true;
