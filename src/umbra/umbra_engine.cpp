@@ -602,9 +602,8 @@ bool UmbraEngine::initialise (TCOD_renderer_t renderer) {
 }
 
 int UmbraEngine::run () {
-	TCOD_key_t key;
-	TCOD_mouse_t mouse;
-	memset(&mouse,0,sizeof(TCOD_mouse_t));
+	TCOD_key_t key{};
+	TCOD_mouse_t mouse{};
 
 	UmbraLog::openBlock("UmbraEngine::run | Running the engine.");
 
