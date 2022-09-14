@@ -3,3 +3,6 @@ build/
 
 # Save data
 data/sav
+
+# Log file
+log.txt
