@@ -13,6 +13,9 @@
         "-Wdev",
         "-Wdeprecated",
     ],
+    "cmake.configureSettings": {
+        "BUILD_UMBRA_DEMO": "ON"
+    },
     "files.associations": {
         "cstdint": "cpp",
         "algorithm": "cpp",

@@ -25,7 +25,7 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#include "../umbra/umbra.hpp"
+#include <umbra/umbra.hpp>
 #include "matrix.hpp"
 #include "rabbit.hpp"
 #include "demo.hpp"
