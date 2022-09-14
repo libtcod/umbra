@@ -62,12 +62,12 @@ public:
 	 * Implementation of any module-specific keyboard event interpretation. Called automatically.
 	 * @param key a reference to the key event object
 	 */
-	virtual void keyboard (TCOD_key_t &key) { } //module-specific keyboard
+	virtual void keyboard (TCOD_key_t&) { } //module-specific keyboard
 	/**
 	 * Implementation of any module-specific mouse event interpretation. Called automatically
 	 * @param ms a reference to the mouse event object
 	 */
-	virtual void mouse (TCOD_mouse_t &ms) { } //module-specific mouse
+	virtual void mouse (TCOD_mouse_t&) { } //module-specific mouse
 	/**
 	 * Activates or deactivates the module.
 	 * @param active <code>true</code> if the module is to be activated, <code>false</code> otherwise

@@ -24,13 +24,11 @@
 * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-
-#include <iostream>
+#pragma once
+#include <string>
 
 class UmbraFont {
 	public:
-		UmbraFont ();
-		~UmbraFont ();
 		/**
 		 * Initialises a font. Used for manual initialisation (ie, when automatic font detection isn't used).
 		 * @param c number of columns of characters in the font image file
@@ -38,31 +36,36 @@ class UmbraFont {
 		 * @param fn the filename of the font image file
 		 * @param f font layout flags
 		 */
-		void initialise (int c, int r, const char * fn, int f = TCOD_FONT_LAYOUT_TCOD); //initialise manually
+		void initialise (int c, int r, const char * fn, int f = TCOD_FONT_LAYOUT_TCOD) {  // initialise manually
+			columns_ = c;
+			rows_ = r;
+			flags_ = f;
+			filename_ = fn;
+		}
 		/**
 		 * Gets the font image's filename
 		 * @return the font image's filename
 		 */
-		inline const char * filename () { return _filename.c_str(); }
+		inline const char * filename () { return filename_.c_str(); }
 		/**
 		 * Gets the font image's number of columns
 		 * @return the font image's number of columns
 		 */
-		inline int columns () { return _columns; }
+		inline int columns () { return columns_; }
 		/**
 		 * Gets the font image's number of rows
 		 * @return the font image's number of rows
 		 */
-		inline int rows () { return _rows; }
+		inline int rows () { return rows_; }
 		/**
 		 * Gets the font image's layout flags
 		 * @return the font image's layout flags
 		 */
-		inline int flags () { return _flags; }
+		inline int flags () { return flags_; }
 
 	private:
-		std::string _filename;
-		int _columns;
-		int _rows;
-		int _flags;
+		std::string filename_ = "NULL";
+		int columns_ = 0;
+		int rows_ = 0;
+		int flags_ = 0;
 };

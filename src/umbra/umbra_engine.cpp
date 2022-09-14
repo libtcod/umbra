@@ -57,7 +57,7 @@ private:
 	public :
 	UmbraModuleConfigParser(UmbraModuleFactory *factory,const char *chainName): chainName(chainName), module(NULL),skip(false),chainDone(false),factory(factory) {
 	}
-    bool parserNewStruct(TCODParser * parser, const TCODParserStruct * str, const char * name) {
+    bool parserNewStruct(TCODParser*, const TCODParserStruct* str, const char* name) {
     	if (strcmp(str->getName(),"moduleChain") == 0) {
     		chainModules.clear();
     		//parse a new module chain
@@ -87,7 +87,7 @@ private:
 		}
 		return true;
 	}
-    bool parserFlag(TCODParser * parser, const char * name) {
+    bool parserFlag(TCODParser*, const char* name) {
     	if (skip) return true;
     	if (strcmp(name,"active") == 0) {
     		// deferred activation (cannot activate before all params have been parsed)
@@ -95,7 +95,7 @@ private:
 		}
 		return true;
 	}
-    bool parserProperty(TCODParser * parser, const char * name, TCOD_value_type_t type, TCOD_value_t value) {
+    bool parserProperty(TCODParser*, const char* name, TCOD_value_type_t type, TCOD_value_t value) {
     	if (skip) return true;
     	if (strcmp(name,"timeout") == 0) {
     		module->setTimeout(value.i);
@@ -134,7 +134,7 @@ private:
 		}
 		return true;
 	}
-    bool parserEndStruct(TCODParser * parser, const TCODParserStruct * str, const char * name) {
+    bool parserEndStruct(TCODParser*, const TCODParserStruct* str, [[maybe_unused]] const char* name) {
     	if (strcmp(str->getName(),"moduleChain") == 0) {
     		if (skip) {
     			skip = false;
@@ -578,18 +578,18 @@ void UmbraEngine::deactivateAll (bool ignoreFallbacks) {
 	UmbraLog::closeBlock(UMBRA_LOGRESULT_SUCCESS);
 }
 
-bool UmbraEngine::initialise (TCOD_renderer_t renderer) {
+bool UmbraEngine::initialise (TCOD_renderer_t new_renderer) {
 	// autodetect fonts if needed
 	bool retVal;
 	UmbraLog::openBlock("UmbraEngine::initialise | Initialising the root console.");
 	retVal = registerFonts();
 	//activate the base font
 	if (retVal) {
-		UmbraEngine::renderer=renderer;
+		UmbraEngine::renderer=new_renderer;
 		UmbraConfig::activateFont();
 		//initialise console
 		TCODConsole::setCustomFont(UmbraConfig::font->filename(),UmbraConfig::font->flags(),UmbraConfig::font->columns(),UmbraConfig::font->rows());
-		TCODConsole::initRoot(getRootWidth(),getRootHeight(),windowTitle.c_str(), UmbraConfig::fullScreen, renderer);
+		TCODConsole::initRoot(getRootWidth(),getRootHeight(),windowTitle.c_str(), UmbraConfig::fullScreen, new_renderer);
 
 		registerCustomCharacters();
 		TCODSystem::setFps(25);
@@ -721,12 +721,12 @@ void UmbraEngine::keyboard (TCOD_key_t &key) {
 	}
 }
 
-void UmbraEngine::reinitialise (TCOD_renderer_t renderer) {
+void UmbraEngine::reinitialise (TCOD_renderer_t new_renderer) {
 	UmbraLog::openBlock("UmbraEngine::reinitialise | Reinitialising the root console.");
 	delete TCODConsole::root;
 	TCODConsole::root = NULL;
 	TCODConsole::setCustomFont(UmbraConfig::font->filename(),UmbraConfig::font->flags(),UmbraConfig::font->columns(),UmbraConfig::font->rows());
-	UmbraEngine::renderer=renderer;
+	UmbraEngine::renderer=new_renderer;
 	TCODConsole::initRoot(getRootWidth(),getRootHeight(),windowTitle.c_str(), UmbraConfig::fullScreen, this->renderer);
 	registerCustomCharacters();
 	if (TCODConsole::root != NULL) UmbraLog::closeBlock(UMBRA_LOGRESULT_SUCCESS);

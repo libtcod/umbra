@@ -43,7 +43,7 @@ class UmbraCircle {
 		 * @param x the circle centre's <i>x</i> coordinate
 		 * @param y the circle centre's <i>y</i> coordinate
 		 */
-		inline void setPos (int x, int y) { this->x=x; this->y=y; }
+		inline void setPos (int new_x, int new_y) { x = new_x; y = new_y; }
 		/**
 		 * Sets the circle's position.
          * @param p the point whose coordinates are to be come the circle's centre
@@ -53,20 +53,20 @@ class UmbraCircle {
 		 * Sets the circle's radius, keeping the position unchanged.
 		 * @param r the circle's radius
 		 */
-		inline void setRadius (int r) { this->r=r; }
+		inline void setRadius (int new_r) { r = new_r; }
 		/**
 		 * Sets the circle's position and radius.
 		 * @param x the circle centre's <i>x</i> coordinate
 		 * @param y the circle centre's <i>y</i> coordinate
 		 * @param r the circle's radius
 		 */
-		inline void set (int x, int y, int r) { setPos(x,y); setRadius(r); }
+		inline void set (int new_x, int new_y, int new_r) { setPos(new_x, new_y); setRadius(new_r); }
 		/**
 		 * Sets the circle's position and radius.
          * @param p the point whose coordinates are to be come the circle's centre
          * @param r the circle's radius
          */
-		inline void set (const UmbraPoint &p, int r) { setPos(x,y); setRadius(r); }
+		inline void set (const UmbraPoint &p, int new_r) { setPos(x,y); setRadius(new_r); }
 		/**
 		 * Checks whether a set of coordinates is contained within the circle.
 		 * @param px the <i>x</i> coordinate to be checked
