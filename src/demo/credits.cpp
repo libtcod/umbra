@@ -33,7 +33,7 @@ Credits::Credits () {
            "Copyright (c) 2009, 2010 Mingos, Jice\n"
            "\n"
            "Powered by:\n"
-           "libtcod "TCOD_STRVERSION"\n"
+           "libtcod " TCOD_STRVERSION "\n"
            "Copyright (c) 2008, 2009 Jice\n"
            "\n"
            "Simple DirectMedia Layer 1.2.12\n"

@@ -65,7 +65,7 @@ const char * resultString[] = {
 
 void UmbraLog::initialise () {
 	out = fopen("log.txt","w");
-	fprintf(out,UMBRA_TITLE" ver. "UMBRA_VERSION" ("UMBRA_STATUS") Log file, Running time on creation: %dms.\n"
+	fprintf(out,UMBRA_TITLE " ver. " UMBRA_VERSION " (" UMBRA_STATUS ") Log file, Running time on creation: %dms.\n"
 	            "---===---\n"
 	            "INF. = INFORMATION. Informative message.\n"
 	            "NOT. = NOTICE. Something unexpected that does not affect the program execution.\n"

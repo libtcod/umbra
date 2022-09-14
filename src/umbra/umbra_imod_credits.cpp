@@ -17,7 +17,7 @@ bool UmbraModCredits::update() {
 }
 
 void UmbraModCredits::render() {
-	static const char * str = "Powered by "UMBRA_TITLE" "UMBRA_VERSION" "UMBRA_STATUS;
+	static const char * str = "Powered by " UMBRA_TITLE " " UMBRA_VERSION " " UMBRA_STATUS;
 	con->setDefaultForeground(TCODColor(250,250,220));
 	con->printEx(0,0,TCOD_BKGND_NONE,TCOD_LEFT,str);
 	TCODConsole::blit(con,0,0,strlen(str),1,TCODConsole::root,coords.x,coords.y,alpha,0.0f);
