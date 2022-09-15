@@ -71,10 +71,10 @@ struct UmbraPoint {
 		mouseHover = is(p);
 		mouseDown = mouseHover & ms.lbutton;
 	}
-	friend [[nodiscard]] constexpr bool operator==(const UmbraPoint& lhs, const UmbraPoint &rhs) noexcept {
+	[[nodiscard]] friend constexpr bool operator==(const UmbraPoint& lhs, const UmbraPoint &rhs) noexcept {
 		return lhs.x == rhs.x && lhs.y == rhs.y;
 	}
-	friend [[nodiscard]] constexpr bool operator!=(const UmbraPoint& lhs, const UmbraPoint &rhs) noexcept {
+	[[nodiscard]] friend constexpr bool operator!=(const UmbraPoint& lhs, const UmbraPoint &rhs) noexcept {
 		return !(lhs == rhs);
 	}
 	int x = 0;
