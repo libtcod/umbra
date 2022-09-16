@@ -89,6 +89,10 @@
         "xtree": "cpp",
         "*.rh": "cpp",
         "cassert": "cpp",
-        "set": "cpp"
+        "set": "cpp",
+        "cerrno": "cpp",
+        "cfloat": "cpp",
+        "climits": "cpp",
+        "string_view": "cpp"
     }
 }

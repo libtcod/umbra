@@ -31,8 +31,9 @@ class UmbraKey {
 	friend class UmbraEngine;
 	friend class UmbraCallback;
 	public:
-		UmbraKey (): vk(TCODK_NONE),c(0),alt(false),ctrl(false),shift(false) {}
-		UmbraKey (TCOD_keycode_t vk, char c, bool alt, bool ctrl, bool shift): vk(vk),c(c),alt(alt),ctrl(ctrl),shift(shift) {}
+		UmbraKey() = default;
+		UmbraKey(TCOD_keycode_t vk, char c, bool alt, bool ctrl, bool shift)
+			: vk_{vk}, c_{c}, alt_{alt}, ctrl_{ctrl}, shift_{shift} {}
 		/**
 		 * Assigns a keystroke or key combination. In case of alt, ctrl and shift keys, left and right keys are not distinguished (due to incomplete support in SDL).
 		 * @param vk the non-printable key code, using TCOD_keycode_t constants (see libtcod documentation). Set to TCODK_NONE if none is expected
@@ -41,18 +42,18 @@ class UmbraKey {
 		 * @param ctrl boolean indicating whether the ctrl key is expected to be pressed
 		 * @param shift boolean indicating whether the shift key is expected to be pressed
 		 */
-		inline void assign (TCOD_keycode_t new_vk, char new_c, bool new_alt, bool new_ctrl, bool new_shift) {
-			vk = new_vk;
-			c = new_c;
-			alt = new_alt;
-			ctrl = new_ctrl;
-			shift = new_shift;
+		[[deprecated("Use normal assignment instead of this method.")]]
+		void assign (TCOD_keycode_t vk, char c, bool alt, bool ctrl, bool shift) {
+			(*this) = UmbraKey{vk, c, alt, ctrl, shift};
 		}
-		inline bool operator == (const UmbraKey &k1) { return memcmp (this, &k1, sizeof(UmbraKey)) == 0; }
+		[[nodiscard]] bool operator==(const UmbraKey &rhs) {
+			return vk_ == rhs.vk_ && c_ == rhs.c_ && alt_ == rhs.alt_ && ctrl_ == rhs.ctrl_ && shift_ == rhs.shift_;
+		}
+		[[nodiscard]] bool operator!=(const UmbraKey &rhs) { return !((*this) == rhs); }
 	private:
-		TCOD_keycode_t vk;
-		char c;
-		bool alt;
-		bool ctrl;
-		bool shift;
+		TCOD_keycode_t vk_{TCODK_NONE};
+		char c_{0};
+		bool alt_{false};
+		bool ctrl_{false};
+		bool shift_{false};
 };

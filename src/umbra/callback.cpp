@@ -33,7 +33,7 @@
 
 //quit program
 UmbraCallbackQuit::UmbraCallbackQuit () {
-	key.assign(TCODK_F4,0,true,false,false);
+	key = {TCODK_F4, 0, true, false, false};
 }
 
 void UmbraCallbackQuit::action () {
@@ -42,7 +42,7 @@ void UmbraCallbackQuit::action () {
 
 //switch fullscreen
 UmbraCallbackFullscreen::UmbraCallbackFullscreen () {
-	key.assign(TCODK_ENTER,'\r',true,false,false);
+	key = {TCODK_ENTER, '\r', true, false, false};
 }
 
 void UmbraCallbackFullscreen::action () {
@@ -51,7 +51,7 @@ void UmbraCallbackFullscreen::action () {
 
 //save screenshot
 UmbraCallbackScreenshot::UmbraCallbackScreenshot () {
-	key.assign(TCODK_PRINTSCREEN,0,false,false,false);
+	key = {TCODK_PRINTSCREEN, 0, false, false, false};
 }
 
 void UmbraCallbackScreenshot::action () {
@@ -60,7 +60,7 @@ void UmbraCallbackScreenshot::action () {
 
 //switch font up
 UmbraCallbackFontUp::UmbraCallbackFontUp () {
-	key.assign(TCODK_PAGEUP,0,false,false,false);
+	key = {TCODK_PAGEUP, 0, false, false, false};
 }
 
 void UmbraCallbackFontUp::action () {
@@ -69,7 +69,7 @@ void UmbraCallbackFontUp::action () {
 
 //switch font down
 UmbraCallbackFontDown::UmbraCallbackFontDown () {
-	key.assign(TCODK_PAGEDOWN,0,false,false,false);
+	key = {TCODK_PAGEDOWN, 0, false, false, false};
 }
 
 void UmbraCallbackFontDown::action () {
@@ -78,7 +78,7 @@ void UmbraCallbackFontDown::action () {
 
 //pause the program
 UmbraCallbackPause::UmbraCallbackPause () {
-	key.assign(TCODK_PAUSE,0,false,false,false);
+	key = {TCODK_PAUSE, 0, false, false, false};
 }
 
 void UmbraCallbackPause::action () {
@@ -87,7 +87,7 @@ void UmbraCallbackPause::action () {
 
 //pause the program
 UmbraCallbackSpeedometer::UmbraCallbackSpeedometer () {
-	key.assign(TCODK_F5,0,false,false,false);
+	key = {TCODK_F5, 0, false, false, false};
 }
 
 void UmbraCallbackSpeedometer::action () {
