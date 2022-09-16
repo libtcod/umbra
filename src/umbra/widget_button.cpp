@@ -42,17 +42,17 @@ UmbraButton::UmbraButton (UmbraWidget * parent, int x, int y, int w, int h, cons
 	visible = true;
 }
 
-UmbraButton::UmbraButton (UmbraWidget * parent, int x, int y, int w, int h, std::string tag) {
-	this->parent = parent;
+UmbraButton::UmbraButton (UmbraWidget * new_parent, int x, int y, int w, int h, std::string new_tag) {
+	parent = new_parent;
 	rect.set(x, y, w, h);
-	this->tag = tag;
+	tag = new_tag;
 	visible = true;
 }
 
-void UmbraButton::set (UmbraWidget * parent, int x, int y, int w, int h, const char * tag) {
-	this->parent = parent;
+void UmbraButton::set (UmbraWidget * new_parent, int x, int y, int w, int h, const char * new_tag) {
+	parent = new_parent;
 	rect.set(x, y, w, h);
-	this->tag = tag;
+	tag = new_tag;
 	visible = true;
 }
 

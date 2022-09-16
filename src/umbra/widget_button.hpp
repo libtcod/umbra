@@ -52,14 +52,16 @@ class UmbraButton : public UmbraWidget {
 		void set (UmbraWidget * parent, int x, int y, int w, int h, const char * tag = "");
 		/**
 		 * Sets the basic properties of the button: parent widget, position in the console, size and tag.
-		 * @param parent a pointer to the UmbraWidget containing the button
+		 * @param new_parent a pointer to the UmbraWidget containing the button
 		 * @param x the <code>x</code> coordinate of the top left corner of the button area
 		 * @param y the <code>y</code> coordinate of the top left corner of the button area
 		 * @param w the button area's width
 		 * @param h the button area's height
-		 * @param tag the tag's text
+		 * @param new_tag the tag's text
 		 */
-		inline void set (UmbraWidget * parent, int x, int y, int w, int h, std::string tag = "") { set(parent, x, y, w, h, tag.c_str()); }
+		inline void set (UmbraWidget * new_parent, int x, int y, int w, int h, std::string new_tag = "") {
+			set(new_parent, x, y, w, h, new_tag.c_str());
+		}
         /**
 		 * Renders the button.
 		 */

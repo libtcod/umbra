@@ -83,19 +83,19 @@ void UmbraModule::initialiseTimeout() {
 	else timeoutEnd = TCODSystem::getElapsedMilli() + timeout;
 }
 
-void UmbraModule::setFallback(const char *name) {
-	UmbraModule *mod=getEngine()->getModule(name);
+void UmbraModule::setFallback(const char *module_name) {
+	UmbraModule *mod=getEngine()->getModule(module_name);
 	if (mod) {
 		setFallback(mod->getID());
 	} else {
-		UmbraLog::error("UmbraModule::setFallback | Unknown module \"%s\".", name);
+		UmbraLog::error("UmbraModule::setFallback | Unknown module \"%s\".", module_name);
 	}
 }
 
-void UmbraModule::setParametre(const char *name,TCOD_value_t value) {
-	if (name == NULL) return;
+void UmbraModule::setParametre(const char *param_name,TCOD_value_t value) {
+	if (param_name == NULL) return;
 	for (UmbraModuleParametre *it=params.begin(); it != params.end(); it++) {
-		if (strcmp(it->name,name) == 0) {
+		if (strcmp(it->name,param_name) == 0) {
 			// already exists. update value
 			// this happens when value is overriden in module.cfg
 			it->value=value;
@@ -104,15 +104,15 @@ void UmbraModule::setParametre(const char *name,TCOD_value_t value) {
 	}
 	// new parametre
 	UmbraModuleParametre mod;
-	mod.name=strdup(name);
+	mod.name=strdup(param_name);
 	mod.value=value;
 	params.push(mod);
 }
 
-UmbraModule::UmbraModuleParametre &UmbraModule::getParametre(const char *name) {
+UmbraModule::UmbraModuleParametre &UmbraModule::getParametre(const char *param_name) {
 	static UmbraModuleParametre def = {NULL,{0}};
 	for (UmbraModuleParametre *it=params.begin(); it != params.end(); it++) {
-		if (strcmp(it->name,name) == 0) return *it;
+		if (strcmp(it->name,param_name) == 0) return *it;
 	}
 	return def;
 }

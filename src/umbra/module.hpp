@@ -120,46 +120,46 @@ public:
 	inline int getID () { return id; }
 	/**
 	 * Get a boolean parameter from the module configuration file
-	 * @param name the parameter name
+	 * @param param_name the parameter name
 	 * @return the boolean value (default false)
 	 */
-	inline bool getBoolParam (const char *name) { return getParametre(name).value.b; }
+	inline bool getBoolParam (const char *param_name) { return getParametre(param_name).value.b; }
 	/**
 	 * Get a char parameter from the module configuration file
-	 * @param name the parameter name
+	 * @param param_name the parameter name
 	 * @return the char value (default '\0')
 	 */
-	inline int getCharParam (const char *name) { return getParametre(name).value.c; }
+	inline int getCharParam (const char *param_name) { return getParametre(param_name).value.c; }
 	/**
 	 * Get an integer parameter from the module configuration file
-	 * @param name the parameter name
+	 * @param param_name the parameter name
 	 * @return the integer value (default 0)
 	 */
-	inline int getIntParam (const char *name) { return getParametre(name).value.i; }
+	inline int getIntParam (const char *param_name) { return getParametre(param_name).value.i; }
 	/**
 	 * Get a float parameter from the module configuration file
-	 * @param name the parameter name
+	 * @param param_name the parameter name
 	 * @return the float value (default 0.0f)
 	 */
-	inline float getFloatParam (const char *name) { return getParametre(name).value.f; }
+	inline float getFloatParam (const char *param_name) { return getParametre(param_name).value.f; }
 	/**
 	 * Get a string parameter from the module configuration file
-	 * @param name the parameter name
+	 * @param param_name the parameter name
 	 * @return the string value (default NULL)
 	 */
-	inline const char *getStringParam (const char *name) { return getParametre(name).value.s; }
+	inline const char *getStringParam (const char *param_name) { return getParametre(param_name).value.s; }
 	/**
 	 * Get a color parameter from the module configuration file
-	 * @param name the parameter name
+	 * @param param_name the parameter name
 	 * @return the color value (default TCODColor::black)
 	 */
-	inline TCODColor getColourParam (const char *name) { return getParametre(name).value.col; }
+	inline TCODColor getColourParam (const char *param_name) { return getParametre(param_name).value.col; }
 	/**
 	 * Get a dice parameter from the module configuration file
-	 * @param name the parameter name
+	 * @param param_name the parameter name
 	 * @return the dice value (default filled with 0)
 	 */
-	inline TCOD_dice_t getDiceParam (const char *name) { return getParametre(name).value.dice; }
+	inline TCOD_dice_t getDiceParam (const char *param_name) { return getParametre(param_name).value.dice; }
 
 protected:
 	/**
@@ -201,12 +201,12 @@ protected:
 	 * Sets the module's priority.<br>The priority works like a weight setting: a lower number results in the module being updated earlier and rendered on top of others, while a high number will put the module under the others.
 	 * @param priority the module's priority
 	 */
-	inline void setPriority (int priority) { this->priority = priority; }
+	inline void setPriority (int new_priority) { priority = new_priority; }
 	/**
 	 * Set the module's name
 	 * @param name the module's name
 	 */
-	inline void setName (const char *name) { this->name = name; }
+	inline void setName (const char *new_name) { name = new_name; }
 	/**
 	 * Provides a pointer to the engine object.
 	 * @return a pointer to the engine object

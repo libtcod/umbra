@@ -36,26 +36,26 @@ UmbraCheckbox::UmbraCheckbox () {
 	visible = true;
 }
 
-UmbraCheckbox::UmbraCheckbox (UmbraWidget * parent, int x, int y, int w, int h, const char * tag) {
-	this->parent = parent;
+UmbraCheckbox::UmbraCheckbox (UmbraWidget * new_parent, int x, int y, int w, int h, const char * new_tag) {
+	parent = new_parent;
 	area.set(x, y, w, h);
-	this->tag = tag;
+	tag = new_tag;
 	checked = false;
 	visible = true;
 }
 
-UmbraCheckbox::UmbraCheckbox (UmbraWidget * parent, int x, int y, int w, int h, std::string tag) {
-	this->parent = parent;
+UmbraCheckbox::UmbraCheckbox (UmbraWidget * new_parent, int x, int y, int w, int h, std::string new_tag) {
+	parent = new_parent;
 	area.set(x, y, w, h);
-	this->tag = tag;
+	tag = new_tag;
 	checked = false;
 	visible = true;
 }
 
-void UmbraCheckbox::set (UmbraWidget * parent, int x, int y, int w, int h, const char * tag) {
-	this->parent = parent;
+void UmbraCheckbox::set (UmbraWidget * new_parent, int x, int y, int w, int h, const char * new_tag) {
+	parent = new_parent;
 	area.set(x, y, w, h);
-	this->tag = tag;
+	tag = new_tag;
 	checked = false;
 	visible = true;
 }

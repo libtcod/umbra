@@ -102,9 +102,9 @@ bool UmbraModSpeed::update () {
 	else return false;
 }
 
-void UmbraModSpeed::setTimes(long updateTime, long renderTime) {
-	this->updateTime += updateTime * 0.001f;
-	this->renderTime += renderTime * 0.001f;
+void UmbraModSpeed::setTimes(long new_update_time, long new_render_time) {
+	updateTime += new_update_time * 0.001f;
+	renderTime += new_render_time * 0.001f;
 }
 
 void UmbraModSpeed::render () {

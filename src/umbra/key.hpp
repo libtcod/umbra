@@ -41,7 +41,13 @@ class UmbraKey {
 		 * @param ctrl boolean indicating whether the ctrl key is expected to be pressed
 		 * @param shift boolean indicating whether the shift key is expected to be pressed
 		 */
-		inline void assign (TCOD_keycode_t vk, char c, bool alt, bool ctrl, bool shift) { this->vk=vk; this->c=c; this->alt=alt; this->ctrl=ctrl; this->shift=shift; }
+		inline void assign (TCOD_keycode_t new_vk, char new_c, bool new_alt, bool new_ctrl, bool new_shift) {
+			vk = new_vk;
+			c = new_c;
+			alt = new_alt;
+			ctrl = new_ctrl;
+			shift = new_shift;
+		}
 		inline bool operator == (const UmbraKey &k1) { return memcmp (this, &k1, sizeof(UmbraKey)) == 0; }
 	private:
 		TCOD_keycode_t vk;

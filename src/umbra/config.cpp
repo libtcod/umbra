@@ -52,17 +52,17 @@ const char * logLevelName[] = {
 	"none"
 };
 
-void UmbraConfig::load (const char *fileName) {
+void UmbraConfig::load (const char *path) {
 	static bool loaded = false;
 	TCODParser parser;
 	UmbraLog::openBlock("UmbraConfig::load | Loading configuration variables.");
-	if (loaded && strcmp(UmbraConfig::fileName, fileName) == 0) {
+	if (loaded && strcmp(UmbraConfig::fileName, path) == 0) {
 		UmbraLog::notice("UmbraConfig::load | Configuraion variables have been loaded previously. Aborting.");
 		UmbraLog::closeBlock(UMBRA_LOGRESULT_FAILURE);
 		return;
 	}
 
-	UmbraConfig::fileName = strdup(fileName);
+	UmbraConfig::fileName = strdup(path);
 
 	//register configuration variables
 	parser.newStructure("config")
@@ -77,8 +77,8 @@ void UmbraConfig::load (const char *fileName) {
 		->addProperty("moduleChain",TCOD_TYPE_STRING,false);
 
 	//check if the config file exists
-	if (!TCODSystem::fileExists(fileName)) {
-		UmbraLog::notice("Configuration file %s is bad or missing. Attempting to create a new one.", fileName);
+	if (!TCODSystem::fileExists(path)) {
+		UmbraLog::notice("Configuration file %s is bad or missing. Attempting to create a new one.", path);
 		//assign defaults
 		rootWidth = 80;
 		rootHeight = 60;
@@ -90,7 +90,7 @@ void UmbraConfig::load (const char *fileName) {
 	}
 
 	//run the parser
-	parser.run(fileName,NULL);
+	parser.run(path,NULL);
 
 	//assign parsed values to class variables
 	rootWidth = parser.getIntProperty("config.rootWidth");
