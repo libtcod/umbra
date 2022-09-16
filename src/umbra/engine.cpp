@@ -289,7 +289,7 @@ void UmbraEngine::setWindowTitle (std::string title) {
 //check whether there already exists a module with a given name
 bool UmbraEngine::isNameFree(const char * name) {
 	for (UmbraModule **it=modules.begin(); it != modules.end(); it++)
-		if ( (*it)->name.compare(name) == 0 ) return false;
+		if ( (*it)->name_.compare(name) == 0 ) return false;
 	return true;
 }
 
@@ -300,18 +300,18 @@ int UmbraEngine::registerModule (UmbraModule * module, const char * name) {
 	modules.push(module);
 	char n[2048];
 	if (name == NULL) {
-		if ( module->name == "" ) sprintf(n,"module%d",modules.size()-1);
-		else strcpy(n,module->name.c_str());
+		if ( module->name_ == "" ) sprintf(n,"module%d",modules.size()-1);
+		else strcpy(n,module->name_.c_str());
 	} else strcpy(n,name);
 	module->setName(n);
-	module->id = modules.size()-1;
-	return module->id;
+	module->id_ = modules.size()-1;
+	return module->id_;
 }
 
 // fetch a pointer to a module from its name
 UmbraModule * UmbraEngine::getModule (const char *name) {
 	for (UmbraModule **it=modules.begin(); it != modules.end(); it++) {
-		if ( (*it)->name.compare(name) == 0 ) return *it;
+		if ( (*it)->name_.compare(name) == 0 ) return *it;
 	}
 	UmbraLog::error("UmbraEngine::getModule | Tried to retrieve a module named \"%s\", but such a module was not found.",name);
 	return NULL;

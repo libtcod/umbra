@@ -44,12 +44,12 @@ public:
 	/**
 	 * Basic construtor for the UmbraModule. It takes no parametres and sets all initial values to their defaults.
 	 */
-	UmbraModule (); //constructor
+	UmbraModule() = default;
 	/**
 	 * A constructor. It sets all of the UmbraModule's internal values to their defaults, but takes the module's name from the parametre.
 	 * @param name the module's name, used for module identification.
 	 */
-	UmbraModule (const char *name); //constructor
+	UmbraModule(const char *name): name_{name} {};
 	/**
 	 * Basic UmbraModule's destructor.
 	 */
@@ -87,37 +87,37 @@ public:
 	 * Gets the ID number of the fallback module.
 	 * @return ID number of the fallback module
 	 */
-	inline int getFallback () { return fallback; }
+	inline int getFallback () { return fallback_; }
 	/**
 	 * Checks whether the module is paused or not.
 	 * @return <code>true</code> if the module is paused, <code>false</code> otherwise
 	 */
-	inline bool getPause () { return status == UMBRA_PAUSED; }
+	inline bool getPause () { return status_ == UMBRA_PAUSED; }
 	/**
 	 * Checks whether the module has been activated.
 	 * @return <code>true</code> if the module has been activated, <code>false</code> otherwise
 	 */
-	inline bool getActive () { return status > UMBRA_INACTIVE; }
+	inline bool getActive () { return status_ > UMBRA_INACTIVE; }
 	/**
 	 * Checks the module's priority.
 	 * @return the module's priority
 	 */
-	inline int getPriority () { return priority; }
+	inline int getPriority () { return priority_; }
 	/**
 	 * Checks the module's status.
 	 * @return module's status (one of the values from the UmbraModuleStatus enum)
 	 */
-	inline UmbraModuleStatus getStatus () { return status; }
+	inline UmbraModuleStatus getStatus () { return status_; }
 	/**
 	 * Gets the name of the module
 	 * @return the name of the module
 	 */
-	inline const char *getName () { return name.c_str(); }
+	inline const char *getName () { return name_.c_str(); }
 	/**
 	 * Fetches the module's ID number. Used mainly for debugging purposes and should play no real role in a release version of any program.
 	 * @return the module's ID number, assigned by UmbraEngine::registerModule().
 	 */
-	inline int getID () { return id; }
+	inline int getID () { return id_; }
 	/**
 	 * Get a boolean parameter from the module configuration file
 	 * @param param_name the parameter name
@@ -186,7 +186,7 @@ protected:
 	 * Sets the fallback module. Please refer to Umbra documentation for detailed information about fallbacks.
 	 * @param fback the ID of the fallback module.
 	 */
-	inline void setFallback (int fback) { fallback = fback; } //set default fallback module's index
+	inline void setFallback (int fback) { fallback_ = fback; } //set default fallback module's index
 	/**
 	 * Sets the fallback module.  Please refer to Umbra documentation for detailed information about fallbacks.
 	 * @param name the name of the fallback module.
@@ -196,17 +196,17 @@ protected:
 	 * Sets the module's timeout.
 	 * @param val the number of milliseconds that the module will be allowed to run before timing out. Set to 0 if the timeout is to be removed.
 	 */
-	inline void setTimeout (uint32_t val) { timeout = val; }
+	inline void setTimeout (uint32_t val) { timeout_ = val; }
 	/**
 	 * Sets the module's priority.<br>The priority works like a weight setting: a lower number results in the module being updated earlier and rendered on top of others, while a high number will put the module under the others.
 	 * @param priority the module's priority
 	 */
-	inline void setPriority (int new_priority) { priority = new_priority; }
+	inline void setPriority (int new_priority) { priority_ = new_priority; }
 	/**
 	 * Set the module's name
 	 * @param name the module's name
 	 */
-	inline void setName (const char *new_name) { name = new_name; }
+	inline void setName (const char *new_name) { name_ = new_name; }
 	/**
 	 * Provides a pointer to the engine object.
 	 * @return a pointer to the engine object
@@ -218,14 +218,6 @@ private:
 		const char *name;
 		TCOD_value_t value;
 	};
-	TCODList <UmbraModuleParametre> params;
-	UmbraModuleStatus status;
-	int priority; // update order (inverse of render order)
-	int fallback; //fallback module's index
-	int id; //module's ID number
-	uint32_t timeout;
-	uint32_t timeoutEnd;
-	std::string name;
 	/**
 	 * get a parametre (internal helper function)
 	 */
@@ -244,5 +236,13 @@ private:
 	 * Checks whether the module has timed out and is eligible for deactivation.
 	 * @param currentTime the program execution elapsed time, in milliseconds
 	 */
-	inline bool isTimedOut (uint32_t currentTime) { return (timeoutEnd > currentTime) ? false : true; }
+	inline bool isTimedOut (uint32_t currentTime) { return (timeout_end_ > currentTime) ? false : true; }
+	TCODList <UmbraModuleParametre> params_{};
+	UmbraModuleStatus status_{UMBRA_UNINITIALISED};
+	int priority_{1}; // update order (inverse of render order)
+	int fallback_{-1}; //fallback module's index
+	int id_{-1}; //module's ID number
+	uint32_t timeout_{0};
+	uint32_t timeout_end_{0xffffffff};
+	std::string name_{};
 };
