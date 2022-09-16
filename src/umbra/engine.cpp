@@ -44,7 +44,7 @@
 #include "font.hpp"
 #include "callback.hpp"
 
-TCOD_renderer_t UmbraEngine::renderer = TCOD_RENDERER_SDL;
+TCOD_renderer_t UmbraEngine::renderer = TCOD_RENDERER_SDL2;
 UmbraEngine * UmbraEngine::engineInstance = NULL;
 
 // specific parser for module.txt file

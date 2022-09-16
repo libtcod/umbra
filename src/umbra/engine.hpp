@@ -151,12 +151,12 @@ public:
 	 * @param renderer the renderer to be used (defaults to SDL)
 	 * @return <code>true</code> if initialisation is successful, <code>false</code> if errors were encountered
 	 */
-	bool initialise (TCOD_renderer_t renderer = TCOD_RENDERER_SDL);
+	bool initialise (TCOD_renderer_t renderer = TCOD_RENDERER_SDL2);
 	/**
 	 * Reinitialises an already initialised engine. Used mainly when the console font or the window title change.
 	 * @param renderer the renderer to be used (defaults to SDL)
 	 */
-	void reinitialise (TCOD_renderer_t renderer = TCOD_RENDERER_SDL);
+	void reinitialise (TCOD_renderer_t renderer = TCOD_RENDERER_SDL2);
 	/**
 	 * Runs the engine.
 	 * @return the result of running the application: <i>0</i> if no errors have occurred, different value otherwise.
