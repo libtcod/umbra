@@ -30,5 +30,5 @@
 class UmbraModuleFactory {
 public :
 	virtual UmbraModule *createModule(const char *name) = 0;
-	virtual ~UmbraModuleFactory() {}
+	virtual ~UmbraModuleFactory() = default;
 };

@@ -40,7 +40,7 @@ class UmbraCheckbox {
 		std::string tag; //the descriptive tag
 
 		UmbraCheckbox ();
-		virtual ~UmbraCheckbox () {}
+		virtual ~UmbraCheckbox() = default;
 		UmbraCheckbox (UmbraWidget * parent, int x, int y, int w, int h, const char * tag = "");
 		UmbraCheckbox (UmbraWidget * parent, int x, int y, int w, int h, std::string tag = "");
 		/**

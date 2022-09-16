@@ -54,7 +54,7 @@ public:
 	/**
 	 * Basic UmbraModule's destructor.
 	 */
-	virtual ~UmbraModule () {} //destructor
+	virtual ~UmbraModule() = default;
 	/**
 	 * Custom code controlling what and how is displayed on the console. Called automatically after <code>update()</code>.
 	 */

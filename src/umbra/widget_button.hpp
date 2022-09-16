@@ -39,7 +39,7 @@ class UmbraButton : public UmbraWidget {
 		UmbraButton ();
 		UmbraButton (UmbraWidget * parent, int x, int y, int w, int h, const char * tag = "");
 		UmbraButton (UmbraWidget * parent, int x, int y, int w, int h, std::string tag = "");
-		virtual ~UmbraButton() {}
+		virtual ~UmbraButton() = default;
         /**
 		 * Sets the basic properties of the button: parent widget, position in the console, size and tag.
 		 * @param parent a pointer to the UmbraWidget containing the button

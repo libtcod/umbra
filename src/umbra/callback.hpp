@@ -32,7 +32,7 @@ class UmbraCallback {
 	friend class UmbraEngine;
 	public:
 		UmbraCallback () {}
-		virtual ~UmbraCallback () {}
+		virtual ~UmbraCallback() = default;
 	protected:
 		UmbraKey key;
 		/**
