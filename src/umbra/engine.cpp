@@ -181,7 +181,6 @@ UmbraEngine::UmbraEngine (const char *fileName, UmbraRegisterCallbackFlag flag):
 	UmbraLog::openBlock("UmbraEngine::UmbraEngine | Instantiating the engine object.");
 	//load configuration variables
 	UmbraConfig::load(fileName);
-	paused = false;
 	setWindowTitle("%s ver. %s (%s)", UMBRA_TITLE, UMBRA_VERSION, UMBRA_STATUS);
 	engineInstance = this;
 	//register internal modules
@@ -286,8 +285,7 @@ void UmbraEngine::setWindowTitle (std::string title) {
 
 //check whether there already exists a module with a given name
 bool UmbraEngine::isNameFree(const char * name) {
-	for (UmbraModule **it=modules.begin(); it != modules.end(); it++)
-		if ( (*it)->name_.compare(name) == 0 ) return false;
+	for (auto& it : modules) if (it->name_ == name) return false;
 	return true;
 }
 
@@ -295,7 +293,7 @@ bool UmbraEngine::isNameFree(const char * name) {
 int UmbraEngine::registerModule (UmbraModule * module, const char * name) {
 	if (name != NULL) UmbraLog::info("UmbraEngine::registerModule | Registering a module named \"%s\".",name);
 	else UmbraLog::info("UmbraEngine::registerModule | Registering a module.");
-	modules.push(module);
+	modules.push_back(module);
 	char n[2048];
 	if (name == NULL) {
 		if ( module->name_ == "" ) sprintf(n,"module%d",modules.size()-1);
@@ -308,8 +306,8 @@ int UmbraEngine::registerModule (UmbraModule * module, const char * name) {
 
 // fetch a pointer to a module from its name
 UmbraModule * UmbraEngine::getModule (const char *name) {
-	for (UmbraModule **it=modules.begin(); it != modules.end(); it++) {
-		if ( (*it)->name_.compare(name) == 0 ) return *it;
+	for (auto &it : modules) {
+		if (it->name_ == name) return it;
 	}
 	UmbraLog::error("UmbraEngine::getModule | Tried to retrieve a module named \"%s\", but such a module was not found.",name);
 	return NULL;
@@ -471,7 +469,7 @@ void UmbraEngine::activateModule (int moduleId) {
 		displayError();
 		return;
 	}
-	UmbraModule *module = modules.get(moduleId);
+	UmbraModule *module = modules.at(moduleId);
 	activateModule(module);
 }
 
@@ -488,7 +486,7 @@ void UmbraEngine::activateModule (UmbraInternalModuleID id) {
 // public function registering the module for activation next frame, by reference
 void UmbraEngine::activateModule(UmbraModule *module) {
 	if (module != NULL && ! module->getActive()) {
-		toActivate.push(module);
+		toActivate.push_back(module);
 		UmbraLog::info("UmbraEngine::activateModule | Activated module \"%s\" (ID: %d).",module->getName(),module->getID());
 	}
 }
@@ -510,9 +508,9 @@ void UmbraEngine::doActivateModule( UmbraModule *mod ) {
 		mod->initialiseTimeout();
 		//insert the module at the right pos, sorted by priority
 		int idx = 0;
-		while (idx < activeModules.size() && activeModules.get(idx)->getPriority() < mod->getPriority()) idx++;
-		if (idx < activeModules.size()) activeModules.insertBefore(mod,idx);
-		else activeModules.push(mod);
+		while (idx < activeModules.size() && activeModules.at(idx)->getPriority() < mod->getPriority()) idx++;
+		if (idx < activeModules.size()) activeModules.insert(activeModules.begin() + idx, mod);
+		else activeModules.push_back(mod);
 	}
 }
 
@@ -522,7 +520,7 @@ void UmbraEngine::deactivateModule (int moduleId) {
 		UmbraLog::warning("UmbraEngine::deactivateModule | Tried to deactivate an invalid module: ID %d.",moduleId);
 		displayError();
 	}
-	UmbraModule *module = modules.get(moduleId);
+	UmbraModule *module = modules.at(moduleId);
 	if (!module->getActive()) {
 		UmbraLog::notice("UmbraEngine::deactivateModule | Tried to deactivate the module with an ID %d, but it's already inactive.",moduleId);
 		displayError();
@@ -545,7 +543,7 @@ void UmbraEngine::deactivateModule (UmbraInternalModuleID id) {
 // register the module for deactivation by reference
 void UmbraEngine::deactivateModule(UmbraModule *module) {
 	if (module != NULL && module->getActive()) {
-		toDeactivate.push(module);
+		toDeactivate.push_back(module);
 		module->setActive(false);
 		UmbraLog::info("UmbraEngine::deactivateModule | Deactivated \"%s\" module (ID: %d).",module->getName(),module->getID());
 	}
@@ -580,9 +578,9 @@ void UmbraEngine::deactivateModule (const char *name) {
 
 void UmbraEngine::deactivateAll (bool ignoreFallbacks) {
 	UmbraLog::openBlock("UmbraEngine::deactivateAll | Deactivating all modules%s.",ignoreFallbacks ? ", ignoring fallbacks" : "");
-	for (UmbraModule ** mod = activeModules.begin(); mod != activeModules.end(); mod++) {
-		if (ignoreFallbacks) (*mod)->setFallback(-1);
-		deactivateModule((*mod));
+	for (auto& mod : activeModules) {
+		if (ignoreFallbacks) mod->setFallback(-1);
+		deactivateModule(mod);
 	}
 	UmbraLog::closeBlock(UMBRA_LOGRESULT_SUCCESS);
 }
@@ -632,17 +630,23 @@ int UmbraEngine::run () {
 		}
 
 		// deactivate modules
-		for (UmbraModule ** mod = toDeactivate.begin(); mod != toDeactivate.end(); mod++) {
-			(*mod)->setActive(false);
-			activeModules.remove(*mod);
+		for (auto& mod : toDeactivate) {
+			mod->setActive(false);
+			auto found = std::find(activeModules.begin(), activeModules.end(), mod);
+			if (found != activeModules.end()) {
+				activeModules.erase(found);
+			} else {
+				UmbraLog::notice("Tried to deactive non active module: %s", mod->getName());
+			}
 		}
 		toDeactivate.clear();
 
 		// activate new modules
-		for (UmbraModule ** mod = toActivate.begin(); mod != toActivate.end(); mod++) {
-			doActivateModule(*mod);
+		while (toActivate.size()) {
+			auto* mod = toActivate.back();
+			toActivate.pop_back();
+			doActivateModule(mod);
 		}
-		toActivate.clear();
 
 		if (activeModules.size() == 0) break; // exit game
 
@@ -669,31 +673,36 @@ int UmbraEngine::run () {
 		uint32_t startTime=SDL_GetTicks();
 		// update all active modules by priority order
 		UmbraModule ** tmpMod;
-		for (tmpMod = activeModules.begin(); tmpMod != activeModules.end(); tmpMod++) {
-			if (!(*tmpMod)->getPause()) {
-				// handle input
-				(*tmpMod)->keyboard(key);
-				(*tmpMod)->mouse(mouse);
-				if ((*tmpMod)->isTimedOut(startTime) || !(*tmpMod)->update() || !(*tmpMod)->getActive()) {
-					UmbraModule *module = *tmpMod;
-					int fallback = module->getFallback();
-					// deactivate module
-					module->setActive(false);
-					tmpMod = activeModules.remove(tmpMod);
-					if (fallback != -1) {
-						// register fallback for activation
-						UmbraModule *fallbackModule = modules.get(fallback);
-						if (fallbackModule != NULL && !fallbackModule->getActive()) toActivate.push(fallbackModule);
+
+		activeModules.erase(
+			std::remove_if(activeModules.begin(), activeModules.end(), [&](UmbraModule* tmpMod){
+				bool remove_this = false;
+				if (!tmpMod->getPause()) {
+					// handle input
+					tmpMod->keyboard(key);
+					tmpMod->mouse(mouse);
+					if (tmpMod->isTimedOut(startTime) || !tmpMod->update() || !tmpMod->getActive()) {
+						UmbraModule *module = tmpMod;
+						int fallback = module->getFallback();
+						// deactivate module
+						module->setActive(false);
+						remove_this = true;
+						if (fallback != -1) {
+							// register fallback for activation
+							UmbraModule *fallbackModule = modules.at(fallback);
+							if (fallbackModule != NULL && !fallbackModule->getActive()) toActivate.push_back(fallbackModule);
+						}
 					}
 				}
-			}
-		}
+				return remove_this;
+			}),
+			activeModules.end()
+		);
 		uint32_t updateTime=SDL_GetTicks() - startTime;
 		TCODConsole::root->setDefaultBackground(TCODColor::black);
 		TCODConsole::root->clear();
 		// render active modules by inverted priority order
-		for (tmpMod = activeModules.end(); tmpMod != activeModules.begin(); ) {
-			tmpMod--;
+		for (auto tmpMod = activeModules.rbegin(); tmpMod != activeModules.rend(); ++tmpMod) {
 			(*tmpMod)->render();
 		}
 		uint32_t renderTime = SDL_GetTicks() - startTime - updateTime;
@@ -716,9 +725,9 @@ void UmbraEngine::keyboard (TCOD_key_t &key) {
 
 	bool val = false;
 
-	for (UmbraCallback ** cbk = callbacks.begin(); cbk != callbacks.end(); cbk++) {
-		if ((*cbk)->evaluate(k)) {
-			(*cbk)->action();
+	for (auto& cbk : callbacks) {
+		if (cbk->evaluate(k)) {
+			cbk->action();
 			val = true;
 			break;
 		}
@@ -750,8 +759,8 @@ void UmbraEngine::registerInternalModule (UmbraInternalModuleID id, UmbraModule 
 void UmbraEngine::displayError () {
 	if (TCODConsole::root != NULL) {
 		if (internalModules[UMBRA_INTERNAL_BSOD]->getActive())
-			toDeactivate.push(internalModules[UMBRA_INTERNAL_BSOD]);
-		toActivate.push(internalModules[UMBRA_INTERNAL_BSOD]);
+			toDeactivate.push_back(internalModules[UMBRA_INTERNAL_BSOD]);
+		toActivate.push_back(internalModules[UMBRA_INTERNAL_BSOD]);
 	}
 }
 
@@ -761,21 +770,13 @@ void UmbraEngine::printCredits (int x, int y, uint32_t duration) {
 }
 
 void UmbraEngine::addCustomCharacter(int x, int y, int code) {
-	UmbraCustomCharMap * cMap = new UmbraCustomCharMap() ;
-	cMap->x = x;
-	cMap->y = y;
-	cMap->code = code;
-
-	this->customChars.push(cMap);
+	this->customChars.push_back(UmbraCustomCharMap{x, y, code});
 }
 
 void UmbraEngine::registerCustomCharacters() {
-	if(this->customChars.isEmpty())
-		return;
-
-	for(int i = 0; i < this->customChars.size(); i++) {
-		UmbraCustomCharMap * tmp = this->customChars.get(i);
-		TCODConsole::root->mapAsciiCodeToFont(tmp->code, tmp->x, tmp->y);
+	for(size_t i = 0; i < this->customChars.size(); ++i) {
+		UmbraCustomCharMap& tmp = this->customChars.at(i);
+		TCODConsole::root->mapAsciiCodeToFont(tmp.code, tmp.x, tmp.y);
 	}
 
 	UmbraLog::info("UmbraEngine::registerCustomCharacters | Custom character mappings registered.");

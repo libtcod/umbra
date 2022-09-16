@@ -187,7 +187,7 @@ public:
 	 * Registers a new keyboard callback.
 	 * @param cbk a pointer to the keyboard callback. You're encouraged to create the callback using the <code>new</code> keyword here: <code>registerCallback(new MyCallback());</code>
 	 */
-	inline void registerCallback (UmbraCallback * cbk) {callbacks.push(cbk); }
+	inline void registerCallback (UmbraCallback * cbk) {callbacks.push_back(cbk); }
 	/**
 	 * Activates a module.
 	 * @param moduleId the identification number of the module to be activated
@@ -253,7 +253,7 @@ public:
 	 * @param moduleId the identification number of the module to which a pointer is to be fetched
 	 * @return a pointer to the requested module
 	 */
-	inline UmbraModule * getModule (int moduleId) { return (moduleId < 0 || moduleId >= modules.size() ? NULL: modules.get(moduleId)); }
+	inline UmbraModule* getModule (int moduleId) { return (moduleId < 0 || moduleId >= modules.size() ? NULL: modules.at(moduleId)); }
 	/**
 	 * Fetches a pointer to a module.
 	 * @param moduleName the name of the module to which a pointer is to be fetched
@@ -338,17 +338,17 @@ private:
 	void registerCustomCharacters();
 
 	static UmbraEngine * engineInstance;
-	std::string windowTitle;
-	bool paused;
 	static TCOD_renderer_t renderer;
-	TCODList <UmbraCustomCharMap*> customChars; // List of custom chars to add
-	TCODList <UmbraModule*> modules; // list of all registered modules
-	TCODList <UmbraModule*> activeModules; // currently active modules
-	TCODList <UmbraModule*> toActivate; // modules to activate next frame
-	TCODList <UmbraModule*> toDeactivate; // modules to deactivate next frame
-	UmbraModule * internalModules[UMBRA_INTERNAL_MAX];
-	UmbraKeyboardMode keyboardMode;
-	TCODList <UmbraCallback *> callbacks; //the keybinding callbacks
+	std::string windowTitle{""};
+	bool paused{false};
+	std::vector<UmbraCustomCharMap> customChars{}; // List of custom chars to add
+	std::vector<UmbraModule*> modules{}; // list of all registered modules
+	std::vector<UmbraModule*> activeModules{}; // currently active modules
+	std::vector<UmbraModule*> toActivate{}; // modules to activate next frame
+	std::vector<UmbraModule*> toDeactivate{}; // modules to deactivate next frame
+	UmbraModule* internalModules[UMBRA_INTERNAL_MAX]{};
+	UmbraKeyboardMode keyboardMode{};
+	std::vector<UmbraCallback*> callbacks{}; //the keybinding callbacks
 	/**
 	 * Parses the keyboard input and passes it to the registered callbacks.
 	 * @param key a reference to the keyboard event object
