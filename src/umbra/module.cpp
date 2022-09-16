@@ -24,8 +24,13 @@
 * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
+#include "module.hpp"
 
-#include "umbra.hpp"
+#include <libtcod/parser.h>
+#include <libtcod/sys.hpp>
+
+#include "engine.hpp"
+#include "log.hpp"
 
 UmbraModule::UmbraModule () {
 	id = -1;
@@ -111,3 +116,5 @@ UmbraModule::UmbraModuleParametre &UmbraModule::getParametre(const char *name) {
 	}
 	return def;
 }
+
+auto UmbraModule::getEngine() -> UmbraEngine* { return UmbraEngine::getInstance(); }

@@ -24,6 +24,9 @@
 * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
+#pragma once
+#include "key.hpp"
+#include "engine.hpp"
 
 class UmbraCallback {
 	friend class UmbraEngine;
@@ -46,7 +49,7 @@ class UmbraCallback {
 		 * Fetches a pointer to the engine.
 		 * @return a pointer to the engine
 		 */
-		inline UmbraEngine * getEngine () { return UmbraEngine::getInstance(); }
+		inline UmbraEngine* getEngine () { return UmbraEngine::getInstance(); }
 };
 
 //Internal callbacks:

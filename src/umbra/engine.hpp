@@ -24,17 +24,22 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 #ifndef UMBRA_ENGINE_HPP
 #define UMBRA_ENGINE_HPP
 
-#include "config.hpp"
 #include <iostream>
+#include <string>
 
-class UmbraModule;
-class UmbraModuleFactory;
-class UmbraCallback;
-class UmbraKey;
+
+#include <libtcod/list.hpp>
+#include <libtcod/console_types.h>
+
+
+#include "config.hpp"
+#include "module.hpp"
+#include "module_factory.hpp"
+#include "callback_fwd.hpp"
+#include "key.hpp"
 
 /**
  * The keyboard modes available in Umbra. They correspond to the ones used in libtcod.

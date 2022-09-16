@@ -25,8 +25,15 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#include "main.hpp"
 #include <stdio.h>
+
+#include "globals.hpp"
+#include "matrix.hpp"
+#include "rabbit.hpp"
+#include "demo.hpp"
+#include "credits.hpp"
+#include "panel.hpp"
+#include "circle.hpp"
 
 UmbraEngine engine("data/cfg/umbra.txt",UMBRA_REGISTER_ALL);
 

@@ -24,14 +24,8 @@
 * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-
-#include <umbra/umbra.hpp>
-#include "matrix.hpp"
-#include "rabbit.hpp"
-#include "demo.hpp"
-#include "credits.hpp"
-#include "panel.hpp"
-#include "circle.hpp"
+#pragma once
+#include <umbra/engine.hpp>
 
 enum { MOD_MATRIX, MOD_DEMO, MOD_RABBIT, MOD_PANEL, MOD_CREDITS };
 

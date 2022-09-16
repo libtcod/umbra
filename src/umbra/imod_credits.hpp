@@ -24,9 +24,13 @@
 * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-
 #ifndef UMBRA_IMOD_CREDITS_HPP
 #define	UMBRA_IMOD_CREDITS_HPP
+#include <libtcod/console.hpp>
+
+#include "module.hpp"
+#include "point.hpp"
+#include "engine.hpp"
 
 class UmbraModCredits: public UmbraModule {
 	friend void UmbraEngine::printCredits(int x, int y, uint32_t duration);

@@ -24,9 +24,10 @@
 * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-
 #ifndef MODULE_CREDITS_HPP
 #define MODULE_CREDITS_HPP
+#include <umbra/umbra.hpp>
+#include <libtcod/libtcod.hpp>
 
 class MatrixLead {
 public:

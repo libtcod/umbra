@@ -24,9 +24,9 @@
 * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-
 #ifndef UMBRA_STYLESHEET_HPP
 #define	UMBRA_STYLESHEET_HPP
+#include <libtcod/libtcod.hpp>
 
 /**
  * Specificity levels. Used to determine whether an encountered value can override the one that has been already set.

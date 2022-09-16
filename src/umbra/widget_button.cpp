@@ -24,8 +24,9 @@
 * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
+#include "widget_button.hpp"
 
-#include "umbra.hpp"
+#include <libtcod/console.hpp>
 
 UmbraButton::UmbraButton () {
 	parent = NULL;

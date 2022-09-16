@@ -24,9 +24,10 @@
 * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-
 #ifndef PANEL_HPP
 #define PANEL_HPP
+#include <umbra/umbra.hpp>
+#include <libtcod/libtcod.hpp>
 
 class Panel: public UmbraWidget {
     public:

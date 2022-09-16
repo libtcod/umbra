@@ -28,6 +28,9 @@
 #include "point.hpp"
 #include "rect.hpp"
 #include "stylesheet.hpp"
+#include "module.hpp"
+#include "events.hpp"
+#include "signal.hpp"
 
 class UmbraWidget: public UmbraModule {
 	friend class UmbraCheckbox;

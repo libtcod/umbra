@@ -24,8 +24,13 @@
 * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
+#pragma once
 
 #include <string>
+
+#include <libtcod/libtcod.hpp>
+
+#include "engine_fwd.hpp"
 
 enum UmbraModuleStatus { UMBRA_UNINITIALISED, UMBRA_INACTIVE, UMBRA_ACTIVE, UMBRA_PAUSED };
 
@@ -206,7 +211,7 @@ protected:
 	 * Provides a pointer to the engine object.
 	 * @return a pointer to the engine object
 	 */
-	inline UmbraEngine * getEngine () { return UmbraEngine::getInstance(); }
+	UmbraEngine* getEngine();
 
 private:
 	struct UmbraModuleParametre {

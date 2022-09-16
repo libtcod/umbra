@@ -24,8 +24,9 @@
 * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
+#include "panel.hpp"
 
-#include "main.hpp"
+#include "globals.hpp"
 
 void Panel::onQuit(UmbraWidget *w,UmbraEvent ev) {
 	engine.deactivateAll(true);

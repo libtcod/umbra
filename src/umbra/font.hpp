@@ -27,6 +27,8 @@
 #pragma once
 #include <string>
 
+#include <libtcod/console_types.h>
+
 class UmbraFont {
 	public:
 		/**

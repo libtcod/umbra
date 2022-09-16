@@ -6,12 +6,12 @@
  *  Created by Patrick Hogan on 5/18/09.
  *
  */
-
 #ifndef _SIGNAL_H_
 #define _SIGNAL_H_
 
-#include "delegate.hpp"
 #include <set>
+
+#include "delegate.hpp"
 
 template< class Param0 = void >
 class Signal0

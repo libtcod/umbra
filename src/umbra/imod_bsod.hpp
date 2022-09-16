@@ -24,7 +24,12 @@
 * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
+#pragma once
+#include <string>
 
+#include <libtcod/console.hpp>
+
+#include "widget.hpp"
 class UmbraModBSOD: public UmbraWidget {
 	public:
 		UmbraModBSOD ();

@@ -24,8 +24,12 @@
 * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
+#include "imod_bsod.hpp"
 
-#include "umbra.hpp"
+#include <libtcod/libtcod.hpp>
+
+#include "log.hpp"
+#include "engine.hpp"
 
 UmbraModBSOD::UmbraModBSOD () {
 	bsod = new TCODConsole(30,8);

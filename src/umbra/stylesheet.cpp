@@ -24,10 +24,10 @@
 * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
+#include <string.h>
 
 #include "umbra.hpp"
 #include "stylesheet.hpp"
-#include <string.h>
 
 UmbraStyleSheetSet::UmbraStyleSheetSet() {
 	colour.set(TCODColor::white);

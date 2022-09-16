@@ -24,9 +24,10 @@
 * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-
 #ifndef CIRCLE_HPP
 #define	CIRCLE_HPP
+#include <umbra/umbra.hpp>
+#include <libtcod/libtcod.hpp>
 
 class Circle: public UmbraModule {
 public:

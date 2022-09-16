@@ -24,10 +24,14 @@
 * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
+#include "log.hpp"
 
-#include "umbra.hpp"
 #include <stdarg.h>
 #include <stdio.h>
+
+#include <libtcod/libtcod.hpp>
+
+#include "version.hpp"
 
 FILE * UmbraLog::out = NULL;
 int UmbraLog::indent = 0;

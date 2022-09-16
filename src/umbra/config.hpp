@@ -24,11 +24,11 @@
 * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-
 #ifndef UMBRA_CONFIG_HPP
 #define UMBRA_CONFIG_HPP
+#include <libtcod/list.hpp>
 
-class UmbraFont;
+#include "font.hpp"
 
 enum UmbraLogLevel {
 	UMBRA_LOGLEVEL_INFO,

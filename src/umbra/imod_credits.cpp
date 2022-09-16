@@ -1,4 +1,8 @@
-#include "umbra.hpp"
+#include "imod_credits.hpp"
+
+#include <libtcod/libtcod.hpp>
+
+#include "version.hpp"
 
 UmbraModCredits::UmbraModCredits() {
 	coords.set(0,0);

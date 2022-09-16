@@ -24,8 +24,11 @@
 * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
+#include "imod_speed.hpp"
 
-#include "umbra.hpp"
+#include <libtcod/libtcod.hpp>
+
+#include "engine.hpp"
 
 #define MAXIMISED_MODE_WIDTH 30
 #define MAXIMISED_MODE_HEIGHT 8

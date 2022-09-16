@@ -25,8 +25,9 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #pragma once
-#include "point.hpp"
 #include <libtcod/mouse_types.h>
+
+#include "point.hpp"
 
 struct UmbraRect {
 	constexpr UmbraRect() noexcept = default;

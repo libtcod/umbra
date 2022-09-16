@@ -24,13 +24,23 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+#include "engine.hpp"
 
-#include "umbra.hpp"
 #include <stdio.h>
 #include <stdarg.h>
 
 #include <cassert>
 #include <iostream>
+
+#include <libtcod/libtcod.hpp>
+
+#include "version.hpp"
+#include "log.hpp"
+#include "imod_bsod.hpp"
+#include "imod_credits.hpp"
+#include "imod_speed.hpp"
+#include "font.hpp"
+#include "callback.hpp"
 
 TCOD_renderer_t UmbraEngine::renderer = TCOD_RENDERER_SDL;
 UmbraEngine * UmbraEngine::engineInstance = NULL;
