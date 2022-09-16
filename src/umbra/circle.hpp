@@ -66,7 +66,7 @@ class UmbraCircle {
          * @param p the point whose coordinates are to be come the circle's centre
          * @param r the circle's radius
          */
-		inline void set (const UmbraPoint &p, int new_r) { setPos(x,y); setRadius(new_r); }
+		inline void set (const UmbraPoint &p, int new_r) { setPos(p); setRadius(new_r); }
 		/**
 		 * Checks whether a set of coordinates is contained within the circle.
 		 * @param px the <i>x</i> coordinate to be checked
