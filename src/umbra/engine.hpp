@@ -28,7 +28,7 @@
 #ifndef UMBRA_ENGINE_HPP
 #define UMBRA_ENGINE_HPP
 
-#include "umbra_config.hpp"
+#include "config.hpp"
 #include <iostream>
 
 class UmbraModule;

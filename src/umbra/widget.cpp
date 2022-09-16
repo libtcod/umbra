@@ -26,7 +26,7 @@
 */
 
 #include "umbra.hpp"
-#include "umbra_stylesheet.hpp"
+#include "stylesheet.hpp"
 
 UmbraWidget::UmbraWidget():
 	parent(NULL),

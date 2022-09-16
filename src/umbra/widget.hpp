@@ -25,9 +25,9 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #pragma once
-#include "umbra_point.hpp"
-#include "umbra_rect.hpp"
-#include "umbra_stylesheet.hpp"
+#include "point.hpp"
+#include "rect.hpp"
+#include "stylesheet.hpp"
 
 class UmbraWidget: public UmbraModule {
 	friend class UmbraCheckbox;

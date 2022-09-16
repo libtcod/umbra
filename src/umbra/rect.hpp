@@ -25,7 +25,7 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #pragma once
-#include "umbra_point.hpp"
+#include "point.hpp"
 #include <libtcod/mouse_types.h>
 
 struct UmbraRect {

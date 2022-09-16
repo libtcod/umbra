@@ -25,7 +25,7 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #pragma once
-#include "umbra_point.hpp"
+#include "point.hpp"
 
 class UmbraCircle {
 	public:

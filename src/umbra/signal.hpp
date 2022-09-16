@@ -10,7 +10,7 @@
 #ifndef _SIGNAL_H_
 #define _SIGNAL_H_
 
-#include "umbra_delegate.hpp"
+#include "delegate.hpp"
 #include <set>
 
 template< class Param0 = void >

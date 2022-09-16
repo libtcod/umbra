@@ -26,7 +26,7 @@
 */
 
 #include "umbra.hpp"
-#include "umbra_stylesheet.hpp"
+#include "stylesheet.hpp"
 #include <string.h>
 
 UmbraStyleSheetSet::UmbraStyleSheetSet() {

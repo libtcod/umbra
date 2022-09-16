@@ -25,7 +25,7 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#include "umbra_engine.hpp"
+#include "engine.hpp"
 
 /**
  * Type of message placed in the log.
