@@ -30,6 +30,7 @@
 #include <stdio.h>
 
 #include <libtcod/libtcod.hpp>
+#include <SDL_timer.h>
 
 #include "version.hpp"
 
@@ -77,7 +78,7 @@ void UmbraLog::initialise () {
 	            "ERR. = ERROR. An error that is guaranteed to provoke some misbehaviour.\n"
 	            "FAT. = FATAL ERROR. An error that prevents the program from continuing.\n"
 	            "---===---",
-	            TCODSystem::getElapsedMilli());
+	            SDL_GetTicks());
 	fflush(out);
 }
 
@@ -101,7 +102,7 @@ int UmbraLog::output (UmbraLogType type, UmbraLogResult res, int ind, const char
 	msg->indent = indent;
 	msg->logType = type;
 	msg->result = res;
-	msg->time = TCODSystem::getElapsedMilli();
+	msg->time = SDL_GetTicks();
 	//create the arrows marking the indent level
 	std::string arrows;
 	for (int i = 0; i < indent; i++)

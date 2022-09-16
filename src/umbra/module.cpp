@@ -28,6 +28,7 @@
 
 #include <libtcod/parser.h>
 #include <libtcod/sys.hpp>
+#include <SDL_timer.h>
 
 #include "engine.hpp"
 #include "log.hpp"
@@ -80,7 +81,7 @@ void UmbraModule::setPause (bool paused) {
 
 void UmbraModule::initialiseTimeout() {
 	if (timeout == 0) return;
-	else timeoutEnd = TCODSystem::getElapsedMilli() + timeout;
+	else timeoutEnd = SDL_GetTicks() + timeout;
 }
 
 void UmbraModule::setFallback(const char *module_name) {

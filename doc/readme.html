@@ -813,7 +813,7 @@ Credits::Credits () {
 
 //update: check the timeout
 bool Credits::update (void) {
-    if (TCODSystem::getElapsedMilli()-startTime &lt; duration)
+    if (SDL_GetTicks()-startTime &lt; duration)
         return true;
     else
         return false;
@@ -833,7 +833,7 @@ void Credits::keyboard (TCOD_key_t &amp;key) {
 
 //activation code
 void Credits::activate (void) {
-    startTime = TCODSystem::getElapsedMilli();
+    startTime = SDL_GetTicks();
 }
 &lt;/code&gt;
 The constructor, as can be expected, sets the initial values for the module's variables. The credits text is set, the timeout is fixed to 3 seconds (3000 milliseconds), and the coordinates are chosen for the credits renderer.

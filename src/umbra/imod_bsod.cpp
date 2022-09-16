@@ -27,6 +27,7 @@
 #include "imod_bsod.hpp"
 
 #include <libtcod/libtcod.hpp>
+#include <SDL_timer.h>
 
 #include "log.hpp"
 #include "engine.hpp"
@@ -42,13 +43,13 @@ UmbraModBSOD::UmbraModBSOD () {
 }
 
 void UmbraModBSOD::activate () {
-	startTime = TCODSystem::getElapsedMilli();
+	startTime = SDL_GetTicks();
 	msgString = UmbraLog::get();
 }
 
 bool UmbraModBSOD::update () {
 	if (closeButton.mouseDown) setActive(false);
-	if (TCODSystem::getElapsedMilli() - startTime >= duration) return false;
+	if (SDL_GetTicks() - startTime >= duration) return false;
 	else return true;
 }
 

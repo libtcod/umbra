@@ -26,6 +26,8 @@
 */
 #include "panel.hpp"
 
+#include <SDL_timer.h>
+
 #include "globals.hpp"
 
 void Panel::onQuit(UmbraWidget *w,UmbraEvent ev) {
@@ -55,7 +57,7 @@ void Panel::render () {
 }
 
 bool Panel::update () {
-	uint32_t time = TCODSystem::getElapsedMilli();
+	uint32_t time = SDL_GetTicks();
 	if (rect.mouseHover) {
 		lastHover = time;
 		posx += 3;

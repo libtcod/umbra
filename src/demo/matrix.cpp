@@ -28,6 +28,8 @@
 
 #include <stdio.h>
 
+#include <SDL_timer.h>
+
 #include "globals.hpp"
 
 TCODRandom * MatrixLead::random;
@@ -37,7 +39,7 @@ MatrixLead::MatrixLead () {
     if (!random) random = new TCODRandom();
     y = 0;
     x = random->get(0,engine.getRootWidth()-1);
-    lastY = TCODSystem::getElapsedMilli();
+    lastY = SDL_GetTicks();
     yDuration = random->get(50,250);
     if (!matrix) matrix = new TCODConsole(engine.getRootWidth(),engine.getRootHeight());
 }
@@ -65,7 +67,7 @@ bool Matrix::update () {
 }
 
 void Matrix::render () {
-    uint32_t t = TCODSystem::getElapsedMilli();
+    uint32_t t = SDL_GetTicks();
     if (leads.size() > 0) {
         for (MatrixLead ** mx = leads.begin(); mx != leads.end(); mx++) {
             (*mx)->render(t);

@@ -27,6 +27,8 @@
 
 #include <stdio.h>
 
+#include <SDL.h>
+
 #include "globals.hpp"
 #include "matrix.hpp"
 #include "rabbit.hpp"
@@ -50,8 +52,7 @@ public :
 	}
 };
 
-int main()
-{
+int main(int argc, char *argv[]) {
     //set window title
     engine.setWindowTitle("Umbra demo");
     //initialise and run the engine

@@ -6,6 +6,7 @@
     {
       "name": "libtcod",
       "features": ["threads"]
-    }
+    },
+    "sdl2"
   ]
 }
