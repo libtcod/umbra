@@ -75,27 +75,22 @@ void UmbraModule::setFallback(const char *module_name) {
 	}
 }
 
-void UmbraModule::setParametre(const char *param_name,TCOD_value_t value) {
-	if (param_name == NULL) return;
-	for (UmbraModuleParametre *it=params_.begin(); it != params_.end(); it++) {
-		if (strcmp(it->name,param_name) == 0) {
+void UmbraModule::setParameter(std::string_view param_name,TCOD_value_t value) {
+	for (UmbraModuleParameter& it : params_){
+		if (it.name == param_name) {
 			// already exists. update value
 			// this happens when value is overriden in module.cfg
-			it->value=value;
+			it.value = value;
 			return;
 		}
 	}
-	// new parametre
-	UmbraModuleParametre mod;
-	mod.name=strdup(param_name);
-	mod.value=value;
-	params_.push(mod);
+	params_.emplace_back(UmbraModuleParameter{std::string{param_name}, value});
 }
 
-UmbraModule::UmbraModuleParametre &UmbraModule::getParametre(const char *param_name) {
-	static UmbraModuleParametre def = {NULL,{0}};
-	for (UmbraModuleParametre *it=params_.begin(); it != params_.end(); it++) {
-		if (strcmp(it->name,param_name) == 0) return *it;
+UmbraModule::UmbraModuleParameter &UmbraModule::getParameter(std::string_view param_name) {
+	static UmbraModuleParameter def = {"", {0}};
+	for (UmbraModuleParameter& it : params_) {
+		if (it.name == param_name) return it;
 	}
 	return def;
 }

@@ -87,6 +87,8 @@
         "xlocmon": "cpp",
         "xloctime": "cpp",
         "xtree": "cpp",
-        "*.rh": "cpp"
+        "*.rh": "cpp",
+        "cassert": "cpp",
+        "set": "cpp"
     }
 }

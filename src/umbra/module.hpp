@@ -27,6 +27,7 @@
 #pragma once
 
 #include <string>
+#include <vector>
 
 #include <libtcod/libtcod.hpp>
 
@@ -123,43 +124,43 @@ public:
 	 * @param param_name the parameter name
 	 * @return the boolean value (default false)
 	 */
-	inline bool getBoolParam (const char *param_name) { return getParametre(param_name).value.b; }
+	inline bool getBoolParam (const char *param_name) { return getParameter(param_name).value.b; }
 	/**
 	 * Get a char parameter from the module configuration file
 	 * @param param_name the parameter name
 	 * @return the char value (default '\0')
 	 */
-	inline int getCharParam (const char *param_name) { return getParametre(param_name).value.c; }
+	inline int getCharParam (const char *param_name) { return getParameter(param_name).value.c; }
 	/**
 	 * Get an integer parameter from the module configuration file
 	 * @param param_name the parameter name
 	 * @return the integer value (default 0)
 	 */
-	inline int getIntParam (const char *param_name) { return getParametre(param_name).value.i; }
+	inline int getIntParam (const char *param_name) { return getParameter(param_name).value.i; }
 	/**
 	 * Get a float parameter from the module configuration file
 	 * @param param_name the parameter name
 	 * @return the float value (default 0.0f)
 	 */
-	inline float getFloatParam (const char *param_name) { return getParametre(param_name).value.f; }
+	inline float getFloatParam (const char *param_name) { return getParameter(param_name).value.f; }
 	/**
 	 * Get a string parameter from the module configuration file
 	 * @param param_name the parameter name
 	 * @return the string value (default NULL)
 	 */
-	inline const char *getStringParam (const char *param_name) { return getParametre(param_name).value.s; }
+	inline const char *getStringParam (const char *param_name) { return getParameter(param_name).value.s; }
 	/**
 	 * Get a color parameter from the module configuration file
 	 * @param param_name the parameter name
 	 * @return the color value (default TCODColor::black)
 	 */
-	inline TCODColor getColourParam (const char *param_name) { return getParametre(param_name).value.col; }
+	inline TCODColor getColourParam (const char *param_name) { return getParameter(param_name).value.col; }
 	/**
 	 * Get a dice parameter from the module configuration file
 	 * @param param_name the parameter name
 	 * @return the dice value (default filled with 0)
 	 */
-	inline TCOD_dice_t getDiceParam (const char *param_name) { return getParametre(param_name).value.dice; }
+	inline TCOD_dice_t getDiceParam (const char *param_name) { return getParameter(param_name).value.dice; }
 
 protected:
 	/**
@@ -214,20 +215,20 @@ protected:
 	UmbraEngine* getEngine();
 
 private:
-	struct UmbraModuleParametre {
-		const char *name;
+	struct UmbraModuleParameter {
+		std::string name;
 		TCOD_value_t value;
 	};
 	/**
 	 * get a parametre (internal helper function)
 	 */
-	UmbraModuleParametre &getParametre (const char *name);
+	UmbraModuleParameter &getParameter (std::string_view name);
 	/**
-	 * Sets a parametre (only used by module.txt file parser)
+	 * Sets a parameter (only used by module.txt file parser)
 	 * @param name the parametre's name
 	 * @param value the parametre's value
 	 */
-	void setParametre (const char *name, TCOD_value_t value);
+	void setParameter(std::string_view name, TCOD_value_t value);
 	/**
 	 * Initialises the timeout by calculating the exact time when the module will time out.
 	 */
@@ -237,7 +238,7 @@ private:
 	 * @param currentTime the program execution elapsed time, in milliseconds
 	 */
 	inline bool isTimedOut (uint32_t currentTime) { return (timeout_end_ > currentTime) ? false : true; }
-	TCODList <UmbraModuleParametre> params_{};
+	std::vector<UmbraModuleParameter> params_{};
 	UmbraModuleStatus status_{UMBRA_UNINITIALISED};
 	int priority_{1}; // update order (inverse of render order)
 	int fallback_{-1}; //fallback module's index

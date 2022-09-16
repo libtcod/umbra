@@ -31,6 +31,7 @@
 
 #include <cassert>
 #include <iostream>
+#include <vector>
 
 #include <libtcod/libtcod.hpp>
 #include <SDL_timer.h>
@@ -62,7 +63,7 @@ private:
 	// module to activate
 	TCODList<UmbraModule *> toActivate;
 	// custom parameters defined at the module chain level
-	TCODList<UmbraModule::UmbraModuleParametre> chainParameters;
+	std::vector<UmbraModule::UmbraModuleParameter> chain_parameters_;
 	// all the modules in the chain
 	TCODList<UmbraModule *> chainModules;
 	public :
@@ -131,16 +132,13 @@ private:
 			}
 			module->setFallback(value.s);
 		} else {
-    		// dynamically declared property.
-    		if ( module ) {
-    			// at module level
-    			module->setParametre(name,value);
-    		} else {
-    			// at module chain level
-				UmbraModule::UmbraModuleParametre mod;
-				mod.name=strdup(name);
-				mod.value=value;
-				chainParameters.push(mod);
+			// dynamically declared property.
+			if (module) {
+				// at module level
+				module->setParameter(name, value);
+			} else {
+				// at module chain level
+				chain_parameters_.emplace_back(UmbraModule::UmbraModuleParameter{std::string{name}, value});
 			}
 		}
 		return true;
@@ -155,10 +153,10 @@ private:
 				for (UmbraModule **mod=chainModules.begin();mod!=chainModules.end(); mod++) {
 					// inherits all chain parameters
 					// those parameters can be overloaded in the module declaration
-					for (UmbraModule::UmbraModuleParametre *chainParam=chainParameters.begin(); chainParam != chainParameters.end(); chainParam++) {
-						UmbraModule::UmbraModuleParametre moduleParam=(*mod)->getParametre(chainParam->name);
-						if( moduleParam.name == NULL ) {
-							(*mod)->setParametre(chainParam->name,chainParam->value);
+					for (const auto& chainParam : chain_parameters_) {
+						UmbraModule::UmbraModuleParameter moduleParam=(*mod)->getParameter(chainParam.name);
+						if(moduleParam.name.empty()) {
+							(*mod)->setParameter(chainParam.name, chainParam.value);
 						} // else parameter overloaded by the module.
 					}
 				}
