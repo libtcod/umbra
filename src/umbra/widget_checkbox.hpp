@@ -33,13 +33,7 @@
 
 class UmbraCheckbox {
 	public:
-		UmbraRect area; //the rectangle where the object is contained
-		UmbraWidget * parent; //reference to the widget that contains the object
-		bool visible; //visibility (can be toggled)
-		bool checked; //checked/unchecked status
-		std::string tag; //the descriptive tag
-
-		UmbraCheckbox ();
+		UmbraCheckbox() = default;
 		virtual ~UmbraCheckbox() = default;
 		UmbraCheckbox (UmbraWidget * parent, int x, int y, int w, int h, const char * tag = "");
 		UmbraCheckbox (UmbraWidget * parent, int x, int y, int w, int h, std::string tag = "");
@@ -77,4 +71,9 @@ class UmbraCheckbox {
 		 * Custom code launched when the mouse cursor is over the checkbox area, <i>including the tag</i>.
 		 */
 		virtual void onMouseOver () {} //custom code launched when mouse cursor is over the checkbox area
+		UmbraRect area{}; //the rectangle where the object is contained
+		UmbraWidget* parent{nullptr}; //reference to the widget that contains the object
+		bool visible{true}; //visibility (can be toggled)
+		bool checked{false}; //checked/unchecked status
+		std::string tag{""}; //the descriptive tag
 };

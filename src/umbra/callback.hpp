@@ -31,10 +31,9 @@
 class UmbraCallback {
 	friend class UmbraEngine;
 	public:
-		UmbraCallback () {}
 		virtual ~UmbraCallback() = default;
 	protected:
-		UmbraKey key;
+		UmbraKey key{};
 		/**
 		 * Checks whether the collected keyboard event corresponds to the one the callback is listening to.
 		 * @param k the keyboard event collected by the engine

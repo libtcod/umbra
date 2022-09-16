@@ -29,15 +29,6 @@
 #include "engine.hpp"
 #include "stylesheet.hpp"
 
-UmbraWidget::UmbraWidget():
-	parent(NULL),
-	mousex(-1),
-	mousey(-1),
-	canDrag(false),
-	isDragging(false) {
-	style = UmbraStyleSheet();
-}
-
 void UmbraWidget::mouse(TCOD_mouse_t &ms) {
 	//set mouse positions
 	mousex=ms.cx;

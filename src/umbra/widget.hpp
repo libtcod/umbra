@@ -36,7 +36,7 @@ class UmbraWidget: public UmbraModule {
 	friend class UmbraCheckbox;
 	friend class UmbraButton;
 public:
-	UmbraWidget ();
+	UmbraWidget() = default;
 	/**
 	 * Custom, widget-specific code interpreting the mouse input.
 	 * @param ms reference to the mouse object
@@ -46,60 +46,38 @@ public:
 	/**
 	 * Signal launched when the mouse cursor enters the widget.
 	 */
-	Signal2 <UmbraWidget*,UmbraEvent> onMouseEnter;
+	Signal2 <UmbraWidget*,UmbraEvent> onMouseEnter{};
 	/**
 	 * Signal launched when the mouse cursor leaves the widget.
 	 */
-	Signal2 <UmbraWidget*,UmbraEvent> onMouseLeave;
+	Signal2 <UmbraWidget*,UmbraEvent> onMouseLeave{};
 	/**
 	 * Signal lauched when the mouse cursor moves inside the widget.
 	 */
-	Signal2 <UmbraWidget*,UmbraEvent> onMouseMove;
+	Signal2 <UmbraWidget*,UmbraEvent> onMouseMove{};
 	/**
 	 * Signal launched when the mouse button is pressed when hovering over the widget. Corresponds to JavaScript's <code>onmousedown</code> event.
 	 */
-	Signal2 <UmbraWidget*,UmbraEvent> onMousePress;
+	Signal2 <UmbraWidget*,UmbraEvent> onMousePress{};
 	/**
 	 * Signal launched when the mouse button is released when hovering over the widget. Corresponds to JavaScript's <code>onmouseup</code> event.
 	 */
-	Signal2 <UmbraWidget*,UmbraEvent> onMouseRelease;
+	Signal2 <UmbraWidget*,UmbraEvent> onMouseRelease{};
 	/**
 	 * Signal launched when the mouse button is clicked when hovering over the widget. Corresponds to JavaScript's <code>onclick</code> event.
 	 * <strong>TODO:</strong> With the current implementation, this signal behaves identically to <code>onMouseRelease</code>.
 	 */
-	Signal2 <UmbraWidget*,UmbraEvent> onMouseClick;
+	Signal2 <UmbraWidget*,UmbraEvent> onMouseClick{};
 
 	/**
 	 * Part of the screen where the widget is
 	 */
-	UmbraRect rect;
+	UmbraRect rect{};
 	/**
 	 * The style sheet containing information about the widget's appearance
 	 */
-	UmbraStyleSheet style;
+	UmbraStyleSheet style{};
 protected:
-	/**
-	 * Pointer to the containing (parent) widget
-	 */
-	UmbraWidget * parent; //reference to the widget that contains the object
-	/**
-	 * The drag zone: the are within the widget that can be clicked in order to drag it
-	 */
-	UmbraRect dragZone; // part of the widget we can click to drag it
-	/**
-	 * Coordinates of the minimise button
-	 */
-	UmbraPoint minimiseButton; //minimise button coordinates
-	/**
-	 * Coordinates of the close button
-	 */
-	UmbraPoint closeButton; //close button coordinates
-	int mousex;
-	int mousey;
-	int dragx;
-	int dragy;
-	bool canDrag;
-	bool isDragging;
 	/**
 	 * Sets the widget's active zone reacting to dragging.
 	 * @param x the drag zone's top left corner's <i>x</i> coordinate
@@ -113,4 +91,26 @@ protected:
 	 * after dragging the widget
 	 */
 	virtual void onDragEnd() {}
+	/**
+	 * Pointer to the containing (parent) widget
+	 */
+	UmbraWidget* parent{nullptr}; //reference to the widget that contains the object
+	/**
+	 * The drag zone: the are within the widget that can be clicked in order to drag it
+	 */
+	UmbraRect dragZone{}; // part of the widget we can click to drag it
+	/**
+	 * Coordinates of the minimise button
+	 */
+	UmbraPoint minimiseButton{}; //minimise button coordinates
+	/**
+	 * Coordinates of the close button
+	 */
+	UmbraPoint closeButton{}; //close button coordinates
+	int mousex{-1};
+	int mousey{-1};
+	int dragx{};
+	int dragy{};
+	bool canDrag{false};
+	bool isDragging{false};
 };

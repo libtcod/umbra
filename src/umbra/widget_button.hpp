@@ -33,10 +33,7 @@
 
 class UmbraButton : public UmbraWidget {
 	public:
-		bool visible; //visibility (can be toggled)
-		std::string tag; //the descriptive tag
-
-		UmbraButton ();
+		UmbraButton() = default;
 		UmbraButton (UmbraWidget * parent, int x, int y, int w, int h, const char * tag = "");
 		UmbraButton (UmbraWidget * parent, int x, int y, int w, int h, std::string tag = "");
 		virtual ~UmbraButton() = default;
@@ -66,5 +63,7 @@ class UmbraButton : public UmbraWidget {
 		 * Renders the button.
 		 */
 		virtual void render (TCODConsole * con);
+		bool visible{true}; //visibility (can be toggled)
+		std::string tag{""}; //the descriptive tag
 
 };

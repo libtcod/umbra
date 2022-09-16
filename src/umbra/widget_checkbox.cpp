@@ -28,14 +28,6 @@
 
 #include <libtcod/console.hpp>
 
-UmbraCheckbox::UmbraCheckbox () {
-	parent = NULL;
-	area.set(0,0,0,0);
-	tag = "";
-	checked = false;
-	visible = true;
-}
-
 UmbraCheckbox::UmbraCheckbox (UmbraWidget * new_parent, int x, int y, int w, int h, const char * new_tag) {
 	parent = new_parent;
 	area.set(x, y, w, h);

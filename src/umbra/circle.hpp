@@ -29,15 +29,12 @@
 
 class UmbraCircle {
 	public:
-		int x,y,r;
-		bool mouseHover;
-		bool mouseDown;
-		UmbraCircle (): x(0),y(0),r(0),mouseHover(false) {}
-		UmbraCircle (int r): x(0),y(0),r(r),mouseHover(false) {}
-		UmbraCircle (int x, int y): x(x),y(y),r(0),mouseHover(false) {}
-		UmbraCircle (int x, int y, int r): x(x),y(y),r(r),mouseHover(false) {}
-		UmbraCircle (const UmbraPoint &p): x(p.x),y(p.y),r(0),mouseHover(false) {}
-		UmbraCircle (const UmbraPoint &p, int r): x(p.x),y(p.y),r(r),mouseHover(false) {}
+		UmbraCircle() = default;
+		UmbraCircle(int r): r{r} {}
+		UmbraCircle(int x, int y): x{x}, y{y} {}
+		UmbraCircle(int x, int y, int r): x{x}, y{y}, r{r} {}
+		UmbraCircle(const UmbraPoint &p): x{p.x}, y{p.y} {}
+		UmbraCircle(const UmbraPoint &p, int r): x{p.x}, y{p.y}, r{r} {}
 		/**
 		 * Sets the circle's position.
 		 * @param x the circle centre's <i>x</i> coordinate
@@ -93,4 +90,9 @@ class UmbraCircle {
          * @param ms a reference to the mouse event object
          */
 		inline void mouse (const UmbraPoint &p, TCOD_mouse_t &m) { mouseHover = contains(p); mouseDown = mouseHover & m.lbutton; }
+		int x{0};
+		int y{0};
+		int r{0};
+		bool mouseHover{false};
+		bool mouseDown{false};
 };

@@ -40,16 +40,16 @@ enum UmbraEventType {
 
 class UmbraEvent {
 public :
-	UmbraEventType type;
-	/** whether this event is caught by the current listener (true) or propagated to the next listener (false) */
-	bool accepted;
+	UmbraEvent(UmbraEventType type) : type(type) {}
 
-	UmbraEvent(UmbraEventType type) : type(type), accepted(false) {}
+	UmbraEventType type{};
+	/** whether this event is caught by the current listener (true) or propagated to the next listener (false) */
+	bool accepted{false};
 };
 
 class UmbraMouseEvent : public UmbraEvent {
 public :
-	TCOD_mouse_t mouse;
-
 	UmbraMouseEvent(UmbraEventType type, TCOD_mouse_t &mouse) : UmbraEvent(type),mouse(mouse) {}
+
+	TCOD_mouse_t mouse{};
 };

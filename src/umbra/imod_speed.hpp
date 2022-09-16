@@ -50,14 +50,14 @@ class UmbraModSpeed: public UmbraWidget {
 		 */
 		inline void setMinimised(bool val) { isMinimised=val; }
 	private:
-		float cumulatedElapsed;
-		float updateTime;
-		float renderTime;
-		int updatePer, renderPer, sysPer;
-		TCODImage * timeBar;
-		TCODConsole * speed;
-		int fps;
-		bool isMinimised;
+		float cumulatedElapsed{0.0f};
+		float updateTime{0.0f};
+		float renderTime{0.0f};
+		int updatePer{0}, renderPer{0}, sysPer{0};
+		TCODImage * timeBar{};
+		TCODConsole * speed{};
+		int fps{};
+		bool isMinimised{false};
 
 		/**
 		 * Removes the frames per second limit in order to attempt to enforce a 100% load on the CPU.

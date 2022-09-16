@@ -35,8 +35,6 @@
 UmbraModBSOD::UmbraModBSOD () {
 	bsod = new TCODConsole(30,8);
 	closeButton.set(28,0);
-	duration = 5000;
-	msgString = "";
 	rect.set(getEngine()->getRootWidth()-31,getEngine()->getRootHeight()-9,30,8);
 	setDragZone(0,0,28,1);
 	setName("umbraBSOD");

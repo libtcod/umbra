@@ -28,32 +28,22 @@
 
 #include <libtcod/console.hpp>
 
-UmbraButton::UmbraButton () {
-	parent = NULL;
-	rect.set(0,0,0,0);
-	tag = "";
-	visible = true;
-}
-
 UmbraButton::UmbraButton (UmbraWidget * parent, int x, int y, int w, int h, const char * tag) {
 	this->parent = parent;
 	rect.set(x, y, w, h);
 	this->tag = tag;
-	visible = true;
 }
 
 UmbraButton::UmbraButton (UmbraWidget * new_parent, int x, int y, int w, int h, std::string new_tag) {
 	parent = new_parent;
 	rect.set(x, y, w, h);
 	tag = new_tag;
-	visible = true;
 }
 
 void UmbraButton::set (UmbraWidget * new_parent, int x, int y, int w, int h, const char * new_tag) {
 	parent = new_parent;
 	rect.set(x, y, w, h);
 	tag = new_tag;
-	visible = true;
 }
 
 void UmbraButton::render (TCODConsole * con) {
