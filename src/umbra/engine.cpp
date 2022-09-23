@@ -61,11 +61,11 @@ class UmbraModuleConfigParser : public ITCODParserListener {
   // factory that creates a module from its name
   UmbraModuleFactory* factory;
   // module to activate
-  TCODList<UmbraModule*> toActivate;
+  std::vector<UmbraModule*> toActivate;
   // custom parameters defined at the module chain level
   std::vector<UmbraModule::UmbraModuleParameter> chain_parameters_;
   // all the modules in the chain
-  TCODList<UmbraModule*> chainModules;
+  std::vector<UmbraModule*> chainModules;
 
  public:
   UmbraModuleConfigParser(UmbraModuleFactory* factory, const char* chainName)
@@ -96,7 +96,7 @@ class UmbraModuleConfigParser : public ITCODParserListener {
         }
       }
       assert(module != NULL);
-      chainModules.push(module);
+      chainModules.emplace_back(module);
     }
     return true;
   }
@@ -104,7 +104,7 @@ class UmbraModuleConfigParser : public ITCODParserListener {
     if (skip) return true;
     if (strcmp(name, "active") == 0) {
       // deferred activation (cannot activate before all params have been parsed)
-      toActivate.push(module);
+      toActivate.emplace_back(module);
     }
     return true;
   }
@@ -151,19 +151,19 @@ class UmbraModuleConfigParser : public ITCODParserListener {
       } else {
         // finished parsing requested chain. skip other chains
         //  copy module chain parameters into modules
-        for (UmbraModule** mod = chainModules.begin(); mod != chainModules.end(); mod++) {
+        for (UmbraModule* mod : chainModules) {
           // inherits all chain parameters
           // those parameters can be overloaded in the module declaration
           for (const auto& chainParam : chain_parameters_) {
-            UmbraModule::UmbraModuleParameter moduleParam = (*mod)->getParameter(chainParam.name);
+            UmbraModule::UmbraModuleParameter moduleParam = mod->getParameter(chainParam.name);
             if (moduleParam.name.empty()) {
-              (*mod)->setParameter(chainParam.name, chainParam.value);
+              mod->setParameter(chainParam.name, chainParam.value);
             }  // else parameter overloaded by the module.
           }
         }
         // activate active modules
-        for (UmbraModule** it = toActivate.begin(); it != toActivate.end(); it++) {
-          UmbraEngine::getInstance()->activateModule(*it);
+        for (auto* it : toActivate) {
+          UmbraEngine::getInstance()->activateModule(it);
         }
         chainDone = true;
       }
