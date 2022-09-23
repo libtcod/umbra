@@ -43,9 +43,9 @@ public:
 
 class Matrix: public UmbraModule {
 public:
-	bool update ();
-	void render ();
-	void onActivate();
+	bool update () override;
+	void render () override;
+	void onActivate() override;
 
 private:
 	TCODList <MatrixLead *> leads;

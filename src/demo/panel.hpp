@@ -33,9 +33,9 @@ class Panel: public UmbraWidget {
     public:
         Panel ();
         UmbraButton bQuit;
-        bool update ();
-        void mouse (TCOD_mouse_t &ms);
-        void render ();
+        bool update () override;
+        void mouse (TCOD_mouse_t &ms) override;
+        void render () override;
         TCODConsole * panel;
 		void onQuit(UmbraWidget *w,UmbraEvent ev);
     private:

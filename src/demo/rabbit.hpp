@@ -34,14 +34,14 @@ class RabbitButton: public UmbraButton {};
 class RabbitWidget: public UmbraWidget {
 public:
 	RabbitWidget ();
-	void mouse (TCOD_mouse_t &ms);
-	void render ();
+	void mouse (TCOD_mouse_t &ms) override;
+	void render () override;
 	UmbraButton button;
 	TCODConsole * rabbit;
 	//slots
 	void onNextDemo (UmbraWidget *w, UmbraEvent ev);
 protected :
-	void onInitialise();
+	void onInitialise() override;
 };
 
 #endif

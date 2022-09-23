@@ -36,9 +36,9 @@ class UmbraModCredits: public UmbraModule {
 	friend void UmbraEngine::printCredits(int x, int y, uint32_t duration);
 public:
 	UmbraModCredits();
-	bool update();
-	void render();
-	void onActivate();
+	bool update() override;
+	void render() override;
+	void onActivate() override;
 private:
 	void set(int x, int y, uint32_t duration);
 	TCODConsole * con;

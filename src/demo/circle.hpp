@@ -35,9 +35,9 @@ public:
 	TCODImage * red;
 	TCODImage * green;
 	bool isGreen;
-	void onInitialise();
-	void mouse (TCOD_mouse_t &ms);
-	void render();
+	void onInitialise() override;
+	void mouse (TCOD_mouse_t &ms) override;
+	void render() override;
 	Circle();
 };
 

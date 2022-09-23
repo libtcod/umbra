@@ -37,11 +37,11 @@ class UmbraModBSOD: public UmbraWidget {
 		 * Updates the internal logic of the BSOD.
 		 * @return <code>true</code> if the module hasn't timed out and is supposed to continue active, <code>false</code> if it's timed out or the user requested its deactivation
 		 */
-		bool update ();
+		bool update () override;
 		/**
 		 * Renders the BSOD on the screen.
 		 */
-		void render ();
+		void render () override;
 	private:
 		TCODConsole* bsod;
 		uint32_t startTime{0};

@@ -35,15 +35,15 @@ class UmbraModSpeed: public UmbraWidget {
 		 * Gathers data about time useage.
 		 * @return <code>true</code> if Speedo is to continue active, <code>false</code> it it should be deactivated
 		 */
-		bool update ();
+		bool update () override;
 		/**
 		 * Displays the Speedo widget.
 		 */
-		void render ();
+		void render () override;
 		/**
 		 * Parses mouse input.
 		 */
-		void mouse (TCOD_mouse_t &ms);
+		void mouse (TCOD_mouse_t &ms) override;
 		/**
 		 * Sets the minimised state of the widget.
 		 * @param val <code>true</code> for minimised, <code>false</code> for maximised
