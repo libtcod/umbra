@@ -32,10 +32,10 @@
 class Demo : public UmbraModule {
  public:
   Demo();
-  void onInitialise();
-  bool update();
-  void render();
-  void keyboard(TCOD_key_t& key);
+  void onInitialise() override;
+  bool update() override;
+  void render() override;
+  void keyboard(TCOD_key_t& key) override;
 
  private:
   TCODNoise* noise;
