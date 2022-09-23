@@ -1,2 +1,5 @@
 # Remove trailing spaces and newlines.  Normalize newlines.
 e0ab858fbd15fe97bcc26da84b535fca148d2792
+
+# Reformat source files with clang format.
+a719e31edd848aee8f977c499781fa0c6c1842f8
