@@ -27,6 +27,7 @@
 #ifndef UMBRA_CONFIG_HPP
 #define UMBRA_CONFIG_HPP
 #include <libtcod/list.hpp>
+#include <vector>
 
 #include "font.hpp"
 
@@ -53,7 +54,7 @@ class UmbraConfig {
   static const char* fontDir;
   static const char* moduleChain;
   static int fontID;
-  static TCODList<UmbraFont*> fonts;
+  static std::vector<UmbraFont*> fonts;
   /**
    * Activates a different font. This method is called by the engine.
    * @param shift a number indicating whether to activate the next or the previous font in the registered fonts

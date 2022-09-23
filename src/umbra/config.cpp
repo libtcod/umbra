@@ -37,7 +37,7 @@ int UmbraConfig::rootHeight;
 int UmbraConfig::fontID;
 bool UmbraConfig::fullScreen;
 UmbraLogLevel UmbraConfig::logLevel;
-TCODList<UmbraFont*> UmbraConfig::fonts;
+std::vector<UmbraFont*> UmbraConfig::fonts;
 UmbraFont* UmbraConfig::font = NULL;
 const char* UmbraConfig::fileName = NULL;
 const char* UmbraConfig::fontDir = NULL;
@@ -168,7 +168,7 @@ void UmbraConfig::save() {
 
 void UmbraConfig::registerFont(UmbraFont* _font) {
   UmbraLog::info("UmbraConfig::registerFont | Registered a font.");
-  fonts.push(_font);
+  fonts.emplace_back(_font);
 }
 
 bool UmbraConfig::activateFont(int shift) {
@@ -177,11 +177,11 @@ bool UmbraConfig::activateFont(int shift) {
   if (fonts.size() == 0)
     return false;  // can happen if a user uses the default terminal.png without registering any font
   // check if the requested ID isn't out of range
-  if (fontID + s < 0 || fontID + s >= fonts.size()) return false;
+  if (fontID + s < 0 || fontID + s >= static_cast<int>(fonts.size())) return false;
   // check if the font needs changing at all
   if (font != NULL && s == 0) return false;
   // register the font
-  font = fonts.get(fontID + s);
+  font = fonts.at(fontID + s);
   fontID += s;
   return true;
 }
