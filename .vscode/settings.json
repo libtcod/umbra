@@ -93,6 +93,11 @@
         "cerrno": "cpp",
         "cfloat": "cpp",
         "climits": "cpp",
-        "string_view": "cpp"
+        "string_view": "cpp",
+        "condition_variable": "cpp",
+        "mutex": "cpp",
+        "shared_mutex": "cpp",
+        "stop_token": "cpp",
+        "thread": "cpp"
     }
 }
