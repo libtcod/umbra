@@ -31,6 +31,7 @@
 #include <stdio.h>
 
 #include <cassert>
+#include <filesystem>
 #include <iostream>
 #include <libtcod/libtcod.hpp>
 #include <vector>
@@ -360,67 +361,66 @@ void UmbraEngine::registerFont(int columns, int rows, const char* filename, int 
 struct TmpFontData {
   int rows;
   int columns;
-  char name[512];
+  std::string name;
   int flags;
   int size;
 };
 
-#define MAX_FONTS 16
 bool UmbraEngine::registerFonts() {
   UmbraLog::openBlock("UmbraEngine::registerFonts | Attempting to automatically register fonts.");
   // if fonts registered by the user, do nothing
   if (getNbFonts() > 0) return true;
-  TmpFontData dat[MAX_FONTS];
-  TCODList<TmpFontData*> fontDataList;
   // look for font*png in font directory
-  TCODList<const char*> dir = TCODSystem::getDirectoryContent(getFontDir(), "font*.png");
-  if (dir.size() > 0) {
-    int fontNum = 0;
-    for (const char** fontName = dir.begin(); fontName != dir.end() && fontNum < MAX_FONTS; fontName++) {
-      int charWidth;
-      int charHeight;
-      char layout[32] = "";
-      if (sscanf(*fontName, "font%dx%d%s", &charWidth, &charHeight, layout) >= 2) {
-        if (charWidth > 0 && charHeight > 0) {
-          int fontFlag = TCOD_FONT_TYPE_GREYSCALE;
-          if (layout[0] == '_') {
-            // parse font layout
-            if (TCOD_strncasecmp(layout, "_TCOD.", 6) == 0)
-              fontFlag |= TCOD_FONT_LAYOUT_TCOD;
-            else if (TCOD_strncasecmp(layout, "_INCOL.", 7) == 0)
-              fontFlag |= TCOD_FONT_LAYOUT_ASCII_INCOL;
-            else if (TCOD_strncasecmp(layout, "_INROW.", 7) == 0)
-              fontFlag |= TCOD_FONT_LAYOUT_ASCII_INROW;
-          } else {
-            // default is TCOD |GREYSCALE
-            fontFlag |= TCOD_FONT_LAYOUT_TCOD;
-          }
-          // compute font grid size from image size & char size
-          int w, h;
-          sprintf(dat[fontNum].name, "%s/%s", getFontDir(), *fontName);
-          TCODImage tmp(dat[fontNum].name);
-          tmp.getSize(&w, &h);
-          dat[fontNum].size = charWidth * charHeight;
-          dat[fontNum].rows = h / charHeight;
-          dat[fontNum].columns = w / charWidth;
-          dat[fontNum].flags = fontFlag;
-          // sort this font by size
-          int idx = 0;
-          while (idx < fontDataList.size() && fontDataList.get(idx)->size < dat[fontNum].size) idx++;
-          fontDataList.insertBefore(&dat[fontNum], idx);
-          fontNum++;
-        }
-      }
-    }
-    for (TmpFontData** dat = fontDataList.begin(); dat != fontDataList.end(); dat++) {
-      // register the fonts from smallest to biggest
-      registerFont((*dat)->columns, (*dat)->rows, (*dat)->name, (*dat)->flags);
-    }
-  } else {
+  std::vector<std::string> font_files{};
+  for (std::filesystem::path file : std::filesystem::directory_iterator{getFontDir()}) {
+    if (std::filesystem::is_directory(file)) continue;
+    if (file.extension() != ".png") continue;
+    if (file.filename().string().substr(0, 4) != "font") continue;  // Starts with
+    font_files.emplace_back(file.filename().string());
+  }
+  if (font_files.size() == 0) {
     UmbraLog::fatalError(
         "UmbraEngine::registerFonts | No fonts registered. The font directory \"%s\" is empty.", getFontDir());
     UmbraLog::closeBlock(UMBRA_LOGRESULT_FAILURE);
     return false;
+  }
+  std::vector<TmpFontData> fontDataList;
+  for (const auto& fontName : font_files) {
+    int charWidth = 0;
+    int charHeight = 0;
+    char layout[32] = "";
+    if (sscanf(fontName.c_str(), "font%dx%d%31s", &charWidth, &charHeight, layout) < 2) continue;
+    if (charWidth <= 0 || charHeight <= 0) continue;
+    int fontFlag = TCOD_FONT_TYPE_GREYSCALE;
+    if (layout[0] == '_') {
+      // parse font layout
+      if (TCOD_strncasecmp(layout, "_TCOD.", 6) == 0)
+        fontFlag |= TCOD_FONT_LAYOUT_TCOD;
+      else if (TCOD_strncasecmp(layout, "_INCOL.", 7) == 0)
+        fontFlag |= TCOD_FONT_LAYOUT_ASCII_INCOL;
+      else if (TCOD_strncasecmp(layout, "_INROW.", 7) == 0)
+        fontFlag |= TCOD_FONT_LAYOUT_ASCII_INROW;
+    } else {
+      // default is TCOD |GREYSCALE
+      fontFlag |= TCOD_FONT_LAYOUT_TCOD;
+    }
+    // compute font grid size from image size & char size
+    fontDataList.emplace_back();
+    fontDataList.back().name = std::string(getFontDir()) + "/" + fontName;
+    TCODImage tmp(fontDataList.back().name.c_str());
+    int w = 0;
+    int h = 0;
+    tmp.getSize(&w, &h);
+    fontDataList.back().size = charWidth * charHeight;
+    fontDataList.back().rows = h / charHeight;
+    fontDataList.back().columns = w / charWidth;
+    fontDataList.back().flags = fontFlag;
+  }
+  // sort fonts by size
+  std::sort(fontDataList.begin(), fontDataList.end(), [](auto& a, auto& b) { return a.size < b.size; });
+  for (const auto& dat : fontDataList) {
+    // register the fonts from smallest to biggest
+    registerFont(dat.columns, dat.rows, dat.name.c_str(), dat.flags);
   }
 
   if (getNbFonts() == 0) {
@@ -430,11 +430,10 @@ bool UmbraEngine::registerFonts() {
         getFontDir());
     UmbraLog::closeBlock(UMBRA_LOGRESULT_FAILURE);
     return false;
-  } else {
-    UmbraLog::info("UmbraEngine::registerFonts | Successfully registered %d fonts.", getNbFonts());
-    UmbraLog::closeBlock(UMBRA_LOGRESULT_SUCCESS);
-    return true;
   }
+  UmbraLog::info("UmbraEngine::registerFonts | Successfully registered %d fonts.", getNbFonts());
+  UmbraLog::closeBlock(UMBRA_LOGRESULT_SUCCESS);
+  return true;
 }
 
 // load external module configuration
