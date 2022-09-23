@@ -25,6 +25,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #pragma once
+#include <vector>
 
 #include "engine.hpp"
 
@@ -74,7 +75,7 @@ class UmbraLog {
   /**
    * A list of log messages.
    */
-  static TCODList<UmbraLogMessage*> messages;
+  static inline std::vector<UmbraLogMessage*> messages{};
   /**
    * Saves the logged messages to a log file.
    */
@@ -193,7 +194,7 @@ class UmbraLog {
    * level.
    * @return the total number of messages in the log
    */
-  static inline int size() { return messages.size(); }
+  static int size() { return static_cast<int>(messages.size()); }
   /**
    * Returns the number of messages of a given type that have been logged so far. Ignores all other message types.
    * @param type type of log message

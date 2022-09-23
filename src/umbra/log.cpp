@@ -36,7 +36,6 @@
 
 FILE* UmbraLog::out = NULL;
 int UmbraLog::indent = 0;
-TCODList<UmbraLog::UmbraLogMessage*> UmbraLog::messages;
 
 const char* logTypeString[] = {"INF.", "NOT.", "WAR.", "ERR.", "FAT."};
 
@@ -103,8 +102,8 @@ int UmbraLog::output(UmbraLogType type, UmbraLogResult res, int ind, const char*
     fprintf(out, "\n%s %06d %s%s", logTypeString[msg->logType], msg->time, arrows.c_str(), resultString[msg->result]);
   fflush(out);
   indent += ind;
-  messages.push(msg);
-  return messages.size();
+  messages.emplace_back(msg);
+  return static_cast<int>(messages.size());
 }
 
 int UmbraLog::output(UmbraLogType type, UmbraLogResult res, int ind, std::string str) {
@@ -180,13 +179,14 @@ int UmbraLog::fatalError(std::string str) { return output(UMBRA_LOGTYPE_FATAL, (
 int UmbraLog::closeBlock(UmbraLogResult result) { return output(UMBRA_LOGTYPE_INFO, result, -1, ""); }
 
 int UmbraLog::size(UmbraLogType type) {
-  int count = 0;
   if (type < UMBRA_LOGTYPE_INFO || type > UMBRA_LOGTYPE_FATAL) {
     error("UmbraLog::size | Specified an invalid log message type.");
     return 0;
   }
-  for (UmbraLogMessage** msg = messages.begin(); msg != messages.end(); msg++)
-    if ((*msg)->logType == type) ++count;
+  int count = 0;
+  for (UmbraLogMessage* msg : messages) {
+    if (msg->logType == type) ++count;
+  }
   return count;
 }
 
@@ -195,14 +195,14 @@ const char* UmbraLog::get(int idx) {
   std::string ret = "";
   if (idx == -1) {
     if (messages.size() > 0)
-      msg = messages.peek();
+      msg = messages.back();
     else
       return "No messages logged.";
-  } else if (idx < -1 || idx >= messages.size()) {
+  } else if (idx < -1 || idx >= static_cast<int>(messages.size())) {
     error("UmbraLog::get | Tried to retrieve a message with index %d, but such an index does not exist.", idx);
-    msg = messages.peek();
+    msg = messages.back();
   } else
-    msg = messages.get(idx);
+    msg = messages.at(idx);
   ret = logTypeStringFull[msg->logType];
   ret += ": ";
   ret += msg->msg;
