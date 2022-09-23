@@ -28,6 +28,7 @@
 #define MODULE_CREDITS_HPP
 #include <libtcod/libtcod.hpp>
 #include <umbra/umbra.hpp>
+#include <vector>
 
 class MatrixLead {
  public:
@@ -47,7 +48,7 @@ class Matrix : public UmbraModule {
   void onActivate() override;
 
  private:
-  TCODList<MatrixLead*> leads;
+  std::vector<MatrixLead> leads;
 };
 
 #endif

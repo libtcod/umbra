@@ -61,21 +61,25 @@ void MatrixLead::render(uint32_t time) {
 
 bool Matrix::update() {
   if (!MatrixLead::random) MatrixLead::random = new TCODRandom();
-  if (MatrixLead::random->get(0, 3) == 0) leads.push(new MatrixLead());
+  if (MatrixLead::random->get(0, 3) == 0) leads.emplace_back();
   return getActive();
 }
 
 void Matrix::render() {
   uint32_t t = SDL_GetTicks();
   if (leads.size() > 0) {
-    for (MatrixLead** mx = leads.begin(); mx != leads.end(); mx++) {
-      (*mx)->render(t);
-      if ((*mx)->y >= engine.getRootHeight()) {
-        MatrixLead* tmp = (*mx);
-        mx = leads.removeFast(mx);
-        delete tmp;
-      }
-    }
+    leads.erase(
+        std::remove_if(
+            leads.begin(),
+            leads.end(),
+            [&](MatrixLead& mx) {
+              mx.render(t);
+              if (mx.y >= engine.getRootHeight()) {
+                return true;
+              }
+              return false;
+            }),
+        leads.end());
     TCODConsole::blit(
         MatrixLead::matrix, 0, 0, engine.getRootWidth(), engine.getRootHeight(), TCODConsole::root, 0, 0, 0.98f, 0.0f);
     TCODConsole::blit(
