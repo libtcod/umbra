@@ -336,7 +336,7 @@ class UmbraEngine {
    * Retrieves the total number of registered fonts.
    * @return number of registered fonts
    */
-  inline int getNbFonts() { return UmbraConfig::fonts.size(); }
+  int getNbFonts() { return static_cast<int>(UmbraConfig::fonts.size()); }
   /**
    * Retrieves the font directory.
    * @return the font direcory
