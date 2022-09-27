@@ -38,11 +38,13 @@ else()
     target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra)
 endif()
 
+find_package(fmt CONFIG REQUIRED)
 find_package(SDL2 CONFIG REQUIRED)
 find_package(libtcod CONFIG REQUIRED)
 target_link_libraries(
     ${PROJECT_NAME}
-    PRIVATE
+    PUBLIC
+        fmt::fmt
         SDL2::SDL2
         libtcod::libtcod
 )

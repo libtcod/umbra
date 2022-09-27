@@ -7,3 +7,5 @@
 * Reverted some module handing so that Pyromancer works again.
 * General fixes and updates for code working with C++17.
 * ``UmbraEngine::getFontDir`` now returns ``std::filesystem::path`` instead of ``const char*``.
+* Logging functions now use ``fmt`` instead of C variadic print functions.
+* ``UmbraLog::get`` now returns ``std::string`` instead of a pointer to a temporary string.

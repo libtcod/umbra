@@ -25,6 +25,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #pragma once
+#include <fmt/printf.h>
+
+#include <string_view>
 #include <vector>
 
 #include "engine.hpp"
@@ -56,8 +59,7 @@ class UmbraLog {
   /**
    * A single message in the log. Used internally by the log.
    */
-  class UmbraLogMessage {
-    friend class UmbraLog;
+  struct UmbraLogMessage {
     std::string msg;
     uint32_t time;
     UmbraLogResult result;
@@ -67,15 +69,15 @@ class UmbraLog {
   /**
    * A pointer to the file stream where the log messages are output.
    */
-  static FILE* out;
+  static inline FILE* out{};
   /**
    * The indent level, marking block nesting in the log.
    */
-  static int indent;
+  static inline int indent{};
   /**
    * A list of log messages.
    */
-  static inline std::vector<UmbraLogMessage*> messages{};
+  static inline std::vector<UmbraLogMessage> messages{};
   /**
    * Saves the logged messages to a log file.
    */
@@ -110,7 +112,10 @@ class UmbraLog {
    * @param ... optional parametres for the message formatting
    * @return the index number of the message that has been added to the log
    */
-  static int openBlock(const char* str, ...);
+  template <typename S, typename... T>
+  static int openBlock(const S& str, const T&... args) {
+    return openBlock(fmt::sprintf(str, args...));
+  }
   /**
    * Opens a block in the log (increases the indent). The log level of this message is <code>INFO</code>.
    * @param str the log message string, as a C++ string
@@ -123,7 +128,10 @@ class UmbraLog {
    * @param ... optional parametres for the message formatting
    * @return the index number of the message that has been added to the log
    */
-  static int info(const char* str, ...);
+  template <typename S, typename... T>
+  static int info(const S& str, const T&... args) {
+    return info(fmt::sprintf(str, args...));
+  }
   /**
    * Puts a message with the log level <code>INFO</code> in the log.
    * @param str the log message string, as a C++ string
@@ -136,7 +144,10 @@ class UmbraLog {
    * @param ... optional parametres for the message formatting
    * @return the index number of the message that has been added to the log
    */
-  static int notice(const char* str, ...);
+  template <typename S, typename... T>
+  static int notice(const S& str, const T&... args) {
+    return notice(fmt::sprintf(str, args...));
+  }
   /**
    * Puts a message with the log level <code>NOTICE</code> in the log.
    * @param str the log message string, as a C++ string
@@ -149,7 +160,10 @@ class UmbraLog {
    * @param ... optional parametres for the message formatting
    * @return the index number of the message that has been added to the log
    */
-  static int warning(const char* str, ...);
+  template <typename S, typename... T>
+  static int warning(const S& str, const T&... args) {
+    return warning(fmt::sprintf(str, args...));
+  }
   /**
    * Puts a message with the log level <code>NOTICE</code> in the log.
    * @param str the log message string, as a C++ string
@@ -162,7 +176,10 @@ class UmbraLog {
    * @param ... optional parametres for the message formatting
    * @return the index number of the message that has been added to the log
    */
-  static int error(const char* str, ...);
+  template <typename S, typename... T>
+  static int error(const S& str, const T&... args) {
+    return error(fmt::sprintf(str, args...));
+  }
   /**
    * Puts a message with the log level <code>ERROR</code> in the log.
    * @param str the log message string, as a C++ string
@@ -175,7 +192,10 @@ class UmbraLog {
    * @param ... optional parametres for the message formatting
    * @return the index number of the message that has been added to the log
    */
-  static int fatalError(const char* str, ...);
+  template <typename S, typename... T>
+  static int fatalError(const S& str, const T&... args) {
+    return fatalError(fmt::sprintf(str, args...));
+  }
   /**
    * Puts a message with the log level <code>FATAL ERROR</code> in the log.
    * @param str the log message string, as a C++ string
@@ -206,5 +226,5 @@ class UmbraLog {
    * @param idx the index of the message in the log. If left at default, the last logged message will be returned.
    * @return the message text of the desired message
    */
-  static const char* get(int idx = -1);
+  static std::string get(int idx = -1);
 };

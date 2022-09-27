@@ -59,7 +59,7 @@ void UmbraModBSOD::render() {
   bsod->clear();
   bsod->setDefaultForeground(TCODColor::white);
   bsod->printFrame(0, 0, 30, 8, true, TCOD_BKGND_NONE, "Umbra BSOD");
-  bsod->printRectEx(15, 2, 28, 5, TCOD_BKGND_NONE, TCOD_CENTER, UmbraLog::get());
+  bsod->printRectEx(15, 2, 28, 5, TCOD_BKGND_NONE, TCOD_CENTER, UmbraLog::get().c_str());
   if (closeButton.mouseHover) bsod->setDefaultForeground(TCODColor::red);
   bsod->putChar(closeButton.x, closeButton.y, 'X', TCOD_BKGND_NONE);
   if (dragZone.mouseHover || isDragging) {
