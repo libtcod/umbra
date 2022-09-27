@@ -27,6 +27,7 @@
 #include "engine.hpp"
 
 #include <SDL_timer.h>
+#include <fmt/core.h>
 #include <stdarg.h>
 #include <stdio.h>
 
@@ -89,9 +90,7 @@ class UmbraModuleConfigParser : public ITCODParserListener {
         }
         if (!module) {
           // could not get the module. abort
-          char tmp[256];
-          sprintf(tmp, "Unknown module '%s'", name);
-          error(tmp);
+          error(fmt::format("Unknown module '{}'", name).c_str());
           return false;
         }
       }
@@ -125,9 +124,7 @@ class UmbraModuleConfigParser : public ITCODParserListener {
           }
         }
         if (!fallback) {
-          char tmp[256];
-          sprintf(tmp, "Unknown module '%s'", value.s);
-          error(tmp);
+          error(fmt::format("Unknown module '{}'", value.s).c_str());
           return false;
         }
       }
@@ -172,7 +169,7 @@ class UmbraModuleConfigParser : public ITCODParserListener {
     }
     return true;
   }
-  void error(const char* msg) { UmbraLog::error("UmbraModuleConfigParser | %s", msg); }
+  void error(const char* msg) override { UmbraLog::error(fmt::format("UmbraModuleConfigParser | {}", msg)); }
 };
 
 // constructor
