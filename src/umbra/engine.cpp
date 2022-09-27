@@ -107,7 +107,7 @@ class UmbraModuleConfigParser : public ITCODParserListener {
     }
     return true;
   }
-  bool parserProperty(TCODParser*, const char* name, TCOD_value_type_t type, TCOD_value_t value) {
+  bool parserProperty(TCODParser*, const char* name, TCOD_value_type_t, TCOD_value_t value) {
     if (skip) return true;
     if (strcmp(name, "timeout") == 0) {
       module->setTimeout(value.i);
@@ -731,8 +731,8 @@ int UmbraEngine::run() {
     TCODConsole::root->setDefaultBackground(TCODColor::black);
     TCODConsole::root->clear();
     // render active modules by inverted priority order
-    for (auto tmpMod = activeModules.rbegin(); tmpMod != activeModules.rend(); ++tmpMod) {
-      (*tmpMod)->render();
+    for (auto module = activeModules.rbegin(); module != activeModules.rend(); ++module) {
+      (*module)->render();
     }
     uint32_t renderTime = SDL_GetTicks() - startTime - updateTime;
     if (internalModules[UMBRA_INTERNAL_SPEEDOMETER]->getActive()) {
