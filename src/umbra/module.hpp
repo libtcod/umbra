@@ -26,6 +26,7 @@
  */
 #pragma once
 
+#include <cassert>
 #include <libtcod/libtcod.hpp>
 #include <string>
 #include <vector>
@@ -213,7 +214,13 @@ class UmbraModule {
    * Set the module's name
    * @param name the module's name
    */
-  inline void setName(const char* new_name) { name_ = new_name; }
+  void setName(const char* name) {
+    assert(name);
+    setName(std::string(name));
+  }
+  /// @brief Set this modules name.
+  /// @param name The new name.
+  void setName(std::string name) { name_ = std::move(name); }
   /**
    * Provides a pointer to the engine object.
    * @return a pointer to the engine object

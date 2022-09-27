@@ -289,21 +289,15 @@ bool UmbraEngine::isNameFree(const char* name) {
 
 // add a module to the modules list
 int UmbraEngine::registerModule(UmbraModule* module, const char* name) {
-  if (name != NULL)
+  if (name != NULL) {
     UmbraLog::info("UmbraEngine::registerModule | Registering a module named \"%s\".", name);
-  else
+  } else {
     UmbraLog::info("UmbraEngine::registerModule | Registering a module.");
+  }
+  module->id_ = static_cast<decltype(module->id_)>(modules.size());
+  if (name) module->name_ = name;
+  if (module->name_ == "") module->name_ = std::string("module") + std::to_string(module->id_);
   modules.push_back(module);
-  char n[2048];
-  if (name == NULL) {
-    if (module->name_ == "")
-      sprintf(n, "module%d", modules.size() - 1);
-    else
-      strcpy(n, module->name_.c_str());
-  } else
-    strcpy(n, name);
-  module->setName(n);
-  module->id_ = modules.size() - 1;
   return module->id_;
 }
 
