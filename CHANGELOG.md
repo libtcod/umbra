@@ -6,3 +6,4 @@
 * "umbra_" prefix removed from headers.
 * Reverted some module handing so that Pyromancer works again.
 * General fixes and updates for code working with C++17.
+* ``UmbraEngine::getFontDir`` now returns ``std::filesystem::path`` instead of ``const char*``.

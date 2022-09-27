@@ -341,7 +341,7 @@ class UmbraEngine {
    * Retrieves the font directory.
    * @return the font direcory
    */
-  inline const char* getFontDir() { return UmbraConfig::fontDir; }
+  std::filesystem::path getFontDir() { return UmbraConfig::fontDir; }
   /**
    * Sets the root console's dimensions in cells.
    * @param w the root console's width

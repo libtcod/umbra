@@ -28,34 +28,24 @@
 
 #include <stdio.h>
 
+#include <array>
 #include <libtcod/libtcod.hpp>
 
 #include "log.hpp"
 
-int UmbraConfig::rootWidth;
-int UmbraConfig::rootHeight;
-int UmbraConfig::fontID;
-bool UmbraConfig::fullScreen;
-UmbraLogLevel UmbraConfig::logLevel;
-std::vector<UmbraFont*> UmbraConfig::fonts;
-UmbraFont* UmbraConfig::font = NULL;
-const char* UmbraConfig::fileName = NULL;
-const char* UmbraConfig::fontDir = NULL;
-const char* UmbraConfig::moduleChain = NULL;
+static constexpr std::array logLevelName = {"info", "notice", "warning", "error", "fatal error", "none"};
 
-const char* logLevelName[] = {"info", "notice", "warning", "error", "fatal error", "none"};
-
-void UmbraConfig::load(const char* path) {
+void UmbraConfig::load(std::filesystem::path path) {
   static bool loaded = false;
   TCODParser parser;
   UmbraLog::openBlock("UmbraConfig::load | Loading configuration variables.");
-  if (loaded && strcmp(UmbraConfig::fileName, path) == 0) {
+  if (loaded && UmbraConfig::fileName == path) {
     UmbraLog::notice("UmbraConfig::load | Configuraion variables have been loaded previously. Aborting.");
     UmbraLog::closeBlock(UMBRA_LOGRESULT_FAILURE);
     return;
   }
 
-  UmbraConfig::fileName = strdup(path);
+  UmbraConfig::fileName = path;
 
   // register configuration variables
   parser.newStructure("config")
@@ -70,8 +60,8 @@ void UmbraConfig::load(const char* path) {
       ->addProperty("moduleChain", TCOD_TYPE_STRING, false);
 
   // check if the config file exists
-  if (!TCODSystem::fileExists(path)) {
-    UmbraLog::notice("Configuration file %s is bad or missing. Attempting to create a new one.", path);
+  if (!std::filesystem::exists(path)) {
+    UmbraLog::notice("Configuration file %s is bad or missing. Attempting to create a new one.", path.string().c_str());
     // assign defaults
     rootWidth = 80;
     rootHeight = 60;
@@ -83,25 +73,24 @@ void UmbraConfig::load(const char* path) {
   }
 
   // run the parser
-  parser.run(path, NULL);
+  parser.run(path.string().c_str(), NULL);
 
   // assign parsed values to class variables
   rootWidth = parser.getIntProperty("config.rootWidth");
   rootHeight = parser.getIntProperty("config.rootHeight");
   fontID = parser.getIntProperty("config.fontID");
   fullScreen = parser.getBoolProperty("config.fullScreen");
-  std::string configLogLevel = "info";
-  if (parser.hasProperty("config.logLevel")) configLogLevel = parser.getStringProperty("config.logLevel");
-  fontDir = parser.getStringProperty("config.fontDir");
-  moduleChain = parser.getStringProperty("config.moduleChain");
-  if (fontDir != NULL)
-    fontDir = strdup(fontDir);
-  else
-    fontDir = "data/img";  // default value
-  if (moduleChain != NULL) moduleChain = strdup(moduleChain);
+  fontDir = "data/img";  // default value
+  if (parser.hasProperty("config.fontDir")) fontDir = parser.getStringProperty("config.fontDir");
+  moduleChain = "";
+  if (parser.hasProperty("config.moduleChain")) moduleChain = parser.getStringProperty("config.moduleChain");
   // set log level
-  for (int i = 0; i <= (int)UMBRA_LOGLEVEL_NONE; i++) {
-    if (configLogLevel == logLevelName[i]) logLevel = (UmbraLogLevel)i;
+  {
+    std::string configLogLevel = "info";
+    if (parser.hasProperty("config.logLevel")) configLogLevel = parser.getStringProperty("config.logLevel");
+    for (int i = 0; i <= static_cast<int>(UMBRA_LOGLEVEL_NONE); ++i) {
+      if (configLogLevel == logLevelName.at(i)) logLevel = static_cast<UmbraLogLevel>(i);
+    }
   }
   loaded = true;
   UmbraLog::closeBlock(UMBRA_LOGRESULT_SUCCESS);
@@ -113,7 +102,7 @@ void UmbraConfig::save() {
 
   UmbraLog::info("UmbraConfig::save | Saving configuration variables.");
 
-  out = fopen(fileName, "w");
+  out = fopen(fileName.string().c_str(), "w");
 
   if (moduleChain != NULL) {
     modC += "  moduleChain = \"";
@@ -159,8 +148,8 @@ void UmbraConfig::save() {
       rootHeight,
       fontID,
       (TCODConsole::isFullscreen() ? "true" : "false"),
-      logLevelName[logLevel],
-      fontDir,
+      logLevelName.at(logLevel),
+      fontDir.string().c_str(),
       modC.c_str());
 
   fclose(out);

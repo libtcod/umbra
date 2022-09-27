@@ -26,6 +26,7 @@
  */
 #ifndef UMBRA_CONFIG_HPP
 #define UMBRA_CONFIG_HPP
+#include <filesystem>
 #include <libtcod/list.hpp>
 #include <vector>
 
@@ -45,16 +46,16 @@ class UmbraConfig {
   friend class UmbraLog;
 
  private:
-  static int rootWidth;
-  static int rootHeight;
-  static bool fullScreen;
-  static UmbraLogLevel logLevel;
-  static UmbraFont* font;
-  static const char* fileName;
-  static const char* fontDir;
-  static const char* moduleChain;
-  static int fontID;
-  static std::vector<UmbraFont*> fonts;
+  static inline int rootWidth{};
+  static inline int rootHeight{};
+  static inline bool fullScreen{};
+  static inline UmbraLogLevel logLevel{UMBRA_LOGLEVEL_INFO};
+  static inline UmbraFont* font{};
+  static inline std::filesystem::path fileName{};
+  static inline std::filesystem::path fontDir{};
+  static inline const char* moduleChain{};
+  static inline int fontID{};
+  static inline std::vector<UmbraFont*> fonts{};
   /**
    * Activates a different font. This method is called by the engine.
    * @param shift a number indicating whether to activate the next or the previous font in the registered fonts
@@ -67,7 +68,7 @@ class UmbraConfig {
    * Loads configuration variables from a config file.
    * @param fileName the filename (with path to it) of the configuration file
    */
-  static void load(const char* fileName);
+  static void load(std::filesystem::path fileName);
   /**
    * Saves the configuration to a config file. It is called on application exit, so any changes to the configuration are
    * stored.

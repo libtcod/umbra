@@ -374,7 +374,8 @@ bool UmbraEngine::registerFonts() {
   }
   if (font_files.size() == 0) {
     UmbraLog::fatalError(
-        "UmbraEngine::registerFonts | No fonts registered. The font directory \"%s\" is empty.", getFontDir());
+        "UmbraEngine::registerFonts | No fonts registered. The font directory \"%s\" is empty.",
+        getFontDir().string().c_str());
     UmbraLog::closeBlock(UMBRA_LOGRESULT_FAILURE);
     return false;
   }
@@ -400,7 +401,7 @@ bool UmbraEngine::registerFonts() {
     }
     // compute font grid size from image size & char size
     fontDataList.emplace_back();
-    fontDataList.back().name = std::string(getFontDir()) + "/" + fontName;
+    fontDataList.back().name = (getFontDir() / fontName).string();
     TCODImage tmp(fontDataList.back().name.c_str());
     int w = 0;
     int h = 0;
@@ -421,7 +422,7 @@ bool UmbraEngine::registerFonts() {
     UmbraLog::fatalError(
         "UmbraEngine::registerFonts | No fonts registered. Autodetection found no fonts matching the naming pattern "
         "font<WIDTH>x<HEIGHT>[_<LAYOUT>].png in the specified directory \"%s\".",
-        getFontDir());
+        getFontDir().string().c_str());
     UmbraLog::closeBlock(UMBRA_LOGRESULT_FAILURE);
     return false;
   }
