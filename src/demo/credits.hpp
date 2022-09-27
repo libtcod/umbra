@@ -35,7 +35,7 @@ class Credits : public UmbraWidget {
   Credits();
   void render() override;
   std::string text;
-  TCODConsole* credits;
+  tcod::Console credits;
 };
 
 #endif

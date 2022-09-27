@@ -27,22 +27,22 @@
 #ifndef MODULE_DEMO_HPP
 #define MODULE_DEMO_HPP
 #include <libtcod/libtcod.hpp>
+#include <memory>
 #include <umbra/umbra.hpp>
 
 class Demo : public UmbraModule {
  public:
-  Demo();
-  void onInitialise() override;
+  void onInitialise() override {
+    img = std::make_unique<TCODImage>(getEngine()->getRootWidth(), getEngine()->getRootHeight());
+  }
   bool update() override;
   void render() override;
   void keyboard(TCOD_key_t& key) override;
 
  private:
-  TCODNoise* noise;
-  TCODRandom* random;
-  TCODImage* img;
-  TCODImage* logo;
-  float offset;
+  TCODNoise noise{2, TCODRandom::getInstance()};
+  std::unique_ptr<TCODImage> img{};
+  float offset{};
 };
 
 #endif

@@ -26,11 +26,7 @@
  */
 #include "circle.hpp"
 
-Circle::Circle() {
-  isGreen = false;
-  red = new TCODImage("data/img/red.png");
-  green = new TCODImage("data/img/green.png");
-}
+Circle::Circle() : red{"data/img/red.png"}, green{"data/img/green.png"} { isGreen = false; }
 
 void Circle::onInitialise() { circle.set(getEngine()->getRootWidth() / 2, getEngine()->getRootHeight() / 2, 7); }
 
@@ -41,9 +37,9 @@ void Circle::mouse(TCOD_mouse_t& ms) {
 
 void Circle::render() {
   if (isGreen)
-    green->blit2x(TCODConsole::root, circle.x - circle.r, circle.y - circle.r);
+    green.blit2x(TCODConsole::root, circle.x - circle.r, circle.y - circle.r);
   else
-    red->blit2x(TCODConsole::root, circle.x - circle.r, circle.y - circle.r);
+    red.blit2x(TCODConsole::root, circle.x - circle.r, circle.y - circle.r);
   TCODConsole::root->setDefaultForeground(TCODColor::white);
   TCODConsole::root->printEx(
       circle.x,

@@ -28,14 +28,6 @@
 
 #include <stdio.h>
 
-Demo::Demo() {
-  random = TCODRandom::getInstance();
-  noise = new TCODNoise(2, random);
-  offset = 0.0f;
-}
-
-void Demo::onInitialise() { img = new TCODImage(getEngine()->getRootWidth(), getEngine()->getRootHeight()); }
-
 bool Demo::update() {
   if (getActive()) {
     int i, j;
@@ -44,7 +36,7 @@ bool Demo::update() {
         float f[2];
         f[0] = 8.0f * i / getEngine()->getRootWidth();
         f[1] = (8.0f * j / getEngine()->getRootHeight()) + offset;
-        int val = (uint8_t)((noise->get(f) + 1.0f) * 24.0f);
+        int val = (uint8_t)((noise.get(f) + 1.0f) * 24.0f);
         img->putPixel(i, j, TCODColor(0, val / 2, val));
       }
     offset += 0.01f;
@@ -54,12 +46,20 @@ bool Demo::update() {
 }
 
 void Demo::render() {
-  img->blit(TCODConsole::root, getEngine()->getRootWidth() / 2, getEngine()->getRootHeight() / 2);
-  TCODConsole::root->print(1, 3, "Read custom parameters from module.txt:");
-  TCODConsole::root->print(1, 5, "chainParam1: %s", getStringParam("chainParam1"));
-  TCODConsole::root->print(1, 6, "chainParam2: %s", getStringParam("chainParam2"));
-  TCODConsole::root->print(1, 7, "chainParam3: %s", getStringParam("chainParam3"));
-  TCODConsole::root->print(1, 8, "moduleParam: %s", getStringParam("moduleParam"));
+  using namespace std::string_literals;
+  img->blit(
+      TCODConsole::root,
+      static_cast<float>(getEngine()->getRootWidth() / 2),
+      static_cast<float>(getEngine()->getRootHeight() / 2));
+  tcod::print(*TCODConsole::root, {1, 3}, "Read custom parameters from module.txt:", tcod::ColorRGB{255, 255, 255}, {});
+  tcod::print(
+      *TCODConsole::root, {1, 5}, "chainParam1:"s + getStringParam("chainParam1"), tcod::ColorRGB{255, 255, 255}, {});
+  tcod::print(
+      *TCODConsole::root, {1, 6}, "chainParam2:"s + getStringParam("chainParam2"), tcod::ColorRGB{255, 255, 255}, {});
+  tcod::print(
+      *TCODConsole::root, {1, 7}, "chainParam3:"s + getStringParam("chainParam3"), tcod::ColorRGB{255, 255, 255}, {});
+  tcod::print(
+      *TCODConsole::root, {1, 8}, "moduleParam:"s + getStringParam("moduleParam"), tcod::ColorRGB{255, 255, 255}, {});
 }
 
 void Demo::keyboard(TCOD_key_t& key) {

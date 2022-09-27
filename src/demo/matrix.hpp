@@ -33,11 +33,11 @@
 class MatrixLead {
  public:
   MatrixLead();
-  static TCODRandom* random;
+  static inline TCODRandom* random{};
   int x, y;  // coordinates
   uint32_t lastY;  // last y increment
   uint32_t yDuration;  // how long it takes to increment y
-  static TCODConsole* matrix;
+  static inline TCODConsole* matrix{};
   void render(uint32_t time);
 };
 

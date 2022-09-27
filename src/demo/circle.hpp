@@ -31,10 +31,10 @@
 
 class Circle : public UmbraModule {
  public:
-  UmbraCircle circle;
-  TCODImage* red;
-  TCODImage* green;
-  bool isGreen;
+  UmbraCircle circle{};
+  TCODImage red{"data/img/red.png"};
+  TCODImage green{"data/img/green.png"};
+  bool isGreen{};
   void onInitialise() override;
   void mouse(TCOD_mouse_t& ms) override;
   void render() override;

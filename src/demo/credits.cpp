@@ -27,7 +27,7 @@
 #include "credits.hpp"
 
 Credits::Credits() {
-  credits = new TCODConsole(48, 11);
+  credits = tcod::Console(48, 11);
   text =
       "Umbra demo\n"
       "Copyright (c) 2009, 2010 Mingos, Jice\n"
@@ -44,9 +44,10 @@ Credits::Credits() {
 }
 
 void Credits::render() {
-  credits->setDefaultForeground(TCODColor::white);
-  credits->setDefaultBackground(TCODColor::black);
-  credits->printFrame(0, 0, 48, 11, true, TCOD_BKGND_SET, NULL);
-  credits->printRectEx(24, 1, 46, 9, TCOD_BKGND_NONE, TCOD_CENTER, text.c_str());
-  TCODConsole::blit(credits, 0, 0, rect.w, rect.h, TCODConsole::root, rect.x, rect.y, 1.0f, 0.75f);
+  constexpr auto WHITE = tcod::ColorRGB{255, 255, 255};
+  constexpr auto BLACK = tcod::ColorRGB{0, 0, 0};
+  constexpr std::array DECORATOR = {0x250c, 0x2500, 0x2510, 0x2502, 0x20, 0x2502, 0x2514, 0x2500, 0x2518};
+  tcod::draw_frame(credits, {0, 0, 48, 11}, DECORATOR, WHITE, BLACK);
+  tcod::print_rect(credits, {1, 1, 46, 9}, text, WHITE, {}, TCOD_CENTER);
+  tcod::blit(*TCODConsole::root, credits, {rect.x, rect.y}, {}, 1.0f, 0.75f);
 }

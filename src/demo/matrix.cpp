@@ -31,9 +31,6 @@
 
 #include "globals.hpp"
 
-TCODRandom* MatrixLead::random;
-TCODConsole* MatrixLead::matrix;
-
 MatrixLead::MatrixLead() {
   if (!random) random = new TCODRandom();
   y = 0;

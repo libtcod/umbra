@@ -29,7 +29,6 @@
 #include "globals.hpp"
 
 RabbitWidget::RabbitWidget() {
-  rabbit = new TCODConsole(24, 12);
   rect.set(engine.getRootWidth() / 2 - 12, engine.getRootHeight() / 2 - 6, 24, 12);
   setDragZone(0, 0, 24, 1);
   button.set(this, 10, 7, 4, 3, "OK");
@@ -51,19 +50,19 @@ void RabbitWidget::onNextDemo(UmbraWidget*, UmbraEvent) {
 }
 
 void RabbitWidget::render() {
-  rabbit->setDefaultForeground(TCODColor::white);
-  rabbit->setDefaultBackground(TCODColor::black);
-  rabbit->printFrame(0, 0, 24, 12, true, TCOD_BKGND_SET, "Wake up, Neo");
-  rabbit->printRectEx(
+  rabbit.setDefaultForeground(TCODColor::white);
+  rabbit.setDefaultBackground(TCODColor::black);
+  rabbit.printFrame(0, 0, 24, 12, true, TCOD_BKGND_SET, "Wake up, Neo");
+  rabbit.printRectEx(
       12, 2, 24, 6, TCOD_BKGND_NONE, TCOD_CENTER, "The Matrix has you. Press OK to follow the white rabbit.");
   if (dragZone.mouseHover || isDragging) {
-    rabbit->setDefaultBackground(TCODColor::lightRed);
-    rabbit->rect(5, 0, 14, 1, false, TCOD_BKGND_SET);
+    rabbit.setDefaultBackground(TCODColor::lightRed);
+    rabbit.rect(5, 0, 14, 1, false, TCOD_BKGND_SET);
   }
   if (button.rect.mouseHover)
-    rabbit->setDefaultForeground(TCODColor::lightGreen);
+    rabbit.setDefaultForeground(TCODColor::lightGreen);
   else
-    rabbit->setDefaultForeground(TCODColor::white);
-  button.render(rabbit);
-  TCODConsole::blit(rabbit, 0, 0, rect.w, rect.h, TCODConsole::root, rect.x, rect.y, 1.0f, 0.5f);
+    rabbit.setDefaultForeground(TCODColor::white);
+  button.render(&rabbit);
+  TCODConsole::blit(&rabbit, 0, 0, rect.w, rect.h, TCODConsole::root, rect.x, rect.y, 1.0f, 0.5f);
 }
