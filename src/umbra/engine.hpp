@@ -177,7 +177,10 @@ class UmbraEngine {
    * @param title the main program window's new title
    * @param ... optional printf-like formatting of the title
    */
-  void setWindowTitle(const char* title, ...);
+  template <typename S, typename... T>
+  void setWindowTitle(const S& title, const T&... args) {
+    setWindowTitle(fmt::sprintf(title, args...));
+  }
   /**
    * Sets the window title.<br><i>Note: this method is usually called before initialising the engine. Should it be
    * called after the engine has been initialised, the title won't be changed util the engine is reinitialised.</i>

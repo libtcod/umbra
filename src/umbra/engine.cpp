@@ -269,16 +269,7 @@ UmbraEngine::UmbraEngine() : keyboardMode(UMBRA_KEYBOARD_RELEASED) {
   UmbraLog::closeBlock(UMBRA_LOGRESULT_SUCCESS);
 }
 
-void UmbraEngine::setWindowTitle(const char* title, ...) {
-  char f[512];
-  va_list ap;
-  va_start(ap, title);
-  vsprintf(f, title, ap);
-  va_end(ap);
-  windowTitle = (const char*)f;
-}
-
-void UmbraEngine::setWindowTitle(std::string title) { windowTitle = title.c_str(); }
+void UmbraEngine::setWindowTitle(std::string title) { windowTitle = title; }
 
 // check whether there already exists a module with a given name
 bool UmbraEngine::isNameFree(const char* name) {
