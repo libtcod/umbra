@@ -770,8 +770,7 @@ void UmbraEngine::keyboard(TCOD_key_t& key) {
 
 void UmbraEngine::reinitialise(TCOD_renderer_t new_renderer) {
   UmbraLog::openBlock("UmbraEngine::reinitialise | Reinitialising the root console.");
-  delete TCODConsole::root;
-  TCODConsole::root = NULL;
+  TCOD_console_delete(nullptr);
   TCODConsole::setCustomFont(
       UmbraConfig::font->filename(),
       UmbraConfig::font->flags(),
