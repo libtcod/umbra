@@ -100,6 +100,7 @@
         "stop_token": "cpp",
         "thread": "cpp",
         "fstream": "cpp",
-        "variant": "cpp"
+        "variant": "cpp",
+        "random": "cpp"
     }
 }

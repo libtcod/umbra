@@ -27,18 +27,14 @@
 #ifndef MODULE_CREDITS_HPP
 #define MODULE_CREDITS_HPP
 #include <libtcod/libtcod.hpp>
+#include <random>
 #include <umbra/umbra.hpp>
 #include <vector>
 
-class MatrixLead {
- public:
-  MatrixLead();
-  static inline TCODRandom* random{};
-  int x, y;  // coordinates
-  uint32_t lastY;  // last y increment
-  uint32_t yDuration;  // how long it takes to increment y
-  static inline TCODConsole* matrix{};
-  void render(uint32_t time);
+struct MatrixLead {
+  int x{}, y{};  // coordinates
+  uint64_t next_y_ms{};  // next y increment
+  int y_duration_ms{};  // how long it takes to increment y
 };
 
 class Matrix : public UmbraModule {
@@ -48,7 +44,10 @@ class Matrix : public UmbraModule {
   void onActivate() override;
 
  private:
-  std::vector<MatrixLead> leads;
+  std::vector<MatrixLead> leads{};
+  uint64_t next_lead_ms{};  // The time when the next lead is spawned.
+  std::mt19937 rng{std::random_device{}()};
+  tcod::Console console{};
 };
 
 #endif

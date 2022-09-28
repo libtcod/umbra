@@ -31,57 +31,55 @@
 
 #include "globals.hpp"
 
-MatrixLead::MatrixLead() {
-  if (!random) random = new TCODRandom();
-  y = 0;
-  x = random->get(0, engine.getRootWidth() - 1);
-  lastY = SDL_GetTicks();
-  yDuration = random->get(50, 250);
-  if (!matrix) matrix = new TCODConsole(engine.getRootWidth(), engine.getRootHeight());
-}
-
-void MatrixLead::render(uint32_t time) {
-  char c = random->get('A', 'Z');
-  if (random->get(0, 1) == 1)
-    c += 0x20;
-  else if (random->get(0, 5) == 5)
-    c = random->get('0', '9');
-  if (time >= lastY + yDuration) {
-    matrix->setCharForeground(x, y, TCODColor::green);
-    lastY = time;
-    y++;
-    if (y >= engine.getRootHeight()) return;
-  }
-  matrix->setDefaultForeground(TCODColor::lightGreen);
-  matrix->putChar(x, y, c, TCOD_BKGND_NONE);
-}
+/// @brief Random character selection for matrix trail effect.
+constexpr std::array CHARACTERS{'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',
+                                'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '0', 'a', 'b', 'c', 'd', 'e',
+                                'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u',
+                                'v', 'w', 'x', 'y', 'z', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
 
 bool Matrix::update() {
-  if (!MatrixLead::random) MatrixLead::random = new TCODRandom();
-  if (MatrixLead::random->get(0, 3) == 0) leads.emplace_back();
+  const auto now = SDL_GetTicks64();
+  if (next_lead_ms <= now) {
+    next_lead_ms = now + rng() % 200;
+    auto& new_lead = leads.emplace_back();
+    new_lead.x = rng() % (engine.getRootWidth() - 1);
+    new_lead.y_duration_ms = 50 + rng() % 200;
+    new_lead.next_y_ms = now + new_lead.y_duration_ms;
+  }
   return getActive();
 }
 
 void Matrix::render() {
-  uint32_t t = SDL_GetTicks();
-  if (leads.size() > 0) {
-    leads.erase(
-        std::remove_if(
-            leads.begin(),
-            leads.end(),
-            [&](MatrixLead& mx) {
-              mx.render(t);
-              if (mx.y >= engine.getRootHeight()) {
-                return true;
-              }
-              return false;
-            }),
-        leads.end());
-    TCODConsole::blit(
-        MatrixLead::matrix, 0, 0, engine.getRootWidth(), engine.getRootHeight(), TCODConsole::root, 0, 0, 0.98f, 0.0f);
-    TCODConsole::blit(
-        TCODConsole::root, 0, 0, engine.getRootWidth(), engine.getRootHeight(), MatrixLead::matrix, 0, 0, 1.0f, 0.0f);
+  const auto now = SDL_GetTicks64();
+  // Advance leads.
+  for (auto& lead : leads) {
+    if (lead.next_y_ms <= now) {
+      ++lead.y;
+      lead.next_y_ms = now + lead.y_duration_ms;
+    }
+  }
+  // Remove leads past the end.
+  leads.erase(
+      std::remove_if(
+          leads.begin(), leads.end(), [&](const MatrixLead& lead) { return lead.y >= engine.getRootHeight(); }),
+      leads.end());
+  // Render leads.
+  for (const auto& lead : leads) {
+    auto& tile = console.at({lead.x, lead.y});
+    tile.ch = CHARACTERS.at(rng() % CHARACTERS.size());
+    tile.fg = tcod::ColorRGB{63, 255, 63};
+  }
+  tcod::blit(*TCODConsole::root, console);
+  // Fade lead colors.
+  const auto fade_function = [](uint8_t v) -> uint8_t { return v ? v - (v / 50 + 1) : 0; };
+  for (auto& tile : console) {
+    tile.fg.r = fade_function(tile.fg.r);
+    tile.fg.g = fade_function(tile.fg.g);
+    tile.fg.b = fade_function(tile.fg.b);
   }
 }
 
-void Matrix::onActivate() { getEngine()->printCredits(51, 1); }
+void Matrix::onActivate() {
+  getEngine()->printCredits(51, 1);
+  console = tcod::Console{engine.getRootWidth(), engine.getRootHeight()};
+}
