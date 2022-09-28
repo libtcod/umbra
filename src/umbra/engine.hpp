@@ -27,6 +27,7 @@
 #ifndef UMBRA_ENGINE_HPP
 #define UMBRA_ENGINE_HPP
 
+#include <fmt/printf.h>
 #include <libtcod/console_types.h>
 
 #include <iostream>
