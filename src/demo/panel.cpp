@@ -28,49 +28,31 @@
 
 #include <SDL_timer.h>
 
-#include "globals.hpp"
-
-void Panel::onQuit(UmbraWidget* w, UmbraEvent ev) { engine.deactivateAll(true); }
-
-Panel::Panel() {
-  width = 24;
-  height = 48;
-  posx = 0;
-  posy = (getEngine()->getRootHeight() - height) / 2;
-  rect.set(posx, posy, width, height);
-  panel = new TCODConsole(width, height);
-  lastHover = 0;
-  delay = 3000;
-  bQuit.set(this, 2, 2, 20, 3, "Quit");
-  bQuit.onMouseClick.connect(this, &Panel::onQuit);
-}
+#include <algorithm>
 
 void Panel::render() {
-  panel->setDefaultBackground(TCODColor::darkerGrey);
-  panel->setDefaultForeground(TCODColor::silver);
-  panel->printFrame(0, 0, rect.w, rect.h, true, TCOD_BKGND_SET, NULL);
-  if (bQuit.rect.mouseHover) panel->setDefaultForeground(TCODColor::white);
-  bQuit.render(panel);
-  TCODConsole::blit(panel, 0, 0, rect.w, rect.h, TCODConsole::root, posx, posy, 1.0f, 0.5f);
+  constexpr std::array DECORATOR = {0x250c, 0x2500, 0x2510, 0x2502, 0x20, 0x2502, 0x2514, 0x2500, 0x2518};
+  const auto bg = tcod::ColorRGB{63, 63, 63};
+  auto fg = tcod::ColorRGB{203, 203, 203};
+  tcod::draw_frame(panel, {0, 0, rect.w, rect.h}, DECORATOR, fg, bg);
+  if (bQuit.rect.mouseHover) fg = tcod::ColorRGB{255, 255, 255};
+  panel.setDefaultForeground(fg);
+  panel.setDefaultForeground(bg);
+  bQuit.render(&panel);
+  tcod::blit(*TCODConsole::root, panel, {posx, posy}, {0, 0, rect.w, rect.h}, 1.0f, 0.5f);
 }
 
 bool Panel::update() {
-  uint32_t time = SDL_GetTicks();
+  const uint64_t time = SDL_GetTicks64();
   if (rect.mouseHover) {
     lastHover = time;
     posx += 3;
-    posx = MIN(posx, 0);
+    posx = std::min(posx, 0);
     rect.set(posx, posy, width, height);
   } else if (time >= lastHover + delay) {
     posx -= 2;
-    posx = MAX(posx, (-width) + 1);
+    posx = std::max(posx, (-width) + 1);
     rect.set(posx, posy, width, height);
   }
   return getActive();
-}
-
-void Panel::mouse(TCOD_mouse_t& ms) {
-  UmbraWidget::mouse(ms);
-  bQuit.mouse(ms);
-  return;
 }

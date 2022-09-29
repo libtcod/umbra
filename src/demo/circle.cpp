@@ -26,25 +26,17 @@
  */
 #include "circle.hpp"
 
-Circle::Circle() : red{"data/img/red.png"}, green{"data/img/green.png"} { isGreen = false; }
-
-void Circle::onInitialise() { circle.set(getEngine()->getRootWidth() / 2, getEngine()->getRootHeight() / 2, 7); }
-
-void Circle::mouse(TCOD_mouse_t& ms) {
-  isGreen = circle.contains(ms.cx, ms.cy);
-  if (isGreen && ms.lbutton) setActive(false);
-}
-
 void Circle::render() {
-  if (isGreen)
+  if (isGreen) {
     green.blit2x(TCODConsole::root, circle.x - circle.r, circle.y - circle.r);
-  else
+  } else {
     red.blit2x(TCODConsole::root, circle.x - circle.r, circle.y - circle.r);
-  TCODConsole::root->setDefaultForeground(TCODColor::white);
-  TCODConsole::root->printEx(
-      circle.x,
-      circle.y + 8,
-      TCOD_BKGND_NONE,
-      TCOD_CENTER,
-      "Do you take the green or the red pill?\nClick the big button to carry on...");
+  }
+  tcod::print(
+      *TCODConsole::root,
+      {circle.x, circle.y + 8},
+      "Do you take the green or the red pill?\nClick the big button to carry on...",
+      {{255, 255, 255}},
+      {},
+      TCOD_CENTER);
 }

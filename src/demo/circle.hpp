@@ -31,14 +31,18 @@
 
 class Circle : public UmbraModule {
  public:
+  void onInitialise() override { circle.set(getEngine()->getRootWidth() / 2, getEngine()->getRootHeight() / 2, 7); }
+  void mouse(TCOD_mouse_t& ms) override {
+    isGreen = circle.contains(ms.cx, ms.cy);
+    if (isGreen && ms.lbutton) setActive(false);
+  }
+  void render() override;
+
+ private:
   UmbraCircle circle{};
   TCODImage red{"data/img/red.png"};
   TCODImage green{"data/img/green.png"};
-  bool isGreen{};
-  void onInitialise() override;
-  void mouse(TCOD_mouse_t& ms) override;
-  void render() override;
-  Circle();
+  bool isGreen{false};
 };
 
 #endif /* CIRCLE_HPP */

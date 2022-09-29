@@ -36,13 +36,15 @@ class RabbitWidget : public UmbraWidget {
   RabbitWidget();
   void mouse(TCOD_mouse_t& ms) override;
   void render() override;
-  UmbraButton button{};
-  TCODConsole rabbit{24, 12};
   // slots
   void onNextDemo(UmbraWidget* w, UmbraEvent ev);
 
  protected:
   void onInitialise() override;
+
+ private:
+  UmbraButton button{};
+  TCODConsole rabbit{24, 12};
 };
 
 #endif

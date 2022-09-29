@@ -29,20 +29,32 @@
 #include <libtcod/libtcod.hpp>
 #include <umbra/umbra.hpp>
 
+#include "globals.hpp"
+
 class Panel : public UmbraWidget {
  public:
-  Panel();
-  UmbraButton bQuit;
+  Panel() {
+    rect.set(posx, posy, width, height);
+    bQuit.onMouseClick.connect(this, &Panel::onQuit);
+  }
   bool update() override;
-  void mouse(TCOD_mouse_t& ms) override;
   void render() override;
-  TCODConsole* panel;
-  void onQuit(UmbraWidget* w, UmbraEvent ev);
+  void mouse(TCOD_mouse_t& ms) override {
+    UmbraWidget::mouse(ms);
+    bQuit.mouse(ms);
+    return;
+  }
+  void onQuit(UmbraWidget*, UmbraEvent) { engine.deactivateAll(true); }
 
  private:
-  int posx, posy, width, height;
-  uint32_t delay;
-  uint32_t lastHover;  // the time the mouse last hovered over the panel
+  int width{24};
+  int height{48};
+  int posx{0};
+  int posy{(getEngine()->getRootHeight() - height) / 2};
+  uint32_t delay{3000};
+  uint64_t lastHover{0};  // the time the mouse last hovered over the panel
+  TCODConsole panel{width, height};
+  UmbraButton bQuit{this, 2, 2, 20, 3, "Quit"};
 };
 
 #endif

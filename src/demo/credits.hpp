@@ -32,10 +32,14 @@
 
 class Credits : public UmbraWidget {
  public:
-  Credits();
+  Credits() {
+    rect.set(getEngine()->getRootWidth() / 2 - 24, getEngine()->getRootHeight() / 2 - 5, 48, 11);
+    setTimeout(5000);
+  }
   void render() override;
-  std::string text;
-  tcod::Console credits;
+
+ private:
+  tcod::Console credits{48, 11};
 };
 
 #endif
