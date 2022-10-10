@@ -26,6 +26,8 @@
  */
 #pragma once
 
+#include <SDL_events.h>
+
 #include <cassert>
 #include <libtcod/libtcod.hpp>
 #include <string>
@@ -77,6 +79,8 @@ class UmbraModule {
    * @param ms a reference to the mouse event object
    */
   virtual void mouse(TCOD_mouse_t&) {}  // module-specific mouse
+  /// @brief Called on SDL events.
+  virtual void onEvent(const SDL_Event&) {}
   /**
    * Activates or deactivates the module.
    * @param active <code>true</code> if the module is to be activated, <code>false</code> otherwise

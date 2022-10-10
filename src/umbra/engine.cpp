@@ -26,6 +26,7 @@
  */
 #include "engine.hpp"
 
+#include <SDL_events.h>
 #include <SDL_timer.h>
 #include <fmt/core.h>
 #include <stdarg.h>
@@ -172,8 +173,14 @@ class UmbraModuleConfigParser : public ITCODParserListener {
   void error(const char* msg) override { UmbraLog::error(fmt::format("UmbraModuleConfigParser | {}", msg)); }
 };
 
-// constructor
-UmbraEngine::UmbraEngine(const char* fileName, UmbraRegisterCallbackFlag flag) : keyboardMode(UMBRA_KEYBOARD_RELEASED) {
+int UmbraEngine::onSDLEvent(void* userdata, SDL_Event* event) {
+  auto self = static_cast<UmbraEngine*>(userdata);
+  for (auto& module : self->activeModules) module->onEvent(*event);
+  if (event->type == SDL_QUIT) self->deactivateAll();
+  return 0;
+};
+
+UmbraEngine::UmbraEngine(const char* fileName, UmbraRegisterCallbackFlag flag) {
   UmbraLog::openBlock("UmbraEngine::UmbraEngine | Instantiating the engine object.");
   // load configuration variables
   UmbraConfig::load(fileName);
@@ -196,75 +203,10 @@ UmbraEngine::UmbraEngine(const char* fileName, UmbraRegisterCallbackFlag flag) :
     registerCallback(new UmbraCallbackSpeedometer());
   }
   UmbraLog::closeBlock(UMBRA_LOGRESULT_SUCCESS);
+  SDL_AddEventWatch(onSDLEvent, this);
 }
 
-UmbraEngine::UmbraEngine(const char* fileName) : keyboardMode(UMBRA_KEYBOARD_RELEASED) {
-  UmbraLog::openBlock("UmbraEngine::UmbraEngine | Instantiating the engine object.");
-  // load configuration variables
-  UmbraConfig::load(fileName);
-  paused = false;
-  setWindowTitle("%s ver. %s (%s)", UMBRA_TITLE, UMBRA_VERSION, UMBRA_STATUS);
-  engineInstance = this;
-  // register internal modules
-  registerInternalModule(UMBRA_INTERNAL_SPEEDOMETER, new UmbraModSpeed());
-  registerInternalModule(UMBRA_INTERNAL_BSOD, new UmbraModBSOD());
-  registerInternalModule(UMBRA_INTERNAL_CREDITS, new UmbraModCredits());
-  // register default callbacks
-  registerCallback(new UmbraCallbackQuit());
-  registerCallback(new UmbraCallbackFullscreen());
-  registerCallback(new UmbraCallbackScreenshot());
-  registerCallback(new UmbraCallbackFontUp());
-  registerCallback(new UmbraCallbackFontDown());
-  registerCallback(new UmbraCallbackPause());
-  UmbraLog::closeBlock(UMBRA_LOGRESULT_SUCCESS);
-}
-
-UmbraEngine::UmbraEngine(UmbraRegisterCallbackFlag flag) : keyboardMode(UMBRA_KEYBOARD_RELEASED) {
-  UmbraLog::openBlock("UmbraEngine::UmbraEngine | Instantiating the engine object.");
-  // load configuration variables
-  UmbraConfig::load("data/cfg/umbra.txt");
-  paused = false;
-  setWindowTitle("%s ver. %s (%s)", UMBRA_TITLE, UMBRA_VERSION, UMBRA_STATUS);
-  engineInstance = this;
-  // register internal modules
-  registerInternalModule(UMBRA_INTERNAL_SPEEDOMETER, new UmbraModSpeed());
-  registerInternalModule(UMBRA_INTERNAL_BSOD, new UmbraModBSOD());
-  registerInternalModule(UMBRA_INTERNAL_CREDITS, new UmbraModCredits());
-  // register default callbacks
-  if (flag & UMBRA_REGISTER_DEFAULT) {
-    registerCallback(new UmbraCallbackQuit());
-    registerCallback(new UmbraCallbackFullscreen());
-    registerCallback(new UmbraCallbackScreenshot());
-    registerCallback(new UmbraCallbackFontUp());
-    registerCallback(new UmbraCallbackFontDown());
-    registerCallback(new UmbraCallbackPause());
-  }
-  if (flag & UMBRA_REGISTER_ADDITIONAL) {
-    registerCallback(new UmbraCallbackSpeedometer());
-  }
-  UmbraLog::closeBlock(UMBRA_LOGRESULT_SUCCESS);
-}
-
-UmbraEngine::UmbraEngine() : keyboardMode(UMBRA_KEYBOARD_RELEASED) {
-  UmbraLog::openBlock("UmbraEngine::UmbraEngine | Instantiating the engine object.");
-  // load configuration variables
-  UmbraConfig::load("data/cfg/umbra.txt");
-  paused = false;
-  setWindowTitle("%s ver. %s (%s)", UMBRA_TITLE, UMBRA_VERSION, UMBRA_STATUS);
-  engineInstance = this;
-  // register internal modules
-  registerInternalModule(UMBRA_INTERNAL_SPEEDOMETER, new UmbraModSpeed());
-  registerInternalModule(UMBRA_INTERNAL_BSOD, new UmbraModBSOD());
-  registerInternalModule(UMBRA_INTERNAL_CREDITS, new UmbraModCredits());
-  // register default callbacks
-  registerCallback(new UmbraCallbackQuit());
-  registerCallback(new UmbraCallbackFullscreen());
-  registerCallback(new UmbraCallbackScreenshot());
-  registerCallback(new UmbraCallbackFontUp());
-  registerCallback(new UmbraCallbackFontDown());
-  registerCallback(new UmbraCallbackPause());
-  UmbraLog::closeBlock(UMBRA_LOGRESULT_SUCCESS);
-}
+UmbraEngine::~UmbraEngine() { SDL_DelEventWatch(onSDLEvent, this); }
 
 void UmbraEngine::setWindowTitle(std::string title) { windowTitle = title; }
 
@@ -699,8 +641,6 @@ int UmbraEngine::run() {
     keyboard(key);
     uint32_t startTime = SDL_GetTicks();
     // update all active modules by priority order
-    UmbraModule** tmpMod;
-
     activeModules.erase(
         std::remove_if(
             activeModules.begin(),
@@ -763,8 +703,7 @@ void UmbraEngine::keyboard(TCOD_key_t& key) {
   }
 
   if (val) {
-    // "erase" key event
-    memset(&key, 0, sizeof(TCOD_key_t));
+    key = TCOD_key_t{};  // "erase" key event
   }
 }
 

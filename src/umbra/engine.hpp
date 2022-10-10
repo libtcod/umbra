@@ -27,6 +27,7 @@
 #ifndef UMBRA_ENGINE_HPP
 #define UMBRA_ENGINE_HPP
 
+#include <SDL_events.h>
 #include <fmt/printf.h>
 #include <libtcod/console_types.h>
 
@@ -48,7 +49,7 @@ enum UmbraKeyboardMode {
   UMBRA_KEYBOARD_WAIT_NOFLUSH,
   UMBRA_KEYBOARD_RELEASED,
   UMBRA_KEYBOARD_PRESSED,
-  UMBRA_KEYBOARD_PRESSED_RELEASED
+  UMBRA_KEYBOARD_PRESSED_RELEASED,
 };
 
 /**
@@ -85,21 +86,14 @@ class UmbraEngine {
    * @param fileName the filename from which to read Umbra's configuration.
    * @param flag the callback registering flags, used to choose which callbacks are to be registered in the application.
    */
-  UmbraEngine(const char* fileName, UmbraRegisterCallbackFlag flag);
-  /**
-   * The constructor.
-   * @param filename the filename from which to read Umbra's configuration.
-   */
-  UmbraEngine(const char* filename);
+  UmbraEngine(const char* fileName = "data/cfg/umbra.txt", UmbraRegisterCallbackFlag flag = UMBRA_REGISTER_DEFAULT);
   /**
    * The constructor.
    * @param flag the callback registering flags, used to choose which callbacks are to be registered in the application.
    */
-  UmbraEngine(UmbraRegisterCallbackFlag flag);
-  /**
-   * The constructor. Takes no parametres and uses only the defaults.
-   */
-  UmbraEngine();
+  UmbraEngine(UmbraRegisterCallbackFlag flag) : UmbraEngine{"data/cfg/umbra.txt", flag} {}
+
+  ~UmbraEngine();
 
   /**
    * Add custom character mapping. Mappings are put on queue for UmbraEngine::initialise()/reinitialise() to call them.
@@ -380,7 +374,7 @@ class UmbraEngine {
   std::vector<UmbraModule*> toActivate{};  // modules to activate next frame
   std::vector<UmbraModule*> toDeactivate{};  // modules to deactivate next frame
   UmbraModule* internalModules[UMBRA_INTERNAL_MAX]{};
-  UmbraKeyboardMode keyboardMode{};
+  UmbraKeyboardMode keyboardMode{UMBRA_KEYBOARD_RELEASED};
   std::vector<UmbraCallback*> callbacks{};  // the keybinding callbacks
   /**
    * Parses the keyboard input and passes it to the registered callbacks.
@@ -403,6 +397,8 @@ class UmbraEngine {
    * @param module a pointer to the internal module to be registered.
    */
   void registerInternalModule(UmbraInternalModuleID id, UmbraModule* module);
+  /// @brief SDL event watcher.
+  static int onSDLEvent(void* userdata, SDL_Event* event);
 };
 
 #endif

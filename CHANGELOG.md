@@ -9,3 +9,4 @@
 * ``UmbraEngine::getFontDir`` now returns ``std::filesystem::path`` instead of ``const char*``.
 * Logging functions now use ``fmt`` instead of C variadic print functions.
 * ``UmbraLog::get`` now returns ``std::string`` instead of a pointer to a temporary string.
+* Added ``UmbraModule::onEvent`` to transition away from libtcod events.
