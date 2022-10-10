@@ -590,8 +590,9 @@ int UmbraEngine::run() {
   while (!TCODConsole::isWindowClosed()) {
     // execute only when paused
     if (paused) {
-      TCODSystem::checkForEvent(TCOD_EVENT_KEY_RELEASE | TCOD_EVENT_MOUSE_PRESS, &key, &mouse);
-      keyboard(key);
+      while (TCODSystem::checkForEvent(TCOD_EVENT_KEY_RELEASE | TCOD_EVENT_MOUSE_PRESS, &key, &mouse)) {
+        keyboard(key);
+      }
       TCODConsole::root->flush();
       continue;  // don't update or render anything anew
     }
@@ -618,25 +619,38 @@ int UmbraEngine::run() {
     if (activeModules.size() == 0) break;  // exit game
 
     // update all active modules
-    switch (keyboardMode) {
-      case UMBRA_KEYBOARD_WAIT:
-        TCODSystem::waitForEvent(TCOD_EVENT_KEY_PRESS | TCOD_EVENT_MOUSE, &key, &mouse, true);
-        break;
-      case UMBRA_KEYBOARD_WAIT_NOFLUSH:
-        TCODSystem::waitForEvent(TCOD_EVENT_KEY_PRESS | TCOD_EVENT_MOUSE, &key, &mouse, false);
-        break;
-      case UMBRA_KEYBOARD_PRESSED:
-        TCODSystem::checkForEvent(TCOD_EVENT_KEY_PRESS | TCOD_EVENT_MOUSE, &key, &mouse);
-        break;
-      case UMBRA_KEYBOARD_PRESSED_RELEASED:
-        TCODSystem::checkForEvent(TCOD_EVENT_KEY | TCOD_EVENT_MOUSE, &key, &mouse);
-        break;
-      case UMBRA_KEYBOARD_RELEASED:
-      default:
-        TCODSystem::checkForEvent(TCOD_EVENT_KEY_RELEASE | TCOD_EVENT_MOUSE, &key, &mouse);
-        break;
+    {
+      int event_mask = 0;  // Loop through events using this event mask.
+      int event_type = 0;  // The flags of the most recently processed event.
+      switch (keyboardMode) {
+        case UMBRA_KEYBOARD_WAIT:
+          event_type = TCODSystem::waitForEvent(TCOD_EVENT_KEY_PRESS | TCOD_EVENT_MOUSE, &key, &mouse, true);
+          handleEvent(event_type, key, mouse);
+          break;
+        case UMBRA_KEYBOARD_WAIT_NOFLUSH:
+          event_type = TCODSystem::waitForEvent(TCOD_EVENT_KEY_PRESS | TCOD_EVENT_MOUSE, &key, &mouse, false);
+          handleEvent(event_type, key, mouse);
+          event_mask = TCOD_EVENT_KEY_PRESS | TCOD_EVENT_MOUSE;
+          break;
+        case UMBRA_KEYBOARD_PRESSED:
+          event_mask = TCOD_EVENT_KEY_PRESS | TCOD_EVENT_MOUSE;
+          break;
+        case UMBRA_KEYBOARD_PRESSED_RELEASED:
+          event_mask = TCOD_EVENT_KEY | TCOD_EVENT_MOUSE;
+          break;
+        case UMBRA_KEYBOARD_RELEASED:
+        default:
+          event_mask = TCOD_EVENT_KEY_RELEASE | TCOD_EVENT_MOUSE;
+          break;
+      }
+      if (event_mask) {
+        while (true) {
+          event_type = TCODSystem::checkForEvent(event_mask, &key, &mouse);
+          if (event_type == 0) break;
+          handleEvent(event_type, key, mouse);
+        }
+      }
     }
-    keyboard(key);
     uint32_t startTime = SDL_GetTicks();
     // update all active modules by priority order
     activeModules.erase(
@@ -646,9 +660,6 @@ int UmbraEngine::run() {
             [&](UmbraModule* tmpMod) {
               bool remove_this = false;
               if (!tmpMod->getPause()) {
-                // handle input
-                tmpMod->keyboard(key);
-                tmpMod->mouse(mouse);
                 if (tmpMod->isTimedOut(startTime) || !tmpMod->update() || !tmpMod->getActive()) {
                   UmbraModule* module = tmpMod;
                   int fallback = module->getFallback();
@@ -683,6 +694,20 @@ int UmbraEngine::run() {
   UmbraLog::closeBlock(UMBRA_LOGRESULT_SUCCESS);
   UmbraLog::save();
   return 0;
+}
+
+void UmbraEngine::handleEvent(int event_type, TCOD_key_t& key, TCOD_mouse_t& mouse) {
+  if (event_type & TCOD_EVENT_KEY) {
+    keyboard(key);
+    for (auto& module : activeModules) {
+      if (!module->getPause()) module->keyboard(key);
+    }
+  };
+  if (event_type & TCOD_EVENT_MOUSE) {
+    for (auto& module : activeModules) {
+      if (!module->getPause()) module->mouse(mouse);
+    }
+  }
 }
 
 void UmbraEngine::keyboard(TCOD_key_t& key) {

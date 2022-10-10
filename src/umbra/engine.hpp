@@ -381,6 +381,8 @@ class UmbraEngine {
    * @param key a reference to the keyboard event object
    */
   void keyboard(TCOD_key_t& key);
+  /// @brief Passes libtcod events to modules and callbacks.
+  void handleEvent(int event_type, TCOD_key_t& key, TCOD_mouse_t& mouse);
   /**
    * Puts the newly activated module in the active modules list.
    * @param mod a pointer to the module that's being activated
