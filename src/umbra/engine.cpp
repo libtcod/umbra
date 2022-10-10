@@ -275,9 +275,7 @@ void UmbraEngine::registerFont(int columns, int rows, const char* filename, int 
     UmbraLog::closeBlock(UMBRA_LOGRESULT_FAILURE);
     return;
   }
-  UmbraFont* file = new UmbraFont;  // don't delete this later
-  file->initialise(columns, rows, filename, flags);
-  UmbraConfig::registerFont(file);
+  UmbraConfig::registerFont(UmbraFont{columns, rows, filename, flags});
   UmbraLog::closeBlock(UMBRA_LOGRESULT_SUCCESS);
 }
 

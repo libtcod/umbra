@@ -50,12 +50,12 @@ class UmbraConfig {
   static inline int rootHeight{};
   static inline bool fullScreen{};
   static inline UmbraLogLevel logLevel{UMBRA_LOGLEVEL_INFO};
-  static inline UmbraFont* font{};
+  static inline const UmbraFont* font{};
   static inline std::filesystem::path fileName{};
   static inline std::filesystem::path fontDir{};
   static inline const char* moduleChain{};
   static inline int fontID{};
-  static inline std::vector<UmbraFont*> fonts{};
+  static inline std::vector<UmbraFont> fonts{};
   /**
    * Activates a different font. This method is called by the engine.
    * @param shift a number indicating whether to activate the next or the previous font in the registered fonts
@@ -76,9 +76,10 @@ class UmbraConfig {
   static void save();
   /**
    * Adds a font to the registered fonts list
-   * @param _font the font object to be added to the list
+   * @param new_font the font object to be added to the list
    */
-  static void registerFont(UmbraFont* _font);
+  static void registerFont(const UmbraFont& new_font);
+  [[deprecated]] static void registerFont(UmbraFont* new_font) { registerFont(*new_font); }
 };
 
 #endif

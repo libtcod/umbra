@@ -27,43 +27,47 @@
 #pragma once
 #include <libtcod/console_types.h>
 
+#include <cassert>
 #include <string>
 
 class UmbraFont {
  public:
+  UmbraFont() = default;
+  /// @brief Initialises a font.
+  /// @param columns number of columns of characters in the font image file
+  /// @param rows number of rows of characters in the font image file
+  /// @param filename the filename of the font image file
+  /// @param flags font layout flags
+  UmbraFont(int columns, int rows, std::string filename, int flags = TCOD_FONT_LAYOUT_TCOD)
+      : filename_{std::move(filename)}, columns_{columns}, rows_{rows}, flags_{flags} {}
   /**
    * Initialises a font. Used for manual initialisation (ie, when automatic font detection isn't used).
-   * @param c number of columns of characters in the font image file
-   * @param r number of rows of characters in the font image file
-   * @param fn the filename of the font image file
-   * @param f font layout flags
    */
-  void initialise(int c, int r, const char* fn, int f = TCOD_FONT_LAYOUT_TCOD) {  // initialise manually
-    columns_ = c;
-    rows_ = r;
-    flags_ = f;
-    filename_ = fn;
+  [[deprecated("Construct this object instead.")]] void initialise(
+      int c, int r, const char* fn, int f = TCOD_FONT_LAYOUT_TCOD) {
+    assert(fn);
+    *this = UmbraFont{c, r, fn, f};
   }
   /**
    * Gets the font image's filename
    * @return the font image's filename
    */
-  inline const char* filename() { return filename_.c_str(); }
+  const char* filename() const noexcept { return filename_.c_str(); }
   /**
    * Gets the font image's number of columns
    * @return the font image's number of columns
    */
-  inline int columns() { return columns_; }
+  int columns() const noexcept { return columns_; }
   /**
    * Gets the font image's number of rows
    * @return the font image's number of rows
    */
-  inline int rows() { return rows_; }
+  int rows() const noexcept { return rows_; }
   /**
    * Gets the font image's layout flags
    * @return the font image's layout flags
    */
-  inline int flags() { return flags_; }
+  int flags() const noexcept { return flags_; }
 
  private:
   std::string filename_ = "NULL";

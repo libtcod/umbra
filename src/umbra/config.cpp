@@ -155,9 +155,9 @@ void UmbraConfig::save() {
   fclose(out);
 }
 
-void UmbraConfig::registerFont(UmbraFont* _font) {
+void UmbraConfig::registerFont(const UmbraFont& new_font) {
   UmbraLog::info("UmbraConfig::registerFont | Registered a font.");
-  fonts.emplace_back(_font);
+  fonts.emplace_back(new_font);
 }
 
 bool UmbraConfig::activateFont(int shift) {
@@ -170,7 +170,7 @@ bool UmbraConfig::activateFont(int shift) {
   // check if the font needs changing at all
   if (font != NULL && s == 0) return false;
   // register the font
-  font = fonts.at(fontID + s);
+  font = &fonts.at(fontID + s);
   fontID += s;
   return true;
 }
