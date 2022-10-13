@@ -36,6 +36,7 @@ class Credits : public UmbraWidget {
     rect.set(getEngine()->getRootWidth() / 2 - 24, getEngine()->getRootHeight() / 2 - 5, 48, 11);
     setTimeout(5000);
   }
+  void onEvent(const SDL_Event&) override {}
   void render() override;
 
  private:

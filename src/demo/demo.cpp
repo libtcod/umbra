@@ -62,13 +62,23 @@ void Demo::render() {
       *TCODConsole::root, {1, 8}, "moduleParam:"s + getStringParam("moduleParam"), tcod::ColorRGB{255, 255, 255}, {});
 }
 
-void Demo::keyboard(TCOD_key_t& key) {
-  if (key.vk == TCODK_SPACE)
-    getEngine()->activateModule(666);
-  else if (key.vk == TCODK_ENTER) {
-    std::string e = "This is a test error";
-    UmbraLog::error(e);
-    getEngine()->displayError();
-  } else if (key.vk == TCODK_ESCAPE)
-    getEngine()->deactivateAll();
+void Demo::onEvent(const SDL_Event& ev) {
+  if (ev.type == SDL_KEYDOWN) {
+    switch (ev.key.keysym.sym) {
+      case SDLK_SPACE:
+        getEngine()->activateModule(666);
+        break;
+      case SDLK_RETURN:
+      case SDLK_RETURN2:
+      case SDLK_KP_ENTER:
+        UmbraLog::error("This is a test error");
+        getEngine()->displayError();
+        break;
+      case SDLK_ESCAPE:
+        getEngine()->deactivateAll();
+        break;
+      default:
+        break;
+    }
+  }
 }

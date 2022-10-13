@@ -42,7 +42,8 @@ class UmbraWidget : public UmbraModule {
    * Custom, widget-specific code interpreting the mouse input.
    * @param ms reference to the mouse object
    */
-  void mouse(TCOD_mouse_t& ms) override;
+  void mouse(TCOD_mouse_t&) override {}
+  void onEvent(const SDL_Event&) override;
 
   /**
    * Signal launched when the mouse cursor enters the widget.
@@ -112,10 +113,6 @@ class UmbraWidget : public UmbraModule {
    * Coordinates of the close button
    */
   UmbraPoint closeButton{};  // close button coordinates
-  int mousex{-1};
-  int mousey{-1};
-  int dragx{};
-  int dragy{};
   bool canDrag{false};
   bool isDragging{false};
 };

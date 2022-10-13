@@ -26,51 +26,58 @@
  */
 #include "widget.hpp"
 
+#include <libtcod.hpp>
+
 #include "engine.hpp"
 #include "stylesheet.hpp"
 
-void UmbraWidget::mouse(TCOD_mouse_t& ms) {
-  // set mouse positions
-  mousex = ms.cx;
-  mousey = ms.cy;
-  if (parent) {
-    mousex -= parent->rect.x;
-    mousey -= parent->rect.y;
-  }
-  rect.mouse(mousex, mousey, ms);
-  mousex -= rect.x;
-  mousey -= rect.y;
-  // check the mouse status (hover, down) for rectangles and points:
-  minimiseButton.mouse(mousex, mousey, ms);
-  closeButton.mouse(mousex, mousey, ms);
-  dragZone.mouse(mousex, mousey, ms);
-  bool wasHover = rect.mouseHover;
-  if (!wasHover && rect.mouseHover)
-    onMouseEnter(this, UmbraMouseEvent(MOUSE_ENTER, ms));
-  else if (wasHover && !rect.mouseHover)
-    onMouseLeave(this, UmbraMouseEvent(MOUSE_LEAVE, ms));
-  else if (rect.mouseHover && !(ms.dx == 0 && ms.dy == 0))
-    onMouseMove(this, UmbraMouseEvent(MOUSE_MOVE, ms));
-  if (ms.lbutton_pressed && rect.mouseHover) onMouseClick(this, UmbraMouseEvent(MOUSE_CLICK, ms));
-  // deal with dragging
-  if (canDrag) {
-    if (ms.lbutton && !isDragging && dragZone.mouseHover) {
-      isDragging = true;
-      dragx = mousex;
-      dragy = mousey;  // position where the widget is dragged
-      ms.lbutton = false;  // erase event
-    } else if (isDragging && !ms.lbutton) {
-      isDragging = false;
-      ms.lbutton_pressed = false;  // erase event
-      onDragEnd();
-    } else if (isDragging) {
-      ms.lbutton = false;  // erase event
-      rect.x = CLAMP(0, getEngine()->getRootWidth() - rect.w, ms.cx - dragx);
-      rect.y = CLAMP(0, getEngine()->getRootHeight() - rect.h, ms.cy - dragy);
-      mousex = dragx;
-      mousey = dragy;
-      ms.cx = ms.cy = ms.x = ms.y = ms.dx = ms.dy = ms.dcx = ms.dcy = 0;  // erase mouse move event
-    }
+void UmbraWidget::onEvent(const SDL_Event& ev) {
+  TCOD_mouse_t tcod_mouse{};
+  tcod::sdl2::process_event(ev, tcod_mouse);
+  const int mouse_x = tcod_mouse.cx - (parent ? parent->rect.x : 0);
+  const int mouse_y = tcod_mouse.cy - (parent ? parent->rect.y : 0);
+  const int local_x = mouse_x - rect.x;
+  const int local_y = mouse_y - rect.y;
+  switch (ev.type) {
+    case SDL_MOUSEMOTION: {
+      const bool wasHover = rect.mouseHover;
+      rect.mouseHover = rect.contains(mouse_x, mouse_y);
+      if (!wasHover && rect.mouseHover) {
+        onMouseEnter(this, UmbraMouseEvent(MOUSE_ENTER, tcod_mouse));
+      } else if (wasHover && !rect.mouseHover) {
+        onMouseLeave(this, UmbraMouseEvent(MOUSE_LEAVE, tcod_mouse));
+      } else if (rect.mouseHover && !(tcod_mouse.dx == 0 && tcod_mouse.dy == 0)) {
+        onMouseMove(this, UmbraMouseEvent(MOUSE_MOVE, tcod_mouse));
+      }
+      minimiseButton.mouseHover = minimiseButton.is(local_x, local_y);
+      closeButton.mouseHover = closeButton.is(local_x, local_y);
+      dragZone.mouseHover = dragZone.contains(local_x, local_y);
+      if (isDragging) {
+        rect.x = std::clamp(rect.x + tcod_mouse.dcx, 0, getEngine()->getRootWidth() - rect.w);
+        rect.y = std::clamp(rect.y + tcod_mouse.dcy, 0, getEngine()->getRootHeight() - rect.h);
+      }
+    } break;
+    case SDL_MOUSEBUTTONDOWN:
+      if (ev.button.button == SDL_BUTTON_LEFT) {
+        rect.mouseDown = rect.contains(mouse_x, mouse_y);
+        minimiseButton.mouseDown = minimiseButton.is(local_x, local_y);
+        closeButton.mouseDown = closeButton.is(local_x, local_y);
+        dragZone.mouseDown = dragZone.contains(local_x, local_y);
+        if (rect.mouseDown) onMouseClick(this, UmbraMouseEvent(MOUSE_CLICK, tcod_mouse));
+        if (canDrag && dragZone.contains(local_x, local_y)) isDragging = true;
+      }
+      break;
+    case SDL_MOUSEBUTTONUP:
+      if (ev.button.button == SDL_BUTTON_LEFT) {
+        isDragging = false;
+        rect.mouseDown = false;
+        minimiseButton.mouseDown = false;
+        closeButton.mouseDown = false;
+        dragZone.mouseDown = false;
+      }
+      break;
+    default:
+      break;
   }
 }
 

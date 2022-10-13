@@ -39,9 +39,9 @@ class Panel : public UmbraWidget {
   }
   bool update() override;
   void render() override;
-  void mouse(TCOD_mouse_t& ms) override {
-    UmbraWidget::mouse(ms);
-    bQuit.mouse(ms);
+  void onEvent(const SDL_Event& ev) override {
+    UmbraWidget::onEvent(ev);
+    bQuit.onEvent(ev);
     return;
   }
   void onQuit(UmbraWidget*, UmbraEvent) { engine.deactivateAll(true); }

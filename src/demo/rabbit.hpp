@@ -34,7 +34,10 @@ class RabbitButton : public UmbraButton {};
 class RabbitWidget : public UmbraWidget {
  public:
   RabbitWidget();
-  void mouse(TCOD_mouse_t& ms) override;
+  void onEvent(const SDL_Event& ev) override {
+    UmbraWidget::onEvent(ev);
+    button.onEvent(ev);
+  }
   void render() override;
   // slots
   void onNextDemo(UmbraWidget* w, UmbraEvent ev);

@@ -47,35 +47,42 @@ UmbraModSpeed::UmbraModSpeed() {
   setName("umbraSpeedometer");
 }
 
-void UmbraModSpeed::mouse(TCOD_mouse_t& ms) {
-  UmbraWidget::mouse(ms);
-  if (ms.lbutton_pressed) {
-    // minimise button is pressed
-    if (minimiseButton.is(mousex, mousey)) {
-      isMinimised = !isMinimised;
-      ms.lbutton_pressed = false;  // erase event
-      if (isMinimised) {
-        rect.setSize(9, 1);
-        minimiseButton.set(7, 0);
-        closeButton.set(8, 0);
-        dragZone.w = 7;
-        rect.x = rect.x + MAXIMISED_MODE_WIDTH - 10;
-      } else {
-        rect.setSize(MAXIMISED_MODE_WIDTH, MAXIMISED_MODE_HEIGHT);
-        minimiseButton.set(MAXIMISED_MODE_WIDTH - 3, 0);
-        closeButton.set(MAXIMISED_MODE_WIDTH - 2, 0);
-        dragZone.w = MAXIMISED_MODE_WIDTH - 3;
-        // when the widget maximizes, it might cross the screen borders
-        rect.x = rect.x + 10 - MAXIMISED_MODE_WIDTH;
-        rect.x = MAX(0, rect.x);
-        rect.y = MIN(getEngine()->getRootHeight() - rect.h, rect.y);
+void UmbraModSpeed::onEvent(const SDL_Event& ev) {
+  UmbraWidget::onEvent(ev);
+  TCOD_mouse_t tcod_mouse{};
+  tcod::sdl2::process_event(ev, tcod_mouse);
+  const int mouse_x = tcod_mouse.cx - rect.x;
+  const int mouse_y = tcod_mouse.cy - rect.y;
+  switch (ev.type) {
+    case SDL_MOUSEBUTTONDOWN:
+      if (ev.button.button == SDL_BUTTON_LEFT) {
+        if (minimiseButton.is(mouse_x, mouse_y)) {  // Minimize button is pressed
+          isMinimized = !isMinimized;
+          if (isMinimized) {
+            rect.setSize(9, 1);
+            minimiseButton.set(7, 0);
+            closeButton.set(8, 0);
+            dragZone.w = 7;
+            rect.x = rect.x + MAXIMISED_MODE_WIDTH - 10;
+          } else {
+            rect.setSize(MAXIMISED_MODE_WIDTH, MAXIMISED_MODE_HEIGHT);
+            minimiseButton.set(MAXIMISED_MODE_WIDTH - 3, 0);
+            closeButton.set(MAXIMISED_MODE_WIDTH - 2, 0);
+            dragZone.w = MAXIMISED_MODE_WIDTH - 3;
+            // when the widget maximizes, it might cross the screen borders
+            rect.x = rect.x + 10 - MAXIMISED_MODE_WIDTH;
+            rect.x = MAX(0, rect.x);
+            rect.y = MIN(getEngine()->getRootHeight() - rect.h, rect.y);
+          }
+        } else if (closeButton.is(mouse_x, mouse_y)) {  // close button is pressed
+          getEngine()->deactivateModule(this);
+        }
       }
-    }
-    // close button is pressed
-    else if (closeButton.is(mousex, mousey)) {
-      getEngine()->deactivateModule(this);
-      ms.lbutton_pressed = false;  // erase event
-    }
+      break;
+    case SDL_MOUSEBUTTONUP:
+      break;
+    default:
+      break;
   }
 }
 
@@ -114,7 +121,7 @@ void UmbraModSpeed::setTimes(long new_update_time, long new_render_time) {
 void UmbraModSpeed::render() {
   speed->setDefaultBackground(TCODColor::black);
   speed->setDefaultForeground(TCODColor::white);
-  if (isMinimised) {
+  if (isMinimized) {
     speed->printEx(0, 0, TCOD_BKGND_SET, TCOD_LEFT, "%4dfps ", TCODSystem::getFps());
     TCODConsole::blit(speed, 0, 0, 8, 1, TCODConsole::root, rect.x, rect.y, 1.0f, 0.5f);
   } else {
@@ -164,7 +171,7 @@ void UmbraModSpeed::render() {
     speed->setDefaultForeground(TCODColor::white);  // button is active
   else
     speed->setDefaultForeground(TCODColor::lightGrey);  // button is not active
-  speed->putChar(minimiseButton.x, minimiseButton.y, isMinimised ? '+' : '-', TCOD_BKGND_SET);
+  speed->putChar(minimiseButton.x, minimiseButton.y, isMinimized ? '+' : '-', TCOD_BKGND_SET);
   // draw close button
   if (closeButton.mouseHover)
     speed->setDefaultForeground(TCODColor::red);  // button is active
@@ -174,7 +181,7 @@ void UmbraModSpeed::render() {
   // blit the console
   TCODConsole::blit(speed, 0, 0, rect.w, rect.h, TCODConsole::root, rect.x, rect.y, 1.0f, 0.52f);
   // render non transparent timebar (until libtcod subcell over subcell blitting is fixed...)
-  if (!isMinimised) timeBar->blit2x(TCODConsole::root, rect.x + 2, rect.y + 4);
+  if (!isMinimized) timeBar->blit2x(TCODConsole::root, rect.x + 2, rect.y + 4);
 }
 
 void UmbraModSpeed::onActivate() {

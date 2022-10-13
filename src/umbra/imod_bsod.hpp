@@ -42,6 +42,7 @@ class UmbraModBSOD : public UmbraWidget {
    * Renders the BSOD on the screen.
    */
   void render() override;
+  void onEvent(const SDL_Event&) override {}
 
  private:
   TCODConsole* bsod;

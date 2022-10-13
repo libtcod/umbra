@@ -32,9 +32,13 @@
 class Circle : public UmbraModule {
  public:
   void onInitialise() override { circle.set(getEngine()->getRootWidth() / 2, getEngine()->getRootHeight() / 2, 7); }
-  void mouse(TCOD_mouse_t& ms) override {
-    isGreen = circle.contains(ms.cx, ms.cy);
-    if (isGreen && ms.lbutton) setActive(false);
+  void onEvent(const SDL_Event& ev) override {
+    TCOD_mouse_t tcod_mouse{};
+    tcod::sdl2::process_event(ev, tcod_mouse);
+    if (ev.type == SDL_MOUSEMOTION) isGreen = circle.contains(tcod_mouse.cx, tcod_mouse.cy);
+    if (isGreen && ev.type == SDL_MOUSEBUTTONDOWN && ev.button.button == SDL_BUTTON_LEFT) {
+      setActive(false);
+    }
   }
   void render() override;
 

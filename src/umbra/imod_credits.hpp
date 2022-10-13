@@ -40,6 +40,7 @@ class UmbraModCredits : public UmbraModule {
   bool update() override;
   void render() override;
   void onActivate() override;
+  void onEvent(const SDL_Event&) override {}
 
  private:
   void set(int x, int y, uint32_t duration);

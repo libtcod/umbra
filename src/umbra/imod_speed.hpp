@@ -44,12 +44,13 @@ class UmbraModSpeed : public UmbraWidget {
   /**
    * Parses mouse input.
    */
-  void mouse(TCOD_mouse_t& ms) override;
+  void mouse(TCOD_mouse_t&) override{};
+  void onEvent(const SDL_Event&) override;
   /**
    * Sets the minimised state of the widget.
    * @param val <code>true</code> for minimised, <code>false</code> for maximised
    */
-  inline void setMinimised(bool val) { isMinimised = val; }
+  inline void setMinimised(bool val) { isMinimized = val; }
 
  private:
   float cumulatedElapsed{0.0f};
@@ -59,7 +60,7 @@ class UmbraModSpeed : public UmbraWidget {
   TCODImage* timeBar{};
   TCODConsole* speed{};
   int fps{};
-  bool isMinimised{false};
+  bool isMinimized{false};
 
   /**
    * Removes the frames per second limit in order to attempt to enforce a 100% load on the CPU.

@@ -39,11 +39,6 @@ void RabbitWidget::onInitialise() {
   button.onMouseClick.connect(this, &RabbitWidget::onNextDemo);
 }
 
-void RabbitWidget::mouse(TCOD_mouse_t& ms) {
-  UmbraWidget::mouse(ms);
-  button.mouse(ms);
-}
-
 void RabbitWidget::onNextDemo(UmbraWidget*, UmbraEvent) {
   setActive(false);
   engine.getModule("matrix")->setActive(false);

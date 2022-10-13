@@ -37,7 +37,7 @@ class Demo : public UmbraModule {
   }
   bool update() override;
   void render() override;
-  void keyboard(TCOD_key_t& key) override;
+  void onEvent(const SDL_Event& ev) override;
 
  private:
   TCODNoise noise{2, TCODRandom::getInstance()};

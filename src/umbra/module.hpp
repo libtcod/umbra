@@ -47,7 +47,7 @@ class UmbraModule {
 
  public:
   /**
-   * Basic construtor for the UmbraModule. It takes no parametres and sets all initial values to their defaults.
+   * Basic constructor for the UmbraModule. It takes no parameters and sets all initial values to their defaults.
    */
   UmbraModule() = default;
   /**
@@ -80,7 +80,7 @@ class UmbraModule {
    */
   virtual void mouse(TCOD_mouse_t&) {}  // module-specific mouse
   /// @brief Called on SDL events.
-  virtual void onEvent(const SDL_Event&) {}
+  virtual void onEvent(const SDL_Event&) = 0;
   /**
    * Activates or deactivates the module.
    * @param active <code>true</code> if the module is to be activated, <code>false</code> otherwise
