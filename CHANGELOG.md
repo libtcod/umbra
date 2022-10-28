@@ -10,4 +10,4 @@
 * Logging functions now use ``fmt`` instead of C variadic print functions.
 * ``UmbraLog::get`` now returns ``std::string`` instead of a pointer to a temporary string.
 * Added ``UmbraModule::onEvent`` to transition away from libtcod events.
-* Fixed input lag in the main event loop.
+* Added ``UMBRA_KEYBOARD_SDL`` to use only plain SDL events while active.  This fixes input lag whiles selected but disables libtcod events.

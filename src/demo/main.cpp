@@ -61,6 +61,7 @@ class ModuleFactory : public UmbraModuleFactory {
 int main(int argc, char* argv[]) {
   // set window title
   engine.setWindowTitle("Umbra demo");
+  engine.setKeyboardMode(UMBRA_KEYBOARD_SDL);
   // initialise and run the engine
   if (engine.loadModuleConfiguration("data/cfg/module.txt", new ModuleFactory()) && engine.initialise())
     return engine.run();

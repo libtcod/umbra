@@ -50,6 +50,7 @@ enum UmbraKeyboardMode {
   UMBRA_KEYBOARD_RELEASED,
   UMBRA_KEYBOARD_PRESSED,
   UMBRA_KEYBOARD_PRESSED_RELEASED,
+  UMBRA_KEYBOARD_SDL,  // Use SDL for events.  Libtcod events will be blank, but there will be no input lag.
 };
 
 /**
@@ -381,8 +382,6 @@ class UmbraEngine {
    * @param key a reference to the keyboard event object
    */
   void keyboard(TCOD_key_t& key);
-  /// @brief Passes libtcod events to modules and callbacks.
-  void handleEvent(int event_type, TCOD_key_t& key, TCOD_mouse_t& mouse);
   /**
    * Puts the newly activated module in the active modules list.
    * @param mod a pointer to the module that's being activated
