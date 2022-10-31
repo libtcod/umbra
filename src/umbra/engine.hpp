@@ -50,7 +50,7 @@ enum UmbraKeyboardMode {
   UMBRA_KEYBOARD_RELEASED,
   UMBRA_KEYBOARD_PRESSED,
   UMBRA_KEYBOARD_PRESSED_RELEASED,
-  UMBRA_KEYBOARD_SDL,  // Use SDL for events.  Libtcod events will be blank, but there will be no input lag.
+  UMBRA_KEYBOARD_SDL,  // Use SDL for events.  Libtcod events are processed immediately and there will be no input lag.
 };
 
 /**

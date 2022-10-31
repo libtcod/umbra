@@ -590,9 +590,10 @@ int UmbraEngine::run() {
   while (!TCODConsole::isWindowClosed()) {
     // execute only when paused
     if (paused) {
-      if (keyboardMode == UMBRA_KEYBOARD_SDL) {
-        SDL_Event event;
-        while (SDL_PollEvent(&event)) {
+      if (keyboardMode >= UMBRA_KEYBOARD_SDL) {
+        // Flush all SDL events via checkForEvent.
+        while (TCODSystem::checkForEvent(TCOD_EVENT_KEY_RELEASE | TCOD_EVENT_MOUSE_PRESS, &key, &mouse)) {
+          keyboard(key);
         }
       } else {
         TCODSystem::checkForEvent(TCOD_EVENT_KEY_RELEASE | TCOD_EVENT_MOUSE_PRESS, &key, &mouse);
@@ -642,8 +643,12 @@ int UmbraEngine::run() {
         TCODSystem::checkForEvent(TCOD_EVENT_KEY_RELEASE | TCOD_EVENT_MOUSE, &key, &mouse);
         break;
       case UMBRA_KEYBOARD_SDL:
-        SDL_Event event;
-        while (SDL_PollEvent(&event)) {
+        while (TCOD_event_t event_type = TCODSystem::checkForEvent(TCOD_EVENT_KEY | TCOD_EVENT_MOUSE, &key, &mouse)) {
+          for (auto& module : activeModules) {
+            if (module->getPause()) continue;
+            if (event_type & TCOD_EVENT_KEY) module->keyboard(key);
+            if (event_type & TCOD_EVENT_MOUSE) module->mouse(mouse);
+          }
         }
         break;
     }
@@ -658,8 +663,10 @@ int UmbraEngine::run() {
               bool remove_this = false;
               if (!tmpMod->getPause()) {
                 // handle input
-                tmpMod->keyboard(key);
-                tmpMod->mouse(mouse);
+                if (keyboardMode < UMBRA_KEYBOARD_SDL) {  // Old-style handling.
+                  tmpMod->keyboard(key);
+                  tmpMod->mouse(mouse);
+                }
                 if (tmpMod->isTimedOut(startTime) || !tmpMod->update() || !tmpMod->getActive()) {
                   UmbraModule* module = tmpMod;
                   int fallback = module->getFallback();
