@@ -593,8 +593,6 @@ int UmbraEngine::run() {
 }
 
 SDL_AppResult UmbraEngine::onFrame() {
-  static TCOD_key_t key{};
-  static TCOD_mouse_t mouse{};
   SDL_Event event{};
 
   if (paused) {
@@ -602,8 +600,8 @@ SDL_AppResult UmbraEngine::onFrame() {
       // Flush all SDL events.
       while (SDL_PollEvent(&event)) onEvent(event);
     } else {
-      TCODSystem::checkForEvent(TCOD_EVENT_KEY_RELEASE | TCOD_EVENT_MOUSE_PRESS, &key, &mouse);
-      keyboard(key);
+      TCODSystem::checkForEvent(TCOD_EVENT_KEY_RELEASE | TCOD_EVENT_MOUSE_PRESS, &key_, &mouse_);
+      keyboard(key_);
     }
     TCODConsole::root->flush();
     return SDL_APP_CONTINUE;  // don't update or render anything anew
@@ -633,27 +631,26 @@ SDL_AppResult UmbraEngine::onFrame() {
   // update all active modules
   switch (keyboardMode) {
     case UMBRA_KEYBOARD_WAIT:
-      TCODSystem::waitForEvent(TCOD_EVENT_KEY_PRESS | TCOD_EVENT_MOUSE, &key, &mouse, true);
+      TCODSystem::waitForEvent(TCOD_EVENT_KEY_PRESS | TCOD_EVENT_MOUSE, &key_, &mouse_, true);
       break;
     case UMBRA_KEYBOARD_WAIT_NOFLUSH:
-      TCODSystem::waitForEvent(TCOD_EVENT_KEY_PRESS | TCOD_EVENT_MOUSE, &key, &mouse, false);
+      TCODSystem::waitForEvent(TCOD_EVENT_KEY_PRESS | TCOD_EVENT_MOUSE, &key_, &mouse_, false);
       break;
     case UMBRA_KEYBOARD_PRESSED:
-      TCODSystem::checkForEvent(TCOD_EVENT_KEY_PRESS | TCOD_EVENT_MOUSE, &key, &mouse);
+      TCODSystem::checkForEvent(TCOD_EVENT_KEY_PRESS | TCOD_EVENT_MOUSE, &key_, &mouse_);
       break;
     case UMBRA_KEYBOARD_PRESSED_RELEASED:
-      TCODSystem::checkForEvent(TCOD_EVENT_KEY | TCOD_EVENT_MOUSE, &key, &mouse);
+      TCODSystem::checkForEvent(TCOD_EVENT_KEY | TCOD_EVENT_MOUSE, &key_, &mouse_);
       break;
     case UMBRA_KEYBOARD_RELEASED:
     default:
-      TCODSystem::checkForEvent(TCOD_EVENT_KEY_RELEASE | TCOD_EVENT_MOUSE, &key, &mouse);
+      TCODSystem::checkForEvent(TCOD_EVENT_KEY_RELEASE | TCOD_EVENT_MOUSE, &key_, &mouse_);
       break;
     case UMBRA_KEYBOARD_SDL:
-      key = {};
       while (SDL_PollEvent(&event)) onEvent(event);
       break;
   }
-  keyboard(key);
+  keyboard(key_);
   uint64_t startTime = SDL_GetTicks();
   // update all active modules by priority order
   activeModules.erase(
@@ -665,8 +662,8 @@ SDL_AppResult UmbraEngine::onFrame() {
             if (!tmpMod->getPause()) {
               // handle input
               if (keyboardMode < UMBRA_KEYBOARD_SDL) {  // Old-style handling.
-                tmpMod->keyboard(key);
-                tmpMod->mouse(mouse);
+                tmpMod->keyboard(key_);
+                tmpMod->mouse(mouse_);
               }
               if (tmpMod->isTimedOut(startTime) || !tmpMod->update() || !tmpMod->getActive()) {
                 UmbraModule* module = tmpMod;
@@ -684,6 +681,17 @@ SDL_AppResult UmbraEngine::onFrame() {
             return remove_this;
           }),
       activeModules.end());
+
+  // Clear dirty key/mouse states after module update calls
+  key_ = {};
+  mouse_.lbutton_pressed = false;
+  mouse_.mbutton_pressed = false;
+  mouse_.rbutton_pressed = false;
+  for (auto& module : activeModules) {
+    module->keyboard(key_);
+    module->mouse(mouse_);
+  }
+
   uint64_t updateTime = SDL_GetTicks() - startTime;
   TCODConsole::root->setDefaultBackground(TCODColor::black);
   TCODConsole::root->clear();
@@ -701,21 +709,19 @@ SDL_AppResult UmbraEngine::onFrame() {
 }
 
 SDL_AppResult UmbraEngine::onEvent(SDL_Event& event) {
-  TCOD_key_t key{};
-  TCOD_mouse_t mouse{};
-  int is_key_event = tcod::sdl2::process_event(event, key);
-  int is_mouse_event = tcod::sdl2::process_event(event, key);
+  tcod::sdl2::process_event(event, key_);
+  tcod::sdl2::process_event(event, mouse_);
 
   if (!paused) {
     for (auto& module : activeModules) {
       if (module->getPause()) continue;
       module->onEvent(event);
 
-      if (is_key_event) module->keyboard(key);
-      if (is_mouse_event) module->mouse(mouse);
+      module->keyboard(key_);
+      module->mouse(mouse_);
     }
   }
-  keyboard(key);
+  keyboard(key_);
   switch (event.type) {
     case SDL_EVENT_QUIT:
       paused = false;

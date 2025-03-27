@@ -394,6 +394,8 @@ class UmbraEngine {
   UmbraModule* internalModules[UMBRA_INTERNAL_MAX]{};
   UmbraKeyboardMode keyboardMode{UMBRA_KEYBOARD_RELEASED};
   std::vector<UmbraCallback*> callbacks{};  // the keybinding callbacks
+  TCOD_key_t key_{};  // TCOD key dirty state
+  TCOD_mouse_t mouse_{};  // TCOD mouse dirty state
   /**
    * Parses the keyboard input and passes it to the registered callbacks.
    * @param key a reference to the keyboard event object
