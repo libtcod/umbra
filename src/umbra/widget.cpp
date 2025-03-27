@@ -39,7 +39,7 @@ void UmbraWidget::onEvent(const SDL_Event& ev) {
   const int local_x = mouse_x - rect.x;
   const int local_y = mouse_y - rect.y;
   switch (ev.type) {
-    case SDL_MOUSEMOTION: {
+    case SDL_EVENT_MOUSE_MOTION: {
       const bool wasHover = rect.mouseHover;
       rect.mouseHover = rect.contains(mouse_x, mouse_y);
       if (!wasHover && rect.mouseHover) {
@@ -57,7 +57,7 @@ void UmbraWidget::onEvent(const SDL_Event& ev) {
         rect.y = std::clamp(rect.y + tcod_mouse.dcy, 0, getEngine()->getRootHeight() - rect.h);
       }
     } break;
-    case SDL_MOUSEBUTTONDOWN:
+    case SDL_EVENT_MOUSE_BUTTON_DOWN:
       if (ev.button.button == SDL_BUTTON_LEFT) {
         rect.mouseDown = rect.contains(mouse_x, mouse_y);
         minimiseButton.mouseDown = minimiseButton.is(local_x, local_y);
@@ -67,7 +67,7 @@ void UmbraWidget::onEvent(const SDL_Event& ev) {
         if (canDrag && dragZone.contains(local_x, local_y)) isDragging = true;
       }
       break;
-    case SDL_MOUSEBUTTONUP:
+    case SDL_EVENT_MOUSE_BUTTON_UP:
       if (ev.button.button == SDL_BUTTON_LEFT) {
         isDragging = false;
         rect.mouseDown = false;

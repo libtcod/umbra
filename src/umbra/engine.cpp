@@ -26,8 +26,8 @@
  */
 #include "engine.hpp"
 
-#include <SDL_events.h>
-#include <SDL_timer.h>
+#include <SDL3/SDL_events.h>
+#include <SDL3/SDL_timer.h>
 #include <fmt/core.h>
 #include <stdarg.h>
 #include <stdio.h>
@@ -173,11 +173,11 @@ class UmbraModuleConfigParser : public ITCODParserListener {
   void error(const char* msg) override { UmbraLog::error(fmt::format("UmbraModuleConfigParser | {}", msg)); }
 };
 
-int UmbraEngine::onSDLEvent(void* userdata, SDL_Event* event) {
+bool UmbraEngine::onSDLEvent(void* userdata, SDL_Event* event) {
   auto self = static_cast<UmbraEngine*>(userdata);
   for (auto& module : self->activeModules) module->onEvent(*event);
-  if (event->type == SDL_QUIT) self->deactivateAll();
-  return 0;
+  if (event->type == SDL_EVENT_QUIT) self->deactivateAll();
+  return true;
 };
 
 UmbraEngine::UmbraEngine(const char* fileName, UmbraRegisterCallbackFlag flag) {
@@ -206,7 +206,7 @@ UmbraEngine::UmbraEngine(const char* fileName, UmbraRegisterCallbackFlag flag) {
   SDL_AddEventWatch(onSDLEvent, this);
 }
 
-UmbraEngine::~UmbraEngine() { SDL_DelEventWatch(onSDLEvent, this); }
+UmbraEngine::~UmbraEngine() { SDL_RemoveEventWatch(onSDLEvent, this); }
 
 void UmbraEngine::setWindowTitle(std::string title) { windowTitle = title; }
 

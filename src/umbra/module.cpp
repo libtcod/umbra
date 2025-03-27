@@ -26,7 +26,7 @@
  */
 #include "module.hpp"
 
-#include <SDL_timer.h>
+#include <SDL3/SDL_timer.h>
 #include <libtcod/parser.h>
 
 #include <libtcod/sys.hpp>

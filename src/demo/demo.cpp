@@ -63,8 +63,8 @@ void Demo::render() {
 }
 
 void Demo::onEvent(const SDL_Event& ev) {
-  if (ev.type == SDL_KEYDOWN) {
-    switch (ev.key.keysym.sym) {
+  if (ev.type == SDL_EVENT_KEY_DOWN) {
+    switch (ev.key.key) {
       case SDLK_SPACE:
         getEngine()->activateModule(666);
         break;

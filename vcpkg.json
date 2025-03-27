@@ -6,8 +6,10 @@
     "fmt",
     {
       "name": "libtcod",
-      "features": ["threads"]
+      "features": [
+        "threads"
+      ]
     },
-    "sdl2"
+    "sdl3"
   ]
 }

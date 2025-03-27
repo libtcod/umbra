@@ -26,7 +26,7 @@
  */
 #include "panel.hpp"
 
-#include <SDL_timer.h>
+#include <SDL3/SDL_timer.h>
 
 #include <algorithm>
 
@@ -43,7 +43,7 @@ void Panel::render() {
 }
 
 bool Panel::update() {
-  const uint64_t time = SDL_GetTicks64();
+  const uint64_t time = SDL_GetTicks();
   if (rect.mouseHover) {
     lastHover = time;
     posx += 3;

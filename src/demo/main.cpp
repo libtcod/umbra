@@ -25,7 +25,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <SDL.h>
+#include <SDL3/SDL_main.h>
 #include <stdio.h>
 
 #include "circle.hpp"

@@ -161,7 +161,7 @@ void UmbraConfig::registerFont(const UmbraFont& new_font) {
 }
 
 bool UmbraConfig::activateFont(int shift) {
-  int s = CLAMP(-1, 1, shift);
+  int s = std::clamp(shift, -1, 1);
   // check if there are any registered fonts
   if (fonts.size() == 0)
     return false;  // can happen if a user uses the default terminal.png without registering any font

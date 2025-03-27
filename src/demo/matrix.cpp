@@ -26,7 +26,7 @@
  */
 #include "matrix.hpp"
 
-#include <SDL_timer.h>
+#include <SDL3/SDL_timer.h>
 #include <stdio.h>
 
 #include "globals.hpp"
@@ -38,7 +38,7 @@ constexpr std::array CHARACTERS{'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'
                                 'v', 'w', 'x', 'y', 'z', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
 
 bool Matrix::update() {
-  const auto now = SDL_GetTicks64();
+  const auto now = SDL_GetTicks();
   if (next_lead_ms <= now) {
     next_lead_ms = now + rng() % 200;
     auto& new_lead = leads.emplace_back();
@@ -50,7 +50,7 @@ bool Matrix::update() {
 }
 
 void Matrix::render() {
-  const auto now = SDL_GetTicks64();
+  const auto now = SDL_GetTicks();
   // Advance leads.
   for (auto& lead : leads) {
     if (lead.next_y_ms <= now) {

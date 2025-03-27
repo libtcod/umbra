@@ -27,7 +27,7 @@
 #ifndef UMBRA_ENGINE_HPP
 #define UMBRA_ENGINE_HPP
 
-#include <SDL_events.h>
+#include <SDL3/SDL_events.h>
 #include <fmt/printf.h>
 #include <libtcod/console_types.h>
 
@@ -399,7 +399,7 @@ class UmbraEngine {
    */
   void registerInternalModule(UmbraInternalModuleID id, UmbraModule* module);
   /// @brief SDL event watcher.
-  static int onSDLEvent(void* userdata, SDL_Event* event);
+  static bool onSDLEvent(void* userdata, SDL_Event* event);
 };
 
 #endif

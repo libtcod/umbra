@@ -39,13 +39,13 @@ else()
 endif()
 
 find_package(fmt CONFIG REQUIRED)
-find_package(SDL2 CONFIG REQUIRED)
+find_package(SDL3 CONFIG REQUIRED)
 find_package(libtcod CONFIG REQUIRED)
 target_link_libraries(
     ${PROJECT_NAME}
     PUBLIC
         fmt::fmt
-        SDL2::SDL2
+        SDL3::SDL3
         libtcod::libtcod
 )
 add_library(umbra::umbra ALIAS ${PROJECT_NAME})

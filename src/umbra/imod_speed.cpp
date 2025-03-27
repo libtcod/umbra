@@ -54,7 +54,7 @@ void UmbraModSpeed::onEvent(const SDL_Event& ev) {
   const int mouse_x = tcod_mouse.cx - rect.x;
   const int mouse_y = tcod_mouse.cy - rect.y;
   switch (ev.type) {
-    case SDL_MOUSEBUTTONDOWN:
+    case SDL_EVENT_MOUSE_BUTTON_DOWN:
       if (ev.button.button == SDL_BUTTON_LEFT) {
         if (minimiseButton.is(mouse_x, mouse_y)) {  // Minimize button is pressed
           isMinimized = !isMinimized;
@@ -71,15 +71,15 @@ void UmbraModSpeed::onEvent(const SDL_Event& ev) {
             dragZone.w = MAXIMISED_MODE_WIDTH - 3;
             // when the widget maximizes, it might cross the screen borders
             rect.x = rect.x + 10 - MAXIMISED_MODE_WIDTH;
-            rect.x = MAX(0, rect.x);
-            rect.y = MIN(getEngine()->getRootHeight() - rect.h, rect.y);
+            rect.x = std::max(0, rect.x);
+            rect.y = std::min(getEngine()->getRootHeight() - rect.h, rect.y);
           }
         } else if (closeButton.is(mouse_x, mouse_y)) {  // close button is pressed
           getEngine()->deactivateModule(this);
         }
       }
       break;
-    case SDL_MOUSEBUTTONUP:
+    case SDL_EVENT_MOUSE_BUTTON_UP:
       break;
     default:
       break;

@@ -1,6 +1,6 @@
 #include "imod_credits.hpp"
 
-#include <SDL_timer.h>
+#include <SDL3/SDL_timer.h>
 
 #include <libtcod/libtcod.hpp>
 
@@ -15,7 +15,7 @@ void UmbraModCredits::onActivate() { startTime = SDL_GetTicks(); }
 
 bool UmbraModCredits::update() {
   alpha = 2.0f - (float)(SDL_GetTicks() - startTime) / (float)duration;
-  alpha = MIN(1.0f, alpha);
+  alpha = std::min(1.0f, alpha);
   if (alpha >= 0.0f)
     return true;
   else

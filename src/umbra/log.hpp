@@ -61,7 +61,7 @@ class UmbraLog {
    */
   struct UmbraLogMessage {
     std::string msg;
-    uint32_t time;
+    uint64_t time;
     UmbraLogResult result;
     UmbraLogType logType;
     int indent;
