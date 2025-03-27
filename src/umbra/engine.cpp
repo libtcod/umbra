@@ -175,8 +175,7 @@ class UmbraModuleConfigParser : public ITCODParserListener {
 
 bool UmbraEngine::onSDLEvent(void* userdata, SDL_Event* event) {
   auto self = static_cast<UmbraEngine*>(userdata);
-  for (auto& module : self->activeModules) module->onEvent(*event);
-  if (event->type == SDL_EVENT_QUIT) self->deactivateAll();
+  self->onEvent(*event);
   return true;
 };
 
@@ -203,10 +202,9 @@ UmbraEngine::UmbraEngine(const char* fileName, UmbraRegisterCallbackFlag flag) {
     registerCallback(new UmbraCallbackSpeedometer());
   }
   UmbraLog::closeBlock(UMBRA_LOGRESULT_SUCCESS);
-  SDL_AddEventWatch(onSDLEvent, this);
 }
 
-UmbraEngine::~UmbraEngine() { SDL_RemoveEventWatch(onSDLEvent, this); }
+UmbraEngine::~UmbraEngine() {}
 
 void UmbraEngine::setWindowTitle(std::string title) { windowTitle = title; }
 
@@ -576,9 +574,6 @@ bool UmbraEngine::initialise(TCOD_renderer_t new_renderer) {
 }
 
 int UmbraEngine::run() {
-  TCOD_key_t key{};
-  TCOD_mouse_t mouse{};
-
   UmbraLog::openBlock("UmbraEngine::run | Running the engine.");
 
   if (modules.size() == 0) {
@@ -587,120 +582,156 @@ int UmbraEngine::run() {
     return 1;
   }
 
+  SDL_AddEventWatch(onSDLEvent, this);
   while (!TCODConsole::isWindowClosed()) {
-    // execute only when paused
-    if (paused) {
-      if (keyboardMode >= UMBRA_KEYBOARD_SDL) {
-        // Flush all SDL events via checkForEvent.
-        while (TCODSystem::checkForEvent(TCOD_EVENT_KEY_RELEASE | TCOD_EVENT_MOUSE_PRESS, &key, &mouse)) {
-          keyboard(key);
-        }
-      } else {
-        TCODSystem::checkForEvent(TCOD_EVENT_KEY_RELEASE | TCOD_EVENT_MOUSE_PRESS, &key, &mouse);
-        keyboard(key);
-      }
-      TCODConsole::root->flush();
-      continue;  // don't update or render anything anew
-    }
+    if (!onFrame()) break;
+  }
+  SDL_RemoveEventWatch(onSDLEvent, this);
+  UmbraLog::closeBlock(UMBRA_LOGRESULT_SUCCESS);
+  onQuit();
+  return 0;
+}
 
-    // deactivate modules
-    for (auto& mod : toDeactivate) {
-      mod->setActive(false);
-      auto found = std::find(activeModules.begin(), activeModules.end(), mod);
-      if (found != activeModules.end()) {
-        activeModules.erase(found);
-      } else {
-        UmbraLog::notice("Tried to deactive non active module: %s", mod->getName());
-      }
-    }
-    toDeactivate.clear();
+SDL_AppResult UmbraEngine::onFrame() {
+  static TCOD_key_t key{};
+  static TCOD_mouse_t mouse{};
+  SDL_Event event{};
 
-    // activate new modules
-    while (toActivate.size()) {
-      auto* mod = toActivate.back();
-      toActivate.pop_back();
-      doActivateModule(mod);
+  if (paused) {
+    if (keyboardMode >= UMBRA_KEYBOARD_SDL) {
+      // Flush all SDL events.
+      while (SDL_PollEvent(&event)) onEvent(event);
+    } else {
+      TCODSystem::checkForEvent(TCOD_EVENT_KEY_RELEASE | TCOD_EVENT_MOUSE_PRESS, &key, &mouse);
+      keyboard(key);
     }
+    TCODConsole::root->flush();
+    return SDL_APP_CONTINUE;  // don't update or render anything anew
+  }
 
-    if (activeModules.size() == 0) break;  // exit game
-
-    // update all active modules
-    switch (keyboardMode) {
-      case UMBRA_KEYBOARD_WAIT:
-        TCODSystem::waitForEvent(TCOD_EVENT_KEY_PRESS | TCOD_EVENT_MOUSE, &key, &mouse, true);
-        break;
-      case UMBRA_KEYBOARD_WAIT_NOFLUSH:
-        TCODSystem::waitForEvent(TCOD_EVENT_KEY_PRESS | TCOD_EVENT_MOUSE, &key, &mouse, false);
-        break;
-      case UMBRA_KEYBOARD_PRESSED:
-        TCODSystem::checkForEvent(TCOD_EVENT_KEY_PRESS | TCOD_EVENT_MOUSE, &key, &mouse);
-        break;
-      case UMBRA_KEYBOARD_PRESSED_RELEASED:
-        TCODSystem::checkForEvent(TCOD_EVENT_KEY | TCOD_EVENT_MOUSE, &key, &mouse);
-        break;
-      case UMBRA_KEYBOARD_RELEASED:
-      default:
-        TCODSystem::checkForEvent(TCOD_EVENT_KEY_RELEASE | TCOD_EVENT_MOUSE, &key, &mouse);
-        break;
-      case UMBRA_KEYBOARD_SDL:
-        while (TCOD_event_t event_type = TCODSystem::checkForEvent(TCOD_EVENT_KEY | TCOD_EVENT_MOUSE, &key, &mouse)) {
-          for (auto& module : activeModules) {
-            if (module->getPause()) continue;
-            if (event_type & TCOD_EVENT_KEY) module->keyboard(key);
-            if (event_type & TCOD_EVENT_MOUSE) module->mouse(mouse);
-          }
-        }
-        break;
+  // deactivate modules
+  for (auto& mod : toDeactivate) {
+    mod->setActive(false);
+    auto found = std::find(activeModules.begin(), activeModules.end(), mod);
+    if (found != activeModules.end()) {
+      activeModules.erase(found);
+    } else {
+      UmbraLog::notice("Tried to deactivate non-active module: %s", mod->getName());
     }
-    keyboard(key);
-    uint32_t startTime = SDL_GetTicks();
-    // update all active modules by priority order
-    activeModules.erase(
-        std::remove_if(
-            activeModules.begin(),
-            activeModules.end(),
-            [&](UmbraModule* tmpMod) {
-              bool remove_this = false;
-              if (!tmpMod->getPause()) {
-                // handle input
-                if (keyboardMode < UMBRA_KEYBOARD_SDL) {  // Old-style handling.
-                  tmpMod->keyboard(key);
-                  tmpMod->mouse(mouse);
-                }
-                if (tmpMod->isTimedOut(startTime) || !tmpMod->update() || !tmpMod->getActive()) {
-                  UmbraModule* module = tmpMod;
-                  int fallback = module->getFallback();
-                  // deactivate module
-                  module->setActive(false);
-                  remove_this = true;
-                  if (fallback != -1) {
-                    // register fallback for activation
-                    UmbraModule* fallbackModule = modules.at(fallback);
-                    if (fallbackModule != NULL && !fallbackModule->getActive()) toActivate.push_back(fallbackModule);
-                  }
+  }
+  toDeactivate.clear();
+
+  // activate new modules
+  while (toActivate.size()) {
+    auto* mod = toActivate.back();
+    toActivate.pop_back();
+    doActivateModule(mod);
+  }
+
+  if (activeModules.size() == 0) return SDL_APP_SUCCESS;  // exit game
+
+  // update all active modules
+  switch (keyboardMode) {
+    case UMBRA_KEYBOARD_WAIT:
+      TCODSystem::waitForEvent(TCOD_EVENT_KEY_PRESS | TCOD_EVENT_MOUSE, &key, &mouse, true);
+      break;
+    case UMBRA_KEYBOARD_WAIT_NOFLUSH:
+      TCODSystem::waitForEvent(TCOD_EVENT_KEY_PRESS | TCOD_EVENT_MOUSE, &key, &mouse, false);
+      break;
+    case UMBRA_KEYBOARD_PRESSED:
+      TCODSystem::checkForEvent(TCOD_EVENT_KEY_PRESS | TCOD_EVENT_MOUSE, &key, &mouse);
+      break;
+    case UMBRA_KEYBOARD_PRESSED_RELEASED:
+      TCODSystem::checkForEvent(TCOD_EVENT_KEY | TCOD_EVENT_MOUSE, &key, &mouse);
+      break;
+    case UMBRA_KEYBOARD_RELEASED:
+    default:
+      TCODSystem::checkForEvent(TCOD_EVENT_KEY_RELEASE | TCOD_EVENT_MOUSE, &key, &mouse);
+      break;
+    case UMBRA_KEYBOARD_SDL:
+      key = {};
+      while (SDL_PollEvent(&event)) onEvent(event);
+      break;
+  }
+  keyboard(key);
+  uint64_t startTime = SDL_GetTicks();
+  // update all active modules by priority order
+  activeModules.erase(
+      std::remove_if(
+          activeModules.begin(),
+          activeModules.end(),
+          [&](UmbraModule* tmpMod) {
+            bool remove_this = false;
+            if (!tmpMod->getPause()) {
+              // handle input
+              if (keyboardMode < UMBRA_KEYBOARD_SDL) {  // Old-style handling.
+                tmpMod->keyboard(key);
+                tmpMod->mouse(mouse);
+              }
+              if (tmpMod->isTimedOut(startTime) || !tmpMod->update() || !tmpMod->getActive()) {
+                UmbraModule* module = tmpMod;
+                int fallback = module->getFallback();
+                // deactivate module
+                module->setActive(false);
+                remove_this = true;
+                if (fallback != -1) {
+                  // register fallback for activation
+                  UmbraModule* fallbackModule = modules.at(fallback);
+                  if (fallbackModule != NULL && !fallbackModule->getActive()) toActivate.push_back(fallbackModule);
                 }
               }
-              return remove_this;
-            }),
-        activeModules.end());
-    uint32_t updateTime = SDL_GetTicks() - startTime;
-    TCODConsole::root->setDefaultBackground(TCODColor::black);
-    TCODConsole::root->clear();
-    // render active modules by inverted priority order
-    for (auto module = activeModules.rbegin(); module != activeModules.rend(); ++module) {
-      (*module)->render();
-    }
-    uint32_t renderTime = SDL_GetTicks() - startTime - updateTime;
-    if (internalModules[UMBRA_INTERNAL_SPEEDOMETER]->getActive()) {
-      ((UmbraModSpeed*)internalModules[UMBRA_INTERNAL_SPEEDOMETER])->setTimes(updateTime, renderTime);
-    }
-    // flush the screen
-    TCODConsole::root->flush();
+            }
+            return remove_this;
+          }),
+      activeModules.end());
+  uint64_t updateTime = SDL_GetTicks() - startTime;
+  TCODConsole::root->setDefaultBackground(TCODColor::black);
+  TCODConsole::root->clear();
+  // render active modules by inverted priority order
+  for (auto module = activeModules.rbegin(); module != activeModules.rend(); ++module) {
+    (*module)->render();
   }
+  uint64_t renderTime = SDL_GetTicks() - startTime - updateTime;
+  if (internalModules[UMBRA_INTERNAL_SPEEDOMETER]->getActive()) {
+    ((UmbraModSpeed*)internalModules[UMBRA_INTERNAL_SPEEDOMETER])->setTimes(updateTime, renderTime);
+  }
+  // flush the screen
+  TCODConsole::root->flush();
+  return SDL_APP_CONTINUE;
+}
+
+SDL_AppResult UmbraEngine::onEvent(SDL_Event& event) {
+  TCOD_key_t key{};
+  TCOD_mouse_t mouse{};
+  int is_key_event = tcod::sdl2::process_event(event, key);
+  int is_mouse_event = tcod::sdl2::process_event(event, key);
+
+  if (!paused) {
+    for (auto& module : activeModules) {
+      if (module->getPause()) continue;
+      module->onEvent(event);
+
+      if (is_key_event) module->keyboard(key);
+      if (is_mouse_event) module->mouse(mouse);
+    }
+  }
+  keyboard(key);
+  switch (event.type) {
+    case SDL_EVENT_QUIT:
+      paused = false;
+      deactivateAll();
+      break;
+    case SDL_EVENT_KEY_UP:
+    case SDL_EVENT_MOUSE_BUTTON_DOWN:
+      paused = false;
+      break;
+  }
+  return SDL_APP_CONTINUE;
+}
+
+void UmbraEngine::onQuit() {
   UmbraConfig::save();
-  UmbraLog::closeBlock(UMBRA_LOGRESULT_SUCCESS);
   UmbraLog::save();
-  return 0;
 }
 
 void UmbraEngine::keyboard(TCOD_key_t& key) {

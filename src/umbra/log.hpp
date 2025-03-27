@@ -53,7 +53,7 @@ enum UmbraLogResult { UMBRA_LOGRESULT_FAILURE, UMBRA_LOGRESULT_SUCCESS, UMBRA_LO
  * saving the message, but also the caller-callee dependency (if used in both the caller and callee methods).
  */
 class UmbraLog {
-  friend int UmbraEngine::run();
+  friend void UmbraEngine::onQuit();
 
  private:
   /**

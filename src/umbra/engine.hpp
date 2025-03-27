@@ -28,6 +28,7 @@
 #define UMBRA_ENGINE_HPP
 
 #include <SDL3/SDL_events.h>
+#include <SDL3/SDL_init.h>
 #include <fmt/printf.h>
 #include <libtcod/console_types.h>
 
@@ -166,7 +167,23 @@ class UmbraEngine {
    * Runs the engine.
    * @return the result of running the application: <i>0</i> if no errors have occurred, different value otherwise.
    */
-  int run();
+  [[deprecated("Should call onFrame, OnEvent, and onQuit instead")]] int run();
+  /**
+   * @brief Handle an iteration of game logic.
+   * @return The SDL_AppResult for an SDL main callback
+   */
+  SDL_AppResult onFrame();
+  /**
+   * @brief Handle an SDL_Event.
+   *
+   * @param event The SDL_Event to process.
+   * @return The SDL_AppResult for an SDL main callback
+   */
+  SDL_AppResult onEvent(SDL_Event& event);
+  /**
+   * @brief Handle the shutdown on the engine.
+   */
+  void onQuit();
   /**
    * Sets the window title.<br><i>Note: this method is usually called before initialising the engine. Should it be
    * called after the engine has been initialised, the title won't be changed util the engine is reinitialised.</i>

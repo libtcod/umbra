@@ -254,13 +254,13 @@ class UmbraModule {
    * Checks whether the module has timed out and is eligible for deactivation.
    * @param currentTime the program execution elapsed time, in milliseconds
    */
-  inline bool isTimedOut(uint32_t currentTime) { return (timeout_end_ > currentTime) ? false : true; }
+  inline bool isTimedOut(uint64_t currentTime) { return (timeout_end_ > currentTime) ? false : true; }
   std::vector<UmbraModuleParameter> params_{};
   UmbraModuleStatus status_{UMBRA_UNINITIALISED};
   int priority_{1};  // update order (inverse of render order)
   int fallback_{-1};  // fallback module's index
   int id_{-1};  // module's ID number
-  uint32_t timeout_{0};
-  uint32_t timeout_end_{0xffffffff};
+  uint64_t timeout_{0};
+  uint64_t timeout_end_{0xffffffff};
   std::string name_{};
 };

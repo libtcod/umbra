@@ -24,7 +24,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
+#define SDL_MAIN_USE_CALLBACKS
 #include <SDL3/SDL_main.h>
 #include <stdio.h>
 
@@ -58,13 +58,19 @@ class ModuleFactory : public UmbraModuleFactory {
   }
 };
 
-int main(int argc, char* argv[]) {
+SDL_AppResult SDL_AppEvent(void*, SDL_Event* event) { return engine.onEvent(*event); }
+
+SDL_AppResult SDL_AppIterate(void*) { return engine.onFrame(); }
+
+SDL_AppResult SDL_AppInit(void**, int argc, char** argv) {
   // set window title
   engine.setWindowTitle("Umbra demo");
   engine.setKeyboardMode(UMBRA_KEYBOARD_SDL);
   // initialise and run the engine
-  if (engine.loadModuleConfiguration("data/cfg/module.txt", new ModuleFactory()) && engine.initialise())
-    return engine.run();
-  else
-    return 1;
+  if (engine.loadModuleConfiguration("data/cfg/module.txt", new ModuleFactory()) && engine.initialise()) {
+    return SDL_APP_CONTINUE;
+  } else {
+    return SDL_APP_FAILURE;
+  }
 }
+void SDL_AppQuit(void*, SDL_AppResult) { engine.onQuit(); }
