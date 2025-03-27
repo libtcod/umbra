@@ -584,7 +584,7 @@ int UmbraEngine::run() {
 
   SDL_AddEventWatch(onSDLEvent, this);
   while (!TCODConsole::isWindowClosed()) {
-    if (!onFrame()) break;
+    if (onFrame() != SDL_APP_CONTINUE) break;
   }
   SDL_RemoveEventWatch(onSDLEvent, this);
   UmbraLog::closeBlock(UMBRA_LOGRESULT_SUCCESS);
