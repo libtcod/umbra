@@ -11,10 +11,6 @@ project(
     LANGUAGES C CXX
 )
 
-if(NOT DEFINED CMAKE_RUNTIME_OUTPUT_DIRECTORY)
-    set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/bin")  # Keep all runtime files in one directory.
-endif()
-
 file(
     GLOB_RECURSE SOURCE_FILES CONFIGURE_DEPENDS
     ${PROJECT_SOURCE_DIR}/src/umbra/*.cpp
@@ -50,7 +46,17 @@ target_link_libraries(
 )
 add_library(umbra::umbra ALIAS ${PROJECT_NAME})
 
-set(BUILD_UMBRA_DEMO OFF CACHE BOOL "Build the demo program.")
-if(BUILD_UMBRA_DEMO)
+option(UMBRA_DEMO "Build the Umbra demo program" OFF)
+if(UMBRA_DEMO)
     add_subdirectory(src/demo)
+endif()
+
+option(UMBRA_CPACK "Enable CPack for Umbra" OFF)
+if(UMBRA_CPACK)
+    if (WIN32)
+        set(CPACK_GENERATOR "ZIP")
+    else()
+        set(CPACK_GENERATOR "TGZ")
+    endif()
+    include(CPack)
 endif()

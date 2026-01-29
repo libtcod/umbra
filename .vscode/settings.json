@@ -14,7 +14,8 @@
         "-Wdeprecated",
     ],
     "cmake.configureSettings": {
-        "BUILD_UMBRA_DEMO": "ON"
+        "UMBRA_DEMO": "ON",
+        "UMBRA_CPACK": "ON"
     },
     "files.associations": {
         "cstdint": "cpp",

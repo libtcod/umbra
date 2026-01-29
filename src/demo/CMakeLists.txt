@@ -33,3 +33,13 @@ target_link_libraries(
         libtcod::libtcod
         umbra::umbra
 )
+
+# Portable install
+install(
+    TARGETS ${PROJECT_NAME}
+    DESTINATION ${PROJECT_NAME}
+)
+install(
+    DIRECTORY ../../data
+    DESTINATION ${PROJECT_NAME}
+)
